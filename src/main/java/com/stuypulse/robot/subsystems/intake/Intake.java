@@ -1,6 +1,7 @@
 package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,9 +23,9 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public enum IntakeState { 
-        INTAKE(new Rotation2d(), 1.0), // change later
-        OUTAKE(new Rotation2d(), -1.0),
-        STOW(new Rotation2d(), 0.0);
+        INTAKE(Rotation2d.fromDegrees(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE.getAsDouble()), 1.0), // change later
+        OUTAKE(Rotation2d.fromDegrees(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE.getAsDouble()), -1.0),
+        STOW(Rotation2d.fromDegrees(Settings.Intake.PIVOT_STOW_ANGLE.getAsDouble()), 0.0);
 
         private double targetDutyCycle;
         private Rotation2d targetAngle;
