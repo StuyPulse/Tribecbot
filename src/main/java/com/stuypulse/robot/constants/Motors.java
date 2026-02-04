@@ -1,5 +1,5 @@
-/************************ PROJECT PHIL ************************/
-/* Copyright (c) 2024 StuyPulse Robotics. All rights reserved.*/
+/************************ PROJECT 2026 ************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
 /* This work is licensed under the terms of the MIT license.  */
 /**************************************************************/
 
@@ -31,7 +31,26 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
+    public interface Climber {
+        
+    }
 
+    public interface Feeder {
+
+    }
+
+    public interface Intake {
+
+    }
+    public interface Spindexeer {
+
+    }
+    public interface HoodedShooter {
+
+    }
+    public interface Turret {
+        
+    }
     /** Classes to store all of the values a motor needs */
 
     public static class TalonFXConfig {
