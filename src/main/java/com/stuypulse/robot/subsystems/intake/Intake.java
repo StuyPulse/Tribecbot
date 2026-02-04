@@ -35,11 +35,11 @@ public class Intake extends SubsystemBase {
             this.targetDutyCycle = targetDutyCycle;
         }
         
-        private Rotation2d getTargetAngle() {
+        public Rotation2d getTargetAngle() {
             return targetAngle;
         }
 
-        private double getTargetDutyCycle() {
+        public double getTargetDutyCycle() {
             return targetDutyCycle;
         }
     }
@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
         return state;
     }
     
-    public void setPivotState(IntakeState)  {
+    public void setPivotState(IntakeState state)  {
         this.state = state;
     }
 
