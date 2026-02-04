@@ -33,14 +33,14 @@ public class IntakeImpl extends Intake {
         absoluteEncoder = new DutyCycleEncoder(Ports.Intake.ABSOLUTE_ENCODER);
         absoluteEncoder.setInverted(false);
 
-        pivot.setControl(new PositionVoltage(getPivotState().getTargetAngle().getDegrees()));
-        rollerMaster.setControl(new DutyCycleOut(getPivotState().getTargetDutyCycle()));
+        pivot.setControl(new PositionVoltage(getIntakeState().getTargetAngle().getDegrees()));
+        rollerMaster.setControl(new DutyCycleOut(getIntakeState().getTargetDutyCycle()));
         rollerSlave.setControl(new Follower(Ports.Intake.ROLLER_MASTER, MotorAlignmentValue.Opposed));
     }
 
     @Override
     public boolean isAtTargetAngle() {
-        return Math.abs(getCurrentAngle().getRadians() - getPivotState().getTargetAngle().getRadians()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE; 
+        return Math.abs(getCurrentAngle().getRadians() - getIntakeState().getTargetAngle().getRadians()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE; 
     }
 
     @Override
@@ -59,12 +59,12 @@ public class IntakeImpl extends Intake {
     @Override
     public void periodic() {
         // PIVOT
-        SmartDashboard.putString("Intake/Pivot/Current State", getPivotState().toString());
+        SmartDashboard.putString("Intake/Pivot/Current State", getIntakeState().toString());
         SmartDashboard.putBoolean("Intake/Pivot/At Target Angle", isAtTargetAngle());
         SmartDashboard.putNumber("Intake/Pivot/Current Velocity", pivot.getVelocity().getValueAsDouble());
 
         // ROLLERG
-        SmartDashboard.putNumber("Intake/Roller/Duty Cycle Target Speed", getPivotState().getTargetDutyCycle());
+        SmartDashboard.putNumber("Intake/Roller/Duty Cycle Target Speed", getIntakeState().getTargetDutyCycle());
         SmartDashboard.putNumber("Intake/Roller/Current Velocity", rollerMaster.getVelocity().getValueAsDouble());
     }
 }

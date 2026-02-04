@@ -10,11 +10,9 @@ public abstract class Intake extends SubsystemBase {
     private IntakeState state;
 
     static {
-        if (Robot.isReal()) {
+        //if (Robot.isReal()) {
             instance = new IntakeImpl();
-        } else {
-            instance = new IntakeSim();
-        }
+        //}
     }
 
     public static Intake getInstance() {
@@ -44,11 +42,11 @@ public abstract class Intake extends SubsystemBase {
         }
     }
 
-    public IntakeState getPivotState() {
+    public IntakeState getIntakeState() {
         return state;
     }
     
-    public void setPivotState(IntakeState state)  {
+    public void setIntakeState(IntakeState state)  {
         this.state = state;
     }
 
