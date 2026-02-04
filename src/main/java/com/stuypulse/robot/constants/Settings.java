@@ -48,6 +48,9 @@ public interface Settings {
     }
 
     public interface Intake {
+        SmartNumber PIVOT_STOW_ANGLE = new SmartNumber("Intake/Pivot/Stow Angle", 0);
+        SmartNumber PIVOT_INTAKE_OUTAKE_ANGLE = new SmartNumber("Intake/Pivot/Intake/Outake Angle", 90);
+
         public final double PIVOT_ANGLE_TOLERANCE = 0.1; // 5 deg
         public final Rotation2d ANGLE_OFFSET = new Rotation2d(); // TODO: Add angle
         public final Rotation2d MAXIMUM_ANGLE = new Rotation2d(); // TODO: Add angle
