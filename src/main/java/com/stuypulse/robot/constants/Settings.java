@@ -44,6 +44,8 @@ public interface Settings {
     }
 
     public interface Feeder {
+        double FORWARD_SPEED = 1.0;
+        double REVERSE_SPEED = -1.0;
 
     }
 
