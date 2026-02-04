@@ -8,7 +8,6 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VoltageOut;
 
 public class SpindexerImpl extends Spindexer {
-
     private TalonFX leadMotor;
     private TalonFX follower;
 
@@ -29,13 +28,12 @@ public class SpindexerImpl extends Spindexer {
     public void periodic(){
         super.periodic();
 
-        if(getTargetVoltage() == 0){
+        if (getTargetVoltage() == 0) {
             leadMotor.setVoltage(0);
             follower.setVoltage(0);
-        } else{
+        } else {
             leadMotor.setControl(new VoltageOut(getTargetVoltage()));
             follower.setControl(new Follower(Ports.Spindexer.SPINDEXER_1, MotorAlignmentValue.Aligned));
         }
-        
     }
 }

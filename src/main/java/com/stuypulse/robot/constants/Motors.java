@@ -42,6 +42,7 @@ public interface Motors {
     public interface Intake {
 
     }
+
     public interface Spindexer {
         TalonFXConfig MOTOR_CONFIG = new TalonFXConfig()
             .withCurrentLimitAmps(80)
@@ -49,9 +50,11 @@ public interface Motors {
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);
     }
+
     public interface HoodedShooter {
 
     }
+    
     public interface Turret {
         
     }
