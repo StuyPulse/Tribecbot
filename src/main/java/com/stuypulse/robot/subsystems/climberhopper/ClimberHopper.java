@@ -1,11 +1,13 @@
 package com.stuypulse.robot.subsystems.climberhopper;
 
+import com.stuypulse.robot.constants.Settings;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ClimberHopper extends SubsystemBase {
+public abstract class ClimberHopper extends SubsystemBase {
     private static final ClimberHopper instance;
-    private ClimberHopperState state;
-
+    
     static {
         instance = new ClimberHopperImpl();
     }
@@ -15,17 +17,41 @@ public class ClimberHopper extends SubsystemBase {
     }
 
     public enum ClimberHopperState {
-        STOW();
-
-        private double targetHeight;
+        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP),
+        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN),
+        HOPPER_UP(Settings.ClimberHopper.HOPPER_UP),
+        HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN);
+    
+        private double targetVoltage;
         
-        private ClimberHopperState() {
-
+        private ClimberHopperState(double targetVoltage) {
+            this.targetVoltage = targetVoltage;
         }
+        
+        public double getTargetVoltage() {
+            return targetVoltage;
+        }
+
     }
+    
+    protected ClimberHopperState state;
+
+    public ClimberHopper() {
+        this.state = ClimberHopperState.CLIMBER_UP;
+    }
+        
+    public ClimberHopperState getState() {
+        return state;
+    }
+
+    public void setState(ClimberHopperState state) {
+        this.state = state;
+    }
+
+    public abstract Boolean getStalling();
 
     @Override
     public void periodic() {
-
+        SmartDashboard.putString("ClimberHopper/state", getState().toString());
     }
 }

@@ -31,6 +31,19 @@ public interface Field {
     double WIDTH = Units.inchesToMeters(317.000); 
     double LENGTH = Units.inchesToMeters(651.200);
 
+    // Alliance relative trench coordinates
+    public interface LeftTrench {
+        public static final Pose2d nearEdge = new Pose2d(Units.inchesToMeters(WIDTH - 50.59), Units.inchesToMeters(182.11), new Rotation2d());
+        public static final Pose2d farEdge = new Pose2d(Units.inchesToMeters(WIDTH - 50.59), Units.inchesToMeters(182.11), new Rotation2d());
+    }
+
+    public interface RightTrench {
+        public static final Pose2d nearEdge = new Pose2d(Units.inchesToMeters(50.59), Units.inchesToMeters(182.11), new Rotation2d());
+        public static final Pose2d farEdge = new Pose2d(Units.inchesToMeters(50.59), Units.inchesToMeters(182.11), new Rotation2d());
+    }
+
+    public static final double trenchYTolerance = Units.inchesToMeters(50);
+
     // Alliance relative hub center coordinates
     public final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
 

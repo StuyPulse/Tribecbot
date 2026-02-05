@@ -30,7 +30,7 @@ public class RobotContainer {
     
     // Subsystem
     private final CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
-    private final ClimberHopper climber = ClimberHopper.getInstance();
+    private final ClimberHopper climberHopper = ClimberHopper.getInstance();
     private final Feeder feeder = Feeder.getInstance();
     private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
     private final Intake intake = Intake.getInstance();
@@ -53,7 +53,9 @@ public class RobotContainer {
     /*** DEFAULTS ***/
     /****************/
 
-    private void configureDefaultCommands() {}
+    private void configureDefaultCommands() {
+        
+    }
 
     /***************/
     /*** BUTTONS ***/

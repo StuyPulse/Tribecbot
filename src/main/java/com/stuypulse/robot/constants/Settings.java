@@ -39,8 +39,33 @@ public interface Settings {
         SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", false);
     }
 
-    public interface Climber {
+    public interface ClimberHopper {
+        // TODO: GET THESE
+        // Voltages
+        double CLIMBER_UP = 0.5;
+        double CLIMBER_DOWN = -0.5;
+        double HOPPER_DOWN = -0.5;
+        double HOPPER_UP = 0.5;
+
+        double MASS_KG = 67;
         
+        double STALL = 10;
+        double RETRACTED_UP = 0;
+        double RETRACTED_DOWN = -3;
+
+        // TODO: get these limits
+        double MIN_HEIGHT_METERS = 0;
+        double MAX_HEIGHT_METERS = 0;
+
+        double DEBOUNCE = 0.25;
+
+        double TOLERANCE = 0;
+
+        public interface Encoders {
+            // TODO: get these
+            double GEARING = 1;
+            double DRUM_RADIUS_METERS = 1;
+        }
     }
 
     public interface Feeder {
