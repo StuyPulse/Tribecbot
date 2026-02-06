@@ -17,7 +17,7 @@ public class SpindexerInterpolation {
         }
     }
 
-    public static double getVoltage(double distanceInMeters){
+    public static double getRPM(double distanceInMeters){
         return interpolatingDoubleTreeMap.get(distanceInMeters);
     }
 }

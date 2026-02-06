@@ -52,8 +52,8 @@ public interface Settings {
     }
     public interface Spindexer {
         double STOP = 0.0;
-        double REVERSE_VOLTAGE = -1.0;
-        double FORWARD_VOLTAGE= 1.0;
+        double REVERSE_RPM = -1.0;
+        double FORWARD_RPM= 1.0;
     }
     public interface HoodedShooter {
 

@@ -5,10 +5,10 @@ import com.stuypulse.robot.constants.Settings;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Spindexer extends SubsystemBase {
+public abstract class Spindexer extends SubsystemBase {
     private static final Spindexer instance;
     private SpindexerState spindexerState;
-    private double voltage;
+    private double rpm;
 
     static {
         instance = new SpindexerImpl();
@@ -37,31 +37,24 @@ public class Spindexer extends SubsystemBase {
         this.spindexerState = state;
     }
 
-    public void setTargetVoltage(double voltage) {
-        this.voltage = voltage;
+    public void setTargetRPM(double rpm) {
+        this.rpm = rpm;
     }
 
-    public double getTargetVoltage() {
+    public double getTargetRPM() {
         return switch (getSpindexerState()) {
             case STOP -> 0;
-            case DYNAMIC -> getVoltageBasedOnDistance();
-            case FORWARD -> Settings.Spindexer.FORWARD_VOLTAGE;
-            case REVERSE -> Settings.Spindexer.REVERSE_VOLTAGE;
+            case DYNAMIC -> getRPMBasedOnDistance();
+            case FORWARD -> Settings.Spindexer.FORWARD_RPM;
+            case REVERSE -> Settings.Spindexer.REVERSE_RPM;
         };
     }
 
-    public double getCurrentVoltage() {
-        return this.voltage;
-    }
-
-    public double getVoltageBasedOnDistance() {
-        return 0;
-    }
+    public abstract double getRPMBasedOnDistance(); // implement in SpindexerImpl
 
     @Override
     public void periodic() {
         SmartDashboard.putString("Spindexer/State", getSpindexerState().toString());
-        SmartDashboard.putNumber("Spindexer/Voltage", getCurrentVoltage());
-        SmartDashboard.putNumber("Spindexer/Target Voltage", getTargetVoltage());
+        SmartDashboard.putNumber("Spindexer/Target RPM", getTargetRPM());
     }
 }
