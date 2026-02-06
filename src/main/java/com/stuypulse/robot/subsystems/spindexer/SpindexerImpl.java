@@ -53,15 +53,16 @@ public class SpindexerImpl extends Spindexer {
         super.periodic();
 
         if (getTargetRPM() == 0) {
-            // TODO: adjust the following lines of code below
             leadMotor.setVoltage(0);
             follower.setVoltage(0);
         } else {
+            // TODO: validate line 60
             leadMotor.setControl(new VoltageOut(getTargetRPM()));
             follower.setControl(new Follower(Ports.Spindexer.SPINDEXER_1, MotorAlignmentValue.Aligned));
         }
 
         SmartDashboard.putNumber("Spindexer/Lead Motor Speed", getCurrentLeadMotorRPM());
         SmartDashboard.putNumber("Spindexer/Follower Motor RPM", getCurrentFollowerMotorRPM());
+        SmartDashboard.putNumber("Spindexer/Projected RPM Based on Distance", getRPMBasedOnDistance());
     }
 }

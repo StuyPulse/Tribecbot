@@ -5,14 +5,14 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 public class SpindexerInterpolation {
     private static final InterpolatingDoubleTreeMap interpolatingDoubleTreeMap;
 
-    private static final double[][] voltageAndDistance = {
-        // { voltage, distance }
+    private static final double[][] rpmAndDistance = {
+        // { rpm, distance }
         {1,1}
     };
 
     static {
         interpolatingDoubleTreeMap = new InterpolatingDoubleTreeMap();
-        for (double[] data: voltageAndDistance) {
+        for (double[] data: rpmAndDistance) {
             interpolatingDoubleTreeMap.put(data[1], data[0]);
         }
     }
