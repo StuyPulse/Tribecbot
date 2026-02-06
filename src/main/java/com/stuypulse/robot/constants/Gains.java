@@ -44,7 +44,7 @@ public class Gains {
 
     public interface Intake {
         public interface Pivot {
-            //TODO: tune values
+            // TODO: tune ts :wilt: 🥀
             double kP = 1.0;
             double kI = 0.0;
             double kD = 0.0;

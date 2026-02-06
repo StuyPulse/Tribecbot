@@ -10,32 +10,31 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeImpl extends Intake {
     private final TalonFX pivot;
-    private final TalonFX rollerMaster;
-    private final TalonFX rollerSlave;
+    private final TalonFX rollerLeader;
+    private final TalonFX rollerFollower;
     private final DutyCycleEncoder absoluteEncoder;
 
     public IntakeImpl() {
+        super();
+
         pivot = new TalonFX(Ports.Intake.PIVOT);
         Motors.Intake.PIVOT_CONFIG.configure(pivot);
 
-        rollerMaster = new TalonFX(Ports.Intake.ROLLER_MASTER);
-        Motors.Intake.ROLLER_MASTER_CONFIG.configure(rollerMaster);
+        rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER);
+        Motors.Intake.ROLLER_LEADER_CONFIG.configure(rollerLeader);
 
-        rollerSlave = new TalonFX(Ports.Intake.ROLLER_SLAVE);
-        Motors.Intake.ROLLER_SLAVE_CONFIG.configure(rollerSlave);
+        rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER);
+        Motors.Intake.ROLLER_FOLLOWER_CONFIG.configure(rollerFollower);
 
         absoluteEncoder = new DutyCycleEncoder(Ports.Intake.ABSOLUTE_ENCODER);
         absoluteEncoder.setInverted(false);
 
-        pivot.setControl(new PositionVoltage(getIntakeState().getTargetAngle().get().getDegrees()));
-        rollerMaster.setControl(new DutyCycleOut(getIntakeState().getTargetDutyCycle()));
-        rollerSlave.setControl(new Follower(Ports.Intake.ROLLER_MASTER, MotorAlignmentValue.Opposed));
+        rollerFollower.setControl(new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed));
     }
 
     @Override
@@ -49,15 +48,19 @@ public class IntakeImpl extends Intake {
     }
 
     
-    public Rotation2d getCurrentAngleFromAbsoluteEncoder() {
+    public Rotation2d getAbsoluteAngle() {
         double angleRotations = absoluteEncoder.get() - Settings.Intake.PIVOT_ANGLE_OFFSET.getRotations();
-        return Rotation2d.fromRotations(angleRotations > Settings.Intake.PIVOT_MAX_ANGLE.getRotations() + Units.degreesToRotations(10)
+        return Rotation2d.fromRotations(angleRotations > Settings.Intake.PIVOT_MAX_ANGLE.getRotations() + Settings.Intake.PIVOT_ANGLE_OFFSET.getRotations()
             ? angleRotations - 1
             : angleRotations);
     }
 
     @Override
     public void periodic() {
+        // ROLLER CONTROLS
+        pivot.setControl(new PositionVoltage(getIntakeState().getTargetAngle().get().getDegrees()));
+        rollerLeader.setControl(new DutyCycleOut(getIntakeState().getTargetDutyCycle()));
+
         // PIVOT
         SmartDashboard.putString("Intake/Pivot/Current State", getIntakeState().toString());
         SmartDashboard.putBoolean("Intake/Pivot/At Target Angle", isAtTargetAngle());
@@ -65,6 +68,6 @@ public class IntakeImpl extends Intake {
 
         // ROLLERG
         SmartDashboard.putNumber("Intake/Roller/Duty Cycle Target Speed", getIntakeState().getTargetDutyCycle());
-        SmartDashboard.putNumber("Intake/Roller/Current Velocity", rollerMaster.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Intake/Roller/Current Velocity", rollerLeader.getVelocity().getValueAsDouble());
     }
 }

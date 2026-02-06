@@ -25,6 +25,8 @@ public class IntakeSim extends Intake {
     MechanismLigament2d pivotLigament;
 
     public IntakeSim() {
+        super();
+
         //TODO: potentially add std devs
         intakeSimMotor = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(

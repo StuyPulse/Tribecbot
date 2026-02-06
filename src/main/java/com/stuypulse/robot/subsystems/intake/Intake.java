@@ -63,9 +63,5 @@ public abstract class Intake extends SubsystemBase {
     public abstract boolean isAtTargetAngle();
 
     public abstract Rotation2d getCurrentAngle();
-
-    @Override
-    public void periodic() {
-        
-    }
+    
 }

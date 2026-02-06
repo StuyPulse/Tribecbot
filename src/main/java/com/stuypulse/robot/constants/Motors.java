@@ -40,14 +40,14 @@ public interface Motors {
     }
 
     public interface Intake {
-        TalonFXConfig ROLLER_MASTER_CONFIG = new TalonFXConfig()
+        TalonFXConfig ROLLER_LEADER_CONFIG = new TalonFXConfig()
             .withCurrentLimitAmps(80)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);   // TODO: change later
                                                                     // TODO: Add Gear ratio
 
-        TalonFXConfig ROLLER_SLAVE_CONFIG = new TalonFXConfig()
+        TalonFXConfig ROLLER_FOLLOWER_CONFIG = new TalonFXConfig()
             .withCurrentLimitAmps(80)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Coast)
