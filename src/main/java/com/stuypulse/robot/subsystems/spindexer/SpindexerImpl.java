@@ -41,6 +41,9 @@ public class SpindexerImpl extends Spindexer {
         return follower.getVelocity().getValueAsDouble() * Settings.Spindexer.SECONDS_IN_A_MINUTE; 
     }
 
+    /**
+     * @return RPM based on distance; interpolated from data points
+     */
     @Override
     public double getRPMBasedOnDistance() {
         Translation2d hubPos = Field.getHubCenterPose().getTranslation();
@@ -49,6 +52,9 @@ public class SpindexerImpl extends Spindexer {
         return SpindexerInterpolation.getRPM(distance);
     }
 
+    /**
+     * @return a boolean if lead motor is with a 3% tolerance of target RPM
+     */
     public boolean atTargetRPM(){
         return Math.abs(getCurrentLeadMotorRPM() - getTargetRPM()) < Settings.Spindexer.SPINDEXER_TOLERANCE * getTargetRPM();
     }
@@ -64,7 +70,7 @@ public class SpindexerImpl extends Spindexer {
             leadMotor.setControl(new VelocityVoltage(getTargetRPM()));
             follower.setControl(new Follower(Ports.Spindexer.SPINDEXER_1, MotorAlignmentValue.Aligned));
         }
-
+        
         SmartDashboard.putNumber("Spindexer/Lead Motor Speed", getCurrentLeadMotorRPM());
         SmartDashboard.putNumber("Spindexer/Follower Motor RPM", getCurrentFollowerMotorRPM());
         SmartDashboard.putNumber("Spindexer/Projected RPM Based on Distance", getRPMBasedOnDistance());

@@ -2,18 +2,24 @@ package com.stuypulse.robot.subsystems.spindexer;
 
 import com.stuypulse.robot.constants.Gains;
 
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class SpindexerSim extends Spindexer {
-    private DCMotorSim leadMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(Gains.Spindexer.kV, Gains.Spindexer.kA));  
-
-    private DCMotorSim followerMotor = new DCMotorSim();
-        
+    private final DCMotorSim leadMotor;
+    private final DCMotorSim followerMotor;
 
     public SpindexerSim() {
         super();
-
+        leadMotor = new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(Gains.Spindexer.kV, Gains.Spindexer.kA),
+            DCMotor.getKrakenX60(1));
+        followerMotor = new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(Gains.Spindexer.kV, Gains.Spindexer.kA),
+            DCMotor.getKrakenX60(1));
+        
     }
 
     @Override
@@ -23,6 +29,11 @@ public class SpindexerSim extends Spindexer {
 
     @Override
     public double getTargetRPM() {
-        
+
+    }
+
+    @Override
+    public void periodic() {
+        super.periodic();
     }
 }
