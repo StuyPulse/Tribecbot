@@ -1,7 +1,7 @@
 package com.stuypulse.robot.subsystems.spindexer;
 
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.stuypulse.robot.constants.Field;
@@ -56,8 +56,7 @@ public class SpindexerImpl extends Spindexer {
             leadMotor.setVoltage(0);
             follower.setVoltage(0);
         } else {
-            // TODO: validate line 60
-            leadMotor.setControl(new VoltageOut(getTargetRPM()));
+            leadMotor.setControl(new VelocityVoltage(getTargetRPM()));
             follower.setControl(new Follower(Ports.Spindexer.SPINDEXER_1, MotorAlignmentValue.Aligned));
         }
 
