@@ -23,7 +23,7 @@ public class ClimberHopperImpl extends ClimberHopper {
     }
 
     @Override
-    public Boolean getStalling() {
+    public boolean getStalling() {
         return stalling.getAsBoolean();
     }
 

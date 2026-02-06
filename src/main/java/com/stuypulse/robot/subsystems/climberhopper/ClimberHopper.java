@@ -50,7 +50,7 @@ public abstract class ClimberHopper extends SubsystemBase {
         this.state = state;
     }
 
-    public abstract Boolean getStalling();
+    public abstract boolean getStalling();
 
     @Override
     public void periodic() {

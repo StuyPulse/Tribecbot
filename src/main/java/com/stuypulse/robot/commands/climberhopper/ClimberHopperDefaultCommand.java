@@ -35,14 +35,22 @@ public class ClimberHopperDefaultCommand extends Command {
         // double x = pose.getX() * Math.cos(pose.getRotation().getRadians());
         // double y = pose.getY() * Math.sin(pose.getRotation().getRadians());
 
+
+
         boolean under = ((Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY()) // Right trench Y logic
                       || (Field.NearLeftTrench.rightEdge.getY() < pose.getY() && Field.NearLeftTrench.leftEdge.getY() > pose.getY())) // Left trench Y logic
                       && (Math.abs(pose.getX() - Field.NearRightTrench.rightEdge.getX()) < Field.trenchXTolerance   // Near X tolerance
                       || (Math.abs(pose.getX() - Field.FarRightTrench.rightEdge.getX())) < Field.trenchXTolerance); // Far X tolerance
         
-        if (level && under && !climberHopper.getStalling() && !flag) { // shouldn't be stalling in hopper_up with 0 voltage
-            climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
-        }   else { // if stalling after hopper down, set to hopper up
+        boolean isUp = (climberHopper.getState() == ClimberHopperState.CLIMBER_UP || climberHopper.getState() == ClimberHopperState.HOPPER_UP);
+        boolean isDown = (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN || climberHopper.getState() == ClimberHopperState.HOPPER_DOWN);
+        
+        // If is stalling 67
+        if (under && !climberHopper.getStalling() && !flag) { // shouldn't be stalling in up state with 0 voltage
+            if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN) { // only necessary if holding down doesn't stall the motor
+                climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
+            }
+        } else { // if stalling after hopper down, set to hopper up
             if (climberHopper.getState() != ClimberHopperState.HOLDING_UP) {
                 climberHopper.setState(ClimberHopperState.HOPPER_UP);
             }
