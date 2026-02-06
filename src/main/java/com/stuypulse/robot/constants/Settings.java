@@ -32,6 +32,7 @@ public interface Settings {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean FEEDER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean CLIMBER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Superstructure Is Enabled", false);
@@ -48,10 +49,10 @@ public interface Settings {
     }
 
     public interface Intake { // TODO: Get all values for this
-        SmartNumber PIVOT_STOW_ANGLE = new SmartNumber("Intake/Pivot/Stow Angle", 90); 
-        SmartNumber PIVOT_INTAKE_OUTAKE_ANGLE = new SmartNumber("Intake/Pivot/Intake and Outake Angle", 180);
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
+        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(180.0);
 
-        public final double PIVOT_ANGLE_TOLERANCE = 0.1; 
+        public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(0.1); 
 
         Rotation2d PIVOT_ANGLE_OFFSET = new Rotation2d();
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);

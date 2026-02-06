@@ -25,8 +25,6 @@ public class IntakeSim extends Intake {
     MechanismLigament2d pivotLigament;
 
     public IntakeSim() {
-        super();
-
         //TODO: potentially add std devs
         intakeSimMotor = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
@@ -69,7 +67,7 @@ public class IntakeSim extends Intake {
 
     @Override
     public boolean isAtTargetAngle() {
-        return Math.abs(getCurrentAngle().getRadians() - getIntakeState().getTargetAngle().get().getRadians()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE; 
+        return Math.abs(getCurrentAngle().getRotations() - getIntakeState().getTargetAngle().getRotations()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations(); 
     }
 
     @Override
@@ -87,7 +85,7 @@ public class IntakeSim extends Intake {
     public void periodic() {
         SmartDashboard.putData("Pivot_Mechanism2d_SIM", pivotCanvas);
         //TODO: change velocity value for ffController (?)
-        double pidOutput = pidController.calculate(getCurrentAngle().getDegrees(), getIntakeState().getTargetAngle().get().getDegrees());
+        double pidOutput = pidController.calculate(getCurrentAngle().getDegrees(), getIntakeState().getTargetAngle().getDegrees());
         double ffOutput = ffController.calculate(pidController.getSetpoint(), 1);
         
         double voltageInput = SLMath.clamp(
@@ -103,7 +101,7 @@ public class IntakeSim extends Intake {
 
         SmartDashboard.putNumber("INTAKE_SIMULATION/ Voltage", voltageInput);
         SmartDashboard.putNumber("INTAKE_SIMULATION/ Actual Angle (DEG)", getCurrentAngle().getDegrees());
-        SmartDashboard.putNumber("INTAKE_SIMULATION/ Target Angle (DEG)", getIntakeState().getTargetAngle().get().getDegrees());
+        SmartDashboard.putNumber("INTAKE_SIMULATION/ Target Angle (DEG)", getIntakeState().getTargetAngle().getDegrees());
         SmartDashboard.putString("INTAKE_SIMULATION/ Target State", getIntakeState().toString());
         SmartDashboard.putNumber("INTAKE_SIMULATION/ PID output", pidOutput);
         SmartDashboard.putNumber("INTAKE_SIMULATION/ FF output", pidOutput);

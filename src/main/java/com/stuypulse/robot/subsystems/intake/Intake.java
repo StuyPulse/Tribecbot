@@ -1,7 +1,5 @@
 package com.stuypulse.robot.subsystems.intake;
 
-import java.util.function.Supplier;
-
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
@@ -26,23 +24,30 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public enum IntakeState { 
-        INTAKE(() -> Rotation2d.fromDegrees(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE.get()), 1.0), // change later
-        OUTAKE(() -> Rotation2d.fromDegrees(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE.get()), -1.0),
-        STOW(() -> Rotation2d.fromDegrees(Settings.Intake.PIVOT_STOW_ANGLE.get()), 0.0);
+        INTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 1.0), // change later
+        OUTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, -1.0),
+        STOW(Settings.Intake.PIVOT_STOW_ANGLE, 0.0);
 
         private double targetDutyCycle;
-        private Supplier<Rotation2d> targetAngle;
-        
-
-        private IntakeState(Supplier<Rotation2d> targetAngle, double targetDutyCycle) {
+        private Rotation2d targetAngle;
+    
+        private IntakeState(Rotation2d targetAngle, double targetDutyCycle) {
             this.targetAngle = targetAngle;
             this.targetDutyCycle = targetDutyCycle;
         }
 
-        public Supplier<Rotation2d> getTargetAngle() {
+        /**
+         * Gets the Target Angle for the Pivot of the Current State of the Intake
+         * @return Rotation2d Target Angle
+         */
+        public Rotation2d getTargetAngle() {
             return targetAngle;
         }
 
+        /**
+         * Gets the Target Duty Cycle for the Rollers of the Current State of the Intake
+         * @return double Target Duty Cycle
+         */
         public double getTargetDutyCycle() {
             return targetDutyCycle;
         }
@@ -52,10 +57,19 @@ public abstract class Intake extends SubsystemBase {
         state = IntakeState.STOW;
     }
 
+    /**
+     * Gets the current IntakeState of the Intake
+     * @return IntakeState: Current Intake State
+     */
     public IntakeState getIntakeState() {
         return state;
     }
     
+    /**
+     * Sets the Intake State to a new State
+     * @param state Desired IntakeState
+     * @return Void
+     */
     public void setIntakeState(IntakeState state)  {
         this.state = state;
     }
@@ -63,5 +77,5 @@ public abstract class Intake extends SubsystemBase {
     public abstract boolean isAtTargetAngle();
 
     public abstract Rotation2d getCurrentAngle();
-    
+
 }
