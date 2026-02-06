@@ -24,7 +24,7 @@ public abstract class Spindexer extends SubsystemBase {
         REVERSE;
     }
 
-    protected Spindexer() {
+    public Spindexer() {
         spindexerState = SpindexerState.STOP;
     }
 

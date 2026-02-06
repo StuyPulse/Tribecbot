@@ -18,7 +18,7 @@ public class SpindexerImpl extends Spindexer {
     private final TalonFX leadMotor;
     private final TalonFX follower;
 
-    protected SpindexerImpl() {
+    public SpindexerImpl() {
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR);
         follower = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR);
 
