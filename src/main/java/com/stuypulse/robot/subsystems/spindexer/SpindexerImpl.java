@@ -18,6 +18,7 @@ public class SpindexerImpl extends Spindexer {
     private final TalonFX leadMotor;
     private final TalonFX followerMotor;
 
+    private final VelocityVoltage leadMotorController;
     private final Follower follower;
 
     public SpindexerImpl() {
@@ -27,6 +28,7 @@ public class SpindexerImpl extends Spindexer {
         Motors.Spindexer.MOTOR_CONFIG.configure(leadMotor);
         Motors.Spindexer.MOTOR_CONFIG.configure(followerMotor);
 
+        leadMotorController = new VelocityVoltage(0.0);
         follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Opposed);
     }
 
@@ -69,7 +71,7 @@ public class SpindexerImpl extends Spindexer {
         if (!Settings.EnabledSubsystems.SPINDEXER.getAsBoolean()) {
             leadMotor.stopMotor();
         } else {
-            leadMotor.setControl(new VelocityVoltage(getTargetRPM() * 60 ));
+            leadMotor.setControl(leadMotorController.withVelocity(getTargetRPM() * Settings.Spindexer.SECONDS_IN_A_MINUTE));
         }
 
         followerMotor.setControl(follower);
