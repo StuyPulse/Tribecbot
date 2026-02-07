@@ -14,6 +14,10 @@ public class ClimberHopperVisualizer {
         instance = new ClimberHopperVisualizer();
     }
 
+    public static ClimberHopperVisualizer getInstance() {
+        return instance;
+    }
+
     private final Mechanism2d canvas;
     private final MechanismRoot2d hopper;
     private final MechanismRoot2d bot;
@@ -30,7 +34,7 @@ public class ClimberHopperVisualizer {
             5,
             0,
             5,
-            new Color8Bit(Color.kOrange)
+            new Color8Bit(Color.kYellow)
             )
         );
         
@@ -39,7 +43,7 @@ public class ClimberHopperVisualizer {
             10,
             0,
             10,
-            new Color8Bit(Color.kOrange)
+            new Color8Bit(Color.kRed)
         ));
 
         climber.append(new MechanismLigament2d(
@@ -52,8 +56,10 @@ public class ClimberHopperVisualizer {
     }
 
     public void update(double height) {
+        
         hopper.setPosition(8, height + 5);
 
         SmartDashboard.putData("Visualizers/ClimberHopper", canvas);
     }
 }
+    

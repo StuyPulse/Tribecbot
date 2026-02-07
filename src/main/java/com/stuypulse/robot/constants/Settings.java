@@ -47,7 +47,7 @@ public interface Settings {
         double HOPPER_DOWN = -3;
         double HOPPER_UP = 2;
 
-        double MASS_KG = 67;
+        double MASS_KG = 1;
         
         double STALL = 10;
         double EXTENDED = 0;
@@ -56,7 +56,7 @@ public interface Settings {
         double ROTATIONS_AT_BOTTOM = 0;
         // TODO: get these limits
         double MIN_HEIGHT_METERS = 0;
-        double MAX_HEIGHT_METERS = 0;
+        double MAX_HEIGHT_METERS = 10;
 
         double DEBOUNCE = 0.25;
 
@@ -65,10 +65,15 @@ public interface Settings {
 
         double RAMP_RATE = 50;
 
+        double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (Encoders.NUM_ROTATIONS_TO_REACH_TOP / Encoders.GEARING)) / 2 / Math.PI;
+
         public interface Encoders {
             // TODO: get these
-            double GEARING = 1;
-            double DRUM_RADIUS_METERS = 1;
+            double GEARING = 52.0/12.0;
+
+            double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13); // Number of rotations that the motor has to spin, NOT the gear
+            double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
+            double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60;
         }
     }
 

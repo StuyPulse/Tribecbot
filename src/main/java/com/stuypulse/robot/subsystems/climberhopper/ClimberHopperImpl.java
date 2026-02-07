@@ -25,13 +25,13 @@ public class ClimberHopperImpl extends ClimberHopper {
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
     }
 
-    @Override
+    @Override 
     public boolean getStalling() {
         return stalling.getAsBoolean();
     }
 
     public double getPosition() { // TODO: convert motor encoder position to meters somehow
-        return this.motor.getPosition().getValueAsDouble();
+        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.Encoders.POSITION_CONVERSION_FACTOR;
     }
 
     @Override

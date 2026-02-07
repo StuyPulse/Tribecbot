@@ -15,13 +15,13 @@ public class ClimberHopperSim extends ClimberHopper {
     private double voltage;
 
     public ClimberHopperSim() {
-        visualizer = new ClimberHopperVisualizer();
+        visualizer = ClimberHopperVisualizer.getInstance();
 
         sim = new ElevatorSim(
             DCMotor.getKrakenX60(1),
             Settings.ClimberHopper.Encoders.GEARING,
             Settings.ClimberHopper.MASS_KG,
-            Settings.ClimberHopper.Encoders.DRUM_RADIUS_METERS,
+            Settings.ClimberHopper.DRUM_RADIUS_METERS,
             Settings.ClimberHopper.MIN_HEIGHT_METERS,
             Settings.ClimberHopper.MAX_HEIGHT_METERS,
             true,
@@ -31,8 +31,7 @@ public class ClimberHopperSim extends ClimberHopper {
 
     // wrote ts so it would compile (ろく なな)
     public boolean getStalling() {
-        return false;
-        // sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL;
+        return sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL;
     }
 
     public double getPosition() {
@@ -42,9 +41,6 @@ public class ClimberHopperSim extends ClimberHopper {
     @Override
     public void periodic() {
         super.periodic();
-
-        BStream stalling = BStream.create(() -> sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL)
-            .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
 
         if ((getState() == ClimberHopperState.CLIMBER_UP || getState() == ClimberHopperState.HOPPER_UP) && getStalling()) {
             setState(ClimberHopperState.HOLDING_UP);
@@ -59,7 +55,8 @@ public class ClimberHopperSim extends ClimberHopper {
         SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
         SmartDashboard.putNumber("ClimberHopper/Current", sim.getCurrentDrawAmps());
         SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
-
+        SmartDashboard.putNumber("ClimberHopper/Position", getPosition());
         visualizer.update(getPosition()); 
+        sim.update(0.02);
     }
 }
