@@ -8,12 +8,10 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -99,7 +97,7 @@ public class IntakeImpl extends Intake {
     
         // ROLLER CONTROLS
         if (Settings.EnabledSubsystems.INTAKE.getAsBoolean()) {
-            pivot.setControl(pivotPositionVoltageController.withPosition(nextPivot.position)); // TODO: make this use the absolute encoder to ensure it works even when belt skip
+            pivot.setControl(pivotPositionVoltageController.withPosition(nextPivot.position));
             rollerLeader.setControl(rollerDutyCycleController.withOutput(getIntakeState().getTargetDutyCycle()));
         } 
         else 
