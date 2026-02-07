@@ -71,7 +71,7 @@ public class SpindexerImpl extends Spindexer {
         if (!Settings.EnabledSubsystems.SPINDEXER.getAsBoolean()) {
             leadMotor.stopMotor();
         } else {
-            leadMotor.setControl(leadMotorController.withVelocity(getTargetRPM() * Settings.Spindexer.SECONDS_IN_A_MINUTE));
+            leadMotor.setControl(leadMotorController.withVelocity(getTargetRPM() / Settings.Spindexer.SECONDS_IN_A_MINUTE));
         }
         
         if (Settings.DEBUG_MODE) {
