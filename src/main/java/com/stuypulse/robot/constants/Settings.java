@@ -63,6 +63,8 @@ public interface Settings {
         double GYRO_TOLERANCE = 0;
         double HEIGHT_TOLERANCE = 0;
 
+        double RAMP_RATE = 50;
+
         public interface Encoders {
             // TODO: get these
             double GEARING = 1;

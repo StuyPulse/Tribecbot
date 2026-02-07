@@ -40,10 +40,10 @@ public class ClimberHopperSim extends ClimberHopper {
         BStream stalling = BStream.create(() -> sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL)
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
 
-        if ((getState() == ClimberHopperState.CLIMBER_UP || getState() == ClimberHopperState.HOPPER_UP) && stalling.getAsBoolean()) {
+        if ((getState() == ClimberHopperState.CLIMBER_UP || getState() == ClimberHopperState.HOPPER_UP) && getStalling()) {
             setState(ClimberHopperState.HOLDING_UP);
         }
-        else if ((getState() == ClimberHopperState.CLIMBER_DOWN || getState() == ClimberHopperState.HOPPER_DOWN) && stalling.getAsBoolean()) {
+        else if ((getState() == ClimberHopperState.CLIMBER_DOWN || getState() == ClimberHopperState.HOPPER_DOWN) && getStalling()) {
             
             setState(ClimberHopperState.HOLDING_DOWN);
         }
@@ -51,8 +51,8 @@ public class ClimberHopperSim extends ClimberHopper {
         double voltage = getState().getTargetVoltage();
 
         sim.setInputVoltage(voltage);
-        SmartDashboard.putNumber("ClimberHopper/voltage", voltage);
-        SmartDashboard.putNumber("ClimberHopper/current", sim.getCurrentDrawAmps());
-        SmartDashboard.putBoolean("ClimberHopper/stalling", stalling.getAsBoolean());
+        SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
+        SmartDashboard.putNumber("ClimberHopper/Current", sim.getCurrentDrawAmps());
+        SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
     }
 }

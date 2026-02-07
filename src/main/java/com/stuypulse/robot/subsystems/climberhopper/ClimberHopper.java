@@ -55,6 +55,6 @@ public abstract class ClimberHopper extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("ClimberHopper/state", getState().toString());
+        SmartDashboard.putString("ClimberHopper/State", getState().toString());
     }
 }
