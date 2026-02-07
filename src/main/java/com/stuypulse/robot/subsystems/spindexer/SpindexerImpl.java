@@ -73,8 +73,6 @@ public class SpindexerImpl extends Spindexer {
         } else {
             leadMotor.setControl(leadMotorController.withVelocity(getTargetRPM() * Settings.Spindexer.SECONDS_IN_A_MINUTE));
         }
-
-        followerMotor.setControl(follower);
         
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("Spindexer/Lead Motor Speed", getCurrentLeadMotorRPM());
