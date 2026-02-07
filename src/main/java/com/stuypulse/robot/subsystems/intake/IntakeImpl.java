@@ -8,8 +8,11 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,15 +41,14 @@ public class IntakeImpl extends Intake {
      */
     @Override
     public boolean isAtTargetAngle() {
-        return Math.abs((getAbsoluteAngle().getRotations()) - getIntakeState().getTargetAngle().getRotations()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations(); 
+        return Math.abs((getCurrentAngle().getRotations()) - getIntakeState().getTargetAngle().getRotations()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations(); 
     }
 
     /**
      * Gets the Current Intake Pivot Angle using the Relative Encoder built into the Kraken
      * @return Rotation2d: Current Angle (Relative)
      */
-    @Override
-    public Rotation2d getCurrentAngle() {
+    public Rotation2d getRelativeAngle() {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }
 
@@ -54,7 +56,8 @@ public class IntakeImpl extends Intake {
      * Gets the Current Intake Pivot Angle using the Absolute Encoder on the Intake
      * @return Rotation2d: Current Angle (Absolute)
      */
-    public Rotation2d getAbsoluteAngle() {
+    @Override
+    public Rotation2d getCurrentAngle() {
         return Rotation2d.fromRotations(absoluteEncoder.get());
     }
 
@@ -78,6 +81,23 @@ public class IntakeImpl extends Intake {
             rollerFollower.setControl(new DutyCycleOut(0));
         }
 
+        TrapezoidProfile profile = new TrapezoidProfile(
+            new Constraints(Settings.Intake.ROLLER_MAX_VEL, Settings.Intake.ROLLER_MAX_ACCEL)
+        );
+        
+        // this is the next step in the profile
+        TrapezoidProfile.State nextShoulderState = shoulderProfile.calculate(
+            dt,
+            currentShoulderState, 
+            targetShoulderState
+        );
+        
+        TrapezoidProfile.State nextElbowState = elbowProfile.calculate(
+            dt,
+            currentElbowState,
+            targetElbowState
+        );
+
         // DEBUG
         if (Settings.DEBUG_MODE) { // TODO: Make some of these always shown (Not in debug mode)
 
@@ -85,8 +105,8 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putString("Intake/Pivot/Current State", getIntakeState().toString());
             SmartDashboard.putBoolean("Intake/Pivot/At Target Angle", isAtTargetAngle());
             SmartDashboard.putNumber("Intake/Pivot/Current Velocity", pivot.getVelocity().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Pivot/Current Angle (Relative Encoder)", getCurrentAngle().getDegrees());
-            SmartDashboard.putNumber("Intake/Pivot/Current Angle (Absolute Encoder)", getAbsoluteAngle().getDegrees());
+            SmartDashboard.putNumber("Intake/Pivot/Current Angle (Relative Encoder)", getRelativeAngle().getDegrees());
+            SmartDashboard.putNumber("Intake/Pivot/Current Angle (Absolute Encoder)", getCurrentAngle().getDegrees());
 
             // ROLLERS
             SmartDashboard.putNumber("Intake/Roller/Duty Cycle Target Speed", getIntakeState().getTargetDutyCycle());
