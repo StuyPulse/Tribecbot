@@ -11,7 +11,12 @@ import edu.wpi.first.math.system.plant.DCMotor;
 
 public class ClimberHopperSim extends ClimberHopper {
     private final ElevatorSim sim;
+    private final ClimberHopperVisualizer visualizer;
+    private double voltage;
+
     public ClimberHopperSim() {
+        visualizer = new ClimberHopperVisualizer();
+
         sim = new ElevatorSim(
             DCMotor.getKrakenX60(1),
             Settings.ClimberHopper.Encoders.GEARING,
@@ -26,7 +31,8 @@ public class ClimberHopperSim extends ClimberHopper {
 
     // wrote ts so it would compile (ろく なな)
     public boolean getStalling() {
-        return sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL;
+        return false;
+        // sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL;
     }
 
     public double getPosition() {
@@ -44,15 +50,16 @@ public class ClimberHopperSim extends ClimberHopper {
             setState(ClimberHopperState.HOLDING_UP);
         }
         else if ((getState() == ClimberHopperState.CLIMBER_DOWN || getState() == ClimberHopperState.HOPPER_DOWN) && getStalling()) {
-            
             setState(ClimberHopperState.HOLDING_DOWN);
         }
 
-        double voltage = getState().getTargetVoltage();
+        voltage = getState().getTargetVoltage();
 
         sim.setInputVoltage(voltage);
         SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
         SmartDashboard.putNumber("ClimberHopper/Current", sim.getCurrentDrawAmps());
         SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
+
+        visualizer.update(getPosition()); 
     }
 }

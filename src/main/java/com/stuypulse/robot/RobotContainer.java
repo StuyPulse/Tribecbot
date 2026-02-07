@@ -6,7 +6,9 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
+import com.stuypulse.robot.commands.climberhopper.ClimberUp;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.subsystems.feeder.Feeder;
@@ -62,7 +64,13 @@ public class RobotContainer {
     /*** BUTTONS ***/
     /***************/
 
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        driver.getDPadUp()
+            .whileTrue(new ClimberUp());
+
+        driver.getDPadDown()
+            .whileTrue(new ClimberDown());
+    }
 
     /**************/
     /*** AUTONS ***/

@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems.climberhopper;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,7 +10,11 @@ public abstract class ClimberHopper extends SubsystemBase {
     private static final ClimberHopper instance;
     
     static {
-        instance = new ClimberHopperImpl();
+        if (Robot.isReal()) {
+            instance = new ClimberHopperImpl();
+        } else {
+            instance = new ClimberHopperSim();
+        }
     }
 
     public static ClimberHopper getInstance() {
