@@ -46,14 +46,12 @@ public interface Motors {
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);   // TODO: change later
                                                                     // TODO: Add Gear ratio
-
         TalonFXConfig ROLLER_FOLLOWER_CONFIG = new TalonFXConfig()
             .withCurrentLimitAmps(40)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);   // TODO: change later
                                                                     // TODO: Add Gear ratio
-    
         TalonFXConfig PIVOT_CONFIG = new TalonFXConfig()
             .withCurrentLimitAmps(40)
             .withRampRate(0.25)

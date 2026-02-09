@@ -34,7 +34,6 @@ public abstract class Intake extends SubsystemBase {
         private double targetDutyCycle;
         private Rotation2d targetAngle;
 
-
         private IntakeState(Rotation2d targetAngle, double targetDutyCycle) {
             this.targetAngle = targetAngle;
             this.targetDutyCycle = targetDutyCycle;

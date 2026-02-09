@@ -79,8 +79,6 @@ public class IntakeSim extends Intake {
         ));
     }
 
-
-
     @Override
     public void periodic() {
         SmartDashboard.putData("Pivot_Mechanism2d_SIM", pivotCanvas);
