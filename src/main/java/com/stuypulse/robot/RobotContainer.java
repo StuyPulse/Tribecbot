@@ -44,7 +44,6 @@ public class RobotContainer {
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
     // Robot container
-
     public RobotContainer() {
         configureDefaultCommands();
         configureButtonBindings();

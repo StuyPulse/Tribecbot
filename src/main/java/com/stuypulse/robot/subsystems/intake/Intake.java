@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.IntakeVisualizer;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -87,5 +88,12 @@ public abstract class Intake extends SubsystemBase {
     public abstract boolean isAtTargetAngle();
 
     public abstract Rotation2d getCurrentAngle();
+
+    @Override
+    public void periodic() {
+        if (Settings.DEBUG_MODE) {
+            IntakeVisualizer.getInstance().updateIntakeStuff(getCurrentAngle(), getIntakeState().getTargetDutyCycle(), isAtTargetAngle());
+        }
+    }
 
 }

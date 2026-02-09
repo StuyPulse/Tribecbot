@@ -50,7 +50,7 @@ public interface Settings {
 
     public interface Intake { // TODO: Get all values for this
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
-        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(180.0);
+        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(150.0);
 
         public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(0.1); 
 

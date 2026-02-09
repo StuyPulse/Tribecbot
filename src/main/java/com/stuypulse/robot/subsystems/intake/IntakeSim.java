@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.IntakeVisualizer;
 import com.stuypulse.stuylib.math.SLMath;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -82,6 +83,7 @@ public class IntakeSim extends Intake {
     @Override
     public void periodic() {
         SmartDashboard.putData("Pivot_Mechanism2d_SIM", pivotCanvas);
+        IntakeVisualizer.getInstance().updateIntakeStuff(getCurrentAngle(), getIntakeState().getTargetDutyCycle(), isAtTargetAngle());
         //TODO: change velocity value for ffController (?)
         double pidOutput = pidController.calculate(getCurrentAngle().getDegrees(), getIntakeState().getTargetAngle().getDegrees());
         double ffOutput = ffController.calculate(pidController.getSetpoint(), 1);
