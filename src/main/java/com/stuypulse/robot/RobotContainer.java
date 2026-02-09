@@ -65,10 +65,10 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        driver.getDPadUp()
+        driver.getTopButton()
             .whileTrue(new ClimberUp());
 
-        driver.getDPadDown()
+        driver.getBottomButton()
             .whileTrue(new ClimberDown());
     }
 

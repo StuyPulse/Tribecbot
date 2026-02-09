@@ -36,17 +36,6 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     @Override
     public void periodic() {
-
-        boolean isUp = getState() == ClimberHopperState.CLIMBER_UP || getState() == ClimberHopperState.HOPPER_UP;
-        boolean isDown = getState() == ClimberHopperState.CLIMBER_DOWN || getState() == ClimberHopperState.HOPPER_DOWN;
-
-        if (isUp && getStalling()) {
-            setState(ClimberHopperState.HOLDING_UP);
-        }
-        else if (isDown && getStalling()) {
-            setState(ClimberHopperState.HOLDING_DOWN);
-        }
-        
         voltage = getState().getTargetVoltage();
 
         motor.setVoltage(voltage);

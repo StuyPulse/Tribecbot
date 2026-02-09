@@ -29,6 +29,16 @@ public class ClimberHopperDefaultCommand extends Command {
 
     @Override
     public void execute() {
+        boolean isUp = climberHopper.getState() == ClimberHopperState.CLIMBER_UP || climberHopper.getState() == ClimberHopperState.HOPPER_UP;
+        boolean isDown = climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN || climberHopper.getState() == ClimberHopperState.HOPPER_DOWN;
+
+        if (isUp && climberHopper.getStalling()) {
+            climberHopper.setState(ClimberHopperState.HOLDING_UP);
+        }
+        else if (isDown && climberHopper.getStalling()) {
+            climberHopper.setState(ClimberHopperState.HOLDING_DOWN);
+        }
+
         // Reminder from driver's perspective, positive X to the opposite alliance and positive Y points to the left.
         boolean isBetweenRightTrenchesY = Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY();
 
@@ -40,12 +50,9 @@ public class ClimberHopperDefaultCommand extends Command {
 
         boolean isUnderTrench = (isBetweenRightTrenchesY || isBetweenLeftTrenchesY) && (isCloseToNearTrenchesX || isCloseToFarTrenchesX); // Far X tolerance
         
-        boolean isUp = (climberHopper.getState() == ClimberHopperState.CLIMBER_UP || climberHopper.getState() == ClimberHopperState.HOPPER_UP);
-        boolean isDown = (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN || climberHopper.getState() == ClimberHopperState.HOPPER_DOWN);
-        
         boolean stalledByBalls = climberHopper.getStalling() && (Math.abs(climberHopper.getPosition()) > Settings.ClimberHopper.HEIGHT_TOLERANCE);
         
-        // If is stalling t the hardstop and not stalling from balls
+        // If is stalling from the hardstop and not stalling from balls
         if (isUnderTrench && !stalledByBalls && !flag) { // shouldn't be stalling in up state with 0 voltage
             if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN) {
                 climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
