@@ -61,7 +61,7 @@ public interface Settings {
         double DEBOUNCE = 0.25;
 
         double GYRO_TOLERANCE = 0;
-        double HEIGHT_TOLERANCE = 0;
+        double HEIGHT_TOLERANCE = 1;
 
         double RAMP_RATE = 50;
 

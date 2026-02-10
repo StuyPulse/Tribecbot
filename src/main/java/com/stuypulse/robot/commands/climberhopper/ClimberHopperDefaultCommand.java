@@ -30,19 +30,10 @@ public class ClimberHopperDefaultCommand extends Command {
 
     @Override
     public void execute() {
+        // Robot position logic
+        // Reminder from driver's perspective, positive X to the opposite alliance and positive Y points to the left.
         pose = swerve.getPose();
 
-        boolean isUp = climberHopper.getState() == ClimberHopperState.CLIMBER_UP || climberHopper.getState() == ClimberHopperState.HOPPER_UP;
-        boolean isDown = climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN || climberHopper.getState() == ClimberHopperState.HOPPER_DOWN;
-
-        if (isUp && climberHopper.getStalling()) {
-            climberHopper.setState(ClimberHopperState.HOLDING_UP);
-        }
-        else if (isDown && climberHopper.getStalling()) {
-            climberHopper.setState(ClimberHopperState.HOLDING_DOWN);
-        }
-
-        // Reminder from driver's perspective, positive X to the opposite alliance and positive Y points to the left.
         boolean isBetweenRightTrenchesY = Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY();
 
         boolean isBetweenLeftTrenchesY = Field.NearLeftTrench.rightEdge.getY() < pose.getY() && Field.NearLeftTrench.leftEdge.getY() > pose.getY();
@@ -53,18 +44,38 @@ public class ClimberHopperDefaultCommand extends Command {
 
         boolean isUnderTrench = (isBetweenRightTrenchesY || isBetweenLeftTrenchesY) && (isCloseToNearTrenchesX || isCloseToFarTrenchesX); // Far X tolerance
         
-        boolean stalledByBalls = climberHopper.getStalling() && (Math.abs(climberHopper.getPosition()) > Settings.ClimberHopper.HEIGHT_TOLERANCE);
+        // Climber position and state logic
+        boolean isUp = climberHopper.getState() == ClimberHopperState.CLIMBER_UP || climberHopper.getState() == ClimberHopperState.HOPPER_UP;
+
+        boolean isDown = climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN || climberHopper.getState() == ClimberHopperState.HOPPER_DOWN;
+
+        boolean isRetracted = Math.abs(climberHopper.getPosition()) < Settings.ClimberHopper.HEIGHT_TOLERANCE;
+
+        boolean isExtended = Math.abs(Settings.ClimberHopper.MAX_HEIGHT_METERS - climberHopper.getPosition()) < Settings.ClimberHopper.HEIGHT_TOLERANCE;
+
+        boolean stalledByBalls = climberHopper.getStalling() && !isRetracted;
         
         // If is stalling from the hardstop and not stalling from balls
-        if (isUnderTrench && !stalledByBalls && !flag) { // shouldn't be stalling in up state with 0 voltage
-            if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN) {
-                climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
+        if (isUnderTrench) { // shouldn't be stalling in up state with 0 voltage
+            if (!stalledByBalls && !flag) {
+                if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN) {
+                    climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
+                }
+                if (climberHopper.getStalling()) {
+                    climberHopper.setState(ClimberHopperState.HOLDING_DOWN);
+                }
+            } else {
+                if (climberHopper.getState() != ClimberHopperState.HOLDING_UP) {
+                    climberHopper.setState(ClimberHopperState.HOPPER_UP);
+                }
+                flag = true; // prevent hopper from going back down while still under trench with too many balls
             }
-        } else { // if stalling after hopper down, set to hopper up
-            if (climberHopper.getState() != ClimberHopperState.HOLDING_UP) {
+        } else { // If not under trench, set hopper up
+            if (!isExtended) {
                 climberHopper.setState(ClimberHopperState.HOPPER_UP);
+            } else if (climberHopper.getStalling()) {
+                climberHopper.setState(ClimberHopperState.HOLDING_UP);
             }
-            flag = true; // prevent hopper from going back down while still under trench with too many balls
         }
 
         if (!isUnderTrench) {
