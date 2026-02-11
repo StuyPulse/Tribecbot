@@ -21,6 +21,8 @@ import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 public class RobotContainer {
 
@@ -69,6 +71,14 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         SmartDashboard.putData("Autonomous", autonChooser);
+    }
+
+    public void configureSysids() {
+        SysIdRoutine feederSysId = feeder.getSysIdRoutine();
+        autonChooser.addOption("SysID Feeder Dynamic Forward", feederSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Feeder Dynamic Backwards", feederSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Feeder Quasi Forwards", feederSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Feeder Quasi Backwards", feederSysId.quasistatic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {
