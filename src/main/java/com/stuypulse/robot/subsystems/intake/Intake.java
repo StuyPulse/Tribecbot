@@ -1,23 +1,25 @@
 package com.stuypulse.robot.subsystems.intake;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
     private IntakeState state;
-    protected TrapezoidProfile.State currentPivotState; 
+    protected TrapezoidProfile.State currentPivotState;
     protected TrapezoidProfile.State targetPivotState;
 
     static {
         if (Robot.isReal()) {
             instance = new IntakeImpl();
-        }
-        else {
+        } else {
             instance = new IntakeSim();
         }
     }
@@ -26,7 +28,7 @@ public abstract class Intake extends SubsystemBase {
         return instance;
     }
 
-    public enum IntakeState { 
+    public enum IntakeState {
         INTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 1.0),
         OUTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, -1.0),
         STOW(Settings.Intake.PIVOT_STOW_ANGLE, 0.0);
@@ -41,6 +43,7 @@ public abstract class Intake extends SubsystemBase {
 
         /**
          * Gets the Target Angle for the Pivot of the Current State of the Intake
+         * 
          * @return Rotation2d: Target Angle
          */
         public Rotation2d getTargetAngle() {
@@ -49,6 +52,7 @@ public abstract class Intake extends SubsystemBase {
 
         /**
          * Gets the Target Duty Cycle for the Rollers of the Current State of the Intake
+         * 
          * @return double: Target Duty Cycle
          */
         public double getTargetDutyCycle() {
@@ -57,7 +61,8 @@ public abstract class Intake extends SubsystemBase {
     }
 
     /**
-     * Creates a new Intake object 
+     * Creates a new Intake object
+     * 
      * @return Intake: New Intake Object
      */
     public Intake() {
@@ -65,34 +70,40 @@ public abstract class Intake extends SubsystemBase {
         currentPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
         targetPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
     }
- 
-    /** 
+
+    /**
      * Gets the current IntakeState of the Intake
+     * 
      * @return IntakeState: Current Intake State
      */
     public IntakeState getIntakeState() {
         return state;
     }
-    
+
     /**
      * Sets the Intake State to a new State
+     * 
      * @param state Desired IntakeState
      * @return Void
      */
-    public void setIntakeState(IntakeState state)  {
+    public void setIntakeState(IntakeState state) {
         this.state = state;
         targetPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
     }
 
     public abstract boolean isAtTargetAngle();
-
     public abstract Rotation2d getCurrentAngle();
-
+    public abstract SysIdRoutine getPivotSysIdRoutine();
+    public abstract SysIdRoutine getRollerSysIdRoutine();
+    public abstract void setRollerVoltageOverride(Optional<Double> voltage);
+    public abstract void setPivotVoltageOverride(Optional<Double> voltage);
+    
     @Override
     public void periodic() {
-        // if (Settings.DEBUG_MODE) {
-        //     IntakeVisualizer.getInstance().updateIntakeStuff(getCurrentAngle(), getIntakeState().getTargetDutyCycle(), isAtTargetAngle());
-        // }
+        if (Settings.DEBUG_MODE) {
+            IntakeVisualizer.getInstance().updateIntakeStuff(getCurrentAngle(), getIntakeState().getTargetDutyCycle(),
+                    isAtTargetAngle());
+        }
     }
 
 }

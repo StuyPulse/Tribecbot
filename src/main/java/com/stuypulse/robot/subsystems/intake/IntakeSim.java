@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// TODO: implement the abstract methods in Intake.java inside IntakeSim.java !!!
 public class IntakeSim extends Intake {
     private final DCMotorSim intakeSimMotor;
     private PIDController pidController;
