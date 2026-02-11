@@ -77,10 +77,10 @@ public class RobotContainer {
 
     public void configureSysids() {
         SysIdRoutine spindexerSysId = spindexer.getSysIdRoutine();
-        autonChooser.addOption("SysID spindexer Dynamic Forward", spindexerSysId.dynamic(Direction.kForward));
-        autonChooser.addOption("SysID spindexer Dynamic Backwards", spindexerSysId.dynamic(Direction.kReverse));
-        autonChooser.addOption("SysID spindexer Quasi Forwards", spindexerSysId.quasistatic(Direction.kForward));
-        autonChooser.addOption("SysID spindexer Quasi Backwards", spindexerSysId.quasistatic(Direction.kReverse));
+        autonChooser.addOption("SysID Spindexer Dynamic Forward", spindexerSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Dynamic Backwards", spindexerSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Spindexer Quasi Forwards", spindexerSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Quasi Backwards", spindexerSysId.quasistatic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

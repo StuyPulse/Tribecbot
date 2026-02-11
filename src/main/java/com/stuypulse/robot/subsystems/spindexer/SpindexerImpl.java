@@ -47,7 +47,7 @@ public class SpindexerImpl extends Spindexer {
             2, // step voltage
             "Spindexer",
             voltage -> setVoltageOverride(Optional.of(voltage)),
-            () -> 0.0, // position supplier?
+            () -> leadMotor.getPosition().getValueAsDouble(), // position supplier?
             () -> leadMotor.getVelocity().getValueAsDouble(),
             () -> leadMotor.getMotorVoltage().getValueAsDouble(),
             getInstance()
