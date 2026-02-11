@@ -6,10 +6,15 @@
 package com.stuypulse.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,6 +23,8 @@ public class Robot extends TimedRobot {
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
+
+    StructPublisher<Pose3d> publisher;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -33,11 +40,18 @@ public class Robot extends TimedRobot {
 
         DataLogManager.start();
         SignalLogger.start();
+
+        publisher = NetworkTableInstance.getDefault()
+            .getStructTopic("DriveTrainPose", Pose3d.struct).publish();
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+
+        Pose3d drivetrainPose = new Pose3d(CommandSwerveDrivetrain.getInstance().getPose());
+        publisher.set(drivetrainPose);
+
     }
 
     /*********************/

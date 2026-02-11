@@ -8,6 +8,8 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.intake.IntakeIntake;
 import com.stuypulse.robot.commands.intake.IntakeStow;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.climber.Climber;
 import com.stuypulse.robot.subsystems.feeder.Feeder;
@@ -48,13 +50,17 @@ public class RobotContainer {
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
+
+        SmartDashboard.putData("Field", Field.FIELD2D);
     }
 
     /****************/
     /*** DEFAULTS ***/
     /****************/
 
-    private void configureDefaultCommands() {}
+    private void configureDefaultCommands() {
+        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+    }
 
     /***************/
     /*** BUTTONS ***/

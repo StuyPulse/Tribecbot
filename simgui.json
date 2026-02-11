@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Autonomous": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/PIVOT SIM": "Mechanism2d",
       "/SmartDashboard/Pivot_Mechanism2d_SIM": "Mechanism2d",
       "/SmartDashboard/Visualizers/Intake": "Mechanism2d"
@@ -13,12 +14,18 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Pivot_Mechanism2d_SIM": {
+      "/SmartDashboard/Field": {
+        "bottom": 1914,
+        "height": 8.069275856018066,
+        "left": 245,
+        "right": 3942,
+        "top": 118,
+        "width": 16.54119300842285,
         "window": {
           "visible": true
         }
       },
-      "/SmartDashboard/Visualizers/Intake": {
+      "/SmartDashboard/Pivot_Mechanism2d_SIM": {
         "window": {
           "visible": true
         }
@@ -34,13 +41,17 @@
     },
     "transitory": {
       "SmartDashboard": {
+        "INTAKE_SIMULATION": {
+          "open": true
+        },
         "Intake": {
           "Settings": {
             "Pivot": {
               "open": true
             },
             "open": true
-          }
+          },
+          "open": true
         },
         "PIVOT SIM": {
           "PivotSim": {

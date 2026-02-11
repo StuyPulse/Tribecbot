@@ -30,7 +30,7 @@ public class SwerveDriveDrive extends Command {
 
         speed = VStream.create(this::getDriverInputAsVelocity)
         .filtered(
-            new VDeadZone(Drive.DEADBAND),
+            new VDeadZone(Drive.DEADBAND), 
             x -> x.clamp(1),
             x -> x.pow(Drive.POWER.get()),
             x -> x.mul(Swerve.Constraints.MAX_VELOCITY_M_PER_S),
