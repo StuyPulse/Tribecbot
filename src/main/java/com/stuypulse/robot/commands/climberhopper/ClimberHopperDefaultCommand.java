@@ -53,19 +53,27 @@ public class ClimberHopperDefaultCommand extends Command {
 
         boolean isExtended = Math.abs(Settings.ClimberHopper.MAX_HEIGHT_METERS - climberHopper.getPosition()) < Settings.ClimberHopper.HEIGHT_TOLERANCE;
 
-        boolean stalledByBalls = climberHopper.getStalling() && !isRetracted;
-        
+        // boolean stalledByBalls = climberHopper.getStalling() && !isRetracted;
+        boolean stalledByBalls = true;
+
+        if (isUp && climberHopper.getStalling()) {
+            climberHopper.setState(ClimberHopperState.HOLDING_UP);
+        }
+        else if (isDown && climberHopper.getStalling()) {
+            climberHopper.setState(ClimberHopperState.HOLDING_DOWN);
+        }
+
         // If is stalling from the hardstop and not stalling from balls
         if (isUnderTrench) { // shouldn't be stalling in up state with 0 voltage
             if (!stalledByBalls && !flag) {
-                if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN) {
+                if (climberHopper.getState() != ClimberHopperState.HOLDING_DOWN && climberHopper.getState() != ClimberHopperState.HOPPER_DOWN) {
                     climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
                 }
                 if (climberHopper.getStalling()) {
                     climberHopper.setState(ClimberHopperState.HOLDING_DOWN);
                 }
             } else {
-                if (climberHopper.getState() != ClimberHopperState.HOLDING_UP) {
+                if (climberHopper.getState() != ClimberHopperState.HOLDING_UP && climberHopper.getState() != ClimberHopperState.HOPPER_UP) {
                     climberHopper.setState(ClimberHopperState.HOPPER_UP);
                 }
                 flag = true; // prevent hopper from going back down while still under trench with too many balls

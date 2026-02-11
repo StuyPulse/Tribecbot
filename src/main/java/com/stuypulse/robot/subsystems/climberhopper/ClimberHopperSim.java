@@ -42,13 +42,6 @@ public class ClimberHopperSim extends ClimberHopper {
     public void periodic() {
         super.periodic();
 
-        if ((getState() == ClimberHopperState.CLIMBER_UP || getState() == ClimberHopperState.HOPPER_UP) && getStalling()) {
-            setState(ClimberHopperState.HOLDING_UP);
-        }
-        else if ((getState() == ClimberHopperState.CLIMBER_DOWN || getState() == ClimberHopperState.HOPPER_DOWN) && getStalling()) {
-            setState(ClimberHopperState.HOLDING_DOWN);
-        }
-
         voltage = getState().getTargetVoltage();
 
         sim.setInputVoltage(voltage);
