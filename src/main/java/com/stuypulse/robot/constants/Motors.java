@@ -35,8 +35,13 @@ public interface Motors {
         
     }
 
-    public interface Feeder {
-
+    public interface Feeder{
+        TalonFXConfig motorConfig = new TalonFXConfig()
+        .withCurrentLimitAmps(0)
+        .withRampRate(0)
+        .withNeutralMode(null)
+        .withInvertedValue(null);
+        
     }
 
     public interface Intake {
@@ -252,5 +257,7 @@ public interface Motors {
 
             return this;
         }
+
+
     }
 }

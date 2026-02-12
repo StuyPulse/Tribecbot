@@ -18,7 +18,8 @@ public interface Ports {
     }
 
     public interface Feeder {
-        int FEEDER = 4;
+        int FEEDER_LEADER = 4;
+        int FEEDER_FOLLOWER= 5;
     }
 
     public interface HoodedShooter {
