@@ -6,6 +6,10 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.intake.IntakeIntake;
+import com.stuypulse.robot.commands.intake.IntakeStow;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.climber.Climber;
 import com.stuypulse.robot.subsystems.feeder.Feeder;
@@ -21,6 +25,8 @@ import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 public class RobotContainer {
 
@@ -42,24 +48,30 @@ public class RobotContainer {
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
     // Robot container
-
     public RobotContainer() {
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
+
+        SmartDashboard.putData("Field", Field.FIELD2D);
     }
 
     /****************/
     /*** DEFAULTS ***/
     /****************/
 
-    private void configureDefaultCommands() {}
+    private void configureDefaultCommands() {
+        swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+    }
 
     /***************/
     /*** BUTTONS ***/
     /***************/
 
-    private void configureButtonBindings() {}
+    private void configureButtonBindings() {
+        driver.getBottomButton().onTrue(new IntakeIntake());
+        driver.getTopButton().onTrue(new IntakeStow());
+    }
 
     /**************/
     /*** AUTONS ***/
@@ -69,6 +81,20 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         SmartDashboard.putData("Autonomous", autonChooser);
+    }
+
+    public void configureSysids() {
+        SysIdRoutine intakePivotSysId = intake.getPivotSysIdRoutine();
+        autonChooser.addOption("SysID Intake Pivot Dynamic Forward", intakePivotSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Intake Pivot Dynamic Backwards", intakePivotSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Intake Pivot Quasi Forwards", intakePivotSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Intake Pivot Quasi Backwards", intakePivotSysId.quasistatic(Direction.kReverse));
+
+        SysIdRoutine intakeRollerSysId = intake.getPivotSysIdRoutine();
+        autonChooser.addOption("SysID Intake Roller Dynamic Forward", intakeRollerSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Intake Roller Dynamic Backwards", intakeRollerSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Intake Roller Quasi Forwards", intakeRollerSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Intake Roller Quasi Backwards", intakeRollerSysId.quasistatic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

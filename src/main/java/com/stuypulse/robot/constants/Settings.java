@@ -32,6 +32,7 @@ public interface Settings {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean FEEDER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean CLIMBER = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Superstructure Is Enabled", false);
@@ -47,8 +48,26 @@ public interface Settings {
 
     }
 
-    public interface Intake {
+    public interface Intake { // TODO: Get all values for this
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
+        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(150.0);
 
+        public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(0.1); 
+
+        Rotation2d PIVOT_ANGLE_OFFSET = new Rotation2d();
+        Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);
+        Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(80);
+
+        double ROLLER_MAX_VEL = 0.0;
+        double ROLLER_MAX_ACCEL = 0.0;
+
+        double GEAR_RATIO = 48;
+        double JKgMetersSquared = 0.001;
+
+        double VOLTAGE_MAX = 12;
+        double VOLTAGE_MIN = -12;
+
+        double dT = 0.02;
     }
     public interface Spindexeer {
 
