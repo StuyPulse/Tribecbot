@@ -97,6 +97,19 @@ public class RobotContainer {
         autonChooser.addOption("SysID Intake Roller Dynamic Backwards", intakeRollerSysId.dynamic(Direction.kReverse));
         autonChooser.addOption("SysID Intake Roller Quasi Forwards", intakeRollerSysId.quasistatic(Direction.kForward));
         autonChooser.addOption("SysID Intake Roller Quasi Backwards", intakeRollerSysId.quasistatic(Direction.kReverse));
+
+        SysIdRoutine spindexerSysId = spindexer.getSysIdRoutine();
+        autonChooser.addOption("SysID Spindexer Dynamic Forward", spindexerSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Dynamic Backwards", spindexerSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Spindexer Quasi Forwards", spindexerSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Quasi Backwards", spindexerSysId.quasistatic(Direction.kReverse));
+
+        SysIdRoutine feederSysId = feeder.getSysIdRoutine();
+        autonChooser.addOption("SysID Feeder Forward", feederSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Feeder Backwards", feederSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Feeder Forwards", feederSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Feeder Backwards", feederSysId.quasistatic(Direction.kReverse));
+
     }
 
     public Command getAutonomousCommand() {
