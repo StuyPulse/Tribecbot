@@ -5,21 +5,25 @@
 
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.Slot2Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 /*-
  * File containing all of the configurations that different motors require.
@@ -82,8 +86,34 @@ public interface Motors {
     }
     
     public interface Turret {
-        
+        TalonFXConfig turretMotor = new TalonFXConfig()
+                // .withCurrentLimitAmps(80)
+                .withRampRate(.25)
+                .withNeutralMode(NeutralModeValue.Brake)
+                .withInvertedValue(InvertedValue.Clockwise_Positive)
+                .withPIDConstants(Gains.Turret.kP, Gains.Turret.kI, Gains.Turret.kD, 0)
+                .withFFConstants(Gains.Turret.kS, 0.0, 0.0, 0)
+                .withSensorToMechanismRatio(Constants.Turret.GEAR_RATIO_MOTOR_TO_MECH);
+
+        SoftwareLimitSwitchConfigs turretSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+                .withForwardSoftLimitEnable(true)
+                .withReverseSoftLimitEnable(true)
+                .withForwardSoftLimitThreshold(0.5) // 0.75
+                .withReverseSoftLimitThreshold(-0.5); // -0.66
+
+        CANcoderConfiguration turretEncoder17t = new CANcoderConfiguration()
+                .withMagnetSensor(new MagnetSensorConfigs()
+                        .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+                        .withAbsoluteSensorDiscontinuityPoint(1)
+                        .withMagnetOffset(Constants.Turret.Encoder17t.OFFSET.getRotations()));
+
+        CANcoderConfiguration turretEncoder18t = new CANcoderConfiguration()
+                .withMagnetSensor(new MagnetSensorConfigs()
+                        .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+                        .withAbsoluteSensorDiscontinuityPoint(1)
+                        .withMagnetOffset(Constants.Turret.Encoder18t.OFFSET.getRotations()));
     }
+    
     /** Classes to store all of the values a motor needs */
 
     public static class TalonFXConfig {

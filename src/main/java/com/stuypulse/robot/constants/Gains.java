@@ -58,13 +58,12 @@ public class Gains {
     }
 
     public interface Turret {
-        double kP = 1.0;
-        double kI = 0.0;
-        double kD = 0.25;
-
         double kS = 0.0;
-        double kV = 0.2;
-        double kA = 0.01;
+
+        // smaller gains temporarily, change back once turret is deemed safe
+        double kP = 0.0; //600.0;
+        double kI = 0.0;
+        double kD = 0.0; //65.0;
     }
 
     public interface Spindexer {

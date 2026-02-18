@@ -83,8 +83,16 @@ public interface Settings {
     public interface HoodedShooter {
 
     }
+    
     public interface Turret {
-        
+        Rotation2d MAX_VEL = new Rotation2d(Units.degreesToRadians(600.0));
+        Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));        
+        double TOLERANCE_DEG = 2.0;
+
+        Rotation2d HUB = Rotation2d.fromDegrees(0.0);
+        Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(0.0);
+        Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(0.0);
+
     }
 
     public interface Swerve {

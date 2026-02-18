@@ -73,7 +73,7 @@ public class SpindexerImpl extends Spindexer {
      */
     @Override
     public double getRPMBasedOnDistance() {
-        Translation2d hubPos = Field.getHubCenterPose().getTranslation();
+        Translation2d hubPos = Field.getHubPose().getTranslation();
         Translation2d robotPos = CommandSwerveDrivetrain.getInstance().getPose().getTranslation();
         double distance = hubPos.getDistance(robotPos);
         return SpindexerInterpolation.getRPM(distance);

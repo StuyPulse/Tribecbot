@@ -5,8 +5,13 @@
 
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.CANBus;
+
 /** This file contains the different ports of motors, solenoids and sensors */
 public interface Ports {
+    // TODO: Get bus name
+    public CANBus bus = new CANBus("rio");
+    
     public interface Gamepad {
         int DRIVER = 0;
         int OPERATOR = 1;
@@ -42,8 +47,8 @@ public interface Ports {
     }
 
     public interface Turret {
-        int TURRET = 13;
-        int ENCODER_17 = 14;
-        int ENCODER_18 = 15;
+        int MOTOR = 50;
+        int ENCODER17T = 38;
+        int ENCODER18T = 21;
     }
 }
