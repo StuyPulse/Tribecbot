@@ -38,8 +38,14 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
-    public interface Climber {
-        
+    public interface ClimberHopper {
+        // TODO: Find current limit.
+        TalonFXConfig climberHopperMotor = new TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withCurrentLimitAmps(50)
+            .withSupplyCurrentLimitAmps(50)
+            .withRampRate(Settings.ClimberHopper.RAMP_RATE);
     }
 
     public interface Feeder{

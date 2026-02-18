@@ -10,7 +10,7 @@ import com.pathplanner.lib.config.PIDConstants;
 
 public class Gains {
 
-    public interface Climber {
+    public interface ClimberHopper {
         double kP = 1.0;
         double kI = 0.0;
         double kD = 0.20;

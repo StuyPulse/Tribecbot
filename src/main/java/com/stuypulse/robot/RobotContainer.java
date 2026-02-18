@@ -22,7 +22,7 @@ import com.stuypulse.robot.commands.turret.TurretShoot;
 import com.stuypulse.robot.commands.turret.TurretZero;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.subsystems.climber.Climber;
+import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.subsystems.feeder.Feeder;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.subsystems.intake.Intake;
@@ -49,7 +49,7 @@ public class RobotContainer {
 
     // Subsystem
     private final CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
-    private final Climber climber = Climber.getInstance();
+    private final ClimberHopper climberHopper = ClimberHopper.getInstance();
     private final Feeder feeder = Feeder.getInstance();
     private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
     private final Intake intake = Intake.getInstance();

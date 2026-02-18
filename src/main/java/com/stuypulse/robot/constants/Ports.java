@@ -18,8 +18,8 @@ public interface Ports {
         int DEBUGGER = 2;
     }
 
-    public interface Climber {
-        int CLIMBER = 3;
+    public interface ClimberHopper {
+        int CLIMBER_HOPPER = 3;
     }
 
     public interface Feeder {
