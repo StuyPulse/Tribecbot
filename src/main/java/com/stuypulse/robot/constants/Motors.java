@@ -93,6 +93,15 @@ public interface Motors {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);   // TODO: add gear ratio, find inversions
+
+        TalonFXConfig PIVOT = new TalonFXConfig()
+            .withCurrentLimitAmps(40)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)    // TODO: find inversions
+            .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
+            .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
+            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL.getRotations());
     }   
 
     public interface Spindexeer {
