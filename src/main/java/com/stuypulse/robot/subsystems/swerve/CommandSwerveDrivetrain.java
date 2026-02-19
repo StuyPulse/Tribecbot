@@ -1,9 +1,8 @@
-/************************ PROJECT 2026 *************************/
+/************************ PROJECT TRIBECBOT *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-
 package com.stuypulse.robot.subsystems.swerve;
 
 import static edu.wpi.first.units.Units.Second;
@@ -13,6 +12,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Settings;
@@ -44,7 +44,6 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
-
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
  * Subsystem so it can easily be used in command-based projects.
@@ -256,7 +255,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void setControl(SwerveRequest request) {
-        if (Settings.EnabledSubsystems.SWERVE.get()) {
+        if (EnabledSubsystems.SWERVE.get()) {
             super.setControl(request);
         }
         else {

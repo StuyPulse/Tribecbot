@@ -1,3 +1,8 @@
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.climberhopper;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -56,10 +61,9 @@ public class ClimberHopperVisualizer {
     }
 
     public void update(double height) {
-        
+
         hopper.setPosition(0.8, height + 0.5);
 
         SmartDashboard.putData("Visualizers/ClimberHopper", canvas);
     }
 }
-    

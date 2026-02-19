@@ -1,19 +1,18 @@
-/************************ PROJECT 2026 ************************/
+/************************ PROJECT TRIBECBOT *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.AprilTag;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -55,15 +54,21 @@ public interface Field {
     public static final double trenchXTolerance = Units.inchesToMeters(50);
 
     // Alliance relative hub center coordinates
-    public final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
+    public static final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
+    public static final Pose3d hubCenter3d = new Pose3d(hubCenter.getX(), hubCenter.getY(), Units.inchesToMeters(72), Rotation3d.kZero);
 
-    public static Pose2d getHubCenterPose() {
+    public static Pose2d getHubPose() {
         return hubCenter;
     }
 
-    public static Pose2d getHubOffsetPose(Translation2d offset) {
-        Transform2d transform = new Transform2d(offset.getX(), offset.getY(), new Rotation2d());
-        return hubCenter.plus(transform);
+    // Alliance relative tower center coordinates
+    public final Pose2d towerCenter = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47), new Rotation2d());
+    public final double barDisplacement = Units.inchesToMeters(11.38);
+    
+    public final double DISTANCE_TO_RUNGS = Units.inchesToMeters(20); // placeholder value, how far away in terms of y-cord from the rung
+
+    public static boolean closerToTop(){
+        return (CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.towerCenter.getY());
     }
 
     // 1.0 meters from driverstation wall and field wall

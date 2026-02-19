@@ -1,3 +1,8 @@
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.climberhopper;
 
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -78,6 +83,7 @@ public class ClimberHopperSim extends ClimberHopper {
         SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
         SmartDashboard.putNumber("ClimberHopper/Height", getCurrentHeight());
         visualizer.update(getCurrentHeight());
+
         sim.update(0.02);
     }
 }

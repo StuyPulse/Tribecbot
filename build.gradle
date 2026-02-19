@@ -88,13 +88,16 @@ wpi.sim.addDriverstation()
 spotless {
     enforceCheck = false
     java {
-        targetExclude("src/main/java/com/stuypulse/robot/commands/autons/*.java")
-        licenseHeaderFile "LICENSE"
-
-        googleJavaFormat().aosp()
-        
-        trimTrailingWhitespace()
-        endWithNewline()
+        targetExclude(
+            "src/main/java/com/stuypulse/robot/commands/autons/*.java",
+            "src/main/java/com/stuypulse/robot/commands/TurretHoodAlignToTarget.java"
+        )
+        licenseHeader("""/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
+""").updateYearWithLatest(false)
 
         importOrder(
             'com.stuypulse.stuylib', 

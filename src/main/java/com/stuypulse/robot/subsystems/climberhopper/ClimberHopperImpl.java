@@ -1,3 +1,8 @@
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.climberhopper;
 import java.util.Optional;
 
@@ -24,8 +29,9 @@ public class ClimberHopperImpl extends ClimberHopper {
     public ClimberHopperImpl() {
         super();
         motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER);
-        Motors.ClimberHopper.climberHopperMotor.configure(motor);
-        motor.setPosition(0); // hopper all the way down according to le henry
+        Motors.ClimberHopper.MOTOR.configure(motor);
+        
+        motor.setPosition(0);
         stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.ClimberHopper.STALL)
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
     }
