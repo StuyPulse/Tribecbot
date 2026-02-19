@@ -2,8 +2,8 @@ package com.stuypulse.robot.commands.spindexer;
 
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 
-public class SetSpindexerStop extends SetSpindexerState {
-    public SetSpindexerStop() {
+public class SpindexerStop extends SetSpindexerState {
+    public SpindexerStop() {
         super(SpindexerState.STOP);
     }
 }

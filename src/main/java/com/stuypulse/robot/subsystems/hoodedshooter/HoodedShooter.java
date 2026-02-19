@@ -41,8 +41,7 @@ public class HoodedShooter extends SubsystemBase {
         STOW(HoodState.STOW, ShooterState.SHOOT),
         SHOOT(HoodState.SHOOT, ShooterState.SHOOT),
         FERRY(HoodState.FERRY, ShooterState.FERRY),
-        REVERSE(HoodState.SHOOT, ShooterState.REVERSE),
-        HUB(HoodState.HUB, ShooterState.HUB),
+        REVERSE(HoodState.IDLE, ShooterState.REVERSE),
         LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER),
         RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER);
 

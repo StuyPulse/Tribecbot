@@ -34,7 +34,6 @@ public abstract class Shooter extends SubsystemBase {
         SHOOT,
         FERRY,
         REVERSE,
-        HUB,
         LEFT_CORNER,
         RIGHT_CORNER;
     }
@@ -57,14 +56,14 @@ public abstract class Shooter extends SubsystemBase {
             case SHOOT -> getShootRPM();
             case FERRY -> getFerryRPM();
             case REVERSE -> Settings.HoodedShooter.ShooterRPMS.REVERSE;
-            case HUB -> Settings.HoodedShooter.ShooterRPMS.HUB_RPM;
             case LEFT_CORNER -> Settings.HoodedShooter.ShooterRPMS.LEFT_CORNER_RPM;
             case RIGHT_CORNER -> Settings.HoodedShooter.ShooterRPMS.RIGHT_CORNER_RPM;
         };
     }
 
     public double getShootRPM() {
-        return Settings.HoodedShooter.SHOOT_RPM.get(); // will return different speeds in future based on distance to hub
+        return Settings.HoodedShooter.SHOOT_RPM.get();
+        // TODO: implement interpolation
     }
 
     public double getFerryRPM() {

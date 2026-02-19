@@ -134,7 +134,6 @@ public abstract class Turret extends SubsystemBase {
         Pose2d robotPose = CommandSwerveDrivetrain.getInstance().getPose();
         Pose2d turretPose = robotPose.plus(Constants.Turret.TURRET_OFFSET);
 
-        // Vector2D robot = new Vector2D(robotPose.getTranslation());
         Vector2D turret = new Vector2D(turretPose.getTranslation());
         Vector2D target = new Vector2D(targetPose.getTranslation());
 

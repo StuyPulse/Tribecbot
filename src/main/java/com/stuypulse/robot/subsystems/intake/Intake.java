@@ -5,7 +5,6 @@ import java.util.Optional;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -13,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
     private IntakeState state;
-    protected TrapezoidProfile.State currentPivotState;
-    protected TrapezoidProfile.State targetPivotState;
 
     static {
         instance = new IntakeImpl();
@@ -22,6 +19,10 @@ public abstract class Intake extends SubsystemBase {
 
     public static Intake getInstance() {
         return instance;
+    }
+
+    public Intake() {
+        state = IntakeState.STOW;
     }
 
     public enum IntakeState {
@@ -37,66 +38,39 @@ public abstract class Intake extends SubsystemBase {
             this.targetDutyCycle = targetDutyCycle;
         }
 
-        /**
-         * Gets the Target Angle for the Pivot of the Current State of the Intake
-         * 
-         * @return Rotation2d: Target Angle
-         */
         public Rotation2d getTargetAngle() {
             return targetAngle;
         }
 
-        /**
-         * Gets the Target Duty Cycle for the Rollers of the Current State of the Intake
-         * 
-         * @return double: Target Duty Cycle
-         */
         public double getTargetDutyCycle() {
             return targetDutyCycle;
         }
     }
 
-    /**
-     * Creates a new Intake object
-     * 
-     * @return Intake: New Intake Object
-     */
-    public Intake() {
-        state = IntakeState.STOW;
-        currentPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
-        targetPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
-    }
-
-    /**
-     * Gets the current IntakeState of the Intake
-     * 
-     * @return IntakeState: Current Intake State
-     */
-    public IntakeState getIntakeState() {
+    public IntakeState getState() {
         return state;
     }
 
-    /**
-     * Sets the Intake State to a new State
-     * 
-     * @param state Desired IntakeState
-     * @return Void
-     */
-    public void setIntakeState(IntakeState state) {
+    public void setState(IntakeState state) {
         this.state = state;
-        targetPivotState = new TrapezoidProfile.State(state.getTargetAngle().getRadians(), 0.0);
     }
 
-    public abstract boolean isAtTargetAngle();
-    public abstract Rotation2d getCurrentAngle();
+    public abstract boolean pivotAtTolerance();
+    public abstract Rotation2d getPivotAngle();
     public abstract SysIdRoutine getPivotSysIdRoutine();
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);
     
     @Override
     public void periodic() {
-        if (Settings.DEBUG_MODE) {
-            SmartDashboard.putString("Intake/Pivot/Current State", getIntakeState().toString());
-        }
+        SmartDashboard.putString("Intake/State", getState().toString());
+        SmartDashboard.putString("Intake/State", getState().toString());
+
+        SmartDashboard.putNumber("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
+        SmartDashboard.putNumber("Intake/Target Angle (deg)", getState().getTargetAngle().getDegrees());
+
+        SmartDashboard.putNumber("Intake/Target Duty Cycle", getState().getTargetDutyCycle());
+
+        SmartDashboard.putBoolean("Intake/Pivot At Tolerance?", pivotAtTolerance());
     }
 
 }

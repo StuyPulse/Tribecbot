@@ -20,7 +20,6 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import java.util.Optional;
-
 public class HoodImpl extends Hood {
     private final TalonFX hoodMotor;
     private final CANcoder hoodEncoder;

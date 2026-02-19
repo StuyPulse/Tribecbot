@@ -21,58 +21,49 @@ public abstract class Feeder extends SubsystemBase {
     }
 
     public enum FeederState {
-        STOW,
+        STOP,
         FORWARD,
-        REVERSE,
-        STOP;
+        REVERSE;
     }
 
     public Feeder() {
         state = FeederState.STOP;
     }
 
-    /**
-     * @return target RPM based on current state
-     */
     public double getTargetRPM() {
-        return switch (getFeederState()) {
+        return switch (getState()) {
             case STOP -> 0;
-            case STOW -> Settings.Feeder.STOW_RPM; 
             case FORWARD -> Settings.Feeder.FORWARD_RPM;
             case REVERSE -> Settings.Feeder.REVERSE_RPM;
 
         };
     }
 
-    /**
-     * @return current feeder state
-     */
-    public FeederState getFeederState() {
+    public FeederState getState() {
         return state;
     }
 
-    /**
-     * @param state to set new feeder state
-     */
-    public void setFeederState(FeederState state) {
+    public void setState(FeederState state) {
         this.state = state;
     }
 
     public boolean atTolerance() {
-        double diff = Math.abs(getTargetRPM() - getFeederRPM());
+        double diff = Math.abs(getTargetRPM() - getCurrentRPM());
         return diff < Settings.Feeder.RPM_TOLERANCE;
     }
 
-    public abstract double getFeederRPM();
+    public abstract double getCurrentRPM();
 
     public abstract SysIdRoutine getSysIdRoutine();
-    public abstract double getVoltageOverride();
     public abstract void setVoltageOverride(Optional<Double> voltage);
 
     @Override
     public void periodic() {
         super.periodic();
-        SmartDashboard.putString("Feeder/State", getFeederState().toString());
-        SmartDashboard.putNumber("Feeder/Speed", getTargetRPM());
+        SmartDashboard.putString("Feeder/State", getState().toString());
+        SmartDashboard.putString("States/Feeder", getState().toString());
+
+        SmartDashboard.putNumber("Feeder/Target RPM", getTargetRPM());
+        SmartDashboard.putNumber("Feeder/Current RPM", getCurrentRPM());
     }
 }

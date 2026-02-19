@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -23,12 +24,9 @@ public class IntakeImpl extends Intake {
     private final TalonFX pivot;
     private final TalonFX rollerLeader;
     private final TalonFX rollerFollower;
-    private final DutyCycleEncoder absoluteEncoder;
 
-    private final DutyCycleOut rollerDutyCycleController;
-    private final DutyCycleOut pivotDutyCycleController;
-    
-    private final PositionVoltage pivotPositionVoltageController;
+    private final DutyCycleOut rollerController;
+    private final MotionMagicVoltage pivotController;
 
     private final Follower follower;
 
@@ -44,134 +42,72 @@ public class IntakeImpl extends Intake {
         rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER);
         Motors.Intake.ROLLER_FOLLOWER_CONFIG.configure(rollerFollower);
 
+        rollerController = new DutyCycleOut(0.0);
+        pivotController = new MotionMagicVoltage(getState().getTargetAngle().getRotations());
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed);
-
-        absoluteEncoder = new DutyCycleEncoder(
-                Ports.Intake.ABSOLUTE_ENCODER,
-                1.00,
-                Settings.Intake.PIVOT_ANGLE_OFFSET.getRotations()); // TODO: Set Full Range, Verify Expected_Zero wants
-                                                                    // a Rotation and not Degrees
-
-        rollerDutyCycleController = new DutyCycleOut(0.0);
-        pivotDutyCycleController = new DutyCycleOut(0.0);
-        pivotPositionVoltageController = new PositionVoltage(0.0);
 
         pivotVoltageOverride = Optional.empty();
     }
 
     @Override
-    public SysIdRoutine getPivotSysIdRoutine() {
-        return SysId.getRoutine(
-                2, // rampRate
-                6, // stepRate
-                "Intake Pivot",
-                voltage -> setPivotVoltageOverride(Optional.of(voltage)),
-                () -> getCurrentAngle().getRotations(),
-                () -> pivot.getVelocity().getValueAsDouble(),
-                () -> pivot.getMotorVoltage().getValueAsDouble(),
-                getInstance());
+    public boolean pivotAtTolerance() {
+        return Math.abs(
+            (getPivotAngle().getRotations()) - getState().getTargetAngle().getRotations()) 
+                < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations();
     }
 
-    /**
-     * Returns whether the current Intake angle is within a tolerance of the target
-     * angle
-     * 
-     * @return Bool: At Target Angles
-     */
-    @Override
-    public boolean isAtTargetAngle() {
-        return Math.abs((getCurrentAngle().getRotations())
-                - getIntakeState().getTargetAngle().getRotations()) < Settings.Intake.PIVOT_ANGLE_TOLERANCE
-                        .getRotations();
-    }
-
-    /**
-     * Gets the Current Intake Pivot Angle using the Relative Encoder built into the
-     * Kraken
-     * 
-     * @return Rotation2d: Current Angle (Relative)
-     */
-    public Rotation2d getRelativeAngle() {
+    public Rotation2d getPivotAngle() {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }
 
-    /**
-     * Gets the Current Intake Pivot Angle using the Absolute Encoder on the Intake
-     * 
-     * @return Rotation2d: Current Angle (Absolute)
-     */
     @Override
-    public Rotation2d getCurrentAngle() {
-        return Rotation2d.fromRotations(absoluteEncoder.get());
+    public void periodic() {
+        if (Settings.EnabledSubsystems.INTAKE.get()) {
+            if (pivotVoltageOverride.isPresent()) {
+                pivot.setVoltage(pivotVoltageOverride.get());
+            } else {
+                pivot.setControl(pivotController.withPosition(getState().getTargetAngle().getRotations()));
+                rollerLeader.setControl(rollerController.withOutput(getState().getTargetDutyCycle()));
+                rollerFollower.setControl(follower);
+            }
+        } else {
+            pivot.stopMotor();
+            rollerLeader.stopMotor();
+            rollerFollower.stopMotor();
+        }
+
+        SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
+                Math.abs(getState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
+
+        if (Settings.DEBUG_MODE) {
+            // PIVOT
+            SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Pivot Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
+
+            // ROLLERS
+            SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)", rollerLeader.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Follower Voltage (volts)", rollerFollower.getMotorVoltage().getValueAsDouble());
+
+            SmartDashboard.putNumber("Intake/Roller Leader Current (amps)", rollerLeader.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Follower Current (amps)", rollerFollower.getSupplyCurrent().getValueAsDouble());
+        }
     }
 
-    /**
-     * @param voltage as an Optional<Double> to handle the case of null values;
-     *                in the case that voltage is not null, voltageOverride will be
-     *                set to thhe passed in voltage
-     */
     @Override
     public void setPivotVoltageOverride(Optional<Double> voltage) {
         this.pivotVoltageOverride = voltage;
     }
 
-    /**
-     * @return the voltage override if it is present; otherwise, return 0
-     */
-    public double getPivotVoltageOverride() {
-        if (pivotVoltageOverride.isPresent())
-            return pivotVoltageOverride.get();
-        else
-            return 0;
-    }
-
     @Override
-    public void periodic() {
-        currentPivotState.position = getCurrentAngle().getRadians();
-        currentPivotState.velocity = 0.0;
-
-        TrapezoidProfile profile = new TrapezoidProfile(
-                new Constraints(Settings.Intake.ROLLER_MAX_VEL, Settings.Intake.ROLLER_MAX_ACCEL));
-
-        // this is the next step in the profile
-        TrapezoidProfile.State nextPivot = profile.calculate(
-                Settings.Intake.dT,
-                currentPivotState,
-                targetPivotState);
-
-        // ROLLER CONTROLS
-        if (Settings.EnabledSubsystems.INTAKE.get()) {
-            if (pivotVoltageOverride.isPresent()) {
-                pivot.setVoltage(pivotVoltageOverride.get());
-            } else {
-                pivot.setControl(pivotPositionVoltageController.withPosition(nextPivot.position));
-                rollerLeader.setControl(rollerDutyCycleController.withOutput(getIntakeState().getTargetDutyCycle()));
-            }
-        } else {
-            pivot.setControl(pivotDutyCycleController.withOutput(0.0));
-            rollerLeader.setControl(rollerDutyCycleController.withOutput(0.0));
-        }
-        rollerFollower.setControl(follower);
-
-        // SMART DASHBOARD
-        SmartDashboard.putBoolean("Intake/Pivot/At Target Angle", isAtTargetAngle());
-
-        SmartDashboard.putNumber("Intake/Pivot/Current Angle (deg)", getCurrentAngle().getDegrees());
-        SmartDashboard.putNumber("Intake/Pivot/Target Angle (deg)", getIntakeState().getTargetAngle().getDegrees());
-
-        SmartDashboard.putNumber("Intake/Pivot/Angle Error (deg)",
-                Math.abs(getIntakeState().getTargetAngle().getDegrees() - getCurrentAngle().getDegrees()));
-
-        if (Settings.DEBUG_MODE) {
-
-            // PIVOT
-            SmartDashboard.putNumber("Intake/Pivot/Current Velocity", pivot.getVelocity().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Pivot/Current Angle (Relative Encoder, deg)",
-                    getRelativeAngle().getDegrees());
-
-            // ROLLERS
-            SmartDashboard.putNumber("Intake/Roller/Duty Cycle Target Speed", getIntakeState().getTargetDutyCycle());
-            SmartDashboard.putNumber("Intake/Roller/Current Velocity", rollerLeader.getVelocity().getValueAsDouble());
-        }
+    public SysIdRoutine getPivotSysIdRoutine() {
+        return SysId.getRoutine(
+                2,
+                6,
+                "Intake Pivot",
+                voltage -> setPivotVoltageOverride(Optional.of(voltage)),
+                () -> getPivotAngle().getRotations(),
+                () -> pivot.getVelocity().getValueAsDouble(),
+                () -> pivot.getMotorVoltage().getValueAsDouble(),
+                getInstance());
     }
 }

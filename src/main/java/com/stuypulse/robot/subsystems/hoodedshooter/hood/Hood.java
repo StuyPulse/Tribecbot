@@ -22,7 +22,7 @@ public abstract class Hood extends SubsystemBase{
         instance = new HoodImpl();
     }
     
-    public static Hood getInstance(){
+    public static Hood getInstance() {
         return instance;
     }
     
@@ -30,7 +30,6 @@ public abstract class Hood extends SubsystemBase{
         STOW,
         FERRY,
         SHOOT,
-        HUB,
         LEFT_CORNER,
         RIGHT_CORNER,
         IDLE;
@@ -40,21 +39,19 @@ public abstract class Hood extends SubsystemBase{
         state = HoodState.STOW;
     }
 
-    public HoodState getState(){
+    public HoodState getState() {
         return state;
     }
 
-    public void setState(HoodState state){
+    public void setState(HoodState state) {
         this.state = state;
     }
 
     public Rotation2d getTargetAngle() {
         return switch(state) {
-            case STOW -> Rotation2d.fromDegrees(33.5);//Constants.HoodedShooter.Hood.MIN_ANGLE;
-            case FERRY -> Rotation2d.fromDegrees(30);
-            // case SHOOT -> HoodAngleCalculator.calculateHoodAngleSOTM().get();
-            case SHOOT -> Rotation2d.fromDegrees(33.5);
-            case HUB -> Constants.HoodedShooter.Hood.HUB_ANGLE;
+            case STOW -> Constants.HoodedShooter.Hood.MIN_ANGLE;
+            case FERRY -> getFerryAngle();
+            case SHOOT -> getScoreAngle(); //HoodAngleCalculator.calculateHoodAngleSOTM().get();
             case LEFT_CORNER -> Constants.HoodedShooter.Hood.LEFT_CORNER_ANGLE;
             case RIGHT_CORNER -> Constants.HoodedShooter.Hood.RIGHT_CORNER_ANGLE;
             case IDLE -> getHoodAngle();
@@ -76,5 +73,13 @@ public abstract class Hood extends SubsystemBase{
 
         SmartDashboard.putNumber("HoodedShooter/Hood/Target Angle", getTargetAngle().getDegrees());
         SmartDashboard.putNumber("HoodedShooter/Hood/Current Angle", getHoodAngle().getDegrees());
+    }
+
+    public Rotation2d getFerryAngle() {
+        return Rotation2d.fromDegrees(15);
+    }
+
+    public Rotation2d getScoreAngle() {
+        return Rotation2d.fromDegrees(15);
     }
 }

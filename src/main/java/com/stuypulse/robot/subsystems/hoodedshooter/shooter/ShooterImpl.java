@@ -28,12 +28,10 @@ public class ShooterImpl extends Shooter {
     private final TalonFX shooterLeader;
     private final TalonFX shooterFollower;
 
-    // Controllers
     private final VelocityVoltage shooterController;
     private final Follower follower;
 
     private Optional<Double> voltageOverride;
-    private boolean hasHitSetpoint;
 
     public ShooterImpl() {
 
@@ -46,12 +44,6 @@ public class ShooterImpl extends Shooter {
 
         Motors.HoodedShooter.Shooter.SHOOTER_CONFIG.configure(shooterLeader);
         Motors.HoodedShooter.Shooter.SHOOTER_CONFIG.configure(shooterFollower);
-
-        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        feedbackConfigs.withVelocityFilterTimeConstant(Time.ofBaseUnits(0.1, Units.Seconds));
-
-        shooterLeader.getConfigurator().apply(feedbackConfigs);
-        // TODO: refactor this to be in the motor configs 
 
         voltageOverride = Optional.empty();
     }
@@ -73,12 +65,6 @@ public class ShooterImpl extends Shooter {
     public void periodic() {
         super.periodic();
 
-        if (getState() == ShooterState.SHOOT && getLeaderRPM() - getTargetRPM() < Settings.HoodedShooter.SHOOTER_TOLERANCE_RPM) {
-            hasHitSetpoint = true;
-        }
-
-        boolean shouldAddFeedforward = hasHitSetpoint && getLeaderRPM() - getTargetRPM() < -Settings.HoodedShooter.SHOOTER_TOLERANCE_RPM;
-
         if (EnabledSubsystems.SHOOTER.get()) {
             if (getState() == ShooterState.STOP) {
                 shooterLeader.stopMotor();
@@ -86,10 +72,7 @@ public class ShooterImpl extends Shooter {
             } else if (voltageOverride.isPresent()) {
                 shooterLeader.setVoltage(voltageOverride.get());
                 shooterFollower.setControl(follower);
-            } //else if (shouldAddFeedforward) {
-                // shooterLeader.setControl(shooterController.withVelocity(getTargetRPM() / 60.0).withFeedForward(2.0));
-                // shooterFollower.setControl(follower);
-              else {
+            } else {
                 shooterLeader.setControl(shooterController.withVelocity(getTargetRPM() / 60.0));
                 shooterFollower.setControl(follower);
             }
@@ -104,8 +87,6 @@ public class ShooterImpl extends Shooter {
 
             SmartDashboard.putNumber("HoodedShooter/Shooter/Leader Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Voltage", shooterFollower.getMotorVoltage().getValueAsDouble());
-
-            SmartDashboard.putBoolean("HoodedShooter/Shooter/Should Add Feedforward", shouldAddFeedforward);
         }
     }
 

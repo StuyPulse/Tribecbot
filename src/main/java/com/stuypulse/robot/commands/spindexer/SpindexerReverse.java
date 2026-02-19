@@ -1,8 +1,8 @@
 package com.stuypulse.robot.commands.spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 
-public class SetSpindexerReverse extends SetSpindexerState{
-    public SetSpindexerReverse() {
+public class SpindexerReverse extends SetSpindexerState{
+    public SpindexerReverse() {
         super(SpindexerState.REVERSE);
     }
 }

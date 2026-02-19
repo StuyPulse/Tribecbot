@@ -6,7 +6,7 @@ public class SpindexerInterpolation {
     private static final InterpolatingDoubleTreeMap interpolatingDoubleTreeMap;
 
     private static final double[][] rpmAndDistance = {
-        // { rpm, distance }
+        /* { RPM, Distance (m) } */
         {1,1}
     };
 
