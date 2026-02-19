@@ -69,6 +69,7 @@ public class RobotContainer {
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", false);
         SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", false);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", false);
     }
 
     // Gamepads

@@ -55,4 +55,8 @@ public interface Ports {
         int ENCODER17T = 38;
         int ENCODER18T = 21;
     }
+
+    public interface LED {
+        int LED_PORT = 9;
+    }
 }
