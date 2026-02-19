@@ -25,6 +25,8 @@ import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
 import com.stuypulse.robot.commands.intake.IntakeIntake;
 import com.stuypulse.robot.commands.intake.IntakeOutake;
 import com.stuypulse.robot.commands.intake.IntakeStop;
+import com.stuypulse.robot.commands.leds.LEDApplyPattern;
+import com.stuypulse.robot.commands.leds.LEDDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.swerve.SwerveClimbAlign;
@@ -39,12 +41,14 @@ import com.stuypulse.robot.commands.turret.TurretSeed;
 import com.stuypulse.robot.commands.turret.TurretShoot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.subsystems.hoodedshooter.hood.Hood;
 import com.stuypulse.robot.subsystems.hoodedshooter.shooter.Shooter;
 import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.turret.Turret;
@@ -73,8 +77,9 @@ public class RobotContainer {
     }
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+    public static final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public static final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+
 
     // Subsystem
     private final ClimberHopper climberHopper = ClimberHopper.getInstance();
@@ -89,6 +94,7 @@ public class RobotContainer {
     private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
+    private final LEDController leds = LEDController.getInstance();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -109,6 +115,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
+        leds.setDefaultCommand(new LEDDefaultCommand());
     }
 
     /***************/
@@ -168,18 +175,22 @@ public class RobotContainer {
 //-------------------------------------------------------------------------------------------------------------------------\\
         // Climb Align
         driver.getTopButton()
-            .whileTrue(new SwerveClimbAlign());
+            .whileTrue(
+                new SwerveClimbAlign().alongWith(
+                    new LEDApplyPattern(Settings.LEDS.PRESSED_TOP_BUTTON))
+                );
 
         // Left Corner Shoot
         driver.getLeftButton()
             .whileTrue(
                 new SwerveXMode().alongWith(
                     new HoodedShooterLeftCorner().alongWith(
-                        new TurretLeftCorner()).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_LEFT_BUTTON).alongWith(
+                            new TurretLeftCorner())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+                                    new SpindexerRun().alongWith(new HandoffRun()))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(
@@ -191,11 +202,12 @@ public class RobotContainer {
             .whileTrue(
                 new SwerveXMode().alongWith(
                     new HoodedShooterRightCorner().alongWith(
-                        new TurretRightCorner()).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_RIGHT_BUTTON).alongWith(
+                            new TurretRightCorner())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+                                    new SpindexerRun().alongWith(new HandoffRun()))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(
@@ -207,11 +219,12 @@ public class RobotContainer {
             .whileTrue(
                 new SwerveXMode().alongWith(
                     new HoodedShooterShoot().alongWith(
-                        new TurretShoot()).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_BOT_BUTTON).alongWith(
+                            new TurretShoot())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+                                    new SpindexerRun().alongWith(new HandoffRun()))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(
@@ -220,34 +233,46 @@ public class RobotContainer {
 
         // Intake On
         driver.getLeftTriggerButton()
-            .onTrue(new IntakeIntake());
+            .onTrue(
+                new IntakeIntake().alongWith(
+                    new LEDApplyPattern(Settings.LEDS.PRESSED_LEFT_TRIGGER))
+            );
 
         // Intake Off
         driver.getRightTriggerButton()
-            .onTrue(new IntakeStop());
+            .onTrue(new IntakeStop().alongWith(
+                new LEDApplyPattern(Settings.LEDS.PRESSED_RIGHT_TRIGGER)
+            ));
 
         // Climb Down Placeholder
         driver.getLeftBumper()
-            .onTrue(new BuzzController(driver));
+            .onTrue(new BuzzController(driver).alongWith(
+                new LEDApplyPattern(Settings.LEDS.PRESSED_LEFT_BUMPER)
+            ));
 
         // Climb Up Placeholder
         driver.getRightBumper()
-            .onTrue(new BuzzController(driver));
+            .onTrue(new BuzzController(driver).alongWith(
+                new LEDApplyPattern(Settings.LEDS.PRESSED_RIGHT_BUMPER)
+            ));
 
         // Reset Heading
         driver.getDPadUp()
-            .onTrue(new SwerveResetHeading());
+            .onTrue(new SwerveResetHeading().alongWith(
+                new LEDApplyPattern(Settings.LEDS.PRESSED_TOP_DPAD)
+            ));
 
         // Ferry In Place
         driver.getDPadLeft()
             .whileTrue(
                 new SwerveXMode().alongWith(
                     new HoodedShooterFerry().alongWith(
-                        new TurretFerry()).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_LEFT_DPAD).alongWith(
+                            new TurretFerry())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
+                                new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+                                    new SpindexerRun().alongWith(new HandoffRun()))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(
@@ -259,11 +284,12 @@ public class RobotContainer {
             .whileTrue(
                 new SwerveXMode().alongWith(
                     new HoodedShooterShoot().alongWith(
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_RIGHT_DPAD).alongWith(
                         new TurretShoot()).alongWith(
                             new WaitUntilCommand(() -> hoodedShooter.isHoodAtTolerance())).alongWith(
                             new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance())).alongWith(
                             new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
+                                new SpindexerRun().alongWith(new HandoffRun())))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(
@@ -275,7 +301,8 @@ public class RobotContainer {
             .whileTrue(
                 new HoodedShooterReverse().alongWith(
                     new HandoffReverse().alongWith(
-                        new IntakeOutake())))
+                        new IntakeOutake().alongWith(
+                        new LEDApplyPattern(Settings.LEDS.PRESSED_DOWN_DPAD)))))
             .onFalse(
                 new HoodedShooterStow().alongWith(
                 new SpindexerRun().alongWith(

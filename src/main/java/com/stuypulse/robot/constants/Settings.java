@@ -14,6 +14,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
+
+import java.util.concurrent.TimeUnit;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.path.PathConstraints;
@@ -247,4 +253,49 @@ public interface Settings {
             public interface Targets {}
         }
     }
+
+    public interface LEDS {
+        //buttons 
+
+        LEDPattern PRESSED_TOP_BUTTON = LEDPattern.solid(Color.kLightBlue);
+        LEDPattern PRESSED_LEFT_BUTTON = LEDPattern.solid(Color.kSkyBlue);
+        LEDPattern PRESSED_RIGHT_BUTTON = LEDPattern.solid(Color.kBlueViolet);
+        LEDPattern PRESSED_BOT_BUTTON = LEDPattern.solid(Color.kAliceBlue);
+        LEDPattern PRESSED_LEFT_TRIGGER = LEDPattern.solid(Color.kDarkBlue);
+        LEDPattern PRESSED_RIGHT_TRIGGER = LEDPattern.solid(Color.kCadetBlue);
+        LEDPattern PRESSED_LEFT_BUMPER = LEDPattern.solid(Color.kFirstBlue);
+        LEDPattern PRESSED_RIGHT_BUMPER = LEDPattern.solid(Color.kRoyalBlue);
+        LEDPattern PRESSED_LEFT_DPAD = LEDPattern.solid(Color.kSlateBlue);
+        LEDPattern PRESSED_RIGHT_DPAD = LEDPattern.solid(Color.kSteelBlue);
+        LEDPattern PRESSED_DOWN_DPAD = LEDPattern.solid(Color.kDodgerBlue);
+        LEDPattern PRESSED_TOP_DPAD = LEDPattern.solid(Color.kCornflowerBlue);
+
+        Time TRENCH_PASS_SECONDS = Seconds.of(0.4);
+        LEDPattern TRENCH_LOWERING = LEDPattern.solid(Color.kLightGoldenrodYellow);
+        LEDPattern TRENCH_E_STOP = LEDPattern.solid(Color.kRed);
+        LEDPattern TRENCH_PASS = LEDPattern.solid(Color.kGreen).breathe(TRENCH_PASS_SECONDS);
+
+        LEDPattern CLIMBING = LEDPattern.solid(Color.kLightSkyBlue); 
+        
+        double DESIRED_TAGS_WHEN_DISABLED = 2;
+        LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kPurple);
+    }
+
+    public interface Driver {
+        double BUZZ_TIME = 1.0;
+        double BUZZ_INTENSITY = 1.0;
+
+        public interface Drive {
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.05);
+
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.05);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
+        }
+        public interface Turn {
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.05);
+
+            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
+        }
+    }  
 }

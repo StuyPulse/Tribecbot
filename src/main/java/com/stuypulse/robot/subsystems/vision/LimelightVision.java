@@ -41,6 +41,7 @@ public class LimelightVision extends SubsystemBase{
         MEGATAG1,
         MEGATAG2 
     }
+    private int maxTagCount;
 
     public LimelightVision() {
         names = new String[Cameras.LimelightCameras.length];
@@ -68,6 +69,8 @@ public class LimelightVision extends SubsystemBase{
 
         enabled = new SmartBoolean("Vision/Is Enabled", true);
         megaTagMode = MegaTagMode.MEGATAG1;
+
+        maxTagCount = 0;
     }
 
     public void setTagWhitelist(int... ids) {
@@ -102,8 +105,14 @@ public class LimelightVision extends SubsystemBase{
         }
     }
 
+    public int getMaxTagCount() {
+        return this.maxTagCount;
+    }
+
     @Override
     public void periodic() {
+        this.maxTagCount = 0;
+
         if (enabled.get()) {
             for (int i = 0; i < names.length; i++) {
                 if (camerasEnabled[i].get()) {
@@ -146,7 +155,10 @@ public class LimelightVision extends SubsystemBase{
                         SmartDashboard.putNumber("Vision/Pose Theta (Degrees)", robotPose.getRotation().getDegrees());
 
                         SmartDashboard.putBoolean("Vision/" + names[i] + " Has Data", true);
-                    } else {
+
+                        maxTagCount = Math.max(maxTagCount, poseEstimate.tagCount);
+                    }
+                    else {
                         SmartDashboard.putBoolean("Vision/" + names[i] + " Has Data", false);
                     }
 
