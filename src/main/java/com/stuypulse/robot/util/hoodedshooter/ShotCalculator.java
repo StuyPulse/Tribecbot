@@ -70,24 +70,33 @@ public final class ShotCalculator {
         int maxIterations,
         double timeTolerance) {
 
-        // We know that v_ball = v_robot + v_shooter, so 
-        // (v_robot + v_shooter) * flightTime = distanceToTargetGoal
-        // rearranging, we can get (v_shooter) * flight_time = distanceToTargetGoal - v_robot * flightTime
+        /*
+        Start with v_ball * flightTime = distanceToTargetGoal.
+        
+        We know that v_ball = v_robot + v_shooter, so 
+        (v_robot + v_shooter) * flightTime = distanceToTargetGoal
 
-        // so we can instead shoot at a virtual goal and treat the robot as stationary:
-        // distance to virtualGoal = distanceToTargetGoal - v_robot * flightTime
+        Rearranging, we can get
+        (v_shooter) * flight_time = distanceToTargetGoal - v_robot * flightTime
 
-        // but to do this we need the flight time, but to get the flight time we need the
-        // target hood angle, but that's what we're trying to find in the first place.
+        So we can instead shoot at a virtual goal and treat the robot as stationary:
+        distanceToVirtualGoal = distanceToTargetGoal - v_robot * flightTime
+        (v_shooter) * flight_time = distanceToVirtualGoal
 
-        // Thus, we can make an initial guess for the flight time: the flight time if the robot were stationary
-        // We want our guess to converge such that the left side equals the right side:
-        // (v_shooter) * t_guess = distance - v_robot * t_guess, which would make t_guess = flightTime
+        Looking at the first equation, we can find the virtual goal with the flight time, 
+        but looking at the second equation, to get the flight time we need to solveBallisticWithSpeed()
+        using the virtual goal, so we have a circular dependence.
 
-        // We do the right side first using our inital guess, and then update t_guess with a new guess by 
-        // calculating the flightTime to that virtualPose.
+        Thus, we can make an initial guess for the flight time: the flight time if the robot were stationary
+        We want our guess to converge such that the left side equals the right side:
+        (v_shooter) * t_guess = distance - v_robot * t_guess, which would make t_guess = flightTime
 
-        // The goal is that the flightTime converges within maxIterations.
+        We do the right side first using our inital guess, and then update t_guess with a new guess by 
+        calculating the flightTime to that virtualPose.
+
+        The goal is that the flightTime converges within maxIterations.
+        */
+        
 
         StationarySolution sol = solveBallisticWithSpeed(
             shooterPose,
