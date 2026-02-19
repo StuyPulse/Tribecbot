@@ -1,4 +1,4 @@
-/************************ PROJECT ALPHA *************************/
+/************************ PROJECT TRIBECBOT *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
@@ -9,6 +9,7 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.Vector2D;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -21,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 
 public abstract class Turret extends SubsystemBase {
     private static final Turret instance;

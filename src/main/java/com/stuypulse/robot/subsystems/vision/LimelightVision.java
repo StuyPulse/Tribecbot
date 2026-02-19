@@ -1,10 +1,11 @@
-/************************ PROJECT 2026 ************************/
+/************************ PROJECT TRIBECBOT *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-
 package com.stuypulse.robot.subsystems.vision;
+
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Cameras;
@@ -12,7 +13,6 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
-import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -131,4 +131,3 @@ public class LimelightVision extends SubsystemBase{
         }
     }
 }
- 

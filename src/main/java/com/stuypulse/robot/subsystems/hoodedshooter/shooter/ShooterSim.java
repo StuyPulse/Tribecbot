@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
 
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 
@@ -19,7 +20,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import java.util.Optional;

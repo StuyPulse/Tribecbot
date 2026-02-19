@@ -1,6 +1,9 @@
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.intake;
-
-import java.util.Optional;
 
 import com.stuypulse.robot.constants.Settings;
 
@@ -8,6 +11,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import java.util.Optional;
 
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;

@@ -5,22 +5,20 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
 
-import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
-import java.util.Optional;
-
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import java.util.Optional;
 
 public class ShooterImpl extends Shooter {
     private final TalonFX shooterLeader;

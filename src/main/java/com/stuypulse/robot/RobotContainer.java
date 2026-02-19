@@ -1,9 +1,13 @@
-/************************ PROJECT 2026 ************************/
-/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved.*/
-/* This work is licensed under the terms of the MIT license.  */
-/**************************************************************/
-
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot;
+
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
@@ -38,9 +42,6 @@ import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.turret.Turret;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
-import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

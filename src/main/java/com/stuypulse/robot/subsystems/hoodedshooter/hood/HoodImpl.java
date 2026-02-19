@@ -5,12 +5,11 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
-import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.math.geometry.Rotation2d;

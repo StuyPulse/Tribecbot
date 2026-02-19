@@ -1,6 +1,9 @@
+/************************ PROJECT TRIBECBOT *************************/
+/* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
+/***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
-
-import java.util.Optional;
 
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -11,6 +14,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import java.util.Optional;
 
 public abstract class Spindexer extends SubsystemBase {
     private static final Spindexer instance;
