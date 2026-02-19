@@ -41,23 +41,40 @@ public interface Settings {
 
     public interface ClimberHopper {
         // TODO: GET THESE
-        // Heights
-        double CLIMBER_UP_HEIGHT_METERS = 10;
-        double CLIMBER_DOWN_HEIGHT_METERS = 0;
-        double HOPPER_DOWN_HEIGHT_METERS = 0;
-        double HOPPER_UP_HEIGHT_METERS = 9;
+        // Voltages
+        double CLIMBER_UP = 2;
+        double CLIMBER_DOWN = -3;
+        double HOPPER_DOWN = -3;
+        double HOPPER_UP = 2;
+
+        double MASS_KG = 1;
         
         double STALL = 10;
-        
-        // Voltage
-        double HOLDING = 0;
+        double EXTENDED = 0;
+        double RETRACTED = 0;
+
+        double ROTATIONS_AT_BOTTOM = 0;
+        // TODO: get these limits
+        double MIN_HEIGHT_METERS = 0;
+        double MAX_HEIGHT_METERS = 10;
 
         double DEBOUNCE = 0.25;
 
         double GYRO_TOLERANCE = 0;
-        double HEIGHT_TOLERANCE_METERS = 1;
+        double HEIGHT_TOLERANCE = 1;
 
         double RAMP_RATE = 50;
+
+        double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (Encoders.NUM_ROTATIONS_TO_REACH_TOP / Encoders.GEARING)) / 2 / Math.PI;
+
+        public interface Encoders {
+            // TODO: get these
+            double GEARING = 52.0/12.0;
+
+            double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13); // Number of rotations that the motor has to spin, NOT the gear
+            double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
+            double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60;
+        }
     }
 
     public interface Feeder {
