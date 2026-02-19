@@ -7,6 +7,7 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.stuypulse.robot.constants.Constants;
 //import com.stuypulse.stuylib.streams.booleans.filters.BFilter;
 import com.stuypulse.robot.constants.Motors;
 
@@ -31,7 +32,7 @@ public class ClimberHopperImpl extends ClimberHopper {
     }
 
     public double getPosition() { // TODO: convert motor encoder position to meters somehow
-        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.Encoders.POSITION_CONVERSION_FACTOR;
+        return this.motor.getPosition().getValueAsDouble() * Constants.ClimberHopper.Encoders.POSITION_CONVERSION_FACTOR;
     }
 
     @Override

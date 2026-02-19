@@ -3,6 +3,7 @@ package com.stuypulse.robot.subsystems.climberhopper;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -19,11 +20,11 @@ public class ClimberHopperSim extends ClimberHopper {
 
         sim = new ElevatorSim(
             DCMotor.getKrakenX60(1),
-            Settings.ClimberHopper.Encoders.GEARING,
-            Settings.ClimberHopper.MASS_KG,
-            Settings.ClimberHopper.DRUM_RADIUS_METERS,
-            Settings.ClimberHopper.MIN_HEIGHT_METERS,
-            Settings.ClimberHopper.MAX_HEIGHT_METERS,
+            Constants.ClimberHopper.Encoders.GEARING,
+            Constants.ClimberHopper.MASS_KG,
+            Constants.ClimberHopper.DRUM_RADIUS_METERS,
+            Constants.ClimberHopper.MIN_HEIGHT_METERS,
+            Constants.ClimberHopper.MAX_HEIGHT_METERS,
             true,
             0.0
         );
