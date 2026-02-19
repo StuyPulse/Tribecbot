@@ -12,6 +12,7 @@ import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterS
 import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.turret.Turret;
+import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
@@ -53,8 +54,14 @@ public class LEDDefaultCommand extends Command {
             else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
                 leds.applyPattern(Settings.LEDS.CLIMBING);
             }
+            //else if (turret.getState < TurretState.LEFT_CORNER - )
+            else if (turret.getState() == TurretState.LEFT_CORNER) {
+                leds.applyPattern((Settings.LEDS.LEFT_CORNER));
+            }
+            else if (turret.getState() == TurretState.RIGHT_CORNER) {
+                leds.applyPattern(Settings.LEDS.RIGHT_CORNER);
+            }
         }
-        }
-        
-    }
+    }    
+}
 

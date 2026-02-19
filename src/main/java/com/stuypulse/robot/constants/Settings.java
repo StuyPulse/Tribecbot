@@ -256,7 +256,6 @@ public interface Settings {
 
     public interface LEDS {
         //buttons 
-
         LEDPattern PRESSED_TOP_BUTTON = LEDPattern.solid(Color.kLightBlue);
         LEDPattern PRESSED_LEFT_BUTTON = LEDPattern.solid(Color.kSkyBlue);
         LEDPattern PRESSED_RIGHT_BUTTON = LEDPattern.solid(Color.kBlueViolet);
@@ -276,6 +275,12 @@ public interface Settings {
         LEDPattern TRENCH_PASS = LEDPattern.solid(Color.kGreen).breathe(TRENCH_PASS_SECONDS);
 
         LEDPattern CLIMBING = LEDPattern.solid(Color.kLightSkyBlue); 
+        LEDPattern CLIMB_IS_ALIGNED = LEDPattern.solid(Color.kMediumBlue);
+
+        LEDPattern APPROACHING_LEFT_CORNER = LEDPattern.solid(Color.kWheat);
+        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kAntiqueWhite);
+        LEDPattern APPROACHING_RIGHT_CORNER = LEDPattern.solid(Color.kBlanchedAlmond);
+        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kAqua);
         
         double DESIRED_TAGS_WHEN_DISABLED = 2;
         LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kPurple);
