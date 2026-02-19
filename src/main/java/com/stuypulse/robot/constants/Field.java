@@ -6,6 +6,7 @@
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.AprilTag;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -35,6 +36,16 @@ public interface Field {
 
     public static Pose2d getHubPose() {
         return hubCenter;
+    }
+
+    // Alliance relative tower center coordinates
+    public final Pose2d towerCenter = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47), new Rotation2d());
+    public final double barDisplacement = Units.inchesToMeters(11.38);
+    
+    public final double DISTANCE_TO_RUNGS = Units.inchesToMeters(20); // placeholder value, how far away in terms of y-cord from the rung
+
+    public static boolean closerToTop(){
+        return (CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.towerCenter.getY());
     }
 
     // 1.0 meters from driverstation wall and field wall

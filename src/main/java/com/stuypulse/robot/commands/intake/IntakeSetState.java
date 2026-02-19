@@ -18,6 +18,6 @@ public class IntakeSetState extends InstantCommand {
 
     @Override
     public void initialize() {
-        intake.setIntakeState(intakeState);
+        intake.setState(intakeState);
     }
 }

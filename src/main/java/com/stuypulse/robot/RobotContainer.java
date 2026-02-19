@@ -21,6 +21,7 @@ import com.stuypulse.robot.commands.intake.IntakeOutake;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.swerve.SwerveClimbAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
@@ -130,7 +131,7 @@ public class RobotContainer {
 //-------------------------------------------------------------------------------------------------------------------------\\
         // Climb Align
         driver.getTopButton()
-            .whileTrue(SwerveClimbAlign());
+            .whileTrue(new SwerveClimbAlign());
 
         // Left Corner Shoot
         driver.getLeftButton()

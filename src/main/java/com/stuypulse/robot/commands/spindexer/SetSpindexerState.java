@@ -17,6 +17,6 @@ public class SetSpindexerState extends InstantCommand {
 
     @Override
     public void initialize() {
-        spindexer.setSpindexerState(state);
+        spindexer.setState(state);
     }
 }

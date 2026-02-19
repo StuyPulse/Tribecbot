@@ -5,14 +5,12 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.swerve;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import com.stuypulse.robot.constants.Field;
 
-public class SwerveClimbAlign extends Command {
-    
-    public SwerveClimbAlign() {
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 
-
-
+public class SwerveClimbAlign extends ConditionalCommand{
+    public SwerveClimbAlign(){
+        super(new SwerveClimbAlignTop(), new SwerveClimbAlignBot(), () -> Field.closerToTop());
     }
-
 }
