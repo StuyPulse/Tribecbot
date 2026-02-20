@@ -58,11 +58,11 @@ public abstract class Turret extends SubsystemBase {
         return switch (getState()) {
             case IDLE -> getAngle(); 
             case ZERO -> Rotation2d.kZero;
-            case FERRYING -> Rotation2d.fromDegrees(0); //TODO: CHANGE TO getFerryAngle();
             case SHOOTING -> getScoringAngle();
+            case FERRYING -> getFerryAngle();
+            case TESTING -> driverInputToAngle();
             case HUB -> Settings.Turret.HUB;
             case LEFT_CORNER -> Settings.Turret.LEFT_CORNER;
-            case TESTING -> driverInputToAngle();
             case RIGHT_CORNER -> Settings.Turret.RIGHT_CORNER;
         };
     }
@@ -115,13 +115,10 @@ public abstract class Turret extends SubsystemBase {
         }
     }
 
-    // Should match implementation on mini turret
-    // Current logic is as of 2/15
     public Rotation2d getPointAtTargetAngle(Pose2d targetPose) {
         Pose2d robotPose = CommandSwerveDrivetrain.getInstance().getPose();
         Pose2d turretPose = CommandSwerveDrivetrain.getInstance().getTurretPose(); // TODO: TEST IF THIS PLUS SHOULD BE MINUS
 
-        // Vector2D robot = new Vector2D(robotPose.getTranslation());
         Vector2D turret = new Vector2D(turretPose.getTranslation());
         Vector2D target = new Vector2D(targetPose.getTranslation());
 
@@ -134,10 +131,9 @@ public abstract class Turret extends SubsystemBase {
 
         SmartDashboard.putNumber("Turret/Turret to Target Vector X", turretToTarget.x);
         SmartDashboard.putNumber("Turret/Turret to Target Vector Y", turretToTarget.y);
+
         SmartDashboard.putNumber("Turret/Target Pose X", targetPose.getX());
         SmartDashboard.putNumber("Turret/Target Pose Y", targetPose.getY());
-        // SmartDashboard.putNumber("Turret/Robot to Target Vector X", robotToHub.x);
-        // SmartDashboard.putNumber("Turret/Robot to Target Vector Y", robotToHub.y);
         SmartDashboard.putNumber("Turret/Zero Vector X", zeroVector.x);
         SmartDashboard.putNumber("Turret/Zero Vector Y", zeroVector.y);
 
