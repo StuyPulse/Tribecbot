@@ -43,7 +43,7 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     @Override
     public double getCurrentHeight() { // TODO: convert motor encoder position to meters somehow
-        return this.motor.getPosition().getValueAsDouble() * Constants.ClimberHopper.Encoders.POSITION_CONVERSION_FACTOR;
+        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.Constants.POSITION_CONVERSION_FACTOR;
     }
 
     private boolean isWithinTolerance(double toleranceMeters) {

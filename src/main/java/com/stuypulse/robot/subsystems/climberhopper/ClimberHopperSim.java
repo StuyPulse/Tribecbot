@@ -18,6 +18,7 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class ClimberHopperSim extends ClimberHopper {
+    
     private final ElevatorSim sim;
     private final ClimberHopperVisualizer visualizer;
     private double voltage;
@@ -27,13 +28,13 @@ public class ClimberHopperSim extends ClimberHopper {
 
         sim = new ElevatorSim(
             DCMotor.getKrakenX60(1),
-            Constants.ClimberHopper.Encoders.GEARING,
-            Constants.ClimberHopper.MASS_KG,
-            Constants.ClimberHopper.DRUM_RADIUS_METERS,
-            Constants.ClimberHopper.MIN_HEIGHT_METERS,
-            Constants.ClimberHopper.MAX_HEIGHT_METERS,
+            Settings.ClimberHopper.Constants.GEAR_RATIO,
+            Settings.ClimberHopper.Constants.MASS_KG,
+            Settings.ClimberHopper.Constants.DRUM_RADIUS_METERS,
+            Settings.ClimberHopper.Constants.MIN_HEIGHT_METERS,
+            Settings.ClimberHopper.Constants.MAX_HEIGHT_METERS,
             false,
-            Constants.ClimberHopper.MIN_HEIGHT_METERS
+            Settings.ClimberHopper.Constants.MIN_HEIGHT_METERS
         );
     }
 

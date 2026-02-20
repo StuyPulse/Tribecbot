@@ -5,83 +5,43 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.pathplanner.lib.path.PathConstraints;
+import com.stuypulse.stuylib.network.SmartNumber;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 public interface Constants {
-    public interface ClimberHopper {
-        // TODO: get these limits
-        double MIN_HEIGHT_METERS = 0;
-        double MAX_HEIGHT_METERS = 1;
-
-        double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (Encoders.NUM_ROTATIONS_TO_REACH_TOP / Encoders.GEARING)) / 2 / Math.PI;
-
-        double MASS_KG = 1;
-
-        public interface Encoders {
-            // TODO: get these
-            double GEARING = 52.0/12.0;
-
-            double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13); // Number of rotations that the motor has to spin, NOT the gear
-            double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
-            double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60;
-        }
-    }
-
-    public interface HoodedShooter {
-        public interface Hood {
-            public final double GEAR_RATIO = 1290300.0 / 5967.0; 
-            public final double SENSOR_TO_HOOD_RATIO = 360.0 / 36.0;
-            public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7);
-            public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(36.80);
-            public final Rotation2d HUB_ANGLE = Rotation2d.fromDegrees(12); // TBD
-            public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10); // TBD
-            public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10); // TBD
-
-            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromDegrees(20.0 * 10.0);
-        }
-        public interface Shooter {
-            public final double GEAR_RATIO = 1.0;
-        }
-    }
 
     public interface Align {
         int MAX_ITERATIONS = 5;
         double TIME_TOLERANCE = 0.01;
     }
-
-    public interface Spindexer {
-        public final double GEAR_RATIO = 40.0 / 12.0;
+   
+    public interface Vision {
+        Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
+        Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);
     }
 
-    public interface Turret {
-        double RANGE = 210.0;
-        Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(-2.50), Units.inchesToMeters(11.19), Rotation2d.kZero);
-        double TURRET_HEIGHT = Units.inchesToMeters(10.984);
-        public interface Encoder18t {
-            public final int TEETH = 18;
-            public final Rotation2d OFFSET = new Rotation2d();
+    public interface Driver {
+        double BUZZ_TIME = 1.0;
+        double BUZZ_INTENSITY = 1.0;
+
+        public interface Drive {
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.05);
+
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.05);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
         }
-        
-        public interface Encoder17t {
-            public final int TEETH = 17;
-            public final Rotation2d OFFSET = new Rotation2d();
+        public interface Turn {
+            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.05);
+
+            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
         }
-
-        public interface BigGear {
-            public final int TEETH = 95;
-        }
-
-        public interface SoftwareLimit {
-            public final double FORWARD_MAX_ROTATIONS = 1.5;
-            public final double BACKWARDS_MAX_ROTATIONS = 1.5;
-        } 
-
-        public final double GEAR_RATIO_MOTOR_TO_MECH = 1425.0 / 36.0;
-    }
-
-    public interface Handoff {
-        public final double GEAR_RATIO = 1.0; 
     }
 }

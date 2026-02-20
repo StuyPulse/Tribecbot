@@ -7,10 +7,10 @@ package com.stuypulse.robot.subsystems.turret;
 
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Turret.Constants;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -64,23 +64,23 @@ public class TurretImpl extends Turret {
 
         final Rotation2d encoder17tPosition = getEncoderPos17t();
         final double numberOfGearTeethRotated17 = (encoder17tPosition.getRotations()
-                * (double) Constants.Turret.Encoder17t.TEETH);
+                * (double) Constants.Encoder17t.TEETH);
 
         final Rotation2d encoder18tPosition = getEncoderPos18t();
         final double numberOfGearTeethRotated18 = (encoder18tPosition.getRotations()
-                * (double) Constants.Turret.Encoder18t.TEETH);
+                * (double) Constants.Encoder18t.TEETH);
 
-        final double crt_Partial17 = numberOfGearTeethRotated17 * inverseMod17t * Constants.Turret.Encoder17t.TEETH;
-        final double crt_Partial18 = numberOfGearTeethRotated18 * inverseMod18t * Constants.Turret.Encoder18t.TEETH;
+        final double crt_Partial17 = numberOfGearTeethRotated17 * inverseMod17t * Constants.Encoder17t.TEETH;
+        final double crt_Partial18 = numberOfGearTeethRotated18 * inverseMod18t * Constants.Encoder18t.TEETH;
 
         double crt_pos = (crt_Partial17 + crt_Partial18)
-                % (Constants.Turret.Encoder17t.TEETH * Constants.Turret.Encoder18t.TEETH);
+                % (Constants.Encoder17t.TEETH * Constants.Encoder18t.TEETH);
 
         // Java's % operator is not actually the same as the modulo operator, the lines below account for that 
-        crt_pos = (crt_pos < 0) ? (crt_pos + Constants.Turret.Encoder17t.TEETH * Constants.Turret.Encoder18t.TEETH)
+        crt_pos = (crt_pos < 0) ? (crt_pos + Constants.Encoder17t.TEETH * Constants.Encoder18t.TEETH)
                 : crt_pos;
 
-        final double turretAngle = (crt_pos / (double) Constants.Turret.BigGear.TEETH);
+        final double turretAngle = (crt_pos / (double) Constants.BigGear.TEETH);
 
         return Rotation2d.fromRotations(turretAngle);
     }
@@ -101,7 +101,7 @@ public class TurretImpl extends Turret {
         if (delta > 180.0) delta -= 360;
         else if (delta < -180) delta += 360;
 
-        if (Math.abs(current + delta) < Constants.Turret.RANGE) return delta;
+        if (Math.abs(current + delta) < Constants.RANGE) return delta;
         
         return delta < 0 ? delta + 360 : delta - 360;
     }

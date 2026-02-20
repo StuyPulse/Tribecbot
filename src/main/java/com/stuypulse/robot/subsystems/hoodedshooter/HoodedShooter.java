@@ -41,9 +41,11 @@ public class HoodedShooter extends SubsystemBase {
         STOW(HoodState.STOW, ShooterState.SHOOT),
         SHOOT(HoodState.SHOOT, ShooterState.SHOOT),
         FERRY(HoodState.FERRY, ShooterState.FERRY),
-        REVERSE(HoodState.IDLE, ShooterState.REVERSE),
+        REVERSE(HoodState.SHOOT, ShooterState.REVERSE),
+        HUB(HoodState.HUB, ShooterState.HUB),
         LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER),
-        RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER);
+        RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER),
+        INTERPOLATION(HoodState.INTERPOLATION, ShooterState.INTERPOLATION);
 
         private HoodState hoodState;
         private ShooterState shooterState;
@@ -70,6 +72,10 @@ public class HoodedShooter extends SubsystemBase {
 
     public HoodedShooterState getState(){
         return state;
+    }
+
+    public boolean bothAtTolerance() {
+        return isShooterAtTolerance() && isHoodAtTolerance();
     }
 
     public boolean isShooterAtTolerance() {
@@ -106,6 +112,8 @@ public class HoodedShooter extends SubsystemBase {
 
         SmartDashboard.putNumber("HoodedShooter/Current RPM", getShooterRPM());
         SmartDashboard.putNumber("HoodedShooter/Current Angle", getHoodAngle().getDegrees());
+
+        SmartDashboard.putNumber("HoodedShooter/Angle Error (Deg)", hood.getTargetAngle().getDegrees() - getHoodAngle().getDegrees());
 
         SmartDashboard.putBoolean("HoodedShooter/Shooter At Tolerance?", isShooterAtTolerance());
         SmartDashboard.putBoolean("HoodedShooter/Hood At Tolerance?", isHoodAtTolerance());

@@ -1,4 +1,4 @@
-/************************ PROJECT TRIBECBOT *************************/
+/************************ PROJECT ALPHA *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
@@ -7,6 +7,8 @@ package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
+import com.stuypulse.robot.util.hoodedshooter.HoodAngleCalculator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,8 +36,10 @@ public abstract class Shooter extends SubsystemBase {
         SHOOT,
         FERRY,
         REVERSE,
+        HUB,
         LEFT_CORNER,
-        RIGHT_CORNER;
+        RIGHT_CORNER,  
+        INTERPOLATION;
     }
 
     public Shooter() {
@@ -55,19 +59,20 @@ public abstract class Shooter extends SubsystemBase {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
             case FERRY -> getFerryRPM();
-            case REVERSE -> Settings.HoodedShooter.ShooterRPMS.REVERSE;
-            case LEFT_CORNER -> Settings.HoodedShooter.ShooterRPMS.LEFT_CORNER_RPM;
-            case RIGHT_CORNER -> Settings.HoodedShooter.ShooterRPMS.RIGHT_CORNER_RPM;
+            case REVERSE -> Settings.HoodedShooter.RPMs.REVERSE;
+            case HUB -> Settings.HoodedShooter.RPMs.HUB_RPM;
+            case LEFT_CORNER -> Settings.HoodedShooter.RPMs.LEFT_CORNER_RPM;
+            case RIGHT_CORNER -> Settings.HoodedShooter.RPMs.RIGHT_CORNER_RPM;
+            case INTERPOLATION -> HoodAngleCalculator.interpolateShooterRPM().get();
         };
     }
 
     public double getShootRPM() {
-        return Settings.HoodedShooter.SHOOT_RPM.get();
-        // TODO: implement interpolation
+        return Settings.HoodedShooter.RPMs.SHOOT_RPM.get(); // will return different speeds in future based on distance to hub
     }
 
     public double getFerryRPM() {
-        return Settings.HoodedShooter.FERRY_RPM.get(); 
+        return Settings.HoodedShooter.RPMs.FERRY_RPM.get(); 
     }
 
     public boolean atTolerance() {

@@ -11,6 +11,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
@@ -28,31 +29,10 @@ public interface Settings {
     double SECONDS_IN_A_MINUTE = 60.0;
     boolean DEBUG_MODE = true;
     CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
-    
-    public interface ClimberHopper {
-        // TODO: GET THESE
-        // Voltages
-        double CLIMBER_UP_HEIGHT_METERS = Constants.ClimberHopper.MAX_HEIGHT_METERS;
-        double CLIMBER_DOWN_HEIGHT_METERS = 0.2;
-        double HOPPER_DOWN_HEIGHT_METERS = Constants.ClimberHopper.MIN_HEIGHT_METERS;
-        double HOPPER_UP_HEIGHT_METERS = 0.5;
-
-        double STALL = 10;
-
-        double ROTATIONS_AT_BOTTOM = 0;
-
-        double DEBOUNCE = 0.25;
-
-        double GYRO_TOLERANCE = 0;
-
-        double HEIGHT_TOLERANCE_METERS = 0.02;
-
-        double RAMP_RATE = 50;
-
-        double MOTOR_VOLTAGE = 3.5;
-    }
 
     public interface Handoff {
+        double GEAR_RATIO = 1.0;
+
         double HANDOFF_STOP = 0.0;
         double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
@@ -60,11 +40,13 @@ public interface Settings {
         public final SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/RPM Override", HANDOFF_MAX);
     }
 
-    public interface Intake { // TODO: Get all values for this
+    public interface Intake {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
-        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(150.0);
+        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(0.0);
 
-        public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(0.1); 
+        public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
+        public final double FORWARD_MAX_ROTATIONS = -30.0 / 360.0;
+        public final double BACKWARDS_MAX_ROTATIONS = 90.0 / 360.0;
 
         Rotation2d PIVOT_ANGLE_OFFSET = new Rotation2d();
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);
@@ -73,11 +55,7 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL = Rotation2d.fromDegrees(300.0);
         Rotation2d PIVOT_MAX_ACCEL = Rotation2d.fromDegrees(300.0);
 
-        double GEAR_RATIO = 48;
-        double JKgMetersSquared = 0.001;
-
-        double VOLTAGE_MAX = 12;
-        double VOLTAGE_MIN = -12;
+        double GEAR_RATIO = 48.0;
     }
 
     public interface Spindexer {
@@ -86,34 +64,34 @@ public interface Settings {
         double STOP_SPEED = 0.0;
 
         double RPM_TOLERANCE = 400.0;
+
+        public interface Constants {
+            double GEAR_RATIO = 8.0 / 1.0;
+        }
     }
     
     public interface HoodedShooter {
-
-        SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
-        SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
-
-        double SHOOTER_TOLERANCE_RPM = 25.0;
-        double HOOD_TOLERANCE_DEG = 5.0;
+        double SHOOTER_TOLERANCE_RPM = 50.0;
+        double HOOD_TOLERANCE_DEG = 0.5;
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
-                // values calculated with kinematics and RPM = 3000. TODO: tuning
-                {1.0, Units.degreesToRadians(61.329899416056854)}, // meters, radians
-                {1.5, Units.degreesToRadians(50.64110128774519)},
-                {2.0, Units.degreesToRadians(42.43985862934761)}, 
-                {2.5, Units.degreesToRadians(36.18629462556821)},
-                {3.0, Units.degreesToRadians(31.36657857810849)},
-                {3.5, Units.degreesToRadians(27.587819826188184)},
-                {4.0, Units.degreesToRadians(24.570004144436282)},
-                {4.5, Units.degreesToRadians(22.116965225162573)},
-                {5.0, Units.degreesToRadians(20.090654257188444)}
+                {1.43, Units.degreesToRadians(21.0)}, // meters, radians
+                {3.65, Units.degreesToRadians(28.0)},
+                {5.32, Units.degreesToRadians(33.5)}
+            };
+        }
+        public interface RPMInterpolation{
+            double[][] distanceRPMInterpolationValues = {
+                {1.43, 3000.0}, // meters, RPM 
+                {3.65, 3400.0},
+                {5.32, 3850.0}
             };
         }
 
-        SmartNumber UPDATE_DELAY = new SmartNumber("HoodedShooter/ShootOnTheFly/update delay", 0.00);
-
-        public interface ShooterRPMS {
+        public interface RPMs {
+            SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
+            SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
             public final double REVERSE = -0.0;
             public final double HUB_RPM = 0.0; 
             public final double LEFT_CORNER_RPM = 0.0; // TBD
@@ -121,10 +99,25 @@ public interface Settings {
             public final double STOW = 0.0; // TBD
         }
 
-        public interface ShooterRPMDistances {
-            public final double RPM1Distance = 0.0;
-            public final double RPM2Distance = 0.0;
-            public final double RPM3Distance = 0.0;
+        public interface Angles {
+            SmartNumber SHOOT_ANGLE = new SmartNumber("HoodedShooter/Shoot State Target Angle (deg)", 15.0);
+            SmartNumber FERRY_ANGLE = new SmartNumber("HoodedShooter/Ferry State Target Angle (deg)", 20.0);
+
+            public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7);
+            public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(36.80);
+            public final Rotation2d HUB_ANGLE = Rotation2d.fromDegrees(12);
+            public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10); 
+            public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10);
+        }
+
+        public interface Hood {
+            public final double GEAR_RATIO = 1290300.0 / 5967.0; 
+            public final double SENSOR_TO_HOOD_RATIO = 360.0 / 36.0;
+
+            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromDegrees(0.0);
+        }
+        public interface Shooter {
+            public final double GEAR_RATIO = 1.0;
         }
     }
     
@@ -137,47 +130,83 @@ public interface Settings {
         Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(0.0);
         Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(0.0);
 
+        public interface Constants {
+            double RANGE = 210.0;
+            Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(-2.50), Units.inchesToMeters(11.19), Rotation2d.kZero);
+            double TURRET_HEIGHT = Units.inchesToMeters(10.984);
+            public interface Encoder18t {
+                public final int TEETH = 18;
+                public final Rotation2d OFFSET = new Rotation2d();
+            }
+
+            public interface Encoder17t {
+                public final int TEETH = 17;
+                public final Rotation2d OFFSET = new Rotation2d();
+            }
+
+            public interface BigGear {
+                public final int TEETH = 95;
+            }
+
+            public interface SoftwareLimit {
+                public final double FORWARD_MAX_ROTATIONS = 210.0 / 360.0;
+                public final double BACKWARDS_MAX_ROTATIONS = -210.0 / 360.0;
+            } 
+
+            public final double GEAR_RATIO_MOTOR_TO_MECH = 1425.0 / 36.0;
+        }
+    }
+
+    public interface ClimberHopper {
+        public interface Constants {
+            double GEAR_RATIO = 45.0;
+
+            double MIN_HEIGHT_METERS = 0;
+            double MAX_HEIGHT_METERS = 1;
+
+            double MASS_KG = 1;
+
+            double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13); // Number of rotations that the motor has to spin, NOT the gear
+            double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
+            double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60;
+
+            double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2 / Math.PI;
+        }
+
+        double CLIMBER_UP_HEIGHT_METERS = Constants.MAX_HEIGHT_METERS;
+        double CLIMBER_DOWN_HEIGHT_METERS = 0.2;
+        double HOPPER_DOWN_HEIGHT_METERS = Constants.MIN_HEIGHT_METERS;
+        double HOPPER_UP_HEIGHT_METERS = 0.5;
+
+        double STALL = 10.0;
+
+        double ROTATIONS_AT_BOTTOM = 0.0;
+
+        double DEBOUNCE = 0.25;
+
+        double GYRO_TOLERANCE = 0.0;
+
+        double HEIGHT_TOLERANCE_METERS = 0.02;
+
+        double RAMP_RATE = 50.0;
+
+        double MOTOR_VOLTAGE = 3.5;
+    }
+
+    public interface Vision {
+        Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
+        Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);
     }
 
     public interface Swerve {
         double MODULE_VELOCITY_DEADBAND_M_PER_S = 0.1;
         double ROTATIONAL_DEADBAND_RAD_PER_S = 0.1;
-        public interface Motion {
-            SmartNumber MAX_VELOCITY = new SmartNumber("Swerve/Motion/Max Velocity", 2.5);
-            SmartNumber MAX_ACCELERATION = new SmartNumber("Swerve/Motion/Max Acceleration", 2.5);
-            SmartNumber MAX_ANGULAR_VELOCITY = new SmartNumber("Swerve/Motion/Max Angular Velocity", Units.degreesToRadians(540));
-            SmartNumber MAX_ANGULAR_ACCELERATION = new SmartNumber("Swerve/Motion/Max Angular Acceleration", Units.degreesToRadians(720));
-
-            PathConstraints DEFAULT_CONSTRAINTS =
-                new PathConstraints(
-                    MAX_VELOCITY.get(),
-                    MAX_ACCELERATION.get(),
-                    MAX_ANGULAR_VELOCITY.get(),
-                    MAX_ANGULAR_ACCELERATION.get());
-        }
-
-        public interface Turn {
-            // boolean INVERTED = true;
-            // double GEAR_RATIO = (150.0 / 7.0); // 21.4285714286
-        }
-
-        public interface Drive {
-            double L2 = ((50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0)); // 6.74607175
-            double L3 = ((50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 6.12244898
-            double L4 = ((50.0 / 16.0) * (16.0 / 28.0) * (45.0 / 15.0)); // 5.35714285714
-
-            // double WHEEL_DIAMETER = 4;
-            // double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-
-            // double GEAR_RATIO = Swerve.Drive.L4;
-        }
-        
         public interface Constraints {    
             double MAX_VELOCITY_M_PER_S = 4.3;
             double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
             double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(400);
             double MAX_ANGULAR_ACCEL_RAD_PER_S = Units.degreesToRadians(900);
-    
+
             PathConstraints DEFAULT_CONSTRAINTS =
                 new PathConstraints(
                     MAX_VELOCITY_M_PER_S,
@@ -209,32 +238,7 @@ public interface Settings {
                 double ALIGNMENT_DEBOUNCE = 0.15;
             }
 
-            public interface Targets {
-
-            }
+            public interface Targets {}
         }
     }
-   
-    public interface Vision {
-        Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
-        Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);
-    }
-
-    public interface Driver {
-        double BUZZ_TIME = 1.0;
-        double BUZZ_INTENSITY = 1.0;
-
-        public interface Drive {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Drive/Deadband", 0.05);
-
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.05);
-            SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
-        }
-        public interface Turn {
-            SmartNumber DEADBAND = new SmartNumber("Driver Settings/Turn/Deadband", 0.05);
-
-            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.05);
-            SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
-        }
-    }  
 }

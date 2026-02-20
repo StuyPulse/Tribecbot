@@ -5,8 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
-import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.hoodedshooter.HoodAngleCalculator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +22,7 @@ public abstract class Hood extends SubsystemBase{
         instance = new HoodImpl();
     }
     
-    public static Hood getInstance() {
+    public static Hood getInstance(){
         return instance;
     }
     
@@ -30,30 +30,34 @@ public abstract class Hood extends SubsystemBase{
         STOW,
         FERRY,
         SHOOT,
+        HUB,
         LEFT_CORNER,
         RIGHT_CORNER,
-        IDLE;
+        IDLE,
+        INTERPOLATION;
     }
 
     public Hood() {
         state = HoodState.STOW;
     }
 
-    public HoodState getState() {
+    public HoodState getState(){
         return state;
     }
 
-    public void setState(HoodState state) {
+    public void setState(HoodState state){
         this.state = state;
     }
 
     public Rotation2d getTargetAngle() {
         return switch(state) {
-            case STOW -> Constants.HoodedShooter.Hood.MIN_ANGLE;
-            case FERRY -> getFerryAngle();
-            case SHOOT -> getScoreAngle(); //HoodAngleCalculator.calculateHoodAngleSOTM().get();
-            case LEFT_CORNER -> Constants.HoodedShooter.Hood.LEFT_CORNER_ANGLE;
-            case RIGHT_CORNER -> Constants.HoodedShooter.Hood.RIGHT_CORNER_ANGLE;
+            case STOW -> Settings.HoodedShooter.Angles.MIN_ANGLE;
+            case FERRY -> Rotation2d.fromDegrees(30);
+            case SHOOT -> Rotation2d.fromDegrees(Settings.HoodedShooter.Angles.SHOOT_ANGLE.get());
+            case HUB -> Settings.HoodedShooter.Angles.HUB_ANGLE;
+            case LEFT_CORNER -> Settings.HoodedShooter.Angles.LEFT_CORNER_ANGLE;
+            case RIGHT_CORNER -> Settings.HoodedShooter.Angles.RIGHT_CORNER_ANGLE;
+            case INTERPOLATION -> HoodAngleCalculator.interpolateHoodAngle().get();
             case IDLE -> getHoodAngle();
         };
     }
@@ -73,13 +77,5 @@ public abstract class Hood extends SubsystemBase{
 
         SmartDashboard.putNumber("HoodedShooter/Hood/Target Angle", getTargetAngle().getDegrees());
         SmartDashboard.putNumber("HoodedShooter/Hood/Current Angle", getHoodAngle().getDegrees());
-    }
-
-    public Rotation2d getFerryAngle() {
-        return Rotation2d.fromDegrees(15);
-    }
-
-    public Rotation2d getScoreAngle() {
-        return Rotation2d.fromDegrees(15);
     }
 }

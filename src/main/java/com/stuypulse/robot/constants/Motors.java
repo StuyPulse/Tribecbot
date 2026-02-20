@@ -59,7 +59,7 @@ public interface Motors {
                             Gains.HoodedShooter.Shooter.kD, 0)
                     .withFFConstants(Gains.HoodedShooter.Shooter.kS, Gains.HoodedShooter.Shooter.kV,
                             Gains.HoodedShooter.Shooter.kA, 0)
-                    .withSensorToMechanismRatio(Constants.HoodedShooter.Shooter.GEAR_RATIO);
+                    .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
         }
 
         public interface Hood {
@@ -71,19 +71,19 @@ public interface Motors {
                     .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI,
                             Gains.HoodedShooter.Hood.kD, 0)
                     .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
-                    .withSensorToMechanismRatio(Constants.HoodedShooter.Hood.GEAR_RATIO);
+                    .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO);
                     
             SoftwareLimitSwitchConfigs hoodSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
                 .withForwardSoftLimitEnable(true)
                 .withReverseSoftLimitEnable(true)
-                .withForwardSoftLimitThreshold(Constants.HoodedShooter.Hood.MAX_ANGLE.getRotations())
-                .withReverseSoftLimitThreshold(Constants.HoodedShooter.Hood.MIN_ANGLE.getRotations());
+                .withForwardSoftLimitThreshold(Settings.HoodedShooter.Angles.MAX_ANGLE.getRotations())
+                .withReverseSoftLimitThreshold(Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
 
             CANcoderConfiguration HOOD_ENCODER = new CANcoderConfiguration()
                 .withMagnetSensor(new MagnetSensorConfigs()
                         .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
                         .withAbsoluteSensorDiscontinuityPoint(1)
-                        .withMagnetOffset(Constants.HoodedShooter.Hood.ENCODER_OFFSET.getRotations()));
+                        .withMagnetOffset(Settings.HoodedShooter.Hood.ENCODER_OFFSET.getRotations()));
         }
     }
 
@@ -123,7 +123,7 @@ public interface Motors {
                 .withInvertedValue(InvertedValue.Clockwise_Positive)
                 .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
                 .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
-                .withSensorToMechanismRatio(Constants.Spindexer.GEAR_RATIO);
+                .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
     }
 
     public interface Turret {
@@ -134,7 +134,7 @@ public interface Motors {
                 .withInvertedValue(InvertedValue.Clockwise_Positive)
                 .withPIDConstants(Gains.Turret.kP, Gains.Turret.kI, Gains.Turret.kD, 0)
                 .withFFConstants(Gains.Turret.kS, Gains.Turret.kV, Gains.Turret.kA, 0)
-                .withSensorToMechanismRatio(Constants.Turret.GEAR_RATIO_MOTOR_TO_MECH);
+                .withSensorToMechanismRatio(Settings.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH);
 
         SoftwareLimitSwitchConfigs SOFT_LIMIT = new SoftwareLimitSwitchConfigs()
                 .withForwardSoftLimitEnable(true)
@@ -146,13 +146,13 @@ public interface Motors {
                 .withMagnetSensor(new MagnetSensorConfigs()
                         .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
                         .withAbsoluteSensorDiscontinuityPoint(1)
-                        .withMagnetOffset(Constants.Turret.Encoder17t.OFFSET.getRotations()));
+                        .withMagnetOffset(Settings.Turret.Constants.Encoder17t.OFFSET.getRotations()));
 
         CANcoderConfiguration ENCODER_18T = new CANcoderConfiguration()
                 .withMagnetSensor(new MagnetSensorConfigs()
                         .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
                         .withAbsoluteSensorDiscontinuityPoint(1)
-                        .withMagnetOffset(Constants.Turret.Encoder18t.OFFSET.getRotations()));
+                        .withMagnetOffset(Settings.Turret.Constants.Encoder18t.OFFSET.getRotations()));
     }
 
     public interface Handoff {
@@ -163,7 +163,7 @@ public interface Motors {
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
             .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
-            .withSensorToMechanismRatio(Constants.Handoff.GEAR_RATIO);
+            .withSensorToMechanismRatio(Settings.Handoff.GEAR_RATIO);
     }
 
     public static class TalonFXConfig {

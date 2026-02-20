@@ -17,6 +17,7 @@ import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.TunerConstants.TunerSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.turret.Turret;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,6 +29,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -50,6 +52,9 @@ import com.pathplanner.lib.util.PathPlannerLogging;
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private final static CommandSwerveDrivetrain instance;
+
+    private FieldObject2d turret2d;
+    private Pose2d turretPose = new Pose2d();
 
     static {
         instance = TunerConstants.createDrivetrain();
@@ -420,35 +425,56 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         ));
     }
 
+    public Pose2d getTurretPose() {
+        return turretPose;
+    }
+
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Swerve/Pose/X", getPose().getX());
-        SmartDashboard.putNumber("Swerve/Pose/Y", getPose().getY());
-        SmartDashboard.putNumber("Swerve/Pose/Theta", getPose().getRotation().getDegrees());
+        Pose2d pose = getPose();
+        turretPose = new Pose2d(
+            pose.getTranslation().plus(Settings.Turret.Constants.TURRET_OFFSET.getTranslation().rotateBy(pose.getRotation())),
+            pose.getRotation().plus(Turret.getInstance().getAngle())
+        );
+
+        SmartDashboard.putNumber("Turret/Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
+
+        SmartDashboard.putNumber("Swerve/Pose/X", pose.getX());
+        SmartDashboard.putNumber("Swerve/Pose/Y", pose.getY());
+        SmartDashboard.putNumber("Swerve/Pose/Theta", pose.getRotation().getDegrees());
 
         for (int i = 0; i < 4; i++) {
-            SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Speed (m per s)", getModule(i).getCurrentState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Target Speed (m per s)", getModule(i).getTargetState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Angle (deg)", getModule(i).getCurrentState().angle.getDegrees() % 360);
-            SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Target Angle (deg)", getModule(i).getTargetState().angle.getDegrees() % 360);
-        }
+            String prefix = "Swerve/Modules/Module " + i;
+            SwerveModuleState current = getModule(i).getCurrentState();
+            SwerveModuleState target = getModule(i).getTargetState();
+            
 
-        Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? getPose() : Field.transformToOppositeAlliance(getPose()));
+            SmartDashboard.putNumber(prefix + "/Speed (m per s)", current.speedMetersPerSecond);
+            SmartDashboard.putNumber(prefix + "/Target Speed (m per s)", target.speedMetersPerSecond);
+            SmartDashboard.putNumber(prefix + "/Angle (deg)", current.angle.getDegrees() % 360);
+            SmartDashboard.putNumber(prefix + "/Target Angle (deg)", target.angle.getDegrees() % 360);
 
-        if (Settings.DEBUG_MODE) {
-            for (int i = 0; i < 4; i++) {
-                SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Stator Current", getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
-                SmartDashboard.putNumber("Swerve/Modules/Module " + i + "/Supply Current", getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+            if (Settings.DEBUG_MODE) {
+                SmartDashboard.putNumber(prefix + "/Stator Current", getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
+                SmartDashboard.putNumber(prefix + "/Supply Current", getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
             }
-
-            SmartDashboard.putNumber("Swerve/Velocity Robot Relative X (m per s)", getChassisSpeeds().vxMetersPerSecond);
-            SmartDashboard.putNumber("Swerve/Velocity Robot Relative Y (m per s)", getChassisSpeeds().vyMetersPerSecond);
-    
-            SmartDashboard.putNumber("Swerve/Velocity Field Relative X (m per s)", getFieldRelativeSpeeds().x);
-            SmartDashboard.putNumber("Swerve/Field Relative Rotation", getPose().getRotation().getDegrees());
-            SmartDashboard.putNumber("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
-    
-            SmartDashboard.putNumber("Swerve/Angular Velocity (rad per s)", getChassisSpeeds().omegaRadiansPerSecond);
         }
-    }
+
+        Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
+
+        
+        if (Settings.DEBUG_MODE) {
+        }
+        
+        SmartDashboard.putNumber("Swerve/Velocity Robot Relative X (m per s)", getChassisSpeeds().vxMetersPerSecond);
+        SmartDashboard.putNumber("Swerve/Velocity Robot Relative Y (m per s)", getChassisSpeeds().vyMetersPerSecond);
+        
+        SmartDashboard.putNumber("Swerve/Velocity Field Relative X (m per s)", getFieldRelativeSpeeds().x);
+        SmartDashboard.putNumber("Swerve/Field Relative Rotation", pose.getRotation().getDegrees());
+        SmartDashboard.putNumber("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
+        
+        SmartDashboard.putNumber("Swerve/Angular Velocity (rad per s)", getChassisSpeeds().omegaRadiansPerSecond);
+        
+        SmartDashboard.putNumber("Swerve/Distance From Hub (meters)", Field.hubCenter.getTranslation().getDistance(getPose().getTranslation()));
+        }
 }
