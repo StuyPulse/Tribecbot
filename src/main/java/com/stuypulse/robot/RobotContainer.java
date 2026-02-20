@@ -11,6 +11,13 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.climberhopper.ClimberDown;
+import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
+import com.stuypulse.robot.commands.climberhopper.ClimberUp;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -96,6 +103,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
     }
 
     /***************/
@@ -103,6 +111,12 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
+        // driver.getTopButton()
+        //     .whileTrue(new ClimberUp());
+
+        // driver.getBottomButton()
+        //     .whileTrue(new ClimberDown());
+        
         driver.getDPadRight()
             .whileTrue(
                 new SwerveXMode().alongWith(

@@ -29,40 +29,40 @@ public class ClimberHopperVisualizer {
     private final MechanismRoot2d climber;
 
     ClimberHopperVisualizer() {
-        canvas = new Mechanism2d(25, 25);
-        hopper = canvas.getRoot("Hopper", 8, 10);
-        bot = canvas.getRoot("Bot", 8, 5); 
-        climber = canvas.getRoot("Climber", 4, 5);
+        canvas = new Mechanism2d(2.5, 2.5);
+        hopper = canvas.getRoot("Hopper", 0.8, 1);
+        bot = canvas.getRoot("Bot", 0.8, 0.5); 
+        climber = canvas.getRoot("Climber", 0.4, 0.5);
 
         hopper.append(new MechanismLigament2d(
             "Hopper",
-            5,
+            0.5,
             0,
-            5,
+            0.5,
             new Color8Bit(Color.kYellow)
             )
         );
         
         bot.append(new MechanismLigament2d(
             "Bot",
-            10,
+            1,
             0,
-            10,
+            1,
             new Color8Bit(Color.kRed)
         ));
 
         climber.append(new MechanismLigament2d(
             "Climber",
-            2,
+            0.2,
             90,
-            5,
+            0.5,
             new Color8Bit(Color.kOrange)
         ));
     }
 
     public void update(double height) {
-        
-        hopper.setPosition(8, height + 5);
+
+        hopper.setPosition(0.8, height + 0.5);
 
         SmartDashboard.putData("Visualizers/ClimberHopper", canvas);
     }

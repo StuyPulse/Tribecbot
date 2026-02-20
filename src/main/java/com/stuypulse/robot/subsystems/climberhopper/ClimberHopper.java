@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.climberhopper;
 
+import java.util.Optional;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
@@ -27,31 +28,29 @@ public abstract class ClimberHopper extends SubsystemBase {
     }
 
     public enum ClimberHopperState {
-        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP),
-        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN),
-        HOPPER_UP(Settings.ClimberHopper.HOPPER_UP),
-        HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN),
-        HOLDING_UP(Settings.ClimberHopper.EXTENDED),
-        HOLDING_DOWN(Settings.ClimberHopper.RETRACTED);
+        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_HEIGHT_METERS),
+        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_HEIGHT_METERS),
+        HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_HEIGHT_METERS),
+        HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN_HEIGHT_METERS);
     
-        private double targetVoltage;
+        private double targetHeight;
         
-        private ClimberHopperState(double targetVoltage) {
-            this.targetVoltage = targetVoltage;
+        private ClimberHopperState(double targetHeight) {
+            this.targetHeight = targetHeight;
         }
         
-        public double getTargetVoltage() {
-            return targetVoltage;
+        public double getTargetHeight() {
+            return targetHeight;
         }
 
     }
     
     protected ClimberHopperState state;
 
-    public ClimberHopper() {
+    protected ClimberHopper() {
         this.state = ClimberHopperState.CLIMBER_UP;
     }
-        
+    
     public ClimberHopperState getState() {
         return state;
     }
@@ -61,7 +60,10 @@ public abstract class ClimberHopper extends SubsystemBase {
     }
 
     public abstract boolean getStalling();
-    public abstract double getPosition();
+    public abstract double getCurrentHeight();
+    public abstract boolean atTargetHeight();
+
+    // public abstract void setVoltageOverride(Optional<Double> voltage);
 
     @Override
     public void periodic() {

@@ -30,6 +30,29 @@ public interface Field {
     double WIDTH = Units.inchesToMeters(317.000); 
     double LENGTH = Units.inchesToMeters(651.200);
 
+    // Alliance relative trench coordinates
+    public interface NearLeftTrench {
+        public static final Pose2d leftEdge = new Pose2d(Units.inchesToMeters(182.11), WIDTH, new Rotation2d());
+        public static final Pose2d rightEdge = new Pose2d(Units.inchesToMeters(182.11), WIDTH - Units.inchesToMeters(50.59), new Rotation2d());
+    }
+
+    public interface NearRightTrench {
+        public static final Pose2d leftEdge = new Pose2d(Units.inchesToMeters(182.11), Units.inchesToMeters(50.59), new Rotation2d());
+        public static final Pose2d rightEdge = new Pose2d(Units.inchesToMeters(182.11), Units.inchesToMeters(0), new Rotation2d());
+    }
+
+    public interface FarLeftTrench {
+        public static final Pose2d leftEdge = new Pose2d(LENGTH - Units.inchesToMeters(182.11), WIDTH, new Rotation2d());
+        public static final Pose2d rightEdge = new Pose2d(LENGTH - Units.inchesToMeters(182.11), WIDTH - Units.inchesToMeters(50.59), new Rotation2d());
+    }
+
+    public interface FarRightTrench {
+        public static final Pose2d leftEdge = new Pose2d(LENGTH - Units.inchesToMeters(182.11), Units.inchesToMeters(50.59), new Rotation2d());
+        public static final Pose2d rightEdge = new Pose2d(LENGTH - Units.inchesToMeters(182.11), Units.inchesToMeters(0), new Rotation2d());
+    }
+
+    public static final double trenchXTolerance = Units.inchesToMeters(50);
+
     // Alliance relative hub center coordinates
     public static final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
     public static final Pose3d hubCenter3d = new Pose3d(hubCenter.getX(), hubCenter.getY(), Units.inchesToMeters(72), Rotation3d.kZero);

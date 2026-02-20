@@ -35,6 +35,17 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
+
+    public interface ClimberHopper {
+        // TODO: Find current limit.
+        TalonFXConfig MOTOR = new TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withCurrentLimitAmps(50)
+            .withSupplyCurrentLimitAmps(50)
+            .withRampRate(Settings.ClimberHopper.RAMP_RATE);
+    }
+
     public interface HoodedShooter {
         public interface Shooter {
             TalonFXConfig SHOOTER = new TalonFXConfig()
@@ -83,6 +94,17 @@ public interface Motors {
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.Clockwise_Positive);   // TODO: add gear ratio, find inversions
 
+        TalonFXConfig PIVOT = new TalonFXConfig()
+            .withCurrentLimitAmps(40)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)    // TODO: find inversions
+            .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
+            .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
+            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL.getRotations());
+    }   
+
+    public interface Spindexeer {
         TalonFXConfig PIVOT = new TalonFXConfig()
             .withCurrentLimitAmps(40)
             .withRampRate(0.25)
@@ -142,15 +164,6 @@ public interface Motors {
             .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
             .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
             .withSensorToMechanismRatio(Constants.Handoff.GEAR_RATIO);
-    }
-
-    public interface ClimberHopper {
-        TalonFXConfig MOTOR = new TalonFXConfig()
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withCurrentLimitAmps(60)
-            .withSupplyCurrentLimitAmps(60)
-            .withRampRate(0.25);
     }
 
     public static class TalonFXConfig {
