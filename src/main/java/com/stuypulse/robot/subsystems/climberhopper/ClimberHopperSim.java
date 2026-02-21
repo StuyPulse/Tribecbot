@@ -58,6 +58,11 @@ public class ClimberHopperSim extends ClimberHopper {
     // }
 
     @Override
+    public boolean isTrenchSafeRetracted() {
+        return getState() == ClimberHopperState.HOPPER_DOWN && atTargetHeight();
+    }
+
+    @Override
     public void periodic() {
         super.periodic();
 

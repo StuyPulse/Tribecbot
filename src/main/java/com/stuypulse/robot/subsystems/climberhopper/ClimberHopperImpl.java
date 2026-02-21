@@ -10,6 +10,7 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -52,6 +53,11 @@ public class ClimberHopperImpl extends ClimberHopper {
     @Override
     public boolean atTargetHeight() {
         return isWithinTolerance(Settings.ClimberHopper.HEIGHT_TOLERANCE_METERS);
+    }
+
+    @Override
+    public boolean isTrenchSafeRetracted() {
+        return getState() == ClimberHopperState.HOPPER_DOWN && atTargetHeight();
     }
 
     // @Override

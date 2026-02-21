@@ -61,6 +61,7 @@ public abstract class ClimberHopper extends SubsystemBase {
     public abstract boolean getStalling();
     public abstract double getCurrentHeight();
     public abstract boolean atTargetHeight();
+    public abstract boolean isTrenchSafeRetracted();
 
     // public abstract void setVoltageOverride(Optional<Double> voltage);
 
