@@ -11,7 +11,9 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
+import com.stuypulse.robot.commands.climberhopper.ClimberUp;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -254,7 +256,7 @@ public class RobotContainer {
         driver.getLeftBumper()
             .onTrue(new BuzzController(driver)
             )
-            .whileTrue(new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_BUMPER)
+            .whileTrue(new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_BUMPER).alongWith(new ClimberDown())
             )
             .onFalse(
                 new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
@@ -265,7 +267,7 @@ public class RobotContainer {
             .onTrue(new BuzzController(driver)
             )
             .whileTrue(
-                new LEDApplyState(Settings.LEDS.LEDState.PRESSED_RIGHT_BUMPER)
+                new LEDApplyState(Settings.LEDS.LEDState.PRESSED_RIGHT_BUMPER).alongWith(new ClimberUp())
             )
             .onFalse(
                 new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
