@@ -24,6 +24,7 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 /*-
  * File containing all of the configurations that different motors require.
@@ -70,8 +71,17 @@ public interface Motors {
                 .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
                 .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
                 .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO);
+
+            Slot0Configs SLOT_0 = new Slot0Configs()
+                .withKP(Gains.HoodedShooter.Hood.kP)
+                .withKI(Gains.HoodedShooter.Hood.kI)
+                .withKD(Gains.HoodedShooter.Hood.kD)
+                .withKS(Gains.HoodedShooter.Hood.kS)
+                .withKV(Gains.HoodedShooter.Hood.kV)
+                .withKA(Gains.HoodedShooter.Hood.kA)
+                .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
                     
-            SoftwareLimitSwitchConfigs hoodSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
                 .withForwardSoftLimitEnable(true)
                 .withReverseSoftLimitEnable(true)
                 .withForwardSoftLimitThreshold(Settings.HoodedShooter.Angles.MAX_ANGLE.getRotations())
