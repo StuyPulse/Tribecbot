@@ -36,6 +36,8 @@ public class ClimberHopperSim extends ClimberHopper {
             false,
             Settings.ClimberHopper.Constants.MIN_HEIGHT_METERS
         );
+
+        voltageOverride = Optional.empty();
     }
 
     public boolean getStalling() {
