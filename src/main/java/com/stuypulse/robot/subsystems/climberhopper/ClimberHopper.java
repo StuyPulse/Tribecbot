@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.climberhopper;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
@@ -62,7 +64,7 @@ public abstract class ClimberHopper extends SubsystemBase {
     public abstract double getCurrentHeight();
     public abstract boolean atTargetHeight();
 
-    // public abstract void setVoltageOverride(Optional<Double> voltage);
+    public abstract void setVoltageOverride(Optional<Double> voltage);
 
     @Override
     public void periodic() {

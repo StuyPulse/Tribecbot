@@ -54,23 +54,27 @@ public class ClimberHopperImpl extends ClimberHopper {
         return isWithinTolerance(Settings.ClimberHopper.HEIGHT_TOLERANCE_METERS);
     }
 
-    // @Override
-    // public void setVoltageOverride(Optional<Double> voltage) {
-    //     this.voltageOverride = voltage;
-    // }
+    @Override
+    public void setVoltageOverride(Optional<Double> voltage) {
+        this.voltageOverride = voltage;
+    }
 
     @Override
     public void periodic() {
         super.periodic();
 
-        if (!atTargetHeight()) {
-            if (getCurrentHeight() < getState().getTargetHeight()) {
-                voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
-            } else {
-                voltage = - Settings.ClimberHopper.MOTOR_VOLTAGE;
-            }
+        if (voltageOverride.isPresent()) {
+                voltage = voltageOverride.get();
         } else {
-            voltage = 0;
+            if (!atTargetHeight()) {
+                if (getCurrentHeight() < getState().getTargetHeight()) {
+                    voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+                } else {
+                    voltage = - Settings.ClimberHopper.MOTOR_VOLTAGE;
+                }
+            } else {
+                voltage = 0;
+            }
         }
 
         // TODO: Figure out some way to reset the encoder reading when stall
