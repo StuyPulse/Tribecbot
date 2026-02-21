@@ -146,8 +146,6 @@ public interface Settings {
             public final double GEAR_RATIO = 1.0;
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
         }
-
-
     }
     
     public interface Turret {
@@ -281,6 +279,9 @@ public interface Settings {
             PRESSED_RIGHT_BUTTON(LEDPattern.solid(Color.kBlueViolet)), //right corner shoot
             PRESSED_BOT_BUTTON(LEDPattern.solid(Color.kAliceBlue)), //hub shoot
 
+            PRESSED_RIGHT_MENU(LEDPattern.solid(Color.kAliceBlue)),
+            PRESSED_LEFT_MENU(LEDPattern.solid(Color.kLightBlue)),
+
             PRESSED_LEFT_TRIGGER(LEDPattern.solid(Color.kDarkBlue)), //intake on
             PRESSED_RIGHT_TRIGGER(LEDPattern.solid(Color.kCadetBlue)), //intake off
 
@@ -294,6 +295,8 @@ public interface Settings {
        
             SHOOTING_ON_THE_MOVE(LEDPattern.solid(Color.kOrange)),
             VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(Color.kAzure)),
+            FERRYING_MODE(LEDPattern.solid(Color.kRoyalBlue)),
+            SHOOTING_MODE(LEDPattern.solid(Color.kAqua)),
 
             PRESSED_DOWN_DPAD(LEDPattern.solid(Color.kDodgerBlue)), //unjam
             PRESSED_TOP_DPAD(LEDPattern.solid(Color.kCornflowerBlue)), //reset heading
