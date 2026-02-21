@@ -31,17 +31,17 @@ public class Robot extends TimedRobot {
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
-    private PowerDistribution powerDistribution;
     private static RobotMode mode;
-
-    public static RobotMode getMode() {
-        return mode;
-    }
+    
+    private PowerDistribution powerDistribution;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
     }
 
+    public static RobotMode getMode() {
+        return mode;
+    }
 
     /*************************/
     /*** ROBOT SCHEDULEING ***/
@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robot = new RobotContainer();
-        mode = RobotMode.DISABLED;
 
         DataLogManager.start();
         SignalLogger.start();
@@ -75,6 +74,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
+        
         mode = RobotMode.DISABLED;
     }
 
@@ -87,7 +87,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
+
         mode = RobotMode.AUTON;
 
         auto = robot.getAutonomousCommand();
@@ -109,10 +111,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        
-        mode = RobotMode.TELEOP;
 
+        CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
+
+        mode = RobotMode.TELEOP;
+        
         if (auto != null) {
             auto.cancel();
         }
@@ -130,7 +133,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        mode = RobotMode.TEST;
         CommandScheduler.getInstance().cancelAll();
     }
 
