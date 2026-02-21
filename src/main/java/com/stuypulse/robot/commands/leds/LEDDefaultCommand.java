@@ -49,8 +49,7 @@ public class LEDDefaultCommand extends Command {
         if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
             leds.applyState(Settings.LEDS.LEDState.TRENCH_LOWERING);           
         }
-        else if (climberHopper.getState() == ClimberHopperState.HOLDING_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
-            // TODO FIX
+        else if (climberHopper.isTrenchSafeRetracted() && hoodedShooter.getState() == HoodedShooterState.STOW) {
             leds.applyState(Settings.LEDS.LEDState.TRENCH_PASS);
         }
         else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
