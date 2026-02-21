@@ -59,7 +59,7 @@ public class ClimberHopperSim extends ClimberHopper {
 
     @Override
     public boolean isTrenchSafeRetracted() {
-        return getState() == ClimberHopperState.HOPPER_DOWN && atTargetHeight();
+        return Math.abs(ClimberHopperState.HOPPER_DOWN.getTargetHeight() - getCurrentHeight()) < Settings.ClimberHopper.HEIGHT_TOLERANCE_METERS;
     }
 
     @Override

@@ -2,9 +2,6 @@ package com.stuypulse.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.Command;
-
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
@@ -46,11 +43,11 @@ public class LEDDefaultCommand extends Command {
             return;
         }
         
-        if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
-            leds.applyState(Settings.LEDS.LEDState.TRENCH_LOWERING);           
+        if (climberHopper.isTrenchSafeRetracted() && hoodedShooter.getState() == HoodedShooterState.STOW)
+         {leds.applyState(Settings.LEDS.LEDState.TRENCH_PASS);           
         }
-        else if (climberHopper.isTrenchSafeRetracted() && hoodedShooter.getState() == HoodedShooterState.STOW) {
-            leds.applyState(Settings.LEDS.LEDState.TRENCH_PASS);
+        else if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN) {
+            leds.applyState(Settings.LEDS.LEDState.TRENCH_LOWERING);
         }
         else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
             leds.applyState(Settings.LEDS.LEDState.CLIMBING);

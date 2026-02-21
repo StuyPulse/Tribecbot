@@ -280,10 +280,10 @@ public interface Settings {
             APPROACHING_RIGHT_CORNER(LEDPattern.solid(Color.kBlanchedAlmond)),
             RIGHT_CORNER(LEDPattern.solid(Color.kAqua)),
             DISABLED_ALIGNED(LEDPattern.solid(Color.kPurple)),
-            SHOOTING_ON_THE_MOVE(LEDPattern.solid(null)),
-            VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(null)),
-            SHOOTING_MODE(LEDPattern.solid(null)),
-            FERRYING_MODE(LEDPattern.solid(null)),
+            SHOOTING_ON_THE_MOVE(LEDPattern.solid(Color.kOrange)),
+            VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(Color.kAzure)),
+            SHOOTING_MODE(LEDPattern.solid(Color.kAliceBlue)),
+            FERRYING_MODE(LEDPattern.solid(Color.kBeige)),
             DEFAULT_SETTING(LEDPattern.kOff);
             
             public LEDPattern pattern;
