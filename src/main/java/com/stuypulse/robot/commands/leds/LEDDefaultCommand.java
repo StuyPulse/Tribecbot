@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
-import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
@@ -18,6 +17,7 @@ import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
 import com.stuypulse.stuylib.input.Gamepad;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class LEDDefaultCommand extends Command {
     private final LEDController leds;
@@ -36,7 +36,7 @@ public class LEDDefaultCommand extends Command {
     
     @Override
     public void execute() {
-        if(Robot.getMode() == RobotMode.DISABLED) {
+        if(DriverStation.isDisabled()) {
             if(LimelightVision.getInstance().getMaxTagCount() >= Settings.LEDS.DESIRED_TAGS_WHEN_DISABLED) {
                 leds.applyState(Settings.LEDS.LEDState.DISABLED_ALIGNED);
             }
@@ -49,7 +49,8 @@ public class LEDDefaultCommand extends Command {
         if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
             leds.applyState(Settings.LEDS.LEDState.TRENCH_LOWERING);           
         }
-        else if (climberHopper.isTrenchSafeRetracted() && hoodedShooter.getState() == HoodedShooterState.STOW) {
+        else if (climberHopper.getState() == ClimberHopperState.HOLDING_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
+            // TODO FIX
             leds.applyState(Settings.LEDS.LEDState.TRENCH_PASS);
         }
         else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
