@@ -1,6 +1,9 @@
 # This gitignore has been specially created by the WPILib team.
 # If you remove items from this file, intellisense might break.
 
+*.dat
+*.hoot
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -41,8 +44,6 @@
 
 # Log file
 *.log
-*.hoot
-*.dat
 
 # BlueJ files
 *.ctxt
