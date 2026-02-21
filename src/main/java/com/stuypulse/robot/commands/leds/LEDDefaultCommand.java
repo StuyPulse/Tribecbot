@@ -38,30 +38,35 @@ public class LEDDefaultCommand extends Command {
     public void execute() {
         if(Robot.getMode() == RobotMode.DISABLED) {
             if(LimelightVision.getInstance().getMaxTagCount() >= Settings.LEDS.DESIRED_TAGS_WHEN_DISABLED) {
-                leds.applyPattern(Settings.LEDS.DISABLED_ALIGNED);
+                leds.applyState(Settings.LEDS.LEDState.DISABLED_ALIGNED);
             }
             else {
-                leds.applyPattern(LEDPattern.kOff);
+                leds.applyState(Settings.LEDS.LEDState.DEFAULT_SETTING);
             }
+            return;
         }
-        else {
-            if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
-                leds.applyPattern(Settings.LEDS.TRENCH_LOWERING);           
-            }
-            else if (climberHopper.getState() == ClimberHopperState.HOLDING_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
-                leds.applyPattern(Settings.LEDS.TRENCH_PASS);
-            }
-            else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
-                leds.applyPattern(Settings.LEDS.CLIMBING);
-            }
-            //else if (turret.getState < TurretState.LEFT_CORNER - )
-            else if (turret.getState() == TurretState.LEFT_CORNER) {
-                leds.applyPattern((Settings.LEDS.LEFT_CORNER));
-            }
-            else if (turret.getState() == TurretState.RIGHT_CORNER) {
-                leds.applyPattern(Settings.LEDS.RIGHT_CORNER);
-            }
+        
+        if (climberHopper.getState() == ClimberHopperState.HOPPER_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
+            leds.applyState(Settings.LEDS.LEDState.TRENCH_LOWERING);           
         }
-    }    
+        else if (climberHopper.getState() == ClimberHopperState.HOLDING_DOWN && hoodedShooter.getState() == HoodedShooterState.STOW) {
+            leds.applyState(Settings.LEDS.LEDState.TRENCH_PASS);
+        }
+        else if (climberHopper.getState() == ClimberHopperState.CLIMBER_DOWN) {
+            leds.applyState(Settings.LEDS.LEDState.CLIMBING);
+        }
+        else if (turret.getState() == TurretState.LEFT_CORNER) {
+            leds.applyState((Settings.LEDS.LEDState.LEFT_CORNER));
+        }
+        else if (turret.getState() == TurretState.RIGHT_CORNER) {
+            leds.applyState(Settings.LEDS.LEDState.RIGHT_CORNER);
+        }
+        else if (turret.getState() == TurretState.FERRYING && hoodedShooter.getState() == HoodedShooterState.FERRY) {
+            leds.applyState(Settings.LEDS.LEDState.FERRYING_MODE);
+        }
+        else if (turret.getState() == TurretState.SHOOTING && hoodedShooter.getState() == HoodedShooterState.SHOOT) {
+            leds.applyState(Settings.LEDS.LEDState.SHOOTING_MODE);
+        }
+    }     
 }
 

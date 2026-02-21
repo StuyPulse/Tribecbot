@@ -255,35 +255,58 @@ public interface Settings {
     }
 
     public interface LEDS {
-        //buttons 
-        LEDPattern PRESSED_TOP_BUTTON = LEDPattern.solid(Color.kLightBlue);
-        LEDPattern PRESSED_LEFT_BUTTON = LEDPattern.solid(Color.kSkyBlue);
-        LEDPattern PRESSED_RIGHT_BUTTON = LEDPattern.solid(Color.kBlueViolet);
-        LEDPattern PRESSED_BOT_BUTTON = LEDPattern.solid(Color.kAliceBlue);
-        LEDPattern PRESSED_LEFT_TRIGGER = LEDPattern.solid(Color.kDarkBlue);
-        LEDPattern PRESSED_RIGHT_TRIGGER = LEDPattern.solid(Color.kCadetBlue);
-        LEDPattern PRESSED_LEFT_BUMPER = LEDPattern.solid(Color.kFirstBlue);
-        LEDPattern PRESSED_RIGHT_BUMPER = LEDPattern.solid(Color.kRoyalBlue);
-        LEDPattern PRESSED_LEFT_DPAD = LEDPattern.solid(Color.kSlateBlue);
-        LEDPattern PRESSED_RIGHT_DPAD = LEDPattern.solid(Color.kSteelBlue);
-        LEDPattern PRESSED_DOWN_DPAD = LEDPattern.solid(Color.kDodgerBlue);
-        LEDPattern PRESSED_TOP_DPAD = LEDPattern.solid(Color.kCornflowerBlue);
-
-        Time TRENCH_PASS_SECONDS = Seconds.of(0.4);
-        LEDPattern TRENCH_LOWERING = LEDPattern.solid(Color.kLightGoldenrodYellow);
-        LEDPattern TRENCH_E_STOP = LEDPattern.solid(Color.kRed);
-        LEDPattern TRENCH_PASS = LEDPattern.solid(Color.kGreen).breathe(TRENCH_PASS_SECONDS);
-
-        LEDPattern CLIMBING = LEDPattern.solid(Color.kLightSkyBlue); 
-        LEDPattern CLIMB_IS_ALIGNED = LEDPattern.solid(Color.kMediumBlue);
-
-        LEDPattern APPROACHING_LEFT_CORNER = LEDPattern.solid(Color.kWheat);
-        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kAntiqueWhite);
-        LEDPattern APPROACHING_RIGHT_CORNER = LEDPattern.solid(Color.kBlanchedAlmond);
-        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kAqua);
-        
         double DESIRED_TAGS_WHEN_DISABLED = 2;
-        LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kPurple);
+
+        public enum LEDState {
+            PRESSED_TOP_BUTTON(LEDPattern.solid(Color.kLightBlue)),
+            PRESSED_LEFT_BUTTON(LEDPattern.solid(Color.kSkyBlue)),
+            PRESSED_RIGHT_BUTTON(LEDPattern.solid(Color.kBlueViolet)),
+            PRESSED_BOT_BUTTON(LEDPattern.solid(Color.kAliceBlue)),
+            PRESSED_LEFT_TRIGGER(LEDPattern.solid(Color.kDarkBlue)),
+            PRESSED_RIGHT_TRIGGER(LEDPattern.solid(Color.kCadetBlue)),
+            PRESSED_LEFT_BUMPER(LEDPattern.solid(Color.kFirstBlue)),
+            PRESSED_RIGHT_BUMPER(LEDPattern.solid(Color.kRoyalBlue)),
+            PRESSED_LEFT_DPAD(LEDPattern.solid(Color.kSlateBlue)),
+            PRESSED_RIGHT_DPAD(LEDPattern.solid(Color.kSteelBlue)),
+            PRESSED_DOWN_DPAD(LEDPattern.solid(Color.kDodgerBlue)),
+            PRESSED_TOP_DPAD(LEDPattern.solid(Color.kCornflowerBlue)),
+            TRENCH_PASS(LEDPattern.solid(Color.kGreen).breathe(Seconds.of(0.4))),
+            TRENCH_LOWERING(LEDPattern.solid(Color.kLightGoldenrodYellow)),
+            TRENCH_E_STOP(LEDPattern.solid(Color.kRed)),
+            CLIMBING(LEDPattern.solid(Color.kLightSkyBlue)),
+            CLIMB_IS_ALIGNED(LEDPattern.solid(Color.kMediumBlue)),
+            APPROACHING_LEFT_CORNER(LEDPattern.solid(Color.kWheat)),
+            LEFT_CORNER(LEDPattern.solid(Color.kAntiqueWhite)),
+            APPROACHING_RIGHT_CORNER(LEDPattern.solid(Color.kBlanchedAlmond)),
+            RIGHT_CORNER(LEDPattern.solid(Color.kAqua)),
+            DISABLED_ALIGNED(LEDPattern.solid(Color.kPurple)),
+            SHOOTING_ON_THE_MOVE(LEDPattern.solid(null)),
+            VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(null)),
+            SHOOTING_MODE(LEDPattern.solid(null)),
+            FERRYING_MODE(LEDPattern.solid(null)),
+            DEFAULT_SETTING(LEDPattern.kOff);
+            
+            public LEDPattern pattern;
+
+            private LEDState(LEDPattern pattern) {
+                this.pattern = pattern;
+            }
+
+        }
+
+        //buttons 
+        // LEDPattern PRESSED_TOP_BUTTON = LEDPattern.solid(Color.kLightBlue);
+        // LEDPattern PRESSED_LEFT_BUTTON = LEDPattern.solid(Color.kSkyBlue);
+        // LEDPattern PRESSED_RIGHT_BUTTON = LEDPattern.solid(Color.kBlueViolet);
+        // LEDPattern PRESSED_BOT_BUTTON = LEDPattern.solid(Color.kAliceBlue);
+        // LEDPattern PRESSED_LEFT_TRIGGER = LEDPattern.solid(Color.kDarkBlue);
+        // LEDPattern PRESSED_RIGHT_TRIGGER = LEDPattern.solid(Color.kCadetBlue);
+        // LEDPattern PRESSED_LEFT_BUMPER = LEDPattern.solid(Color.kFirstBlue);
+        // LEDPattern PRESSED_RIGHT_BUMPER = LEDPattern.solid(Color.kRoyalBlue);
+        // LEDPattern PRESSED_LEFT_DPAD = LEDPattern.solid(Color.kSlateBlue);
+        // LEDPattern PRESSED_RIGHT_DPAD = LEDPattern.solid(Color.kSteelBlue);
+        // LEDPattern PRESSED_DOWN_DPAD = LEDPattern.solid(Color.kDodgerBlue);
+        // LEDPattern PRESSED_TOP_DPAD = LEDPattern.solid(Color.kCornflowerBlue);
     }
 
     public interface Driver {

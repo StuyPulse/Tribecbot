@@ -3,6 +3,8 @@ package com.stuypulse.robot.subsystems.leds;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.LEDS.LEDState;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -33,13 +35,21 @@ public class LEDController extends SubsystemBase{
         leds.setData(ledsBuffer);
         leds.start();
 
-        applyPattern(LEDPattern.kOff); //default is off 
+        applyState(Settings.LEDS.LEDState.DEFAULT_SETTING); //default is off 
 
         SmartDashboard.putData(instance);
     }
 
     public void applyPattern(LEDPattern pattern) {
         pattern.applyTo(ledsBuffer);
+        leds.setData(ledsBuffer);
+        SmartDashboard.putString("LED Pattern", pattern.toString());
+    }
+
+    public void applyState(LEDState state) {
+        state.pattern.applyTo(ledsBuffer);
+        leds.setData(ledsBuffer);
+        SmartDashboard.putString("LED State", state.toString());
     }
 
     @Override

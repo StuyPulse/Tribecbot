@@ -5,26 +5,27 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.function.Supplier;
 
+import com.stuypulse.robot.constants.Settings.LEDS.LEDState;
 import com.stuypulse.robot.subsystems.leds.LEDController;
 
-public class LEDApplyPattern extends Command {
+public class LEDApplyState extends Command {
     protected final LEDController leds;
-    protected final Supplier<LEDPattern> pattern;
+    protected final Supplier<LEDState> state;
 
-     public LEDApplyPattern(Supplier<LEDPattern> pattern) {
+    public LEDApplyState(Supplier<LEDState> state) {
         leds = LEDController.getInstance();
-        this.pattern = pattern;
+        this.state = state;
 
         addRequirements(leds);
     }
 
-    public LEDApplyPattern(LEDPattern pattern) {
-        this(() -> pattern);
+    public LEDApplyState(LEDState state) {
+        this(() -> state);
     }
 
     @Override
     public void execute() {
-        leds.applyPattern(pattern.get());
+        leds.applyState(state.get());
     }
     
 }
