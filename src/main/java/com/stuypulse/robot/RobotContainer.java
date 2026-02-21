@@ -173,12 +173,13 @@ public class RobotContainer {
 //-------------------------------------------------------------------------------------------------------------------------\\
 //-------------------------------------------------------------------------------------------------------------------------\\
 //-------------------------------------------------------------------------------------------------------------------------\\
-        // Climb Align
+        // Climb Align TODO: uncomment
         driver.getTopButton()
             .whileTrue(
                 new SwerveClimbAlign().alongWith(
                     new LEDApplyState(Settings.LEDS.LEDState.PRESSED_TOP_BUTTON))
-                );
+                )
+            .onFalse(new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING));
 
         // Left Corner Shoot
         driver.getLeftButton()
@@ -237,35 +238,35 @@ public class RobotContainer {
         // Intake On
         driver.getLeftTriggerButton()
             .onTrue(
-                new IntakeIntake().alongWith(
-                    new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_TRIGGER)))
+                new IntakeIntake().alongWith
+                (new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_TRIGGER)))
+            
             .onFalse(
                 new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
             );
 
         // Intake Off
         driver.getRightTriggerButton()
-            .onTrue(new IntakeStop().alongWith(
-                new LEDApplyState(Settings.LEDS.LEDState.PRESSED_RIGHT_TRIGGER)
-            ))
-            .onFalse(
-                new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
-            );
+            .whileTrue(
+                new IntakeStop());
 
         // Climb Down Placeholder
         driver.getLeftBumper()
-            .onTrue(new BuzzController(driver).alongWith(
-                new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_BUMPER)
-            ))
+            .onTrue(new BuzzController(driver)
+            )
+            .whileTrue(new LEDApplyState(Settings.LEDS.LEDState.PRESSED_LEFT_BUMPER)
+            )
             .onFalse(
                 new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
             );
 
         // Climb Up Placeholder
         driver.getRightBumper()
-            .onTrue(new BuzzController(driver).alongWith(
+            .onTrue(new BuzzController(driver)
+            )
+            .whileTrue(
                 new LEDApplyState(Settings.LEDS.LEDState.PRESSED_RIGHT_BUMPER)
-            ))
+            )
             .onFalse(
                 new LEDApplyState(Settings.LEDS.LEDState.DEFAULT_SETTING)
             );

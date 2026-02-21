@@ -92,6 +92,8 @@ public class IntakeImpl extends Intake {
 
             SmartDashboard.putNumber("Intake/Roller Leader Current (amps)", rollerLeader.getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Roller Follower Current (amps)", rollerFollower.getSupplyCurrent().getValueAsDouble());
+
+            SmartDashboard.putString("Intake/Roller State", getState().name());
         }
     }
 
