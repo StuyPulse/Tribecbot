@@ -1,4 +1,4 @@
-/************************ PROJECT TRIBECBOT *************************/
+/************************ PROJECT ALPHA *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.util.hoodedshooter.HoodAngleCalculator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,7 +58,7 @@ public abstract class Shooter extends SubsystemBase {
         return switch(state) {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
-            case FERRY -> getFerryRPM();
+            case FERRY -> HoodAngleCalculator.interpolateFerryingRPM().get();
             case REVERSE -> Settings.HoodedShooter.RPMs.REVERSE;
             case HUB -> Settings.HoodedShooter.RPMs.HUB_RPM;
             case LEFT_CORNER -> Settings.HoodedShooter.RPMs.LEFT_CORNER_RPM;
@@ -90,5 +91,7 @@ public abstract class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("HoodedShooter/Shooter/Current RPM", getShooterRPM());
         SmartDashboard.putNumber("HoodedShooter/Shooter/Target RPM", getTargetRPM());
+
+        SmartDashboard.putNumber("InterpolationTesting/Shooter Interpolated Target RPM", HoodAngleCalculator.interpolateShooterRPM().get());
     }
 }

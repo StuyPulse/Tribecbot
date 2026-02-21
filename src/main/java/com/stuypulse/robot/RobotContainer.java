@@ -126,17 +126,17 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
 
+        driver.getDPadUp()
+            .onTrue(new SwerveResetHeading());
+
         driver.getDPadDown()
             .onTrue(new TurretIdle())
             .onTrue(new TurretSeed());
-
-        driver.getDPadUp()
-            .onTrue(new SwerveResetHeading());
         
         // SCORING ROUTINE
         driver.getTopButton()
                 .whileTrue(new TurretShoot()
-                        .alongWith(new HoodedShooterShoot())
+                        .alongWith(new HoodedShooterInterpolation())
                         .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
                         .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
                                 .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
@@ -145,13 +145,14 @@ public class RobotContainer {
                         .alongWith(new HoodedShooterStow())
                         .alongWith(new HandoffStop()));
 
-        driver.getTopButton()
-                .whileTrue(new TurretShoot()
-                        .alongWith(new HoodedShooterInterpolation())
+        driver.getBottomButton()
+                .onTrue(new HoodedShooterFerry()
+                        .alongWith(new TurretFerry())
                         .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
                         .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
                                 .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance()))))
+                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance())))      
+                )
                 .onFalse(new SpindexerStop()
                         .alongWith(new HoodedShooterStow())
                         .alongWith(new HandoffStop()));

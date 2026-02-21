@@ -33,8 +33,8 @@ public abstract class Hood extends SubsystemBase{
         HUB,
         LEFT_CORNER,
         RIGHT_CORNER,
-        IDLE,
-        INTERPOLATION;
+        INTERPOLATION,
+        IDLE;
     }
 
     public Hood() {

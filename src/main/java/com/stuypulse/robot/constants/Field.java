@@ -52,7 +52,7 @@ public interface Field {
 
     // 1.0 meters from driverstation wall and field wall
     public final Pose2d leftFerryZone = new Pose2d(1.0, WIDTH - 1.0, new Rotation2d());
-    public final Pose2d rightFerryZone = new Pose2d(1.0, 1.0, new Rotation2d());
+    public final Pose2d rightFerryZone = new Pose2d(1.0 + Units.feetToMeters(6), 1.0 + Units.feetToMeters(3), new Rotation2d()); //TODO: GET ACTUAL POS
 
     public static Pose2d getFerryZonePose(Translation2d robot) { 
         if (robot.getDistance(leftFerryZone.getTranslation()) > robot.getDistance(rightFerryZone.getTranslation())) {

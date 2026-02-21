@@ -75,23 +75,43 @@ public interface Settings {
             double GEAR_RATIO = 8.0 / 1.0;
         }
     }
+
+    public interface ShootOnTheFly {
+        int MAX_ITERATIONS = 5;
+        double TIME_TOLERANCE = 0.01;
+        SmartNumber UPDATE_DELAY = new SmartNumber("HoodedShooter/SOTM/update delay", 0.00);
+    }
     
     public interface HoodedShooter {
         double SHOOTER_TOLERANCE_RPM = 50.0;
         double HOOD_TOLERANCE_DEG = 0.5;
 
+        public interface FerryRPMInterpolation {
+            double[][] distanceRPMInterpolationValues = {
+                {3.79, 3450} // DONE ON 2/20
+            };
+        }
+
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
+                {1.30, Units.degreesToRadians(16.5)},
                 {1.43, Units.degreesToRadians(21.0)}, // meters, radians
+                {2.15, Units.degreesToRadians(23.23)},
+                {2.864967, Units.degreesToRadians(25.460189)},
                 {3.65, Units.degreesToRadians(28.0)},
+                {4.43, Units.degreesToRadians(30.65)},
                 {5.32, Units.degreesToRadians(33.5)}
             };
         }
         public interface RPMInterpolation{
             double[][] distanceRPMInterpolationValues = {
+                {1.30, 3000.0},
                 {1.43, 3000.0}, // meters, RPM 
+                {2.15, 3050.0},
+                {2.864967, 3215.271125},
                 {3.65, 3400.0},
-                {5.32, 3850.0}
+                {4.43, 3650.0},
+                {5.32, 3950.0}
             };
         }
 
@@ -124,7 +144,10 @@ public interface Settings {
         }
         public interface Shooter {
             public final double GEAR_RATIO = 1.0;
+            public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
         }
+
+
     }
     
     public interface Turret {
@@ -203,11 +226,6 @@ public interface Settings {
     public interface Vision {
         Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
         Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);
-    }
-
-    public interface ShootOnTheFly {
-        int MAX_ITERATIONS = 5;
-        double TIME_TOLERANCE = 0.01;
     }
 
     public interface Swerve {

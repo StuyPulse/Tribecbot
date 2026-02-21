@@ -1,4 +1,4 @@
-/************************ PROJECT TRIBECBOT *************************/
+/************************ PROJECT ALPHA *************************/
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
@@ -32,7 +32,7 @@ public class HoodedShooter extends SubsystemBase {
     private final Shooter shooter;
 
     public HoodedShooter() {
-        state = HoodedShooterState.STOW;
+        state = HoodedShooterState.INTERPOLATION;
         hood = Hood.getInstance();
         shooter = Shooter.getInstance();
     }
@@ -117,5 +117,8 @@ public class HoodedShooter extends SubsystemBase {
 
         SmartDashboard.putBoolean("HoodedShooter/Shooter At Tolerance?", isShooterAtTolerance());
         SmartDashboard.putBoolean("HoodedShooter/Hood At Tolerance?", isHoodAtTolerance());
+
+        SmartDashboard.putNumber("InterpolationTesting/Hood Angle", getHoodAngle().getDegrees());
+        SmartDashboard.putNumber("InterpolationTesting/Shooter RPM", getShooterRPM());
     }
 }

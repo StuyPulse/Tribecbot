@@ -83,6 +83,12 @@ public class ShooterImpl extends Shooter {
 
             SmartDashboard.putNumber("HoodedShooter/Shooter/Leader Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Voltage", shooterFollower.getMotorVoltage().getValueAsDouble());
+
+            SmartDashboard.putNumber("HoodedShooter/Shooter/Follower RPM", getFollowerRPM());
+
+            SmartDashboard.putNumber("InterpolationTesting/Shooter Closed Loop Error", shooterLeader.getClosedLoopError().getValueAsDouble() * 60.0);
+            SmartDashboard.putNumber("InterpolationTesting/Shooter Applied Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("InterpolationTesting/Shooter Supply Current", shooterLeader.getSupplyCurrent().getValueAsDouble());
         }
     }
 
