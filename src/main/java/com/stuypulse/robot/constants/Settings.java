@@ -104,12 +104,24 @@ public interface Settings {
         }
 
         public interface Hood {
+            /**
+             *
+             * The absolute encoder is mounted on a 10.67:1 gear reduction relative to the
+             * hood mechanism. This means:
+             *
+             *  - The encoder rotates 10.67 times for every 1 full rotation of the hood.
+             *  - The hood's physical range of motion is only 33 degrees.
+             *
+             * Because 33° * 10.67 = ~352°, the encoder will never exceed 360° over the
+             * entire hood travel. Therefore, the absolute encoder reading (0–360°)
+             * uniquely maps to the hood’s 0–33° mechanical range without any ambiguity.
+             *
+             */
             public final double GEAR_RATIO = 17024.0 / 135.0;
             public final double ENCODER_TO_MECH = 32.0 / 3.0;
 
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromDegrees(0.0);
         }
-
         public interface RPMInterpolation {
             public final double[][] distanceRPMInterpolationValues = {
                 {1.30, 3000.0},
@@ -240,7 +252,7 @@ public interface Settings {
             public final double GEAR_RATIO_MOTOR_TO_MECH = 1425.0 / 36.0;
 
             public interface BigGear {
-                public final int TEETH = 90;
+                public final int TEETH = 95;
             }
 
             public interface Encoder17t {
