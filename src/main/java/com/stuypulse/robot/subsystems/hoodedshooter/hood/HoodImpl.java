@@ -19,6 +19,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import java.util.Optional;
+
 public class HoodImpl extends Hood {
     private final TalonFX hoodMotor;
     private final CANcoder hoodEncoder;
@@ -26,19 +27,22 @@ public class HoodImpl extends Hood {
     private final PositionVoltage controller;
     
     private Optional<Double> voltageOverride;
-
+    
     private boolean hasUsedAbsoluteEncoder;
 
     public HoodImpl() {
-        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR);
-        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER);
+        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR, Ports.RIO);
+        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
         Motors.HoodedShooter.Hood.HOOD.configure(hoodMotor);
 
-        hoodMotor.getConfigurator().apply(Motors.HoodedShooter.Hood.hoodSoftwareLimitSwitchConfigs);
+        hoodMotor.getConfigurator().apply(Motors.HoodedShooter.Hood.SLOT_0);
+        hoodMotor.getConfigurator().apply(Motors.HoodedShooter.Hood.SOFT_LIMITS);
+
         hoodEncoder.getConfigurator().apply(Motors.HoodedShooter.Hood.HOOD_ENCODER);
 
-        controller = new PositionVoltage(getTargetAngle().getRotations());
+        controller = new PositionVoltage(getTargetAngle().getRotations())
+            .withEnableFOC(true);
 
         voltageOverride = Optional.empty();
     }
@@ -53,22 +57,36 @@ public class HoodImpl extends Hood {
         super.periodic();
 
         if (!hasUsedAbsoluteEncoder) {
-            hoodMotor.setPosition(hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.SENSOR_TO_HOOD_RATIO);
+            /*
+             * Example:
+             * Let's say the hood rotates 0.1 rotations. Then, the encoder has rotated 0.1 * 10.67 rotations
+             * To convert the encoder reading to the mechanism position, we simply do (0.1 * 10.67) / 10.67 = 0.1
+             */
+            hoodMotor.setPosition(hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
+            hasUsedAbsoluteEncoder = true;
         }
 
         if (EnabledSubsystems.HOOD.get()) {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else {
-                hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()).withEnableFOC(true));
+                hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }
         } else {
             hoodMotor.stopMotor();
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("HoodedShooter/Hood/Hood Absolute Angle (deg)", hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.SENSOR_TO_HOOD_RATIO); //* 360.0 / (360.0/35.0) / .97);
-            SmartDashboard.putNumber("HoodedShooter/Hood/Input Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("HoodedShooter/Hood/Hood Absolute Angle (deg)", hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
+
+            SmartDashboard.putNumber("HoodedShooter/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("HoodedShooter/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
+
+            SmartDashboard.putNumber("HoodedShooter/Hood/Closed Loop Error (deg)", hoodMotor.getClosedLoopError().getValueAsDouble() * 360.0);
+            SmartDashboard.putBoolean("HoodedShooter/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
+
+            SmartDashboard.putNumber("InterpolationTesting/Hood Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("InterpolationTesting/Hood Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
         }
     }
 
