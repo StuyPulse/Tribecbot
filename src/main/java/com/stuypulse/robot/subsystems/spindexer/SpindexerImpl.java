@@ -30,8 +30,8 @@ public class SpindexerImpl extends Spindexer {
     private Optional<Double> voltageOverride;
 
     public SpindexerImpl() {
-        leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR);
-        followerMotor = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR);
+        leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);
+        followerMotor = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR, Ports.CANIVORE);
 
         Motors.Spindexer.SPINDEXER.configure(leadMotor);
         Motors.Spindexer.SPINDEXER.configure(followerMotor);

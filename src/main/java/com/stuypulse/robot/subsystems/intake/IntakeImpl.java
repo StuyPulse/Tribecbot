@@ -34,13 +34,13 @@ public class IntakeImpl extends Intake {
     private Optional<Double> pivotVoltageOverride;
 
     public IntakeImpl() {
-        pivot = new TalonFX(Ports.Intake.PIVOT);
+        pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
         Motors.Intake.PIVOT.configure(pivot);
 
-        rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER);
+        rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER, Ports.RIO);
         Motors.Intake.ROLLER.configure(rollerLeader);
 
-        rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER);
+        rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER, Ports.RIO);
         Motors.Intake.ROLLER.configure(rollerFollower);
 
         pivotController = new MotionMagicVoltage(getPivotState().getTargetAngle().getRotations())

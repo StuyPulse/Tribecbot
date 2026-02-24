@@ -25,7 +25,7 @@ public class HandoffImpl extends Handoff {
     private Optional<Double> voltageOverride;
 
     public HandoffImpl() {
-        motor = new TalonFX(Ports.Handoff.HANDOFF);
+        motor = new TalonFX(Ports.Handoff.HANDOFF, Ports.RIO);
         Motors.Handoff.HANDOFF.configure(motor);
 
         controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE)

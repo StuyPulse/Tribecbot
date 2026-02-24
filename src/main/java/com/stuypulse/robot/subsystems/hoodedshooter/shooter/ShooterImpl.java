@@ -30,8 +30,8 @@ public class ShooterImpl extends Shooter {
     private Optional<Double> voltageOverride;
 
     public ShooterImpl() {
-        shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD);
-        shooterFollower = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_FOLLOW);
+        shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);
+        shooterFollower = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_FOLLOW, Ports.RIO);
 
         shooterController = new VelocityVoltage(getTargetRPM() / 60.0)
             .withEnableFOC(true);

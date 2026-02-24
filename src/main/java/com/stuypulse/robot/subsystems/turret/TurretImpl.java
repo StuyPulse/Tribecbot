@@ -33,9 +33,9 @@ public class TurretImpl extends Turret {
 
 
     public TurretImpl() {
-        motor = new TalonFX(Ports.Turret.MOTOR, Ports.bus);
-        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.bus);
-        encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.bus);
+        motor = new TalonFX(Ports.Turret.MOTOR, Ports.RIO);
+        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
+        encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.RIO);
 
         Motors.Turret.TURRET.configure(motor);
 

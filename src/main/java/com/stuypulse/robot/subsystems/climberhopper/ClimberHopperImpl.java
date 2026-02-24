@@ -31,7 +31,7 @@ public class ClimberHopperImpl extends ClimberHopper {
     public ClimberHopperImpl() {
         super();
         
-        motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER);
+        motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
         Motors.ClimberHopper.MOTOR.configure(motor);
         motor.getConfigurator().apply(Motors.ClimberHopper.SOFT_LIMITS);
 

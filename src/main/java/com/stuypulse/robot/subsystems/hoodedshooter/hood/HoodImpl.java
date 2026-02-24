@@ -31,8 +31,8 @@ public class HoodImpl extends Hood {
     private boolean hasUsedAbsoluteEncoder;
 
     public HoodImpl() {
-        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR);
-        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER);
+        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR, Ports.RIO);
+        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
         Motors.HoodedShooter.Hood.HOOD.configure(hoodMotor);
 
