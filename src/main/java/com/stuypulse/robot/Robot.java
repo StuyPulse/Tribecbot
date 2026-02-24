@@ -21,19 +21,22 @@ import com.ctre.phoenix6.SignalLogger;
 
 public class Robot extends TimedRobot {
 
+    private RobotContainer robot;
+    private static Alliance alliance;
+    private static RobotMode mode;
+
+    private Command auto;
+    private PowerDistribution powerDistribution;
+
+    /************************/
+    /***** ROBOT STATES *****/
+    /************************/
     public enum RobotMode {
         DISABLED,
         AUTON,
         TELEOP,
         TEST
     }
-
-    private RobotContainer robot;
-    private Command auto;
-    private static Alliance alliance;
-    private static RobotMode mode;
-    
-    private PowerDistribution powerDistribution;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;

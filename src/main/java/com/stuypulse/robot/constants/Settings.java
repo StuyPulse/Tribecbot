@@ -221,6 +221,9 @@ public interface Settings {
         double MOTOR_VOLTAGE = 3.5;
     }
 
+    public interface LEDs {
+        int LED_LENGTH = 50;
+    }
     public interface Vision {
         Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
         Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);

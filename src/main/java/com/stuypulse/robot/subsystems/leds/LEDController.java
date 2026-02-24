@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems.leds;
 
 import com.stuypulse.robot.RobotContainer;
-import com.stuypulse.robot.constants.Constants;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.LEDS.LEDState;
@@ -17,7 +16,7 @@ public class LEDController extends SubsystemBase{
     private final static LEDController instance;
 
     static {
-        instance = new LEDController(Ports.LED.LED_PORT, Constants.LED.LED_LENGTH);
+        instance = new LEDController(Ports.LED.LED_PORT, Settings.LEDs.LED_LENGTH);
     }
 
     public static LEDController getInstance() {
