@@ -57,7 +57,7 @@ public abstract class Shooter extends SubsystemBase {
         return switch(state) {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
-            case FERRY -> getFerryRPM();
+            case FERRY -> HoodAngleCalculator.interpolateFerryingRPM().get();
             case REVERSE -> Settings.HoodedShooter.RPMs.REVERSE;
             case HUB -> Settings.HoodedShooter.RPMs.HUB_RPM;
             case LEFT_CORNER -> Settings.HoodedShooter.RPMs.LEFT_CORNER_RPM;
@@ -67,11 +67,7 @@ public abstract class Shooter extends SubsystemBase {
     }
 
     public double getShootRPM() {
-        return Settings.HoodedShooter.RPMs.SHOOT_RPM.get(); // will return different speeds in future based on distance to hub
-    }
-
-    public double getFerryRPM() {
-        return Settings.HoodedShooter.RPMs.FERRY_RPM.get(); 
+        return Settings.HoodedShooter.RPMs.SHOOT_RPM.get(); // Adjustable RPM on Glass
     }
 
     public boolean atTolerance() {
@@ -90,5 +86,7 @@ public abstract class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("HoodedShooter/Shooter/Current RPM", getShooterRPM());
         SmartDashboard.putNumber("HoodedShooter/Shooter/Target RPM", getTargetRPM());
+
+        SmartDashboard.putNumber("InterpolationTesting/Shooter Interpolated Target Shoot RPM", HoodAngleCalculator.interpolateShooterRPM().get());
     }
 }
