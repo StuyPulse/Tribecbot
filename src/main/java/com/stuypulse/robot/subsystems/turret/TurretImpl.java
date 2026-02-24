@@ -38,14 +38,16 @@ public class TurretImpl extends Turret {
         encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.bus);
 
         Motors.Turret.TURRET.configure(motor);
-        Motors.Turret.ENCODER_17T.configure(encoder17t);
-        Motors.Turret.ENCODER_18T.configure(encoder18t);
+
+        motor.getConfigurator().apply(Motors.Turret.SLOT_0);
+        motor.getConfigurator().apply(Motors.Turret.SOFT_LIMITS);
 
         seedTurret();
 
         hasUsedAbsoluteEncoder = false;
         voltageOverride = Optional.empty();
-        controller = new PositionVoltage(getTargetAngle().getRotations());
+        controller = new PositionVoltage(getTargetAngle().getRotations())
+            .withEnableFOC(true);
     }
 
     private Rotation2d getEncoderPos17t() {
@@ -125,7 +127,7 @@ public class TurretImpl extends Turret {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {
-                motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withEnableFOC(true));
+                motor.setControl(controller.withPosition(actualTargetDeg / 360.0));
             }
         } else {
             motor.stopMotor();

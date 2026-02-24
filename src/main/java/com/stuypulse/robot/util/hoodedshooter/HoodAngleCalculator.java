@@ -144,10 +144,10 @@ public class HoodAngleCalculator {
         futureTurretPose2d.setPose((Robot.isBlue() ? futureTurretPose : Field.transformToOppositeAlliance(futureTurretPose)));
   
   
-        SmartDashboard.putNumber("HoodedShooter/SOTM/calculated turret angle", sol.targetTurretAngle().getDegrees());
-        SmartDashboard.putNumber("HoodedShooter/SOTM/calculated hood angle", sol.targetHoodAngle().getDegrees());
-        SmartDashboard.putNumber("HoodedShooter/SOTM/calculated flight time", sol.flightTime());
-        SmartDashboard.putNumber("HoodedShooter/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Turret Angle", sol.targetTurretAngle().getDegrees());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Hood Angle", sol.targetHoodAngle().getDegrees());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Flight time", sol.flightTime());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Turret Dist to Virtual Pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
     }
 
     public static Supplier<Rotation2d> calculateHoodAngleSOTM() {

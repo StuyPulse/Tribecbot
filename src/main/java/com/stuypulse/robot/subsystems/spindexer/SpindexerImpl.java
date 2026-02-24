@@ -36,9 +36,10 @@ public class SpindexerImpl extends Spindexer {
         Motors.Spindexer.SPINDEXER.configure(leadMotor);
         Motors.Spindexer.SPINDEXER.configure(followerMotor);
 
-        follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Opposed);
+        controller = new VelocityVoltage(getTargetRPM())
+            .withEnableFOC(true);
 
-        controller = new VelocityVoltage(getTargetRPM());
+        follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Opposed);
 
         voltageOverride = Optional.empty();
     }
@@ -63,7 +64,7 @@ public class SpindexerImpl extends Spindexer {
                 leadMotor.setVoltage(voltageOverride.get());
                 followerMotor.setControl(follower);
             } else {
-                leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE).withEnableFOC(true));
+                leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
                 followerMotor.setControl(follower);
             }
         }

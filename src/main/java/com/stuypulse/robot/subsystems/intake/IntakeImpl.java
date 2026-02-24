@@ -44,8 +44,10 @@ public class IntakeImpl extends Intake {
         rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER);
         Motors.Intake.ROLLER.configure(rollerFollower);
 
-        pivotController = new MotionMagicVoltage(getState().getTargetAngle().getRotations());
-        rollerController = new DutyCycleOut(getState().getTargetDutyCycle());
+        pivotController = new MotionMagicVoltage(getState().getTargetAngle().getRotations())
+            .withEnableFOC(true);
+        rollerController = new DutyCycleOut(getState().getTargetDutyCycle())
+            .withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed);
 
         pivotVoltageOverride = Optional.empty();
@@ -58,11 +60,6 @@ public class IntakeImpl extends Intake {
                 < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations();
     }
 
-    @Override
-    public boolean rollerStopped() {
-        return Math.abs(rollerLeader.getVelocity().getValueAsDouble()) <= Settings.Intake.ROLLER_RPS_TOLERANCE;
-    }
-
     public Rotation2d getPivotAngle() {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }
@@ -73,8 +70,8 @@ public class IntakeImpl extends Intake {
             if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
-                pivot.setControl(pivotController.withPosition(getState().getTargetAngle().getRotations()).withEnableFOC(true));
-                rollerLeader.setControl(rollerController.withOutput(getState().getTargetDutyCycle()).withEnableFOC(true));
+                pivot.setControl(pivotController.withPosition(getState().getTargetAngle().getRotations()));
+                rollerLeader.setControl(rollerController.withOutput(getState().getTargetDutyCycle()));
                 rollerFollower.setControl(follower);
             }
         } else {

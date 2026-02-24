@@ -21,6 +21,8 @@ import java.util.Optional;
 
 public class ClimberHopperImpl extends ClimberHopper {
     private final TalonFX motor;
+    private final VoltageOut controller;
+
     private final BStream stalling;
     private double voltage;
 
@@ -36,6 +38,10 @@ public class ClimberHopperImpl extends ClimberHopper {
         motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
         stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.ClimberHopper.STALL)
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
+
+        // TODO: initialize voltage to default voltage and pass to controller initialization below
+        controller = new VoltageOut(0)
+            .withEnableFOC(true);
 
         voltageOverride = Optional.empty();
     }
@@ -87,7 +93,7 @@ public class ClimberHopperImpl extends ClimberHopper {
         }
         
         if (EnabledSubsystems.CLIMBER_HOPPER.get()) {
-            motor.setControl(new VoltageOut(voltage).withEnableFOC(true));
+            motor.setControl(controller.withOutput(voltage));
         } else {
             motor.stopMotor();
         }

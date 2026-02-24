@@ -138,6 +138,15 @@ public interface Motors {
             .withFFConstants(Gains.Turret.kS, 0.0, 0.0, 0)
             .withSensorToMechanismRatio(Settings.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH);
 
+        public final Slot0Configs SLOT_0 = new Slot0Configs()
+            .withKP(Gains.Turret.kP)
+            .withKI(Gains.Turret.kI)
+            .withKD(Gains.Turret.kD)
+            .withKS(Gains.Turret.kS)
+            .withKV(Gains.Turret.kV)
+            .withKA(Gains.Turret.kA)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
+
         public final CANCoderConfig ENCODER_17T = new CANCoderConfig()
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
             .withAbsoluteSensorDiscontinuityPoint(1.0);
@@ -146,7 +155,7 @@ public interface Motors {
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
             .withAbsoluteSensorDiscontinuityPoint(1.0);
 
-        public final SoftwareLimitSwitchConfigs SOFT_LIMIT = new SoftwareLimitSwitchConfigs()
+        public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
             .withForwardSoftLimitEnable(true)
             .withReverseSoftLimitEnable(true)
             .withForwardSoftLimitThreshold(Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS)

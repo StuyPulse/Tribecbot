@@ -64,7 +64,6 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public abstract boolean pivotAtTolerance();
-    public abstract boolean rollerStopped();
     public abstract Rotation2d getPivotAngle();
     public abstract SysIdRoutine getPivotSysIdRoutine();
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);

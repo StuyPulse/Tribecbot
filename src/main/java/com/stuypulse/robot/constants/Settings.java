@@ -93,8 +93,6 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL = Rotation2d.fromDegrees(300.0);
         Rotation2d PIVOT_MAX_ACCEL = Rotation2d.fromDegrees(300.0);
 
-        double ROLLER_RPS_TOLERANCE = .1; //TODO: find an appropriate tolerance for the roller
-
         double GEAR_RATIO = 48.0;
     }
 
@@ -114,6 +112,14 @@ public interface Settings {
         public final double SHOOTER_TOLERANCE_RPM = 50.0;
         public final double HOOD_TOLERANCE_DEG = 0.5;
 
+        public interface RPMs {
+            public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
+            public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
+            public final double REVERSE = 0.0;
+            public final double HUB_RPM = 0.0;
+            public final double LEFT_CORNER_RPM = 0.0;
+            public final double RIGHT_CORNER_RPM = 0.0;
+        }
         public interface Angles {
             public final SmartNumber SHOOT_ANGLE = new SmartNumber("HoodedShooter/Shoot State Target Angle (deg)", 15.0);
             public final SmartNumber FERRY_ANGLE = new SmartNumber("HoodedShooter/Ferry State Target Angle (deg)", 20.0);
@@ -137,10 +143,27 @@ public interface Settings {
             };
         }
 
+        public interface RPMInterpolation {
+            public final double[][] distanceRPMInterpolationValues = {
+                {1.30, 3000.0},
+                {1.43, 3000.0},
+                {2.15, 3050.0},
+                {2.864967, 3215.271125},
+                {3.65, 3400.0},
+                {4.43, 3650.0},
+                {5.32, 3950.0}
+            };
+        }
+
         public interface FerryRPMInterpolation {
             public final double[][] distanceRPMInterpolationValues = {
                 {3.79, 3450.0}
             };
+        }
+
+        public interface Shooter {
+            public final double GEAR_RATIO = 1.0;
+            public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
         }
 
         public interface Hood {
@@ -162,37 +185,11 @@ public interface Settings {
 
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromDegrees(0.0);
         }
-        public interface RPMInterpolation {
-            public final double[][] distanceRPMInterpolationValues = {
-                {1.30, 3000.0},
-                {1.43, 3000.0},
-                {2.15, 3050.0},
-                {2.864967, 3215.271125},
-                {3.65, 3400.0},
-                {4.43, 3650.0},
-                {5.32, 3950.0}
-            };
-        }
-
-        public interface RPMs {
-            public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
-            public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
-            public final double REVERSE = 0.0;
-            public final double HUB_RPM = 0.0;
-            public final double LEFT_CORNER_RPM = 0.0;
-            public final double RIGHT_CORNER_RPM = 0.0;
-            public final double STOW = 0.0;
-        }
-
-        public interface Shooter {
-            public final double GEAR_RATIO = 1.0;
-            public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
-        }
     }
     public interface ShootOnTheFly {
         public final int MAX_ITERATIONS = 5;
         public final double TIME_TOLERANCE = 0.01;
-        public final SmartNumber UPDATE_DELAY = new SmartNumber("HoodedShooter/SOTM/update delay", 0.00);
+        public final SmartNumber UPDATE_DELAY = new SmartNumber("HoodedShooter/SOTM/Update Delay", 0.00);
     }
 
     public interface Swerve {

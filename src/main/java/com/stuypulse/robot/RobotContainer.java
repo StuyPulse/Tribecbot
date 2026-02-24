@@ -121,17 +121,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
         //INTAKING ROUTINE (OUT)
         //TODO: change bindings, these are placeholders
-        // driver.getBottomButton()
-        //     .onTrue(new IntakePivotOut()
-        //     .alongWith(new WaitUntilCommand(() -> intake.pivotAtTolerance()))
-        //     .andThen(new IntakeIntake()));
+        driver.getLeftTriggerButton()
+            .onTrue(new IntakePivotOut()
+            .alongWith(new WaitUntilCommand(() -> intake.pivotAtTolerance()))
+            .andThen(new IntakeIntake()));
 
         //INTAKING ROUTINE (IN) - a bit redundant ngl
         //TODO: button bindings!!
-        // driver.getBottomButton()
-        //     .onTrue(new IntakeStop()
-        //     .alongWith(new WaitUntilCommand(() -> intake.rollerStopped()))
-        //     .andThen(new IntakePivotIn()));
+        driver.getRightTriggerButton()
+            .onTrue(new IntakeStop()
+            .andThen(new IntakePivotIn()));
 
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading());
