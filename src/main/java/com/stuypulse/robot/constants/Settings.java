@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.VecBuilder;
@@ -14,9 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix6.CANBus;
-import com.pathplanner.lib.path.PathConstraints;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -37,16 +36,16 @@ public interface Settings {
         double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
         double RPM_TOLERANCE = 200.0;
-        public final SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
+        SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
     }
 
     public interface Intake {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
         Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(0.0);
 
-        public final Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
-        public final double FORWARD_MAX_ROTATIONS = -30.0 / 360.0;
-        public final double BACKWARDS_MAX_ROTATIONS = 90.0 / 360.0;
+        Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
+        double FORWARD_MAX_ROTATIONS = -30.0 / 360.0;
+        double BACKWARDS_MAX_ROTATIONS = 90.0 / 360.0;
 
         Rotation2d PIVOT_ANGLE_OFFSET = new Rotation2d();
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);
@@ -54,6 +53,8 @@ public interface Settings {
 
         Rotation2d PIVOT_MAX_VEL = Rotation2d.fromDegrees(300.0);
         Rotation2d PIVOT_MAX_ACCEL = Rotation2d.fromDegrees(300.0);
+
+        double ROLLER_RPS_TOLERANCE = .1; //TODO: find an appropriate tolerance for the roller
 
         double GEAR_RATIO = 48.0;
     }

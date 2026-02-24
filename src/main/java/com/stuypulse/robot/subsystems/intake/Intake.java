@@ -27,13 +27,16 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public Intake() {
-        state = IntakeState.STOW;
+        state = IntakeState.STOP;
     }
 
     public enum IntakeState {
+        PIVOTOUT(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 0.0),
+        PIVOTIN(Settings.Intake.PIVOT_STOW_ANGLE, 0.0),
+
         INTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 1.0),
         OUTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, -1.0),
-        STOW(Settings.Intake.PIVOT_STOW_ANGLE, 0.0);
+        STOP(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 0.0);
 
         private double targetDutyCycle;
         private Rotation2d targetAngle;
@@ -61,6 +64,7 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public abstract boolean pivotAtTolerance();
+    public abstract boolean rollerStopped();
     public abstract Rotation2d getPivotAngle();
     public abstract SysIdRoutine getPivotSysIdRoutine();
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);

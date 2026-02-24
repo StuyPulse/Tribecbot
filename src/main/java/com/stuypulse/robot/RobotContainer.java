@@ -24,6 +24,8 @@ import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
 import com.stuypulse.robot.commands.intake.IntakeIntake;
 import com.stuypulse.robot.commands.intake.IntakeOutake;
+import com.stuypulse.robot.commands.intake.IntakePivotIn;
+import com.stuypulse.robot.commands.intake.IntakePivotOut;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
@@ -115,6 +117,19 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
+        //INTAKING ROUTINE (OUT)
+        //TODO: change bindings, these are placeholders
+        // driver.getBottomButton()
+        //     .onTrue(new IntakePivotOut()
+        //     .alongWith(new WaitUntilCommand(() -> intake.pivotAtTolerance()))
+        //     .andThen(new IntakeIntake()));
+
+        //INTAKING ROUTINE (IN) - a bit redundant ngl
+        //TODO: button bindings!!
+        // driver.getBottomButton()
+        //     .onTrue(new IntakeStop()
+        //     .alongWith(new WaitUntilCommand(() -> intake.rollerStopped()))
+        //     .andThen(new IntakePivotIn()));
 
         driver.getDPadDown()
             .onTrue(new TurretIdle())

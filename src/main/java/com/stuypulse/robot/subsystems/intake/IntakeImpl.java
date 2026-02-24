@@ -58,6 +58,11 @@ public class IntakeImpl extends Intake {
                 < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations();
     }
 
+    @Override
+    public boolean rollerStopped() {
+        return Math.abs(rollerLeader.getVelocity().getValueAsDouble()) <= Settings.Intake.ROLLER_RPS_TOLERANCE;
+    }
+
     public Rotation2d getPivotAngle() {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }

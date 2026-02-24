@@ -12,6 +12,6 @@ public class IntakeStop extends IntakeSetState {
      * Sets the State of the Intake to Stowing
      */
     public IntakeStop() {
-        super(IntakeState.STOW);
+        super(IntakeState.STOP);
     }
 }
