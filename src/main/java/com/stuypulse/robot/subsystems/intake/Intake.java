@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
-    private IntakeState state;
 
     static {
         instance = new IntakeImpl();
@@ -26,25 +25,30 @@ public abstract class Intake extends SubsystemBase {
         return instance;
     }
 
-    public Intake() {
-        state = IntakeState.STOW;
-    }
+    public enum PivotState {
+        DEPLOYED(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE),
+        STOWED(Settings.Intake.PIVOT_STOW_ANGLE);
 
-    public enum IntakeState {
-        INTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, 1.0),
-        OUTAKE(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE, -1.0),
-        STOW(Settings.Intake.PIVOT_STOW_ANGLE, 0.0);
+        private final Rotation2d targetAngle;
 
-        private double targetDutyCycle;
-        private Rotation2d targetAngle;
-
-        private IntakeState(Rotation2d targetAngle, double targetDutyCycle) {
+        private PivotState(Rotation2d targetAngle) {
             this.targetAngle = targetAngle;
-            this.targetDutyCycle = targetDutyCycle;
         }
 
         public Rotation2d getTargetAngle() {
             return targetAngle;
+        }
+    }
+
+    public enum RollerState {
+        INTAKE(1.0),
+        OUTTAKE(-1.0),
+        STOP(0.0);
+
+        private final double targetDutyCycle;
+
+        private RollerState(double targetDutyCycle) {
+            this.targetDutyCycle = targetDutyCycle;
         }
 
         public double getTargetDutyCycle() {
@@ -52,30 +56,47 @@ public abstract class Intake extends SubsystemBase {
         }
     }
 
-    public IntakeState getState() {
-        return state;
+    private PivotState pivotState;
+    private RollerState rollerState;
+
+    protected Intake() {
+        this.pivotState = PivotState.STOWED;
+        this.rollerState = RollerState.STOP;
     }
 
-    public void setState(IntakeState state) {
-        this.state = state;
+    public PivotState getPivotState() {
+        return pivotState;
+    }
+
+    public void setPivotState(PivotState state) {
+        this.pivotState = state;
+        setPivotVoltageOverride(Optional.empty());
+    }
+
+    public RollerState getRollerState() {
+        return rollerState;
+    }
+
+    public void setRollerState(RollerState state) {
+        this.rollerState = state;
     }
 
     public abstract boolean pivotAtTolerance();
     public abstract Rotation2d getPivotAngle();
-    public abstract SysIdRoutine getPivotSysIdRoutine();
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);
-    
+    public abstract SysIdRoutine getPivotSysIdRoutine();
+
     @Override
     public void periodic() {
-        SmartDashboard.putString("Intake/State", getState().toString());
-        SmartDashboard.putString("Intake/State", getState().toString());
+        SmartDashboard.putString("Intake/Pivot State", getPivotState().toString());
+        SmartDashboard.putString("Intake/Roller State", getRollerState().toString());
 
         SmartDashboard.putNumber("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
-        SmartDashboard.putNumber("Intake/Target Angle (deg)", getState().getTargetAngle().getDegrees());
+        SmartDashboard.putNumber("Intake/Target Angle (deg)", getPivotState().getTargetAngle().getDegrees());
 
-        SmartDashboard.putNumber("Intake/Target Duty Cycle", getState().getTargetDutyCycle());
+        SmartDashboard.putNumber("Intake/Target Duty Cycle", getRollerState().getTargetDutyCycle());
 
         SmartDashboard.putBoolean("Intake/Pivot At Tolerance?", pivotAtTolerance());
     }
-
+    
 }

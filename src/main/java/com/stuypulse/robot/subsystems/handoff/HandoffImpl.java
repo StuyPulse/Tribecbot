@@ -25,10 +25,11 @@ public class HandoffImpl extends Handoff {
     private Optional<Double> voltageOverride;
 
     public HandoffImpl() {
-        motor = new TalonFX(Ports.Handoff.HANDOFF);
+        motor = new TalonFX(Ports.Handoff.HANDOFF, Ports.RIO);
         Motors.Handoff.HANDOFF.configure(motor);
 
-        controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE);
+        controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE)
+            .withEnableFOC(true);
         voltageOverride = Optional.empty();
     }
 
@@ -51,7 +52,7 @@ public class HandoffImpl extends Handoff {
             } else if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {
-                motor.setControl(controller.withVelocity(getTargetRPM() / 60.0).withEnableFOC(true));
+                motor.setControl(controller.withVelocity(getTargetRPM() / 60.0));
             }
         }
 

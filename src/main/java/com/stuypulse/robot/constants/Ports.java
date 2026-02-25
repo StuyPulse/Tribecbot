@@ -10,50 +10,48 @@ import com.ctre.phoenix6.CANBus;
 /** This file contains the different ports of motors, solenoids and sensors */
 public interface Ports {
     // TODO: Get bus name
-    public CANBus bus = new CANBus("rio");
+    public CANBus RIO = new CANBus("rio");
+    public CANBus CANIVORE = new CANBus("CANIVORE");
     
     public interface Gamepad {
         int DRIVER = 0;
-        int OPERATOR = 1;
-        int DEBUGGER = 2;
     }
 
     public interface ClimberHopper {
-        int CLIMBER_HOPPER = 3;
+        int CLIMBER_HOPPER = 60;
     }
 
     public interface Handoff {
-        int HANDOFF = 4;
+        int HANDOFF = 43;
     }
 
     public interface HoodedShooter {
-        // all these ports are copied from alphabot
         public interface Hood {
-            int MOTOR = 25;
-            int THROUGHBORE_ENCODER = 37;
+            int MOTOR = 45;
+            int THROUGHBORE_ENCODER = 44;
         }
 
         public interface Shooter {
-            int MOTOR_LEAD = 17;
-            int MOTOR_FOLLOW = 14;
+            int MOTOR_LEAD = 47;
+            int MOTOR_FOLLOW = 46;
         }
     }
 
     public interface Intake {
-        int PIVOT = 8;
-        int ROLLER_LEADER = 9;
-        int ROLLER_FOLLOWER = 10;
+        int PIVOT = 20;
+        int ROLLER_LEADER = 21;
+        int ROLLER_FOLLOWER = 22;
     }
 
     public interface Spindexer {
-        int SPINDEXER_LEAD_MOTOR = 11;
-        int SPINDEXER_FOLLOW_MOTOR = 12;
+        int SPINDEXER_LEAD_MOTOR = 30;
+        int SPINDEXER_FOLLOW_MOTOR = 31;
     }
 
     public interface Turret {
-        int MOTOR = 50;
-        int ENCODER17T = 38;
-        int ENCODER18T = 21;
+        int MOTOR = 40;
+        int ENCODER17T = 42;
+        int ENCODER18T = 41;
     }
 
     public interface LED {

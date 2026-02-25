@@ -27,25 +27,26 @@ public class IntakeImpl extends Intake {
     private final TalonFX rollerLeader;
     private final TalonFX rollerFollower;
 
-    private final DutyCycleOut rollerController;
     private final MotionMagicVoltage pivotController;
-
+    private final DutyCycleOut rollerController;
     private final Follower follower;
 
     private Optional<Double> pivotVoltageOverride;
 
     public IntakeImpl() {
-        pivot = new TalonFX(Ports.Intake.PIVOT);
+        pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
         Motors.Intake.PIVOT.configure(pivot);
 
-        rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER);
+        rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER, Ports.RIO);
         Motors.Intake.ROLLER.configure(rollerLeader);
 
-        rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER);
+        rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER, Ports.RIO);
         Motors.Intake.ROLLER.configure(rollerFollower);
 
-        pivotController = new MotionMagicVoltage(getState().getTargetAngle().getRotations());
-        rollerController = new DutyCycleOut(getState().getTargetDutyCycle());
+        pivotController = new MotionMagicVoltage(getPivotState().getTargetAngle().getRotations())
+            .withEnableFOC(true);
+        rollerController = new DutyCycleOut(getRollerState().getTargetDutyCycle())
+            .withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed);
 
         pivotVoltageOverride = Optional.empty();
@@ -54,22 +55,25 @@ public class IntakeImpl extends Intake {
     @Override
     public boolean pivotAtTolerance() {
         return Math.abs(
-            (getPivotAngle().getRotations()) - getState().getTargetAngle().getRotations()) 
-                < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations();
-    }
-
-    public Rotation2d getPivotAngle() {
-        return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
+            getPivotAngle().getRotations() - getPivotState().getTargetAngle().getRotations())
+            < Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations();
     }
 
     @Override
+    public Rotation2d getPivotAngle() {
+        return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
+    }
+    
+    @Override
     public void periodic() {
+        super.periodic();
+
         if (EnabledSubsystems.INTAKE.get()) {
             if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
-                pivot.setControl(pivotController.withPosition(getState().getTargetAngle().getRotations()).withEnableFOC(true));
-                rollerLeader.setControl(rollerController.withOutput(getState().getTargetDutyCycle()).withEnableFOC(true));
+                pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
+                rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
                 rollerFollower.setControl(follower);
             }
         } else {
@@ -79,7 +83,7 @@ public class IntakeImpl extends Intake {
         }
 
         SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
-                Math.abs(getState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
+            Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
 
         if (Settings.DEBUG_MODE) {
             // PIVOT
@@ -105,13 +109,13 @@ public class IntakeImpl extends Intake {
     @Override
     public SysIdRoutine getPivotSysIdRoutine() {
         return SysId.getRoutine(
-                2,
-                6,
-                "Intake Pivot",
-                voltage -> setPivotVoltageOverride(Optional.of(voltage)),
-                () -> getPivotAngle().getRotations(),
-                () -> pivot.getVelocity().getValueAsDouble(),
-                () -> pivot.getMotorVoltage().getValueAsDouble(),
-                getInstance());
+            2,
+            6,
+            "Intake Pivot",
+            voltage -> setPivotVoltageOverride(Optional.of(voltage)),
+            () -> getPivotAngle().getRotations(),
+            () -> pivot.getVelocity().getValueAsDouble(),
+            () -> pivot.getMotorVoltage().getValueAsDouble(),
+            getInstance());
     }
 }

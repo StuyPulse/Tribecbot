@@ -31,8 +31,8 @@ public class HoodImpl extends Hood {
     private boolean hasUsedAbsoluteEncoder;
 
     public HoodImpl() {
-        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR);
-        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER);
+        hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR, Ports.RIO);
+        hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
         Motors.HoodedShooter.Hood.HOOD.configure(hoodMotor);
 
@@ -57,7 +57,12 @@ public class HoodImpl extends Hood {
         super.periodic();
 
         if (!hasUsedAbsoluteEncoder) {
-            hoodMotor.setPosition(hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.SENSOR_TO_HOOD_RATIO);
+            /*
+             * Example:
+             * Let's say the hood rotates 0.1 rotations. Then, the encoder has rotated 0.1 * 10.67 rotations
+             * To convert the encoder reading to the mechanism position, we simply do (0.1 * 10.67) / 10.67 = 0.1
+             */
+            hoodMotor.setPosition(hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
             hasUsedAbsoluteEncoder = true;
         }
 
@@ -72,7 +77,7 @@ public class HoodImpl extends Hood {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("HoodedShooter/Hood/Hood Absolute Angle (deg)", hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.SENSOR_TO_HOOD_RATIO);
+            SmartDashboard.putNumber("HoodedShooter/Hood/Hood Absolute Angle (deg)", hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
 
             SmartDashboard.putNumber("HoodedShooter/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
