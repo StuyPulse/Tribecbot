@@ -96,7 +96,7 @@ public class RobotContainer {
     // Robot container
     public RobotContainer() {
         configureDefaultCommands();
-        configureButtonBindings();
+        // configureButtonBindings();
         configureAutons();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
