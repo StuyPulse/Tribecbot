@@ -256,7 +256,7 @@ public interface Settings {
             public final Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Rotation2d.kZero);
             public final double TURRET_HEIGHT = Units.inchesToMeters(0.0);
 
-            public final double GEAR_RATIO_MOTOR_TO_MECH = 1425.0 / 36.0;
+            public final double GEAR_RATIO_MOTOR_TO_MECH = (60.0 / 9.0) * (95.0 / 12.0); //1425.0 / 36.0;
 
             public interface BigGear {
                 public final int TEETH = 95;

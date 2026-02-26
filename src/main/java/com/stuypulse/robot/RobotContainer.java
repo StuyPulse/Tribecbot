@@ -33,12 +33,14 @@ import com.stuypulse.robot.commands.swerve.SwerveClimbAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
+import com.stuypulse.robot.commands.turret.TurretAnalog;
 import com.stuypulse.robot.commands.turret.TurretFerry;
 import com.stuypulse.robot.commands.turret.TurretIdle;
 import com.stuypulse.robot.commands.turret.TurretLeftCorner;
 import com.stuypulse.robot.commands.turret.TurretRightCorner;
 import com.stuypulse.robot.commands.turret.TurretSeed;
 import com.stuypulse.robot.commands.turret.TurretShoot;
+import com.stuypulse.robot.commands.turret.TurretZero;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
@@ -62,7 +64,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 public class RobotContainer {
     public interface EnabledSubsystems {
-        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
+        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", false);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
         SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
@@ -96,10 +98,13 @@ public class RobotContainer {
     // Robot container
     public RobotContainer() {
         configureDefaultCommands();
-        // configureButtonBindings();
+        configureButtonBindings();
         configureAutons();
+        configureSysids();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
+        SmartDashboard.putData("Zero Encoders", new TurretZero());
+        // SmartDashboard.putData("Seed Encoders", new TurretSee());
     }
 
     /****************/
@@ -127,31 +132,34 @@ public class RobotContainer {
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading());
+
+        driver.getTopButton()
+            .whileTrue(new TurretAnalog(driver));
         
         // Scoring Routine using Interpolation Settings
-        driver.getTopButton()
-                .whileTrue(new HoodedShooterInterpolation()
-                        .alongWith(new TurretShoot())
-                        .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
-                        .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
-                                .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance()))))
-                .onFalse(new SpindexerStop()
-                        .alongWith(new HoodedShooterStow())
-                        .alongWith(new HandoffStop()));
+        // driver.getTopButton()
+        //         .whileTrue(new HoodedShooterInterpolation()
+        //                 .alongWith(new TurretShoot())
+        //                 .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
+        //                 .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
+        //                         .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
+        //                         .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance()))))
+        //         .onFalse(new SpindexerStop()
+        //                 .alongWith(new HoodedShooterStow())
+        //                 .alongWith(new HandoffStop()));
 
-        // Ferry Routine using Interpolation Settings
-        driver.getBottomButton()
-                .onTrue(new HoodedShooterFerry()
-                        .alongWith(new TurretFerry())
-                        .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
-                        .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
-                                .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance())))      
-                )
-                .onFalse(new SpindexerStop()
-                        .alongWith(new HoodedShooterStow())
-                        .alongWith(new HandoffStop()));
+        // // Ferry Routine using Interpolation Settings
+        // driver.getBottomButton()
+        //         .onTrue(new HoodedShooterFerry()
+        //                 .alongWith(new TurretFerry())
+        //                 .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
+        //                 .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
+        //                         .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
+        //                         .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance())))      
+        //         )
+        //         .onFalse(new SpindexerStop()
+        //                 .alongWith(new HoodedShooterStow())
+        //                 .alongWith(new HandoffStop()));
 
 //-------------------------------------------------------------------------------------------------------------------------\\
 //-------------------------------------------------------------------------------------------------------------------------\\
@@ -282,6 +290,11 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
         // autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
         // autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse));
+
+        autonChooser.addOption("SysID Turret Dynamic Forward", turret.getSysIdRoutine().dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Turret Dynamic Reverse", turret.getSysIdRoutine().dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Turret Quasistatic Forward", turret.getSysIdRoutine().quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Turret Quasistatic Reverse", turret.getSysIdRoutine().quasistatic(Direction.kReverse));
 
         // autonChooser.addOption("SysID Module Rotation Dynamic Forwards", swerve.sysIdRotDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Module Rotation Dynamic Backwards", swerve.sysIdRotDynamic(Direction.kReverse));

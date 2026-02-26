@@ -123,7 +123,8 @@ public class TurretImpl extends Turret {
         SmartDashboard.putNumber("Turret/Delta (deg)", getDelta(getTargetAngle().getDegrees(), getAngle().getDegrees()));
         SmartDashboard.putNumber("Turret/Actual Target (deg)", actualTargetDeg);
 
-        if (EnabledSubsystems.TURRET.get() && getState() != TurretState.IDLE) {
+        // if (EnabledSubsystems.TURRET.get() && getState() != TurretState.IDLE) {
+        if(EnabledSubsystems.TURRET.get()) {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {

@@ -81,7 +81,7 @@ public class Gains {
         double kI = 0.0;
         double kD = 140.0;
 
-        double kS = 0.179;
+        double kS = 0.23; // FOUND ON 2/25 PD 8
         double kV = 0.0;
         double kA = 0.0;
     }

@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 public interface Cameras {
 
     public Camera[] LimelightCameras = new Camera[] {
+        // LimelightCameras[0] =  new Camera("limelight", new Pose3d)
 
     };
 

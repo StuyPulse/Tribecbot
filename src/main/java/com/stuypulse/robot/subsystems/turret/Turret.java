@@ -90,6 +90,7 @@ public abstract class Turret extends SubsystemBase {
     public abstract SysIdRoutine getSysIdRoutine();
 
     public abstract void seedTurret();
+    public abstract void zeroEncoders();
    
     public void setState(TurretState state) {
         this.state = state;

@@ -84,6 +84,11 @@ public class TurretSim extends Turret {
         return;
     }
 
+    @Override
+    public void zeroEncoders() {
+        return;
+    }
+
     private double getAngularVelocityRadPerSec() {
         return sim.getOutput(1);
     }

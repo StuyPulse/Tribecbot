@@ -156,8 +156,8 @@ public interface Motors {
             .withAbsoluteSensorDiscontinuityPoint(1.0);
 
         public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
-            .withForwardSoftLimitEnable(true)
-            .withReverseSoftLimitEnable(true)
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false)
             .withForwardSoftLimitThreshold(Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS)
             .withReverseSoftLimitThreshold(Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
     }
