@@ -292,6 +292,7 @@ public interface Settings {
 
     public interface LEDS {
         double DESIRED_TAGS_WHEN_DISABLED = 2;
+        int LED_LENGTH = 40;
 
         public enum LEDState {
             PRESSED_TOP_BUTTON(LEDPattern.solid(Color.kLightBlue)), //swerve climb align

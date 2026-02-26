@@ -16,7 +16,7 @@ public class LEDController extends SubsystemBase{
     private final static LEDController instance;
 
     static {
-        instance = new LEDController(Ports.LED.LED_PORT, Settings.LEDs.LED_LENGTH);
+        instance = new LEDController(Ports.LED.LED_PORT, Settings.LEDS.LED_LENGTH);
     }
 
     public static LEDController getInstance() {
