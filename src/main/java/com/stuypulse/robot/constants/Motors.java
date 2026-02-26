@@ -113,9 +113,17 @@ public interface Motors {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
-            .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
+            .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
             .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL.getRotations());
+
+        public final Slot0Configs PIVOT_SLOT_0 = new Slot0Configs()
+            .withKP(Gains.Intake.Pivot.kP)
+            .withKI(Gains.Intake.Pivot.kI)
+            .withKD(Gains.Intake.Pivot.kD)
+            .withKS(Gains.Intake.Pivot.kS)
+            .withKV(Gains.Intake.Pivot.kV)
+            .withKA(Gains.Intake.Pivot.kA)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
     }
 
     public interface Spindexer {

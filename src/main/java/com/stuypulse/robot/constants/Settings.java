@@ -93,7 +93,7 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL = Rotation2d.fromDegrees(300.0);
         Rotation2d PIVOT_MAX_ACCEL = Rotation2d.fromDegrees(300.0);
 
-        double GEAR_RATIO = 48.0;
+        double GEAR_RATIO = 37.93;
     }
 
     public interface Spindexer {

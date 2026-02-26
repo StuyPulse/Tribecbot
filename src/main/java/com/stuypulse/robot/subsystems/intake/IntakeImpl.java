@@ -37,6 +37,8 @@ public class IntakeImpl extends Intake {
         pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
         Motors.Intake.PIVOT.configure(pivot);
 
+        pivot.getConfigurator().apply(Motors.Intake.PIVOT_SLOT_0);
+
         rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER, Ports.RIO);
         Motors.Intake.ROLLER.configure(rollerLeader);
 
@@ -50,6 +52,8 @@ public class IntakeImpl extends Intake {
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed);
 
         pivotVoltageOverride = Optional.empty();
+
+        pivot.setPosition(0);
     }
 
     @Override
