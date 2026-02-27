@@ -5,7 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
-import java.util.function.DoubleSupplier;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
@@ -29,7 +29,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import com.stuypulse.stuylib.network.SmartNumber;
 
 public interface Motors {
 

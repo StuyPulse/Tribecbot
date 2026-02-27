@@ -5,8 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.stuylib.network.SmartBoolean;
+
+import com.stuypulse.robot.RobotContainer;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
