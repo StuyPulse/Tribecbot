@@ -5,14 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.vision;
 
-import com.stuypulse.stuylib.network.SmartBoolean;
-
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
+import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -102,6 +102,17 @@ public class LimelightVision extends SubsystemBase{
         }
     }
 
+    public IMUData[] getIMUData() {
+        IMUData[] data = new IMUData[Cameras.LimelightCameras.length];
+
+        for (int i = 0; i < Cameras.LimelightCameras.length; i++) {
+            data[i] = LimelightHelpers.getIMUData(Cameras.LimelightCameras[i].getName());
+        }
+
+        return data;
+    }
+    
+
     @Override
     public void periodic() {
         if (enabled.get()) {
@@ -151,6 +162,9 @@ public class LimelightVision extends SubsystemBase{
                     }
 
                     SmartDashboard.putString("Vision/MegaTag Mode", megaTagMode.toString());
+                    SmartDashboard.putNumber("Vision/Robot Yaw", LimelightHelpers.getIMUData(limelightName).robotYaw);
+
+                    SmartDashboard.putString("Vision/IMU mode", getIMUData()[0].toString()); //only 1 camera on alpha, so will need to change on Big T
                 }
             }
         }
