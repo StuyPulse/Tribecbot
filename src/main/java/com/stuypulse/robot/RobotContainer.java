@@ -61,6 +61,7 @@ import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 
@@ -330,18 +331,17 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Intake Pivot Quasi Forwards", intakePivotSysId.quasistatic(Direction.kForward));
         // autonChooser.addOption("SysID Intake Pivot Quasi Backwards", intakePivotSysId.quasistatic(Direction.kReverse));
 
-        // SysIdRoutine spindexerSysId = spindexer.getSysIdRoutine();
-        // autonChooser.addOption("SysID Spindexer Dynamic Forward", spindexerSysId.dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Spindexer Dynamic Backwards", spindexerSysId.dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Spindexer Quasi Forwards", spindexerSysId.quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Spindexer Quasi Backwards", spindexerSysId.quasistatic(Direction.kReverse));
+        SysIdRoutine spindexerSysId = spindexer.getSysIdRoutine();
+        autonChooser.addOption("SysID Spindexer Dynamic Forward", spindexerSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Dynamic Backwards", spindexerSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Spindexer Quasi Forwards", spindexerSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Spindexer Quasi Backwards", spindexerSysId.quasistatic(Direction.kReverse));
 
-        // SysIdRoutine handoffSysId = handoff.getSysIdRoutine();
-        // autonChooser.addOption("SysID Handoff Forward", handoffSysId.dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Handoff Backwards", handoffSysId.dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Handoff Forwards", handoffSysId.quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Handoff Backwards", handoffSysId.quasistatic(Direction.kReverse));
-
+        SysIdRoutine handoffSysId = handoff.getSysIdRoutine();
+        autonChooser.addOption("SysID Handoff DF", handoffSysId.dynamic(Direction.kForward));
+        autonChooser.addOption("SysID Handoff DB", handoffSysId.dynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Handoff QF", handoffSysId.quasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Handoff QB", handoffSysId.quasistatic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

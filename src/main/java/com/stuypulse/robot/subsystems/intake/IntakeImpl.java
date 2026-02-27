@@ -12,6 +12,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SettableNumber;
 import com.stuypulse.robot.util.SysId;
 
+import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -19,11 +20,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import java.util.Optional;
-
-import javax.xml.xpath.XPathExpressionException;
 
 public class IntakeImpl extends Intake {
     private final TalonFX pivot;
@@ -31,6 +31,8 @@ public class IntakeImpl extends Intake {
     private final TalonFX rollerFollower;
 
     private final MotionMagicVoltage pivotController;
+    private final BangBangController pivotAggressiveController;
+
     private final DutyCycleOut rollerController;
     private final Follower follower;
 
@@ -53,6 +55,10 @@ public class IntakeImpl extends Intake {
 
         pivotController = new MotionMagicVoltage(getPivotState().getTargetAngle().getRotations())
             .withEnableFOC(true);
+
+        //TODO: add tolerance
+        pivotAggressiveController = new BangBangController(Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations());
+
         rollerController = new DutyCycleOut(getRollerState().getTargetDutyCycle())
             .withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Aligned);
@@ -107,7 +113,15 @@ public class IntakeImpl extends Intake {
             
             else if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
-            } else {
+            }
+            // else if (getPivotState() == PivotState.BANGBANG) {
+            //     pivotAggressiveController.calculate(getPivotAngle().getRotations(), getPivotState().getTargetAngle().getRotations());
+            //     pivot.setControl(new VelocityVoltage(pivotAggressiveController.getMeasurement() * 12));
+
+            // TODO: might have to calculate inside of pivot.setcontrol
+            //     //TODO: finish and apply to motor -> motor config conflict
+            // }
+            else {
                 // pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
                 rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
                 rollerFollower.setControl(follower);
@@ -127,6 +141,13 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimit.get());
 
             SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)", Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
+
+            //BANGBANG
+            SmartDashboard.putNumber("Intake/Pivot BANGANG tolerance", pivotAggressiveController.getSetpoint());
+            SmartDashboard.putNumber("Intake/Pivot BANGANG measurement (0 - 1)", pivotAggressiveController.getMeasurement());
+            SmartDashboard.putNumber("Intake/Pivot BANGANG Distance between target and setpoint", pivotAggressiveController.getError());
+            //TODO: add whatever was still not added 
+            
 
             // ROLLERS
             SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)", rollerLeader.getMotorVoltage().getValueAsDouble());

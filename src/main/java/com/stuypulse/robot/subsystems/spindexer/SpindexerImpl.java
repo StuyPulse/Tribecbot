@@ -86,11 +86,10 @@ public class SpindexerImpl extends Spindexer {
         if (EnabledSubsystems.SPINDEXER.get()) {
             if (voltageOverride.isPresent()){
                 leadMotor.setVoltage(voltageOverride.get());
-                followerMotor.setControl(follower);
             } else {
                 leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
-                followerMotor.setControl(follower);
             }
+            followerMotor.setControl(follower);
         }
 
         if (Settings.DEBUG_MODE) {

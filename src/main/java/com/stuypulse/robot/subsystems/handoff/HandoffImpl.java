@@ -47,10 +47,10 @@ public class HandoffImpl extends Handoff {
         super.periodic();
 
         if (EnabledSubsystems.HANDOFF.get()) {
-            if (getState() == HandoffState.STOP) {
-                motor.stopMotor();
-            } else if (voltageOverride.isPresent()) {
+            if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
+            } else if (getState() == HandoffState.STOP) {
+                motor.stopMotor();
             } else {
                 motor.setControl(controller.withVelocity(getTargetRPM() / 60.0));
             }
