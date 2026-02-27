@@ -32,8 +32,8 @@ public class IntakeImpl extends Intake {
     private final DutyCycleOut rollerController;
     private final Follower follower;
 
-    private SettableNumber velLimitDegreesPerSecond;
-    private SettableNumber accelLimitDegreesPerSecondSquared;
+    private SettableNumber velLimit;
+    private SettableNumber accelLimit;
 
     private Optional<Double> pivotVoltageOverride;
 
@@ -55,9 +55,12 @@ public class IntakeImpl extends Intake {
             .withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Aligned);
 
+        velLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_VEL_DEPLOY.getDegrees());
+        accelLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY.getDegrees());
+
         pivotVoltageOverride = Optional.empty();
 
-        pivot.setPosition(0);
+        pivot.setPosition(Settings.Intake.PIVOT_MAX_ANGLE.getRotations());
     }
 
     @Override
@@ -73,8 +76,8 @@ public class IntakeImpl extends Intake {
     }
 
     public void setMotionProfileConstraints(Rotation2d velLimit, Rotation2d accelLimit) {
-        this.velLimitDegreesPerSecond.set(velLimit.getDegrees());
-        this.accelLimitDegreesPerSecondSquared.set(accelLimit.getDegrees());
+        this.velLimit.set(velLimit.getDegrees());
+        this.accelLimit.set(accelLimit.getDegrees());
         Motors.Intake.PIVOT.withMotionProfile(velLimit.getRotations(), accelLimit.getRotations());
         Motors.Intake.PIVOT.configure(pivot);
     }
@@ -108,8 +111,8 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Pivot Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
 
-            SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimitDegreesPerSecond.get());
-            SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimitDegreesPerSecondSquared.get());
+            SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimit.get());
+            SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimit.get());
 
             SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)", Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
 

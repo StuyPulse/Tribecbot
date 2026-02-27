@@ -80,7 +80,7 @@ public class RobotContainer {
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
 
     // Subsystem
-    private final ClimberHopper climberHopper = ClimberHopper.getInstance();
+    // private final ClimberHopper climberHopper = ClimberHopper.getInstance();
     private final Handoff handoff = Handoff.getInstance();
     private final Intake intake = Intake.getInstance();
     private final Spindexer spindexer = Spindexer.getInstance();
@@ -104,7 +104,7 @@ public class RobotContainer {
         configureSysids();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
-        SmartDashboard.putData("Zero Encoders", new TurretZero());
+        // SmartDashboard.putData("Zero Encoders", new TurretZero());
     }
 
     /****************/
@@ -113,7 +113,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
+        // climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
     }
 
     /***************/
@@ -122,13 +122,19 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Intake Run Rollers
-        driver.getLeftTriggerButton()
-            .onTrue(new IntakeRunRollers())
-            .onFalse(new IntakeStopRollers());
+        // driver.getLeftTriggerButton()
+        //     .onTrue(new IntakeRunRollers())
+        //     .onFalse(new IntakeStopRollers());
+
+        driver.getRightButton()
+            .onTrue(new IntakeDeploy());
+
+        driver.getLeftButton()
+            .onTrue(new IntakeStow());
 
         // Intake Down and On
-        driver.getRightTriggerButton()
-            .onTrue(new IntakeDeploy());
+        // driver.getRightTriggerButton()
+        //     .onTrue(new IntakeDeploy());
 
         // Reset Heading
         driver.getDPadUp()

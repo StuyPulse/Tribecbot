@@ -9,7 +9,6 @@ import com.ctre.phoenix6.CANBus;
 
 /** This file contains the different ports of motors, solenoids and sensors */
 public interface Ports {
-    // TODO: Get bus name
     public CANBus RIO = new CANBus("rio");
     public CANBus CANIVORE = new CANBus("CANIVORE");
     

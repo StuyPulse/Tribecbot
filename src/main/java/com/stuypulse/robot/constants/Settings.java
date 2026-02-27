@@ -79,15 +79,12 @@ public interface Settings {
 
     public interface Intake {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
-        Rotation2d PIVOT_INTAKE_OUTAKE_ANGLE = Rotation2d.fromDegrees(0.0);
+        Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(0.0);
 
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
-        double FORWARD_MAX_ROTATIONS = -30.0 / 360.0;
-        double BACKWARDS_MAX_ROTATIONS = 90.0 / 360.0;
 
-        Rotation2d PIVOT_ANGLE_OFFSET = new Rotation2d();
-        Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);
-        Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(80);
+        Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(75);
+        Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(20);
 
         Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(360.0);
         Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1200.0);
