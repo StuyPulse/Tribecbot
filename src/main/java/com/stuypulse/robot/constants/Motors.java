@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -16,6 +18,7 @@ import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.Slot2Configs;
+import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -26,6 +29,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 public interface Motors {
 
@@ -104,7 +108,7 @@ public interface Motors {
     public interface Intake {
         public final TalonFXConfig ROLLER = new TalonFXConfig()
             .withCurrentLimitAmps(40.0)
-            .withRampRate(0.25)
+            .withRampRate(0.50)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive);
 
@@ -127,13 +131,22 @@ public interface Motors {
     }
 
     public interface Spindexer {
-        public final TalonFXConfig SPINDEXER = new TalonFXConfig()
+        public final TalonFXConfig SPINDEXER_LEAD = new TalonFXConfig()
             .withCurrentLimitEnable(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
-            .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
+            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
+            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
+            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
+
+        public final TalonFXConfig SPINDEXER_FOLLOWER = new TalonFXConfig()
+            .withCurrentLimitEnable(false)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
+            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
     }
 
@@ -224,11 +237,81 @@ public interface Motors {
         private final FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
         private final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
 
+        private final double[] lastKP = new double[3];
+        private final double[] lastKI = new double[3];
+        private final double[] lastKD = new double[3];
+        private final double[] lastKS = new double[3];
+        private final double[] lastKV = new double[3];
+        private final double[] lastKA = new double[3];
+
         public void configure(TalonFX motor) {
             TalonFXConfiguration defaultConfig = new TalonFXConfiguration();
             motor.getConfigurator().apply(defaultConfig);
 
             motor.getConfigurator().apply(configuration);
+        }
+
+        public TalonFXConfiguration getConfiguration() {
+            return this.configuration;
+        }
+
+        // SMARTNUMBER TUNABLE GAINS FOR TALONFX MOTOR CONTROLLERS
+        // Note that this should ONLY be used during testing/debugging and not for competition code
+        // Provide a double supplier using () -> {SmartNumberObject}.get(). Use () -> {constant} for terms that do not need to be tuned
+        public void updateGainsConfig(TalonFX motor, int slot, SmartNumber kP, SmartNumber kI, SmartNumber kD, SmartNumber kS, SmartNumber kV, SmartNumber kA) {
+            if (slot != 0 && slot != 1 && slot != 2) {
+                return;
+            }
+
+            double currentKP = kP.getAsDouble();
+            double currentKI = kI.getAsDouble();
+            double currentKD = kD.getAsDouble();
+            double currentKS = kS.getAsDouble();
+            double currentKV = kV.getAsDouble();
+            double currentKA = kA.getAsDouble();
+
+            boolean changed =
+                currentKP != lastKP[slot] ||
+                currentKI != lastKI[slot] ||
+                currentKD != lastKD[slot] ||
+                currentKS != lastKS[slot] ||
+                currentKV != lastKV[slot] ||
+                currentKA != lastKA[slot];
+
+            if (!changed) {
+                return;
+            }
+
+            SlotConfigs gainConfig = new SlotConfigs()
+                .withKP(currentKP)
+                .withKI(currentKI)
+                .withKD(currentKD)
+                .withKS(currentKS)
+                .withKV(currentKV)
+                .withKA(currentKA);
+
+            gainConfig.SlotNumber = slot;
+
+            motor.getConfigurator().apply(gainConfig);
+
+            lastKP[slot] = currentKP;
+            lastKI[slot] = currentKI;
+            lastKD[slot] = currentKD;
+            lastKS[slot] = currentKS;
+            lastKV[slot] = currentKV;
+            lastKA[slot] = currentKA;
+                    
+            switch (slot) {
+                case 0:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot0);
+                    break;
+                case 1:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot1);
+                    break;
+                case 2:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot2);
+                    break;
+            }
         }
 
         // SLOT CONFIGS

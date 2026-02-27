@@ -6,6 +6,7 @@
 package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.config.PIDConstants;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 public class Gains {
     
@@ -43,13 +44,21 @@ public class Gains {
     }
 
     public interface Spindexer {
-        double kP = 1.20;
-        double kI = 0.0;
-        double kD = 0.0;
+        // double kP = 1.20;
+        // double kI = 0.0;
+        // double kD = 0.0;
         
-        double kS = 0.019444;
-        double kA = 0.010876;
-        double kV = 0.38546;
+        // double kS = 0.019444;
+        // double kA = 0.010876;
+        // double kV = 0.38546;
+
+        SmartNumber kP = new SmartNumber("Spindexer/Gains/kP", 1.20);
+        SmartNumber kI = new SmartNumber("Spindexer/Gains/kI", 0.0);
+        SmartNumber kD = new SmartNumber("Spindexer/Gains/kD", 0.0);
+        
+        SmartNumber kS = new SmartNumber("Spindexer/Gains/kS", 0.019444);
+        SmartNumber kA = new SmartNumber("Spindexer/Gains/kA", 0.010876);
+        SmartNumber kV = new SmartNumber("Spindexer/Gains/kV", 0.38546);
     }
 
     public interface Intake {

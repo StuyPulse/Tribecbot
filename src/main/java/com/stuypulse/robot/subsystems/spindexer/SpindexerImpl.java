@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.spindexer;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -33,8 +34,8 @@ public class SpindexerImpl extends Spindexer {
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);
         followerMotor = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR, Ports.CANIVORE);
 
-        Motors.Spindexer.SPINDEXER.configure(leadMotor);
-        Motors.Spindexer.SPINDEXER.configure(followerMotor);
+        Motors.Spindexer.SPINDEXER_LEAD.configure(leadMotor);
+        Motors.Spindexer.SPINDEXER_FOLLOWER.configure(followerMotor);
 
         controller = new VelocityVoltage(getTargetRPM())
             .withEnableFOC(true);
@@ -59,6 +60,29 @@ public class SpindexerImpl extends Spindexer {
     @Override
     public void periodic() {
         super.periodic();
+
+        Motors.Spindexer.SPINDEXER_LEAD.updateGainsConfig(
+            leadMotor, 
+            0, 
+            Gains.Spindexer.kP, 
+            Gains.Spindexer.kI,
+            Gains.Spindexer.kD,
+            Gains.Spindexer.kS,
+            Gains.Spindexer.kV,
+            Gains.Spindexer.kA
+        );
+
+        Motors.Spindexer.SPINDEXER_FOLLOWER.updateGainsConfig(
+            followerMotor, 
+            0, 
+            Gains.Spindexer.kP, 
+            Gains.Spindexer.kI,
+            Gains.Spindexer.kD,
+            Gains.Spindexer.kS,
+            Gains.Spindexer.kV,
+            Gains.Spindexer.kA
+        );
+
         if (EnabledSubsystems.SPINDEXER.get()) {
             if (voltageOverride.isPresent()){
                 leadMotor.setVoltage(voltageOverride.get());
