@@ -31,7 +31,7 @@ public interface Motors {
 
     public interface ClimberHopper {
         public final TalonFXConfig MOTOR = new TalonFXConfig()
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withNeutralMode(NeutralModeValue.Brake)
             .withCurrentLimitAmps(50.0)
             .withSupplyCurrentLimitAmps(50.0)
@@ -106,7 +106,7 @@ public interface Motors {
             .withCurrentLimitAmps(40.0)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Coast)
-            .withInvertedValue(InvertedValue.Clockwise_Positive);
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive);
 
         public final TalonFXConfig PIVOT = new TalonFXConfig()
             .withCurrentLimitAmps(40.0)
@@ -131,7 +131,7 @@ public interface Motors {
             .withCurrentLimitEnable(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
             .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);

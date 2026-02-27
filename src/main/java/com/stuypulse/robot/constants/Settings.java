@@ -282,5 +282,6 @@ public interface Settings {
     public interface Vision {
         public final Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
         public final Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694.0);
+        public final int RESET_IMU_INDEX = 2;
     }
 }

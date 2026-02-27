@@ -25,6 +25,7 @@ import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterRightCorner;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
@@ -41,6 +42,8 @@ import com.stuypulse.robot.commands.turret.TurretRightCorner;
 import com.stuypulse.robot.commands.turret.TurretSeed;
 import com.stuypulse.robot.commands.turret.TurretShoot;
 import com.stuypulse.robot.commands.turret.TurretZero;
+import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
+import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
@@ -104,7 +107,6 @@ public class RobotContainer {
 
         SmartDashboard.putData("Field", Field.FIELD2D);
         SmartDashboard.putData("Zero Encoders", new TurretZero());
-        // SmartDashboard.putData("Seed Encoders", new TurretSee());
     }
 
     /****************/
@@ -123,7 +125,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Intake Up and Off
         driver.getLeftTriggerButton()
-            .onTrue(new IntakeStow());
+            .onTrue(new IntakeRunRollers())
+            .onFalse(new IntakeStopRollers());
 
         // Intake Down and On
         driver.getRightTriggerButton()
@@ -131,7 +134,9 @@ public class RobotContainer {
 
         // Reset Heading
         driver.getDPadUp()
-            .onTrue(new SwerveResetHeading());
+            .onTrue(new SwerveResetHeading())
+            .onTrue(new ResetLimelightIMU())
+            .onFalse(new SetIMUMode(0));
 
         driver.getTopButton()
             .whileTrue(new TurretAnalog(driver));
@@ -286,15 +291,15 @@ public class RobotContainer {
 
     public void configureSysids() {
 
-        // autonChooser.addOption("SysID Module Translation Dynamic Forward", swerve.sysIdDynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse));
+        autonChooser.addOption("SysID Module Translation Dynamic Forward", swerve.sysIdDynamic(Direction.kForward));
+        autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse));
 
-        autonChooser.addOption("SysID Turret Dynamic Forward", turret.getSysIdRoutine().dynamic(Direction.kForward));
-        autonChooser.addOption("SysID Turret Dynamic Reverse", turret.getSysIdRoutine().dynamic(Direction.kReverse));
-        autonChooser.addOption("SysID Turret Quasistatic Forward", turret.getSysIdRoutine().quasistatic(Direction.kForward));
-        autonChooser.addOption("SysID Turret Quasistatic Reverse", turret.getSysIdRoutine().quasistatic(Direction.kReverse));
+        // autonChooser.addOption("SysID Turret Dynamic Forward", turret.getSysIdRoutine().dynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Turret Dynamic Reverse", turret.getSysIdRoutine().dynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Turret Quasistatic Forward", turret.getSysIdRoutine().quasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Turret Quasistatic Reverse", turret.getSysIdRoutine().quasistatic(Direction.kReverse));
 
         // autonChooser.addOption("SysID Module Rotation Dynamic Forwards", swerve.sysIdRotDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Module Rotation Dynamic Backwards", swerve.sysIdRotDynamic(Direction.kReverse));

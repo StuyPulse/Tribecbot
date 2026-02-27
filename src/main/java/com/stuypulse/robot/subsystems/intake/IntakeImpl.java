@@ -49,7 +49,7 @@ public class IntakeImpl extends Intake {
             .withEnableFOC(true);
         rollerController = new DutyCycleOut(getRollerState().getTargetDutyCycle())
             .withEnableFOC(true);
-        follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Opposed);
+        follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Aligned);
 
         pivotVoltageOverride = Optional.empty();
 
@@ -76,7 +76,7 @@ public class IntakeImpl extends Intake {
             if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
-                pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
+                // pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
                 rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
                 rollerFollower.setControl(follower);
             }
