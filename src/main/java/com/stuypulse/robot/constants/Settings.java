@@ -88,8 +88,11 @@ public interface Settings {
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(190);
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(80);
 
-        Rotation2d PIVOT_MAX_VEL = Rotation2d.fromDegrees(300.0);
-        Rotation2d PIVOT_MAX_ACCEL = Rotation2d.fromDegrees(300.0);
+        Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(360.0);
+        Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1200.0);
+
+        Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
+        Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
 
         double GEAR_RATIO = 37.93;
     }

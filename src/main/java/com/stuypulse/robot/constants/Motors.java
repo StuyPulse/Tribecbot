@@ -107,18 +107,18 @@ public interface Motors {
 
     public interface Intake {
         public final TalonFXConfig ROLLER = new TalonFXConfig()
-            .withCurrentLimitAmps(40.0)
+            .withCurrentLimitAmps(60.0)
             .withRampRate(0.50)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive);
 
         public final TalonFXConfig PIVOT = new TalonFXConfig()
-            .withCurrentLimitAmps(40.0)
+            .withCurrentLimitAmps(60.0)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
             .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
-            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL.getRotations());
+            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations());
 
         public final Slot0Configs PIVOT_SLOT_0 = new Slot0Configs()
             .withKP(Gains.Intake.Pivot.kP)

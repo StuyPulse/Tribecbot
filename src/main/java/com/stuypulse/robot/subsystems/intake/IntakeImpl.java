@@ -9,6 +9,7 @@ import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.SettableNumber;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +31,9 @@ public class IntakeImpl extends Intake {
     private final MotionMagicVoltage pivotController;
     private final DutyCycleOut rollerController;
     private final Follower follower;
+
+    private SettableNumber velLimitDegreesPerSecond;
+    private SettableNumber accelLimitDegreesPerSecondSquared;
 
     private Optional<Double> pivotVoltageOverride;
 
@@ -67,10 +71,23 @@ public class IntakeImpl extends Intake {
     public Rotation2d getPivotAngle() {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }
+
+    public void setMotionProfileConstraints(Rotation2d velLimit, Rotation2d accelLimit) {
+        this.velLimitDegreesPerSecond.set(velLimit.getDegrees());
+        this.accelLimitDegreesPerSecondSquared.set(accelLimit.getDegrees());
+        Motors.Intake.PIVOT.withMotionProfile(velLimit.getRotations(), accelLimit.getRotations());
+        Motors.Intake.PIVOT.configure(pivot);
+    }
     
     @Override
     public void periodic() {
         super.periodic();
+
+        if (getPivotState() == PivotState.STOW) {
+            setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_STOW, Settings.Intake.PIVOT_MAX_ACCEL_STOW);
+        } else if (getPivotState() == PivotState.DEPLOY) {
+            setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_DEPLOY, Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY);
+        }
 
         if (EnabledSubsystems.INTAKE.get()) {
             if (pivotVoltageOverride.isPresent()) {
@@ -86,13 +103,15 @@ public class IntakeImpl extends Intake {
             rollerFollower.stopMotor();
         }
 
-        SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
-            Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
-
         if (Settings.DEBUG_MODE) {
             // PIVOT
             SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Pivot Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
+
+            SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimitDegreesPerSecond.get());
+            SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimitDegreesPerSecondSquared.get());
+
+            SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)", Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
 
             // ROLLERS
             SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)", rollerLeader.getMotorVoltage().getValueAsDouble());

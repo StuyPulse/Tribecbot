@@ -26,8 +26,8 @@ public abstract class Intake extends SubsystemBase {
     }
 
     public enum PivotState {
-        DEPLOYED(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE),
-        STOWED(Settings.Intake.PIVOT_STOW_ANGLE);
+        DEPLOY(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE),
+        STOW(Settings.Intake.PIVOT_STOW_ANGLE);
 
         private final Rotation2d targetAngle;
 
@@ -60,7 +60,7 @@ public abstract class Intake extends SubsystemBase {
     private RollerState rollerState;
 
     protected Intake() {
-        this.pivotState = PivotState.STOWED;
+        this.pivotState = PivotState.STOW;
         this.rollerState = RollerState.STOP;
     }
 
