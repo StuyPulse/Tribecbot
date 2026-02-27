@@ -60,14 +60,12 @@ import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 
 public class RobotContainer {
     public interface EnabledSubsystems {
-        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", false);
+        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
         SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
@@ -75,7 +73,7 @@ public class RobotContainer {
         SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", false);
-        SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", false);
+        SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", true);
     }
 
     // Gamepads
@@ -123,7 +121,7 @@ public class RobotContainer {
     /***************/
 
     private void configureButtonBindings() {
-        // Intake Up and Off
+        // Intake Run Rollers
         driver.getLeftTriggerButton()
             .onTrue(new IntakeRunRollers())
             .onFalse(new IntakeStopRollers());

@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     }
 
     /*********************/

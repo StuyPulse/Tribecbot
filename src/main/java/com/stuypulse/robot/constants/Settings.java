@@ -23,8 +23,6 @@ import edu.wpi.first.math.util.Units;
  * We use StuyLib's SmartNumber / SmartBoolean in order to have tunable
  * values that we can edit on Shuffleboard.
  */
-import com.ctre.phoenix6.CANBus;
-import com.pathplanner.lib.path.PathConstraints;
 
 public interface Settings {
     public final double DT = 0.020;
@@ -198,7 +196,7 @@ public interface Settings {
 
         public interface Alignment {
             public interface Constraints {
-                public final double DEFAULT_MAX_VELOCITY = 4.3;
+                public final double DEFAULT_MAX_VELOCITY = 4.93;
                 public final double DEFAULT_MAX_ACCELERATION = 15.0;
                 public final double DEFAULT_MAX_ANGULAR_VELOCITY = Units.degreesToRadians(400.0);
                 public final double DEFAULT_MAX_ANGULAR_ACCELERATION = Units.degreesToRadians(900.0);
