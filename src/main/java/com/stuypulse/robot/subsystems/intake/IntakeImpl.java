@@ -83,14 +83,20 @@ public class IntakeImpl extends Intake {
     }
     
     @Override
-    public void periodic() {
-        super.periodic();
-
+    public void setPivotState(PivotState pivotState) {
+        super.setPivotState(pivotState);
         if (getPivotState() == PivotState.STOW) {
+            SmartDashboard.putString("Intake/Profile Constraints", "S");
             setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_STOW, Settings.Intake.PIVOT_MAX_ACCEL_STOW);
         } else if (getPivotState() == PivotState.DEPLOY) {
+            SmartDashboard.putString("Intake/Profile Constraints", "D");
             setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_DEPLOY, Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY);
         }
+    }
+
+    @Override
+    public void periodic() {
+        super.periodic();
 
         if (EnabledSubsystems.INTAKE.get()) {
             if (pivotVoltageOverride.isPresent()) {

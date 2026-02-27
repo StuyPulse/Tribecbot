@@ -90,7 +90,7 @@ public class RobotContainer {
     private final Turret turret = Turret.getInstance();
 
     private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
-    private final Shooter shooter = Shooter.getInstance();
+    // private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 
     // Autons
