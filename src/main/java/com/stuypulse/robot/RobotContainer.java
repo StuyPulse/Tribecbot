@@ -24,6 +24,7 @@ import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterReverse;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterRightCorner;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
+import com.stuypulse.robot.commands.intake.IntakeAnalog;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
@@ -126,15 +127,15 @@ public class RobotContainer {
         //     .onTrue(new IntakeRunRollers())
         //     .onFalse(new IntakeStopRollers());
 
+        // Intake Down and On
+        // driver.getRightTriggerButton()
+        //     .onTrue(new IntakeDeploy());
+
         driver.getRightButton()
             .onTrue(new IntakeDeploy());
 
         driver.getLeftButton()
             .onTrue(new IntakeStow());
-
-        // Intake Down and On
-        // driver.getRightTriggerButton()
-        //     .onTrue(new IntakeDeploy());
 
         // Reset Heading
         driver.getDPadUp()
@@ -143,7 +144,8 @@ public class RobotContainer {
             .onFalse(new SetIMUMode(0));
 
         driver.getTopButton()
-            .whileTrue(new TurretAnalog(driver));
+            // .whileTrue(new TurretAnalog(driver));
+            .whileTrue(new IntakeAnalog(driver)); // will be useful for finding kG
         
         // Scoring Routine using Interpolation Settings
         // driver.getTopButton()

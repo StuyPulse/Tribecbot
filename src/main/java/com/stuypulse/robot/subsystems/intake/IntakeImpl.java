@@ -23,6 +23,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import java.util.Optional;
 
+import javax.xml.xpath.XPathExpressionException;
+
 public class IntakeImpl extends Intake {
     private final TalonFX pivot;
     private final TalonFX rollerLeader;
@@ -93,7 +95,11 @@ public class IntakeImpl extends Intake {
         }
 
         if (EnabledSubsystems.INTAKE.get()) {
-            if (pivotVoltageOverride.isPresent()) {
+            if (getPivotState() == PivotState.ANALOG) { // comment out the setControl line if it breaks
+                pivot.setControl(pivotController.withPosition(driverInputToAngle().getRotations()));
+            }
+            
+            else if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
                 // pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
