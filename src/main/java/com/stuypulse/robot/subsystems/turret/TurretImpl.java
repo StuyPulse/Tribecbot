@@ -44,8 +44,8 @@ public class TurretImpl extends Turret {
     private Optional<Double> voltageOverride;
     private final PositionVoltage controller;
 
-    private boolean wrapping;
-    private BStream isWrapping;
+    // private boolean wrapping;
+    // private BStream isWrapping;
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
@@ -89,9 +89,9 @@ public class TurretImpl extends Turret {
         controller = new PositionVoltage(getTargetAngle().getRotations())
         .withEnableFOC(true);
 
-        isWrapping = BStream
-            .create(() -> checkForWrapping())
-            .filtered(new BDebounce.Both(Settings.Turret.WRAP_DEBOUNCE));
+        // isWrapping = BStream
+        //     .create(() -> checkForWrapping())
+        //     .filtered(new BDebounce.Both(Settings.Turret.WRAP_DEBOUNCE));
     }
     
     private Rotation2d getEncoderPos17t() {
@@ -156,18 +156,18 @@ public class TurretImpl extends Turret {
         return delta < 0 ? delta + 360 : delta - 360;
     }
 
-    private boolean checkForWrapping() {
-        double currentAngle = getAngle().getDegrees();
-        double actualTargetDeg = currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
+    // private boolean checkForWrapping() {
+    //     double currentAngle = getAngle().getDegrees();
+    //     double actualTargetDeg = currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
         
-        if(!isWrapping.get()) { 
-            return (Math.abs(currentAngle - actualTargetDeg) > 180.0);
-        } else if(atTargetAngle()) { 
-            return false;
-        }
+    //     if(!isWrapping.get()) { 
+    //         return (Math.abs(currentAngle - actualTargetDeg) > 180.0);
+    //     } else if(atTargetAngle()) { 
+    //         return false;
+    //     }
 
-        return isWrapping.get();
-    }
+    //     return isWrapping.get();
+    // }
 
     @Override
     public void periodic() {
@@ -190,14 +190,14 @@ public class TurretImpl extends Turret {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {
-                if(getState() == TurretState.TESTING) {
-                    motor.setControl(controller.withPosition(currentAngle + 1.0).withSlot(1));
-                } else
-                if (isWrapping.getAsBoolean()) {
-                    motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withSlot(1));
-                } else {
+                // if(getState() == TurretState.TESTING) {
+                //     motor.setControl(controller.withPosition(currentAngle + 1.0).withSlot(1));
+                // } else
+                // if (isWrapping.getAsBoolean()) {
+                //     motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withSlot(1));
+                // } else {
                     motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withSlot(0));
-                }
+                // }
             }
         } else {
             motor.stopMotor();
