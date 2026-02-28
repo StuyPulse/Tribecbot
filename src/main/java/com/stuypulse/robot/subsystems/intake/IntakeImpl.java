@@ -164,7 +164,8 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putNumber("Intake/Debug", getPivotState().getTargetAngle().getRotations());
 
             SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Pivot Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Pivot Supply Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Pivot Stator Current (amps)", pivot.getStatorCurrent().getValueAsDouble());
 
             SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimit.get());
             SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimit.get());
@@ -182,8 +183,10 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)", rollerLeader.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Roller Follower Voltage (volts)", rollerFollower.getMotorVoltage().getValueAsDouble());
 
-            SmartDashboard.putNumber("Intake/Roller Leader Current (amps)", rollerLeader.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Roller Follower Current (amps)", rollerFollower.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Leader Supply Current (amps)", rollerLeader.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Leader Stator Current (amps)", rollerLeader.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Follower Supply Current (amps)", rollerFollower.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Intake/Roller Follower Stator Current (amps)", rollerFollower.getStatorCurrent().getValueAsDouble());
         }
     }
 

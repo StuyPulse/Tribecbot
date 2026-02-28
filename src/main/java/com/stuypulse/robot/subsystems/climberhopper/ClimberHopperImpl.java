@@ -112,6 +112,7 @@ public class ClimberHopperImpl extends ClimberHopper {
             SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
             SmartDashboard.putNumber("ClimberHopper/Applied Voltage", motor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("ClimberHopper/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("ClimberHopper/Stator Current", motor.getStatorCurrent().getValueAsDouble());
         }
     }
 }

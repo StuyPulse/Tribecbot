@@ -95,7 +95,8 @@ public class ShooterImpl extends Shooter {
 
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("HoodedShooter/Shooter/Leader Current (amps)", shooterLeader.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Supply Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Stator Current", shooterFollower.getStatorCurrent().getValueAsDouble());
 
             SmartDashboard.putNumber("HoodedShooter/Shooter/Leader Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Voltage", shooterFollower.getMotorVoltage().getValueAsDouble());
@@ -104,7 +105,6 @@ public class ShooterImpl extends Shooter {
 
             SmartDashboard.putNumber("InterpolationTesting/Shooter Closed Loop Error", shooterLeader.getClosedLoopError().getValueAsDouble() * 60.0);
             SmartDashboard.putNumber("InterpolationTesting/Shooter Applied Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("InterpolationTesting/Shooter Supply Current", shooterLeader.getSupplyCurrent().getValueAsDouble());
         }
     }
 
