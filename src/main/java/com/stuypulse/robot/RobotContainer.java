@@ -374,6 +374,9 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Handoff Forwards", handoffSysId.quasistatic(Direction.kForward));
         // autonChooser.addOption("SysID Handoff Backwards", handoffSysId.quasistatic(Direction.kReverse));
 
+        // Wheel Radius Characterization
+        // autonChooser.addOption("Wheel Characterization", new SwerveWheelCharacterization());
+
     }
 
     public Command getAutonomousCommand() {
