@@ -74,6 +74,7 @@ public class HandoffImpl extends Handoff {
             SmartDashboard.putNumber("Handoff/Current (amps)", motor.getStatorCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Handoff/Voltage", motor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Handoff/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Handoff/Stator Current", motor.getStatorCurrent().getValueAsDouble());
         }
     }
 

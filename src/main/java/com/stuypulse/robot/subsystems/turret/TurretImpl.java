@@ -169,6 +169,8 @@ public class TurretImpl extends Turret {
             SmartDashboard.putNumber("Turret/Relative Encoder Position (Rot)", motor.getPosition().getValueAsDouble() * 360.0);
             SmartDashboard.putNumber("Turret/Voltage", motor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Turret/Error", motor.getClosedLoopError().getValueAsDouble() * 360.0);
+            SmartDashboard.putNumber("Turret/Stator Current", motor.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Turret/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
         }
     }
 
