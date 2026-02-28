@@ -27,6 +27,8 @@ public class Robot extends TimedRobot {
     private static Alliance alliance;
     private PowerDistribution powerDistribution;
 
+    private FMSutil fmSutil;
+
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
     }
@@ -76,7 +78,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-     FMSutil fmSutil = new FMSutil(true);
+        fmSutil = new FMSutil(true);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
         auto = robot.getAutonomousCommand();
@@ -87,7 +89,11 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousPeriodic() {}
+    public void autonomousPeriodic() {
+        SmartDashboard.putNumber("FMSUtil/time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
+    }
 
     @Override
     public void autonomousExit() {}
@@ -98,7 +104,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        FMSutil fmSutil = new FMSutil();
+        fmSutil = new FMSutil();
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         
         if (auto != null) {
@@ -107,7 +113,11 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        SmartDashboard.putNumber("FMSUtil/time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
+    }
 
     @Override
     public void teleopExit() {}

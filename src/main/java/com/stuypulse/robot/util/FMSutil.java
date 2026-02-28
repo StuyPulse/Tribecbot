@@ -1,5 +1,7 @@
 package com.stuypulse.robot.util;
 
+import java.util.concurrent.TransferQueue;
+
 import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.stuypulse.robot.constants.Field;
 
@@ -7,23 +9,24 @@ import edu.wpi.first.util.function.BooleanConsumer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FMSutil {
     private Timer timer = new Timer();
     private FieldState fieldState;
     private double timeLeft;
     boolean auto;
-    private FieldState[] fieldStates = { fieldState.AUTO, fieldState.TRANSITION, fieldState.SHIFT1, fieldState.SHIFT2,
+    private FieldState[] fieldStates = {fieldState.TRANSITION, fieldState.SHIFT1, fieldState.SHIFT2,
             fieldState.SHIFT3, fieldState.SHIFT4, fieldState.ENDGAME };
 
     public static enum FieldState {
         AUTO(0.0, 20.0),
-        TRANSITION(0.0, 25.0),
-        SHIFT1(25.0, 50.0),
-        SHIFT2(50.0, 75.0),
-        SHIFT3(75.0, 100.0),
-        SHIFT4(100.0, 125.0),
-        ENDGAME(125, 155.0);
+        TRANSITION(0.0, 10),
+        SHIFT1(10.0, 35.0),
+        SHIFT2(35.0, 60.0),
+        SHIFT3(60.0, 85.0),
+        SHIFT4(85.0, 110.0),
+        ENDGAME(110.0, 140.0);
 
         // public final do.0uble[] shiftStartTimes = {0.0, 10.0, 35.0, 60.0, 85.0, 110.0};
         // public final double[] shiftEndTimes = {10.0, 35.0, 60.0, 85.0, 110.0, 140.0};
@@ -56,7 +59,7 @@ public class FMSutil {
     public FMSutil(boolean auto) {
         timer = new Timer();
         timer.start();
-        this.auto = true;
+        this.auto = auto;
     }
 
     public FMSutil() {
@@ -79,6 +82,12 @@ public class FMSutil {
     public boolean isActiveShift() {
         boolean wonAuto = didWinAuto();
         switch (getFieldState()) {
+            case AUTO: 
+                return true;
+            case TRANSITION: 
+                return false;
+            case ENDGAME:
+                return true;
             case SHIFT1:
                 return (wonAuto) ? true : false;
             case SHIFT2: 
@@ -87,18 +96,17 @@ public class FMSutil {
                 return (wonAuto) ? true : false;
             case SHIFT4:
                 return (wonAuto) ? false : false;
-            case ENDGAME:
-                return true;
             default:
                 return false;
         }
     }
 
     public boolean didWinAuto() {
-        String winner = DriverStation.getGameSpecificMessage(); //TODO: find out what message is  
+        String winner = DriverStation.getGameSpecificMessage(); 
         String currentAlliance = (DriverStation.getAlliance().get() == Alliance.Blue) ? "B" : "R";      
         if (winner.isEmpty()) {
             DriverStation.reportWarning("Arena Fault, no alliance won data", true);
+            SmartDashboard.putBoolean("FMSUtil/nodata?", true);
             return true; // Assume we won :)
         } else if (currentAlliance.equalsIgnoreCase(winner)) {
             return true;
@@ -107,7 +115,7 @@ public class FMSutil {
         }
     }
 
-    public double getTimeLeftInSHift() {
+    public double getTimeLeftInShift() {
         return getFieldState().endT - timer.get();
     }
 
