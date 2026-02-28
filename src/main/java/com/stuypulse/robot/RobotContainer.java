@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
 import com.stuypulse.robot.commands.climberhopper.ClimberUp;
+import com.stuypulse.robot.commands.climberhopper.HopperDown;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -25,6 +26,7 @@ import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterRightCorner;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
 import com.stuypulse.robot.commands.intake.IntakeAnalog;
+import com.stuypulse.robot.commands.intake.IntakeBangBang;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
@@ -70,7 +72,7 @@ public class RobotContainer {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
-        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", false);
         SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
@@ -124,13 +126,18 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Intake Run Rollers
-        // driver.getLeftTriggerButton()
-        //     .onTrue(new IntakeRunRollers())
-        //     .onFalse(new IntakeStopRollers());
+        driver.getLeftTriggerButton()
+            .onTrue(new IntakeRunRollers())
+            .onFalse(new IntakeStopRollers());
 
         // Intake Down and On
         // driver.getRightTriggerButton()
         //     .onTrue(new IntakeDeploy());
+
+        //TODO: COMMENT OUT AFTER (POTENTIAL) TESTING
+
+        // driver.getBottomButton()
+        //     .onTrue(new IntakeBangBang());
 
         driver.getRightButton()
             .onTrue(new IntakeDeploy());
@@ -238,16 +245,18 @@ public class RobotContainer {
         // Intake Down and On
         driver.getRightTriggerButton()
             .onTrue(new IntakeDeploy());
-
+*/
         // Climb Down Placeholder
         driver.getLeftBumper()
-            .onTrue(new BuzzController(driver).alongWith(new ClimberDown()));
+            .onTrue(new BuzzController(driver).alongWith(new ClimberDown()))
+            .onFalse(new HopperDown());
 
         // Climb Up Placeholder
         driver.getRightBumper()
             .onTrue(new BuzzController(driver))
-            .whileTrue(new ClimberUp());
-
+            .whileTrue(new ClimberUp())
+            .onFalse(new HopperDown());
+/*
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading());

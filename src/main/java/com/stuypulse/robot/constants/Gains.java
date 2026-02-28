@@ -64,16 +64,15 @@ public class Gains {
 
     public interface Intake {
         public interface Pivot {
-            // commented out values are proposed values found during , need to dampen slightly more though. Also might need to update the max velocity
-            double kP = 40.0; //450
+            double kP = 100.0;
             double kI = 0.0;
-            double kD = 0.0; //7.5
+            double kD = 10.0;
 
-            double kS = 0.5;
-            double kV = 0.12; //1.2
+            double kS = 0.0;
+            double kV = 0.12;
             double kA = 0.0;
 
-            double kG = 0.0;
+            double kG = 0.5;
         }
     }
 

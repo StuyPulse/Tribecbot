@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -122,18 +123,23 @@ public class IntakeImpl extends Intake {
             //     //TODO: finish and apply to motor -> motor config conflict
             // }
             else {
-                // pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
+                pivot.setControl(new PositionVoltage(getPivotState().getTargetAngle().getRotations()));
+                //pivot.setControl(pivotController.withPosition(getPivotState().getTargetAngle().getRotations()));
                 rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
                 rollerFollower.setControl(follower);
             }
         } else {
-            pivot.stopMotor();
-            rollerLeader.stopMotor();
-            rollerFollower.stopMotor();
+            // pivot.stopMotor();
+            // rollerLeader.stopMotor();
+            // rollerFollower.stopMotor();
         }
 
         if (Settings.DEBUG_MODE) {
             // PIVOT
+            SmartDashboard.putBoolean("Intake/Voltage Override", pivotVoltageOverride.isPresent());
+
+            SmartDashboard.putNumber("Intake/Debug", getPivotState().getTargetAngle().getRotations());
+
             SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Pivot Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
 

@@ -41,8 +41,8 @@ public interface Motors {
             .withRampRate(Settings.ClimberHopper.RAMP_RATE);
 
         public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
-            .withForwardSoftLimitEnable(true)
-            .withReverseSoftLimitEnable(true)
+            .withForwardSoftLimitEnable(false)
+            .withReverseSoftLimitEnable(false)
             .withForwardSoftLimitThreshold(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.Constants.NUM_ROTATIONS_TO_REACH_TOP)
             .withReverseSoftLimitThreshold(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
     }
@@ -126,7 +126,9 @@ public interface Motors {
             .withKS(Gains.Intake.Pivot.kS)
             .withKV(Gains.Intake.Pivot.kV)
             .withKA(Gains.Intake.Pivot.kA)
-            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
+            .withKG(Gains.Intake.Pivot.kG)
+            .withGravityType(GravityTypeValue.Arm_Cosine)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign);
     }
 
     public interface Spindexer {

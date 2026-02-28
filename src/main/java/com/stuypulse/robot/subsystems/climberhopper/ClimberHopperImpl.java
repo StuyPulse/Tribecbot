@@ -81,13 +81,16 @@ public class ClimberHopperImpl extends ClimberHopper {
         if (voltageOverride.isPresent()) {
                 voltage = voltageOverride.get();
         } else {
-            if (!atTargetHeight()) {
-                if (getCurrentHeight() < getState().getTargetHeight()) {
-                    voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
-                } else {
-                    voltage = - Settings.ClimberHopper.MOTOR_VOLTAGE;
-                }
-            } else {
+            if(getState() == ClimberHopperState.CLIMBER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
+            else if(getState() == ClimberHopperState.CLIMBER_UP) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+            // else if (!atTargetHeight()) {
+            //     if (getCurrentHeight() < getState().getTargetHeight()) {
+            //         voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+            //     } else {
+            //         voltage = - Settings.ClimberHopper.MOTOR_VOLTAGE;
+            //     }
+            // } else {
+            else {
                 voltage = 0;
             }
         }

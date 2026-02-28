@@ -64,7 +64,7 @@ public interface Settings {
 
         public final double RAMP_RATE = 50.0;
 
-        public final double MOTOR_VOLTAGE = 3.5;
+        public final double MOTOR_VOLTAGE = 12;
     }
 
     public interface Handoff {
@@ -78,16 +78,16 @@ public interface Settings {
     }
 
     public interface Intake {
-        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(75.0); 
-        Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(20.0);
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
+        Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(0.0);
 
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
 
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(90.0); //Rotation2d.fromRotations(-0.0)
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(0.0); // Rotation2d.fromRotations(-0.2)
 
-        Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(360.0);
-        Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1200.0);
+        Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(720.0);
+        Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1440.0);
 
         Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
         Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
