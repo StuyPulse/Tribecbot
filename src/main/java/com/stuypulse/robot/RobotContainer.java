@@ -31,6 +31,7 @@ import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
+import com.stuypulse.robot.commands.intake.SeedPivot;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.swerve.SwerveClimbAlign;
@@ -108,6 +109,7 @@ public class RobotContainer {
         configureSysids();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
+        SmartDashboard.putData("Intake/Reset Pivot", new SeedPivot());
         // SmartDashboard.putData("Zero Encoders", new TurretZero());
     }
 

@@ -92,6 +92,12 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
         Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
 
+        Rotation2d THRESHHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(60.0);
+
+        Rotation2d ARBITRARY_VOLTAGE_THRESHOLD = Rotation2d.fromDegrees(15.0);
+        
+        double PUSHDOWN_VOLTAGE = 3.0;
+
         double GEAR_RATIO = 37.93;
     }
 

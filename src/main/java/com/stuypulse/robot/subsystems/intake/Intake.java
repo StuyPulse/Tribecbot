@@ -111,6 +111,8 @@ public abstract class Intake extends SubsystemBase {
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);
     public abstract SysIdRoutine getPivotSysIdRoutine();
 
+    public abstract void seedPivot();
+
     @Override
     public void periodic() {
         SmartDashboard.putString("Intake/Pivot State", getPivotState().toString());
