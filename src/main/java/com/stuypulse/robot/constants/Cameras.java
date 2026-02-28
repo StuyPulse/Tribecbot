@@ -18,7 +18,7 @@ public interface Cameras {
 
     public Camera[] LimelightCameras = {
             new Camera("limelight-climber",
-                    new Pose3d(-0.375959, -0.233, 0.20368,
+                    new Pose3d(-0.233, 0.375959, 0.20368,
                     new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(31.08), Units.degreesToRadians(-80))),
                     RobotContainer.EnabledSubsystems.LIMELIGHT)
     };

@@ -22,5 +22,6 @@ public class TurretZero extends InstantCommand {
     @Override
     public void initialize() {
         turret.zeroEncoders();
+        turret.seedTurret();
     }
 }

@@ -40,6 +40,7 @@ import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.commands.turret.TurretAnalog;
 import com.stuypulse.robot.commands.turret.TurretFerry;
+import com.stuypulse.robot.commands.turret.TurretHub;
 import com.stuypulse.robot.commands.turret.TurretIdle;
 import com.stuypulse.robot.commands.turret.TurretLeftCorner;
 import com.stuypulse.robot.commands.turret.TurretRightCorner;
@@ -71,9 +72,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 public class RobotContainer {
     public interface EnabledSubsystems {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
-        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
+        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", true);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
-        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", false);
         SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
@@ -110,7 +111,7 @@ public class RobotContainer {
 
         SmartDashboard.putData("Field", Field.FIELD2D);
         SmartDashboard.putData("Intake/Reset Pivot", new SeedPivot());
-        // SmartDashboard.putData("Zero Encoders", new TurretZero());
+        SmartDashboard.putData("Zero Encoders", new TurretZero());
     }
 
     /****************/
@@ -152,11 +153,15 @@ public class RobotContainer {
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
             .onFalse(new SetIMUMode(0));
-
-        driver.getTopButton()
-            // .whileTrue(new TurretAnalog(driver));
-            .whileTrue(new IntakeAnalog(driver)); // will be useful for finding kG
         
+        driver.getTopButton()
+            .onTrue(new TurretShoot())
+            .onFalse(new TurretIdle());
+
+        driver.getBottomButton()
+            .onTrue(new TurretAnalog(driver))
+            .onFalse(new TurretIdle());
+
         // Scoring Routine using Interpolation Settings
         // driver.getTopButton()
         //         .whileTrue(new HoodedShooterInterpolation()
@@ -247,7 +252,7 @@ public class RobotContainer {
         // Intake Down and On
         driver.getRightTriggerButton()
             .onTrue(new IntakeDeploy());
-*/
+
         // Climb Down Placeholder
         driver.getLeftBumper()
             .onTrue(new BuzzController(driver).alongWith(new ClimberDown()))
@@ -258,7 +263,7 @@ public class RobotContainer {
             .onTrue(new BuzzController(driver))
             .whileTrue(new ClimberUp())
             .onFalse(new HopperDown());
-/*
+
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading());

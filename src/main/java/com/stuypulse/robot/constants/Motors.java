@@ -8,6 +8,7 @@ package com.stuypulse.robot.constants;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
@@ -24,6 +25,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GainSchedBehaviorValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -86,6 +88,7 @@ public interface Motors {
         private final FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
         private final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
         private final SoftwareLimitSwitchConfigs softwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
+        private final ClosedLoopGeneralConfigs closedLoopGeneralConfigs = new ClosedLoopGeneralConfigs();
 
         private final double[] lastKP = new double[3];
         private final double[] lastKI = new double[3];
@@ -235,6 +238,7 @@ public interface Motors {
                     configuration.withSlot2(slot2Configs);
                     break;
             }
+
             return this;
         }
 
@@ -246,6 +250,31 @@ public interface Motors {
             configuration.withSlot0(slot0Configs);
             configuration.withSlot1(slot1Configs);
             configuration.withSlot2(slot2Configs);
+
+            return this;
+        }
+
+        public TalonFXConfig withGainSchedBehavior(GainSchedBehaviorValue value, double threshold, int slot) {
+            closedLoopGeneralConfigs.GainSchedErrorThreshold = threshold;
+            configuration.withClosedLoopGeneral(closedLoopGeneralConfigs);
+            
+            switch(slot) {
+                case 0: {
+                    slot0Configs.GainSchedBehavior = value;
+                    configuration.withSlot0(slot0Configs);
+                }
+                break;
+                case 1: {
+                    slot1Configs.GainSchedBehavior = value;
+                    configuration.withSlot1(slot1Configs);
+                }
+                break;
+                case 2: {
+                    slot2Configs.GainSchedBehavior = value;
+                    configuration.withSlot2(slot2Configs);
+                }
+                break;
+            }
 
             return this;
         }

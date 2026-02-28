@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.VecBuilder;
@@ -14,9 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix6.CANBus;
-import com.pathplanner.lib.path.PathConstraints;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -252,13 +251,16 @@ public interface Settings {
         public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(0.0);
 
         double RESOLUTION_OF_ABSOLUTE_ENCODER = 0.1;
+        double WRAP_DEBOUNCE = 0.5;
         Rotation2d MAX_THEORETICAL_ROTATION = Rotation2d.fromDegrees(612);
         Rotation2d MIN_THEORETICAL_ROTATION = Rotation2d.fromDegrees(-612);
 
         public interface Constants {
             public final double RANGE = 210.0;
 
-            public final Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Rotation2d.kZero);
+            public final double SLOT_SWITCHING_THRESHOLD_ROT = .5;
+
+            public final Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(-4.0), Units.inchesToMeters(8.0), Rotation2d.kZero);
             public final double TURRET_HEIGHT = Units.inchesToMeters(0.0);
 
             public final double GEAR_RATIO_MOTOR_TO_MECH = (60.0 / 9.0) * (95.0 / 12.0); //1425.0 / 36.0;
