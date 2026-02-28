@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Trench To NZ (P)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom NZ To Tower Right (P)"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

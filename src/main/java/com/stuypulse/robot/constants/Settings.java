@@ -116,7 +116,7 @@ public interface Settings {
             public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
             public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
             public final double REVERSE = 0.0;
-            public final double HUB_RPM = 0.0;
+            public final double KB_RPM = 0.0;
             public final double LEFT_CORNER_RPM = 0.0;
             public final double RIGHT_CORNER_RPM = 0.0;
         }
@@ -126,7 +126,7 @@ public interface Settings {
 
             public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7.0);
             public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
-            public final Rotation2d HUB_ANGLE = Rotation2d.fromDegrees(12.0);
+            public final Rotation2d KB_ANGLE = Rotation2d.fromDegrees(12.0);
             public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
             public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
         }

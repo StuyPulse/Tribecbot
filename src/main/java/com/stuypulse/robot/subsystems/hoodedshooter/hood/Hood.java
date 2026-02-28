@@ -30,7 +30,7 @@ public abstract class Hood extends SubsystemBase{
         STOW,
         FERRY,
         SHOOT,
-        HUB,
+        KB,
         LEFT_CORNER,
         RIGHT_CORNER,
         INTERPOLATION,
@@ -54,7 +54,7 @@ public abstract class Hood extends SubsystemBase{
             case STOW -> Settings.HoodedShooter.Angles.MIN_ANGLE;
             case FERRY -> Rotation2d.fromDegrees(30);
             case SHOOT -> Rotation2d.fromDegrees(Settings.HoodedShooter.Angles.SHOOT_ANGLE.get());
-            case HUB -> Settings.HoodedShooter.Angles.HUB_ANGLE;
+            case KB -> Settings.HoodedShooter.Angles.KB_ANGLE;
             case LEFT_CORNER -> Settings.HoodedShooter.Angles.LEFT_CORNER_ANGLE;
             case RIGHT_CORNER -> Settings.HoodedShooter.Angles.RIGHT_CORNER_ANGLE;
             case INTERPOLATION -> HoodAngleCalculator.interpolateHoodAngle().get();

@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.370362595419848,
+        "y": 0.4282538167938924
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.248481613285884,
+        "y": 0.4468090154211143
+      },
+      "isLocked": false,
+      "linkedName": "Bottom Trench Score"
+    },
+    {
+      "anchor": {
+        "x": 7.8073546856465015,
+        "y": 3.696085409252669
+      },
+      "prevControl": {
+        "x": 7.748776441371692,
+        "y": 0.8090147985656451
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "NZ Bottom Center"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7228003784295178,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 3.5,
+        "maxAcceleration": 6.75,
+        "maxAngularVelocity": 400.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.75,
+    "maxAcceleration": 6.75,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "To NZ",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}

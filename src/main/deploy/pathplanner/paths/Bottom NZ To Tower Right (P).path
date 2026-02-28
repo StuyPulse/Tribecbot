@@ -1,0 +1,79 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.28075919335706,
+        "y": 3.6638078291814944
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.333950177935943,
+        "y": 0.41453143534993897
+      },
+      "isLocked": false,
+      "linkedName": "NZ Bottom Center (P)"
+    },
+    {
+      "anchor": {
+        "x": 4.579596678529064,
+        "y": 0.43604982206405685
+      },
+      "prevControl": {
+        "x": 6.882064056939502,
+        "y": 0.4468090154211143
+      },
+      "nextControl": {
+        "x": 2.9648389542439793,
+        "y": 0.4285042252216036
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.1258956109134053,
+        "y": 2.5448517200474496
+      },
+      "prevControl": {
+        "x": 2.1695373665480435,
+        "y": 0.4037722419928822
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Tower Right 1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0510046367851622,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.3261205564142173,
+      "rotationDegrees": 90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.75,
+    "maxAcceleration": 6.75,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "To Tower",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}

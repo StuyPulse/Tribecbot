@@ -11,7 +11,8 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Autonomous": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Visualizers/ClimberHopper": "Mechanism2d"
+      "/SmartDashboard/Visualizers/ClimberHopper": "Mechanism2d",
+      "/SmartDashboard/Visualizers/Turret": "Mechanism2d"
     },
     "windows": {
       "/SmartDashboard/Field": {

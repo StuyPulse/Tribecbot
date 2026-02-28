@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
         auto = robot.getAutonomousCommand();

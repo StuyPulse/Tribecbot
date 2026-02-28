@@ -11,6 +11,15 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.PoachingAutons.BottomOneCyclePoach;
+import com.stuypulse.robot.commands.auton.PoachingAutons.BottomTwoCyclePoach;
+import com.stuypulse.robot.commands.auton.PoachingAutons.TopOneCyclePoach;
+import com.stuypulse.robot.commands.auton.PoachingAutons.TopTwoCyclePoach;
+import com.stuypulse.robot.commands.auton.RegularAutons.BottomTwoCycle;
+import com.stuypulse.robot.commands.auton.RegularAutons.DepotAuton;
+import com.stuypulse.robot.commands.auton.RegularAutons.EightFuel;
+import com.stuypulse.robot.commands.auton.RegularAutons.TopTwoCycle;
+import com.stuypulse.robot.commands.auton.Test.BoxTest;
 import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
 import com.stuypulse.robot.commands.climberhopper.ClimberUp;
@@ -51,6 +60,7 @@ import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.turret.Turret;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
+import com.stuypulse.robot.util.PathUtil.AutonConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -271,9 +281,52 @@ public class RobotContainer {
     /**************/
 
     public void configureAutons() {
+
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
+        // TESTS
+        AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new, 
+        "Box 1", "Box 2", "Box 3", "Box 4");
+        BOX_TEST.register(autonChooser);
+
+        // // BASE
+        // AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 
+        // "");
+        // EIGHT_FUEL.register(autonChooser);
+
+        // // DEPOT
+        // AutonConfig DEPOT_AUTON = new AutonConfig("Depot Auton", DepotAuton::new, 
+        // "Top Bump To Depot", "Depot To Tower Left");
+        // DEPOT_AUTON.register(autonChooser);
+
+        // // ONE CYCLES
+        // AutonConfig TOP_ONE_CYCLE_POACH = new AutonConfig("Top One Cycle (Poach)", TopOneCyclePoach::new,  
+        // "Top Trench To NZ (P)", "Top NZ To Tower Left (P)");
+        // TOP_ONE_CYCLE_POACH.register(autonChooser);
+
+        // AutonConfig BOTTOM_ONE_CYCLE_POACH = new AutonConfig("Bottom One Cycle (Poach)", BottomOneCyclePoach::new,  
+        // "Bottom Trench To NZ (P)", "Bottom NZ To Tower Right (P)");
+        // BOTTOM_ONE_CYCLE_POACH.register(autonChooser);
+
+        // // TWO CYCLES
+        // AutonConfig TOP_TWO_CYCLE = new AutonConfig("Top Two Cycle", TopTwoCycle::new,  
+        // "Top Trench To NZ", "Top NZ To Score", "Top Score To NZ", "Top NZ To Tower Left");
+        // TOP_TWO_CYCLE.register(autonChooser);
+
+        // AutonConfig BOTTOM_TWO_CYCLE = new AutonConfig("Bottom Two Cycle", BottomTwoCycle::new,  
+        // "Bottom Trench To NZ", "Bottom NZ To Score", "Bottom Score To NZ", "Bottom NZ To Tower Right");
+        // BOTTOM_TWO_CYCLE.register(autonChooser);
+
+        // AutonConfig TOP_TWO_CYCLE_POACH = new AutonConfig("Top Two Cycle (Poach)", TopTwoCyclePoach::new,  
+        // "Top Trench To NZ (P)", "Top NZ To Score (P)", "Top Score To NZ", "Top NZ To Tower Left");
+        // TOP_TWO_CYCLE_POACH.register(autonChooser);
+
+        // AutonConfig BOTTOM_TWO_CYCLE_POACH = new AutonConfig("Bottom Two Cycle (Poach)", BottomTwoCyclePoach::new,  
+        // "Bottom Trench To NZ (P)", "Bottom NZ To Score (P)", "Bottom Score To NZ", "Bottom NZ To Tower Right");
+        // BOTTOM_TWO_CYCLE_POACH.register(autonChooser);
+
         SmartDashboard.putData("Autonomous", autonChooser);
+
     }
 
     public void configureSysids() {

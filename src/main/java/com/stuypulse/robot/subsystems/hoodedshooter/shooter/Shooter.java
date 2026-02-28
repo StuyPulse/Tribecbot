@@ -35,7 +35,7 @@ public abstract class Shooter extends SubsystemBase {
         SHOOT,
         FERRY,
         REVERSE,
-        HUB,
+        KB,
         LEFT_CORNER,
         RIGHT_CORNER,  
         INTERPOLATION;
@@ -59,7 +59,7 @@ public abstract class Shooter extends SubsystemBase {
             case SHOOT -> getShootRPM();
             case FERRY -> HoodAngleCalculator.interpolateFerryingRPM().get();
             case REVERSE -> Settings.HoodedShooter.RPMs.REVERSE;
-            case HUB -> Settings.HoodedShooter.RPMs.HUB_RPM;
+            case KB -> Settings.HoodedShooter.RPMs.KB_RPM;
             case LEFT_CORNER -> Settings.HoodedShooter.RPMs.LEFT_CORNER_RPM;
             case RIGHT_CORNER -> Settings.HoodedShooter.RPMs.RIGHT_CORNER_RPM;
             case INTERPOLATION -> HoodAngleCalculator.interpolateShooterRPM().get();

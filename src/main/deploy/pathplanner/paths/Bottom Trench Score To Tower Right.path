@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.370362595419848,
+        "y": 0.4282538167938924
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.3195610913404519,
+        "y": 0.6404744958481603
+      },
+      "isLocked": false,
+      "linkedName": "Bottom Trench Score"
+    },
+    {
+      "anchor": {
+        "x": 1.1258956109134053,
+        "y": 2.5448517200474496
+      },
+      "prevControl": {
+        "x": 1.534744958481614,
+        "y": 1.3183036773428227
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Tower Right 1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.21947449768161098,
+      "rotationDegrees": 90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.75,
+    "maxAcceleration": 6.75,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "To Tower",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
