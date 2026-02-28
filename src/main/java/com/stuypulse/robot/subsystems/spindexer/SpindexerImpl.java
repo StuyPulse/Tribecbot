@@ -18,10 +18,15 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import java.util.Optional;
 
 public class SpindexerImpl extends Spindexer {
+    private final Motors.TalonFXConfig spindexerLeadConfig;
+    private final Motors.TalonFXConfig spindexerFollowerConfig;
+
     private final TalonFX leadMotor;
     private final TalonFX followerMotor;
 
@@ -31,11 +36,29 @@ public class SpindexerImpl extends Spindexer {
     private Optional<Double> voltageOverride;
 
     public SpindexerImpl() {
+        spindexerLeadConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitEnable(false)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
+            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
+            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
+
+        spindexerFollowerConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitEnable(false)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
+            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
+            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
+
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);
         followerMotor = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR, Ports.CANIVORE);
 
-        Motors.Spindexer.SPINDEXER_LEAD.configure(leadMotor);
-        Motors.Spindexer.SPINDEXER_FOLLOWER.configure(followerMotor);
+        spindexerLeadConfig.configure(leadMotor);
+        spindexerFollowerConfig.configure(followerMotor);
 
         controller = new VelocityVoltage(getTargetRPM())
             .withEnableFOC(true);
@@ -61,10 +84,10 @@ public class SpindexerImpl extends Spindexer {
     public void periodic() {
         super.periodic();
 
-        Motors.Spindexer.SPINDEXER_LEAD.updateGainsConfig(
-            leadMotor, 
-            0, 
-            Gains.Spindexer.kP, 
+        spindexerLeadConfig.updateGainsConfig(
+            leadMotor,
+            0,
+            Gains.Spindexer.kP,
             Gains.Spindexer.kI,
             Gains.Spindexer.kD,
             Gains.Spindexer.kS,
@@ -72,10 +95,10 @@ public class SpindexerImpl extends Spindexer {
             Gains.Spindexer.kA
         );
 
-        Motors.Spindexer.SPINDEXER_FOLLOWER.updateGainsConfig(
-            followerMotor, 
-            0, 
-            Gains.Spindexer.kP, 
+        spindexerFollowerConfig.updateGainsConfig(
+            followerMotor,
+            0,
+            Gains.Spindexer.kP,
             Gains.Spindexer.kI,
             Gains.Spindexer.kD,
             Gains.Spindexer.kS,
@@ -84,7 +107,7 @@ public class SpindexerImpl extends Spindexer {
         );
 
         if (EnabledSubsystems.SPINDEXER.get()) {
-            if (voltageOverride.isPresent()){
+            if (voltageOverride.isPresent()) {
                 leadMotor.setVoltage(voltageOverride.get());
             } else {
                 leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));

@@ -16,10 +16,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import java.util.Optional;
 
 
 public class ClimberHopperImpl extends ClimberHopper {
+    private final Motors.TalonFXConfig climberHopperConfig;
+
     private final TalonFX motor;
     private final VoltageOut controller;
 
@@ -30,23 +34,32 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     public ClimberHopperImpl() {
         super();
-        
+
+        climberHopperConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withCurrentLimitAmps(50.0)
+            .withSupplyCurrentLimitAmps(50.0)
+            .withRampRate(Settings.ClimberHopper.RAMP_RATE)
+            .withSoftLimits(
+                false, false,
+                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.Constants.NUM_ROTATIONS_TO_REACH_TOP,
+                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
+
         motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
-        Motors.ClimberHopper.MOTOR.configure(motor);
-        motor.getConfigurator().apply(Motors.ClimberHopper.SOFT_LIMITS);
+        climberHopperConfig.configure(motor);
 
         motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
         stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.ClimberHopper.STALL)
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
 
-        // TODO: initialize voltage to default voltage and pass to controller initialization below
         controller = new VoltageOut(0)
             .withEnableFOC(true);
 
         voltageOverride = Optional.empty();
     }
 
-    @Override 
+    @Override
     public boolean getStalling() {
         return stalling.getAsBoolean();
     }
@@ -79,22 +92,13 @@ public class ClimberHopperImpl extends ClimberHopper {
         super.periodic();
 
         if (voltageOverride.isPresent()) {
-                voltage = voltageOverride.get();
+            voltage = voltageOverride.get();
         } else {
-            if(getState() == ClimberHopperState.CLIMBER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
-            else if(getState() == ClimberHopperState.CLIMBER_UP) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
-            // else if (!atTargetHeight()) {
-            //     if (getCurrentHeight() < getState().getTargetHeight()) {
-            //         voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
-            //     } else {
-            //         voltage = - Settings.ClimberHopper.MOTOR_VOLTAGE;
-            //     }
-            // } else {
-            else {
-                voltage = 0;
-            }
+            if (getState() == ClimberHopperState.CLIMBER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
+            else if (getState() == ClimberHopperState.CLIMBER_UP) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+            else voltage = 0;
         }
-        
+
         if (EnabledSubsystems.CLIMBER_HOPPER.get()) {
             motor.setControl(controller.withOutput(voltage));
         } else {

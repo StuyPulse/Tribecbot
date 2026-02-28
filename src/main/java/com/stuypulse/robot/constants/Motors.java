@@ -32,158 +32,6 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 public interface Motors {
 
-    public interface ClimberHopper {
-        public final TalonFXConfig MOTOR = new TalonFXConfig()
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withCurrentLimitAmps(50.0)
-            .withSupplyCurrentLimitAmps(50.0)
-            .withRampRate(Settings.ClimberHopper.RAMP_RATE);
-
-        public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
-            .withForwardSoftLimitEnable(false)
-            .withReverseSoftLimitEnable(false)
-            .withForwardSoftLimitThreshold(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.Constants.NUM_ROTATIONS_TO_REACH_TOP)
-            .withReverseSoftLimitThreshold(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
-    }
-
-    public interface Handoff {
-        public final TalonFXConfig HANDOFF = new TalonFXConfig()
-            .withCurrentLimitAmps(80.0)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
-            .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
-            .withSensorToMechanismRatio(Settings.Handoff.GEAR_RATIO);
-    }
-
-    public interface HoodedShooter {
-        public interface Hood {
-            public final TalonFXConfig HOOD = new TalonFXConfig()
-                .withCurrentLimitAmps(80.0)
-                .withRampRate(0.25)
-                .withNeutralMode(NeutralModeValue.Brake)
-                .withInvertedValue(InvertedValue.Clockwise_Positive)
-                .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
-                .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
-                .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO);
-
-            public final Slot0Configs SLOT_0 = new Slot0Configs()
-                .withKP(Gains.HoodedShooter.Hood.kP)
-                .withKI(Gains.HoodedShooter.Hood.kI)
-                .withKD(Gains.HoodedShooter.Hood.kD)
-                .withKS(Gains.HoodedShooter.Hood.kS)
-                .withKV(Gains.HoodedShooter.Hood.kV)
-                .withKA(Gains.HoodedShooter.Hood.kA)
-                .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
-
-            public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
-                .withForwardSoftLimitEnable(true)
-                .withReverseSoftLimitEnable(true)
-                .withForwardSoftLimitThreshold(Settings.HoodedShooter.Angles.MAX_ANGLE.getRotations())
-                .withReverseSoftLimitThreshold(Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
-
-            public final CANcoderConfiguration HOOD_ENCODER = new CANcoderConfiguration()
-                .withMagnetSensor(new MagnetSensorConfigs()
-                    .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                    .withAbsoluteSensorDiscontinuityPoint(1.0)
-                    .withMagnetOffset(Settings.HoodedShooter.Hood.ENCODER_OFFSET.getRotations()));
-        }
-
-        public interface Shooter {
-            public final TalonFXConfig SHOOTER = new TalonFXConfig()
-                .withCurrentLimitEnable(false)
-                .withNeutralMode(NeutralModeValue.Coast)
-                .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-                .withPIDConstants(Gains.HoodedShooter.Shooter.kP, Gains.HoodedShooter.Shooter.kI,
-                        Gains.HoodedShooter.Shooter.kD, 0)
-                .withFFConstants(Gains.HoodedShooter.Shooter.kS, Gains.HoodedShooter.Shooter.kV,
-                        Gains.HoodedShooter.Shooter.kA, 0)
-                .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
-        }
-    }
-
-    public interface Intake {
-        public final TalonFXConfig ROLLER = new TalonFXConfig()
-            .withCurrentLimitAmps(60.0)
-            .withRampRate(0.50)
-            .withNeutralMode(NeutralModeValue.Coast)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive);
-
-        public final TalonFXConfig PIVOT = new TalonFXConfig()
-            .withCurrentLimitAmps(60.0)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
-            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations());
-
-        public final Slot0Configs PIVOT_SLOT_0 = new Slot0Configs()
-            .withKP(Gains.Intake.Pivot.kP)
-            .withKI(Gains.Intake.Pivot.kI)
-            .withKD(Gains.Intake.Pivot.kD)
-            .withKS(Gains.Intake.Pivot.kS)
-            .withKV(Gains.Intake.Pivot.kV)
-            .withKA(Gains.Intake.Pivot.kA)
-            .withKG(Gains.Intake.Pivot.kG)
-            .withGravityType(GravityTypeValue.Arm_Cosine)
-            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign);
-    }
-
-    public interface Spindexer {
-        public final TalonFXConfig SPINDEXER_LEAD = new TalonFXConfig()
-            .withCurrentLimitEnable(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
-            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
-            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
-
-        public final TalonFXConfig SPINDEXER_FOLLOWER = new TalonFXConfig()
-            .withCurrentLimitEnable(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
-            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
-            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
-    }
-
-    public interface Turret {
-        public final TalonFXConfig TURRET = new TalonFXConfig()
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withPIDConstants(Gains.Turret.kP, 0.0, Gains.Turret.kD, 0)
-            .withFFConstants(Gains.Turret.kS, 0.0, 0.0, 0)
-            .withSensorToMechanismRatio(Settings.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH);
-
-        public final Slot0Configs SLOT_0 = new Slot0Configs()
-            .withKP(Gains.Turret.kP)
-            .withKI(Gains.Turret.kI)
-            .withKD(Gains.Turret.kD)
-            .withKS(Gains.Turret.kS)
-            .withKV(Gains.Turret.kV)
-            .withKA(Gains.Turret.kA)
-            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
-
-        public final CANCoderConfig ENCODER_17T = new CANCoderConfig()
-            .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-            .withAbsoluteSensorDiscontinuityPoint(1.0);
-
-        public final CANCoderConfig ENCODER_18T = new CANCoderConfig()
-            .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-            .withAbsoluteSensorDiscontinuityPoint(1.0);
-
-        public final SoftwareLimitSwitchConfigs SOFT_LIMITS = new SoftwareLimitSwitchConfigs()
-            .withForwardSoftLimitEnable(false)
-            .withReverseSoftLimitEnable(false)
-            .withForwardSoftLimitThreshold(Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS)
-            .withReverseSoftLimitThreshold(Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
-    }
-
     public static class CANCoderConfig {
         private final CANcoderConfiguration configuration = new CANcoderConfiguration();
         private final MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
@@ -237,6 +85,7 @@ public interface Motors {
         private final CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
         private final FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
         private final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
+        private final SoftwareLimitSwitchConfigs softwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
 
         private final double[] lastKP = new double[3];
         private final double[] lastKI = new double[3];
@@ -258,7 +107,6 @@ public interface Motors {
 
         // SMARTNUMBER TUNABLE GAINS FOR TALONFX MOTOR CONTROLLERS
         // Note that this should ONLY be used during testing/debugging and not for competition code
-        // Provide a double supplier using () -> {SmartNumberObject}.get(). Use () -> {constant} for terms that do not need to be tuned
         public void updateGainsConfig(TalonFX motor, int slot, SmartNumber kP, SmartNumber kI, SmartNumber kD, SmartNumber kS, SmartNumber kV, SmartNumber kA) {
             if (slot != 0 && slot != 1 && slot != 2) {
                 return;
@@ -301,7 +149,7 @@ public interface Motors {
             lastKS[slot] = currentKS;
             lastKV[slot] = currentKV;
             lastKA[slot] = currentKA;
-                    
+
             switch (slot) {
                 case 0:
                     motor.getConfigurator().refresh(this.getConfiguration().Slot0);
@@ -366,6 +214,24 @@ public interface Motors {
                     slot2Configs.kV = kV;
                     slot2Configs.kA = kA;
                     slot2Configs.kG = kG;
+                    configuration.withSlot2(slot2Configs);
+                    break;
+            }
+            return this;
+        }
+
+        public TalonFXConfig withStaticFeedforwardSign(StaticFeedforwardSignValue staticFeedforwardSign, int slot) {
+            switch (slot) {
+                case 0:
+                    slot0Configs.StaticFeedforwardSign = staticFeedforwardSign;
+                    configuration.withSlot0(slot0Configs);
+                    break;
+                case 1:
+                    slot1Configs.StaticFeedforwardSign = staticFeedforwardSign;
+                    configuration.withSlot1(slot1Configs);
+                    break;
+                case 2:
+                    slot2Configs.StaticFeedforwardSign = staticFeedforwardSign;
                     configuration.withSlot2(slot2Configs);
                     break;
             }
@@ -453,6 +319,19 @@ public interface Motors {
             currentLimitsConfigs.StatorCurrentLimitEnable = enabled;
 
             configuration.withCurrentLimits(currentLimitsConfigs);
+
+            return this;
+        }
+
+        // SOFTWARE LIMIT CONFIGS
+
+        public TalonFXConfig withSoftLimits(boolean forwardEnable, boolean reverseEnable, double forwardThreshold, double reverseThreshold) {
+            softwareLimitSwitchConfigs.ForwardSoftLimitEnable = forwardEnable;
+            softwareLimitSwitchConfigs.ReverseSoftLimitEnable = reverseEnable;
+            softwareLimitSwitchConfigs.ForwardSoftLimitThreshold = forwardThreshold;
+            softwareLimitSwitchConfigs.ReverseSoftLimitThreshold = reverseThreshold;
+
+            configuration.withSoftwareLimitSwitch(softwareLimitSwitchConfigs);
 
             return this;
         }

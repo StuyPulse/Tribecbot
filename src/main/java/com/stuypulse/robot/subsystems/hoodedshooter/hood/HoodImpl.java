@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -18,9 +19,16 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import java.util.Optional;
 
 public class HoodImpl extends Hood {
+    private final Motors.TalonFXConfig hoodConfig;
+    private final Motors.CANCoderConfig hoodEncoderConfig;
+
     private final TalonFX hoodMotor;
     private final CANcoder hoodEncoder;
 
@@ -31,15 +39,30 @@ public class HoodImpl extends Hood {
     private boolean hasUsedAbsoluteEncoder;
 
     public HoodImpl() {
+        hoodConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitAmps(80.0)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
+            .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
+            .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
+            .withSoftLimits(
+                true, true,
+                Settings.HoodedShooter.Angles.MAX_ANGLE.getRotations(),
+                Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
+
+        hoodEncoderConfig = new Motors.CANCoderConfig()
+            .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+            .withAbsoluteSensorDiscontinuityPoint(1.0)
+            .withMagnetOffset(Settings.HoodedShooter.Hood.ENCODER_OFFSET.getRotations());
+
         hoodMotor = new TalonFX(Ports.HoodedShooter.Hood.MOTOR, Ports.RIO);
         hoodEncoder = new CANcoder(Ports.HoodedShooter.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
-        Motors.HoodedShooter.Hood.HOOD.configure(hoodMotor);
-
-        hoodMotor.getConfigurator().apply(Motors.HoodedShooter.Hood.SLOT_0);
-        hoodMotor.getConfigurator().apply(Motors.HoodedShooter.Hood.SOFT_LIMITS);
-
-        hoodEncoder.getConfigurator().apply(Motors.HoodedShooter.Hood.HOOD_ENCODER);
+        hoodConfig.configure(hoodMotor);
+        hoodEncoderConfig.configure(hoodEncoder);
 
         controller = new PositionVoltage(getTargetAngle().getRotations())
             .withEnableFOC(true);
@@ -107,5 +130,5 @@ public class HoodImpl extends Hood {
             getInstance()
         );
     }
-
+    
 }

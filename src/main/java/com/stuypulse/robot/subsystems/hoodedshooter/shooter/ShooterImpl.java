@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -17,10 +18,14 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import java.util.Optional;
 
 public class ShooterImpl extends Shooter {
+    private final Motors.TalonFXConfig shooterConfig;
+
     private final TalonFX shooterLeader;
     private final TalonFX shooterFollower;
 
@@ -30,15 +35,25 @@ public class ShooterImpl extends Shooter {
     private Optional<Double> voltageOverride;
 
     public ShooterImpl() {
+        shooterConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitEnable(false)
+            .withNeutralMode(NeutralModeValue.Coast)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withPIDConstants(Gains.HoodedShooter.Shooter.kP, Gains.HoodedShooter.Shooter.kI,
+                    Gains.HoodedShooter.Shooter.kD, 0)
+            .withFFConstants(Gains.HoodedShooter.Shooter.kS, Gains.HoodedShooter.Shooter.kV,
+                    Gains.HoodedShooter.Shooter.kA, 0)
+            .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
+
         shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);
         shooterFollower = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_FOLLOW, Ports.RIO);
+
+        shooterConfig.configure(shooterLeader);
+        shooterConfig.configure(shooterFollower);
 
         shooterController = new VelocityVoltage(getTargetRPM() / 60.0)
             .withEnableFOC(true);
         follower = new Follower(Ports.HoodedShooter.Shooter.MOTOR_LEAD, MotorAlignmentValue.Opposed);
-
-        Motors.HoodedShooter.Shooter.SHOOTER.configure(shooterLeader);
-        Motors.HoodedShooter.Shooter.SHOOTER.configure(shooterFollower);
 
         shooterFollower.setControl(follower);
 
@@ -58,7 +73,7 @@ public class ShooterImpl extends Shooter {
         return shooterFollower.getVelocity().getValueAsDouble() * 60.0;
     }
 
-    @Override 
+    @Override
     public void periodic() {
         super.periodic();
 
@@ -77,7 +92,7 @@ public class ShooterImpl extends Shooter {
             shooterLeader.stopMotor();
             shooterFollower.stopMotor();
         }
-        
+
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("HoodedShooter/Shooter/Leader Current (amps)", shooterLeader.getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Shooter/Follower Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());
@@ -100,13 +115,13 @@ public class ShooterImpl extends Shooter {
     @Override
     public SysIdRoutine getShooterSysIdRoutine() {
         return SysId.getRoutine(
-            1, 
-            5, 
-            "Shooter", 
-            voltage -> setVoltageOverride(Optional.of(voltage)), 
-            () -> shooterLeader.getPosition().getValueAsDouble(), 
-            () -> shooterLeader.getVelocity().getValueAsDouble(), 
-            () -> shooterLeader.getMotorVoltage().getValueAsDouble(), 
+            1,
+            5,
+            "Shooter",
+            voltage -> setVoltageOverride(Optional.of(voltage)),
+            () -> shooterLeader.getPosition().getValueAsDouble(),
+            () -> shooterLeader.getVelocity().getValueAsDouble(),
+            () -> shooterLeader.getMotorVoltage().getValueAsDouble(),
             getInstance()
         );
     }

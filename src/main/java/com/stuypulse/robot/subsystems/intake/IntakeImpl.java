@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -21,12 +22,18 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import java.util.Optional;
 
 public class IntakeImpl extends Intake {
+    private final Motors.TalonFXConfig pivotConfig;
+    private final Motors.TalonFXConfig rollerConfig;
+
     private final TalonFX pivot;
     private final TalonFX rollerLeader;
     private final TalonFX rollerFollower;
@@ -43,21 +50,36 @@ public class IntakeImpl extends Intake {
     private Optional<Double> pivotVoltageOverride;
 
     public IntakeImpl() {
-        pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
-        Motors.Intake.PIVOT.configure(pivot);
+        pivotConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitAmps(60.0)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
+            .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
+            .withGravityType(GravityTypeValue.Arm_Cosine)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 0)
+            .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
+            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations());
 
-        pivot.getConfigurator().apply(Motors.Intake.PIVOT_SLOT_0);
+        rollerConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitAmps(60.0)
+            .withRampRate(0.50)
+            .withNeutralMode(NeutralModeValue.Coast)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive);
+
+        pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
+        pivotConfig.configure(pivot);
 
         rollerLeader = new TalonFX(Ports.Intake.ROLLER_LEADER, Ports.RIO);
-        Motors.Intake.ROLLER.configure(rollerLeader);
+        rollerConfig.configure(rollerLeader);
 
         rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER, Ports.RIO);
-        Motors.Intake.ROLLER.configure(rollerFollower);
+        rollerConfig.configure(rollerFollower);
 
         pivotController = new MotionMagicVoltage(getPivotState().getTargetAngle().getRotations())
             .withEnableFOC(true);
 
-        //TODO: add tolerance
         pivotAggressiveController = new BangBangController(Settings.Intake.PIVOT_ANGLE_TOLERANCE.getRotations());
 
         rollerController = new DutyCycleOut(getRollerState().getTargetDutyCycle())
@@ -87,8 +109,8 @@ public class IntakeImpl extends Intake {
     public void setMotionProfileConstraints(Rotation2d velLimit, Rotation2d accelLimit) {
         this.velLimit.set(velLimit.getDegrees());
         this.accelLimit.set(accelLimit.getDegrees());
-        Motors.Intake.PIVOT.withMotionProfile(velLimit.getRotations(), accelLimit.getRotations());
-        Motors.Intake.PIVOT.configure(pivot);
+        pivotConfig.withMotionProfile(velLimit.getRotations(), accelLimit.getRotations());
+        pivotConfig.configure(pivot);
     }
     
     @Override
@@ -115,6 +137,7 @@ public class IntakeImpl extends Intake {
             else if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             }
+            
             // else if (getPivotState() == PivotState.BANGBANG) {
             //     pivotAggressiveController.calculate(getPivotAngle().getRotations(), getPivotState().getTargetAngle().getRotations());
             //     pivot.setControl(new VelocityVoltage(pivotAggressiveController.getMeasurement() * 12));

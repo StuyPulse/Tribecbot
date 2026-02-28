@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.handoff;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -16,17 +17,30 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import java.util.Optional;
 
 public class HandoffImpl extends Handoff {
+    private final Motors.TalonFXConfig handoffConfig;
+
     private final TalonFX motor;
     private final VelocityVoltage controller;
 
     private Optional<Double> voltageOverride;
 
     public HandoffImpl() {
+        handoffConfig = new Motors.TalonFXConfig()
+            .withCurrentLimitAmps(80.0)
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
+            .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
+            .withSensorToMechanismRatio(Settings.Handoff.GEAR_RATIO);
+
         motor = new TalonFX(Ports.Handoff.HANDOFF, Ports.RIO);
-        Motors.Handoff.HANDOFF.configure(motor);
+        handoffConfig.configure(motor);
 
         controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE)
             .withEnableFOC(true);

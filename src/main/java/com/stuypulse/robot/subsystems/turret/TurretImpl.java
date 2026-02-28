@@ -6,6 +6,7 @@
 package com.stuypulse.robot.subsystems.turret;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -20,9 +21,17 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import java.util.Optional;
 
 public class TurretImpl extends Turret {
+    private final Motors.TalonFXConfig turretConfig;
+    private final Motors.CANCoderConfig encoder17tConfig;
+    private final Motors.CANCoderConfig encoder18tConfig;
+
     private final TalonFX motor;
     private final CANcoder encoder17t;
     private final CANcoder encoder18t;
@@ -31,16 +40,35 @@ public class TurretImpl extends Turret {
     private Optional<Double> voltageOverride;
     private final PositionVoltage controller;
 
-
     public TurretImpl() {
+        turretConfig = new Motors.TalonFXConfig()
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            .withPIDConstants(Gains.Turret.kP, 0.0, Gains.Turret.kD, 0)
+            .withFFConstants(Gains.Turret.kS, 0.0, 0.0, 0)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
+            .withSensorToMechanismRatio(Settings.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH)
+            .withSoftLimits(
+                false, false,
+                Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS,
+                Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
+
+        encoder17tConfig = new Motors.CANCoderConfig()
+            .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+            .withAbsoluteSensorDiscontinuityPoint(1.0);
+
+        encoder18tConfig = new Motors.CANCoderConfig()
+            .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
+            .withAbsoluteSensorDiscontinuityPoint(1.0);
+
         motor = new TalonFX(Ports.Turret.MOTOR, Ports.RIO);
         encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
         encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.RIO);
 
-        Motors.Turret.TURRET.configure(motor);
-
-        motor.getConfigurator().apply(Motors.Turret.SLOT_0);
-        motor.getConfigurator().apply(Motors.Turret.SOFT_LIMITS);
+        turretConfig.configure(motor);
+        encoder17tConfig.configure(encoder17t);
+        encoder18tConfig.configure(encoder18t);
 
         seedTurret();
 
@@ -66,20 +94,20 @@ public class TurretImpl extends Turret {
         double encoderPos17T = encoder17t.getAbsolutePosition().getValueAsDouble();
         double encoderPos18T = encoder18t.getAbsolutePosition().getValueAsDouble();
 
-        encoder17t.getConfigurator().refresh(Motors.Turret.ENCODER_17T.getConfiguration().MagnetSensor);
-        encoder18t.getConfigurator().refresh(Motors.Turret.ENCODER_18T.getConfiguration().MagnetSensor);
+        encoder17t.getConfigurator().refresh(encoder17tConfig.getConfiguration().MagnetSensor);
+        encoder18t.getConfigurator().refresh(encoder18tConfig.getConfiguration().MagnetSensor);
 
-        double currentOffset17T = Motors.Turret.ENCODER_17T.getConfiguration().MagnetSensor.MagnetOffset;
-        double currentOffset18T = Motors.Turret.ENCODER_18T.getConfiguration().MagnetSensor.MagnetOffset;
+        double currentOffset17T = encoder17tConfig.getConfiguration().MagnetSensor.MagnetOffset;
+        double currentOffset18T = encoder18tConfig.getConfiguration().MagnetSensor.MagnetOffset;
 
         double newOffset17T = currentOffset17T - encoderPos17T;
         double newOffset18T = currentOffset18T - encoderPos18T;
 
-        Motors.Turret.ENCODER_17T.withMagnetOffset(newOffset17T);
-        Motors.Turret.ENCODER_18T.withMagnetOffset(newOffset18T);
+        encoder17tConfig.withMagnetOffset(newOffset17T);
+        encoder18tConfig.withMagnetOffset(newOffset18T);
 
-        Motors.Turret.ENCODER_17T.configure(encoder17t);
-        Motors.Turret.ENCODER_18T.configure(encoder18t);
+        encoder17tConfig.configure(encoder17t);
+        encoder18tConfig.configure(encoder18t);
     }
 
     public void seedTurret() {
@@ -123,8 +151,7 @@ public class TurretImpl extends Turret {
         SmartDashboard.putNumber("Turret/Delta (deg)", getDelta(getTargetAngle().getDegrees(), getAngle().getDegrees()));
         SmartDashboard.putNumber("Turret/Actual Target (deg)", actualTargetDeg);
 
-        // if (EnabledSubsystems.TURRET.get() && getState() != TurretState.IDLE) {
-        if(EnabledSubsystems.TURRET.get()) {
+        if (EnabledSubsystems.TURRET.get()) {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {
