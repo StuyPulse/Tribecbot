@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.VecBuilder;
@@ -14,9 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix6.CANBus;
-import com.pathplanner.lib.path.PathConstraints;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -89,10 +88,16 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(720.0);
         Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1440.0);
 
+        // Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(360.0);
+        // Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1200.0);
+
         Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
         Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
 
         double GEAR_RATIO = 37.93;
+
+        double debugVoltage = 0; //TODO: set value
+        double debugCurrentLimit = 0; //TODO: set value
     }
 
     public interface Spindexer {

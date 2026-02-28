@@ -5,16 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Motors;
-import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.util.SysId;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.util.Optional;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -23,9 +14,21 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import java.util.Optional;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
+import com.stuypulse.robot.constants.Motors;
+import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class HoodImpl extends Hood {
+    private final Gamepad driver;//TODO: remove gamepad and instead put this into a command
     private final Motors.TalonFXConfig hoodConfig;
     private final Motors.CANCoderConfig hoodEncoderConfig;
 
@@ -39,13 +42,15 @@ public class HoodImpl extends Hood {
     private boolean hasUsedAbsoluteEncoder;
 
     public HoodImpl() {
+        driver = new AutoGamepad(0);
+
         hoodConfig = new Motors.TalonFXConfig()
             .withCurrentLimitAmps(80.0)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
-            .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
+            .withPIDConstants(Gains.HoodedShooter.Hood.kP.get(), Gains.HoodedShooter.Hood.kI.get(), Gains.HoodedShooter.Hood.kD.get(), 0)
+            .withFFConstants(Gains.HoodedShooter.Hood.kS.get(), Gains.HoodedShooter.Hood.kV.get(), Gains.HoodedShooter.Hood.kA.get(), 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
             .withSoftLimits(
@@ -75,9 +80,22 @@ public class HoodImpl extends Hood {
         return Rotation2d.fromRotations(hoodMotor.getPosition().getValueAsDouble());
     }
 
+    //7 and 40 degrees
+
+
     @Override 
     public void periodic() {
         super.periodic();
+        
+        hoodConfig.updateGainsConfig(
+            hoodMotor,
+            0, 
+            Gains.HoodedShooter.Hood.kP, 
+            Gains.HoodedShooter.Hood.kI,
+            Gains.HoodedShooter.Hood.kD, 
+            Gains.HoodedShooter.Hood.kS, 
+            Gains.HoodedShooter.Hood.kV,
+            Gains.HoodedShooter.Hood.kA);
 
         if (!hasUsedAbsoluteEncoder) {
             /*
@@ -111,6 +129,8 @@ public class HoodImpl extends Hood {
             SmartDashboard.putNumber("InterpolationTesting/Hood Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("InterpolationTesting/Hood Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
         }
+
+            SmartDashboard.putNumber("HoodedShooter/Hood/Hood ANALOG", hoodAnalog(driver).getDegrees());
     }
 
     public void setVoltageOverride(Optional<Double> voltageOverride) {

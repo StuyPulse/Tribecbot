@@ -42,7 +42,10 @@
     },
     "transitory": {
       "SmartDashboard": {
-        "ClimberHopper": {
+        "HoodedShooter": {
+          "Hood": {
+            "open": true
+          },
           "open": true
         },
         "open": true
