@@ -13,6 +13,9 @@ import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberHopperDefaultCommand;
+import com.stuypulse.robot.commands.climberhopper.ClimberOverrideDown;
+import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
+import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
 import com.stuypulse.robot.commands.climberhopper.ClimberUp;
 import com.stuypulse.robot.commands.climberhopper.HopperDown;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
@@ -112,6 +115,10 @@ public class RobotContainer {
         SmartDashboard.putData("Field", Field.FIELD2D);
         SmartDashboard.putData("Intake/Reset Pivot", new SeedPivot());
         SmartDashboard.putData("Zero Encoders", new TurretZero());
+
+        SmartDashboard.putData("ClimberHopper/Override Up", new ClimberOverrideUp());
+        SmartDashboard.putData("ClimberHopper/Override Down", new ClimberOverrideDown());
+        SmartDashboard.putData("ClimberHopper/Override Stop", new  ClimberOverrideStop());
     }
 
     /****************/
