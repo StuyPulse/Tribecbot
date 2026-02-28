@@ -5,36 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
-import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.math.Vector2D;
-
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Field;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.TunerConstants.TunerSwerveDrivetrain;
-import com.stuypulse.robot.subsystems.turret.Turret;
-
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
@@ -46,6 +16,33 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.Gains;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.TunerConstants.TunerSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.turret.Turret;
+import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.math.Vector2D;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
  * Subsystem so it can easily be used in command-based projects.
@@ -405,6 +402,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             .withRotationalRate(robotSpeeds.omegaRadiansPerSecond));
     }
 
+    
+
     public void drive(Vector2D velocity, double rotation) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             Robot.isBlue() ? velocity.y : -velocity.y, 
@@ -427,6 +426,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Pose2d getTurretPose() {
         return turretPose;
+    }
+
+    public double[] getRadiusCharacterizationModulePositions(){
+        double[] positions = new double[4];
+        double kDriveGearRatio = 6.48;
+        for(int i = 0; i < 4; i++){
+            positions[i] = getModule(i).getDriveMotor().getPosition().getValueAsDouble() * 2 * Math.PI / kDriveGearRatio;
+        }
+        return positions;
     }
 
     @Override
