@@ -32,6 +32,12 @@ public interface Settings {
     public final boolean DEBUG_MODE = true;
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
 
+    public interface HubDATA {
+        public final double[] shiftStartTimes = {0.0, 10.0, 35.0, 60.0, 85.0, 110.0};
+        public final double[] shiftEndTimes = {10.0, 35.0, 60.0, 85.0, 110.0, 140.0};
+        
+    }
+
     public interface ClimberHopper {
         public interface Constants {
             public final double GEAR_RATIO = 45.0;

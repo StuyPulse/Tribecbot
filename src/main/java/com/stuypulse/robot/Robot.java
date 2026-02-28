@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
+import com.stuypulse.robot.util.FMSutil;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -25,6 +26,8 @@ public class Robot extends TimedRobot {
     private Command auto;
     private static Alliance alliance;
     private PowerDistribution powerDistribution;
+
+    private FMSutil fmSutil;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -54,6 +57,7 @@ public class Robot extends TimedRobot {
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+    
     }
 
     /*********************/
@@ -74,7 +78,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-
+        fmSutil = new FMSutil(true);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
         auto = robot.getAutonomousCommand();
@@ -85,7 +89,11 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousPeriodic() {}
+    public void autonomousPeriodic() {
+        SmartDashboard.putNumber("FMSUtil/Time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/Is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
+    }
 
     @Override
     public void autonomousExit() {}
@@ -96,15 +104,21 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        if (fmSutil == null) fmSutil = new FMSutil();
+            fmSutil.resetTimer(false);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        
         if (auto != null) {
             auto.cancel();
         }
     }
 
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        SmartDashboard.putNumber("FMSUtil/Time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/Is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putBoolean("FMSUtil/Won Auto?", fmSutil.didWinAuto());
+        SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
+    }
 
     @Override
     public void teleopExit() {}
