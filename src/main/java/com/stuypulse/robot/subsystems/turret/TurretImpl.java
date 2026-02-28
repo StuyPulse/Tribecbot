@@ -66,7 +66,9 @@ public class TurretImpl extends Turret {
             .withSoftLimits(
                 false, false,
                 Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS,
-                Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
+                Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS)
+                
+            .withMaxVoltage(6, -6);
 
         encoder17tConfig = new Motors.CANCoderConfig()
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive)

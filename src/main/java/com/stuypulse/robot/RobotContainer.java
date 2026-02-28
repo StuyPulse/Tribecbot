@@ -136,9 +136,9 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Intake Run Rollers
-        driver.getLeftTriggerButton()
-            .onTrue(new IntakeRunRollers())
-            .onFalse(new IntakeStopRollers());
+        // driver.getLeftTriggerButton()
+        //     .onTrue(new IntakeRunRollers())
+        //     .onFalse(new IntakeStopRollers());
 
         // Intake Down and On
         // driver.getRightTriggerButton()
@@ -149,10 +149,10 @@ public class RobotContainer {
         // driver.getBottomButton()
         //     .onTrue(new IntakeBangBang());
 
-        driver.getRightButton()
+        driver.getRightTriggerButton()
             .onTrue(new IntakeDeploy());
 
-        driver.getLeftButton()
+        driver.getLeftTriggerButton()
             .onTrue(new IntakeStow());
 
         // Reset Heading

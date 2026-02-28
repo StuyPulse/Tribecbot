@@ -22,6 +22,7 @@ import com.ctre.phoenix6.configs.Slot2Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -89,6 +90,7 @@ public interface Motors {
         private final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
         private final SoftwareLimitSwitchConfigs softwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
         private final ClosedLoopGeneralConfigs closedLoopGeneralConfigs = new ClosedLoopGeneralConfigs();
+        private final VoltageConfigs voltageConfigs = new VoltageConfigs();
 
         private final double[] lastKP = new double[3];
         private final double[] lastKI = new double[3];
@@ -348,6 +350,17 @@ public interface Motors {
             currentLimitsConfigs.StatorCurrentLimitEnable = enabled;
 
             configuration.withCurrentLimits(currentLimitsConfigs);
+
+            return this;
+        }
+
+        // VOLTAGE LIMIT CONFIGS
+
+        public TalonFXConfig withMaxVoltage(double forwardPeak, double reversePeak) {
+            voltageConfigs.PeakForwardVoltage = forwardPeak;
+            voltageConfigs.PeakReverseVoltage = reversePeak;
+
+            configuration.withVoltage(voltageConfigs);
 
             return this;
         }

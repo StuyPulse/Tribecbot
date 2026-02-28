@@ -49,7 +49,7 @@ public abstract class ClimberHopper extends SubsystemBase {
     private ClimberHopperState state;
 
     protected ClimberHopper() {
-        this.state = ClimberHopperState.CLIMBER_UP;
+        this.state = ClimberHopperState.HOPPER_DOWN;
     }
     
     public ClimberHopperState getState() {
