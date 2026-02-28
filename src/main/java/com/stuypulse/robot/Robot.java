@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+    
     }
 
     /*********************/
@@ -75,7 +76,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-
+     FMSutil fmSutil = new FMSutil(true);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
         auto = robot.getAutonomousCommand();
@@ -98,7 +99,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         FMSutil fmSutil = new FMSutil();
-       CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
+        CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         
         if (auto != null) {
             auto.cancel();

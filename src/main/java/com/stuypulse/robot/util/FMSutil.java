@@ -1,7 +1,9 @@
 package com.stuypulse.robot.util;
 
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.stuypulse.robot.constants.Field;
 
+import edu.wpi.first.util.function.BooleanConsumer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -10,17 +12,18 @@ public class FMSutil {
     private Timer timer = new Timer();
     private FieldState fieldState;
     private double timeLeft;
+    boolean auto;
     private FieldState[] fieldStates = { fieldState.AUTO, fieldState.TRANSITION, fieldState.SHIFT1, fieldState.SHIFT2,
             fieldState.SHIFT3, fieldState.SHIFT4, fieldState.ENDGAME };
 
     public static enum FieldState {
         AUTO(0.0, 20.0),
-        TRANSITION(0.0, 10.0),
-        SHIFT1(10.0, 35.0),
-        SHIFT2(35.0, 60.0),
-        SHIFT3(60.0, 85.0),
-        SHIFT4(85.0, 110.0),
-        ENDGAME(110.0, 140);
+        TRANSITION(0.0, 25.0),
+        SHIFT1(25.0, 50.0),
+        SHIFT2(50.0, 75.0),
+        SHIFT3(75.0, 100.0),
+        SHIFT4(100.0, 125.0),
+        ENDGAME(125, 155.0);
 
         // public final do.0uble[] shiftStartTimes = {0.0, 10.0, 35.0, 60.0, 85.0, 110.0};
         // public final double[] shiftEndTimes = {10.0, 35.0, 60.0, 85.0, 110.0, 140.0};
@@ -50,9 +53,14 @@ public class FMSutil {
     };
 
 
-    public FMSutil() {
+    public FMSutil(boolean auto) {
         timer = new Timer();
         timer.start();
+        this.auto = true;
+    }
+
+    public FMSutil() {
+        this(false);
     }
 
     public void resetTimer() {
@@ -61,6 +69,7 @@ public class FMSutil {
 
     public FieldState getFieldState() {
         FieldState activeState = FieldState.AUTO;
+        if (auto) return FieldState.AUTO;
         for (FieldState state : fieldStates) {
             if (state.isActive(timer.get())) { activeState = state; break;}
         }
