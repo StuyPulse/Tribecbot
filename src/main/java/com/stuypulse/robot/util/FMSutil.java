@@ -88,7 +88,7 @@ public class FMSutil {
             case AUTO: 
                 return true;
             case TRANSITION: 
-                return false;
+                return true;
             case ENDGAME:
                 return true;
             case SHIFT1:
@@ -98,7 +98,7 @@ public class FMSutil {
             case SHIFT3:
                 return (wonAuto) ? true : false;
             case SHIFT4:
-                return (wonAuto) ? false : false;
+                return (wonAuto) ? false : true;
             default:
                 return false;
         }
@@ -113,7 +113,7 @@ public class FMSutil {
         String currentAlliance = (DriverStation.getAlliance().get() == Alliance.Blue) ? "B" : "R";      
         if (winner.isEmpty()) {
             DriverStation.reportWarning("Arena Fault, no alliance won data", true);
-            SmartDashboard.putBoolean("FMSUtil/nodata?", true);
+            SmartDashboard.putBoolean("FMSUtil/No Data on Auto Winner?", true);
             return autoOveride;
         } else if (currentAlliance.equalsIgnoreCase(winner)) {
             return true;
@@ -123,7 +123,7 @@ public class FMSutil {
     }
 
     public double getTimeLeftInShift() {
-        return getFieldState().endT - timer.get();
+        return Math.max(0, getFieldState().endT - timer.get());
     }
 
     

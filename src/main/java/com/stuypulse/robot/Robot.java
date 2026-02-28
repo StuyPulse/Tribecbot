@@ -90,8 +90,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        SmartDashboard.putNumber("FMSUtil/time left in shift", fmSutil.getTimeLeftInShift());
-        SmartDashboard.putBoolean("FMSUtil/is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putNumber("FMSUtil/Time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/Is current shift?", fmSutil.isActiveShift());
         SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
     }
 
@@ -114,8 +114,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("FMSUtil/time left in shift", fmSutil.getTimeLeftInShift());
-        SmartDashboard.putBoolean("FMSUtil/is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putNumber("FMSUtil/Time left in shift", fmSutil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/Is current shift?", fmSutil.isActiveShift());
+        SmartDashboard.putBoolean("FMSUtil/Won Auto?", fmSutil.didWinAuto());
         SmartDashboard.putString("FMSUtil/Field State", fmSutil.getFieldState().toString());
     }
 
