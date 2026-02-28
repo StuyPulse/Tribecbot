@@ -5,8 +5,10 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
+
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.hoodedshooter.HoodAngleCalculator;
+import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -67,6 +69,11 @@ public abstract class Hood extends SubsystemBase{
     }
 
     public abstract Rotation2d getHoodAngle();
+
+    public Rotation2d hoodAnalog(Gamepad gamepad) {
+        //used min and max values 7 and 40
+        return Rotation2d.fromDegrees((gamepad.getLeftX() + 1) * 16); //16 is derived from half of the distance min max
+    }
 
     public abstract SysIdRoutine getHoodSysIdRoutine();
 

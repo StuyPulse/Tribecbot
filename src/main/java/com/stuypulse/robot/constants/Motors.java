@@ -5,8 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.network.SmartNumber;
-
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -29,6 +27,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 public interface Motors {
 
@@ -93,6 +92,7 @@ public interface Motors {
         private final double[] lastKS = new double[3];
         private final double[] lastKV = new double[3];
         private final double[] lastKA = new double[3];
+        private final double[] lastKG = new double[3];
 
         public void configure(TalonFX motor) {
             TalonFXConfiguration defaultConfig = new TalonFXConfiguration();
@@ -162,6 +162,67 @@ public interface Motors {
                     break;
             }
         }
+
+        public void updateGainsConfig(TalonFX motor, int slot, SmartNumber kP, SmartNumber kI, SmartNumber kD, SmartNumber kS, SmartNumber kV, SmartNumber kA, SmartNumber kG) {
+            if (slot != 0 && slot != 1 && slot != 2) {
+                return;
+            }
+
+            double currentKP = kP.getAsDouble();
+            double currentKI = kI.getAsDouble();
+            double currentKD = kD.getAsDouble();
+            double currentKS = kS.getAsDouble();
+            double currentKV = kV.getAsDouble();
+            double currentKA = kA.getAsDouble();
+            double currentKG = kG.getAsDouble();
+
+            boolean changed =
+                currentKP != lastKP[slot] ||
+                currentKI != lastKI[slot] ||
+                currentKD != lastKD[slot] ||
+                currentKS != lastKS[slot] ||
+                currentKV != lastKV[slot] ||
+                currentKA != lastKA[slot] ||
+                currentKG != lastKG[slot];
+
+            if (!changed) {
+                return;
+            }
+
+            SlotConfigs gainConfig = new SlotConfigs()
+                .withKP(currentKP)
+                .withKI(currentKI)
+                .withKD(currentKD)
+                .withKS(currentKS)
+                .withKV(currentKV)
+                .withKA(currentKA)
+                .withKG(currentKG);
+
+            gainConfig.SlotNumber = slot;
+
+            motor.getConfigurator().apply(gainConfig);
+
+            lastKP[slot] = currentKP;
+            lastKI[slot] = currentKI;
+            lastKD[slot] = currentKD;
+            lastKS[slot] = currentKS;
+            lastKV[slot] = currentKV;
+            lastKA[slot] = currentKA;
+            lastKG[slot] = currentKG;
+
+            switch (slot) {
+                case 0:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot0);
+                    break;
+                case 1:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot1);
+                    break;
+                case 2:
+                    motor.getConfigurator().refresh(this.getConfiguration().Slot2);
+                    break;
+            }
+        }
+
 
         // SLOT CONFIGS
 

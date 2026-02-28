@@ -5,9 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.network.SmartNumber;
-
 import com.pathplanner.lib.config.PIDConstants;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 public class Gains {
     
@@ -33,13 +32,13 @@ public class Gains {
         }
 
         public interface Hood {
-            double kP = 300.0;
-            double kI = 0.0;
-            double kD = 0.0;
+            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 300.0);
+            SmartNumber kI = new SmartNumber("HoodedShooter/Hood/Gains/kI", 0);
+            SmartNumber kD = new SmartNumber("HoodedShooter/Hood/Gains/kD", 0);
 
-            double kS = 0.0;
-            double kV = 0.0;
-            double kA = 0.0;
+            SmartNumber kS = new SmartNumber("HoodedShooter/Hood/Gains/kS", 0);
+            SmartNumber kV = new SmartNumber("HoodedShooter/Hood/Gains/kV", 0);
+            SmartNumber kA = new SmartNumber("HoodedShooter/Hood/Gains/kA", 0);
         }
         
     }
@@ -64,15 +63,14 @@ public class Gains {
 
     public interface Intake {
         public interface Pivot {
-            double kP = 100.0;
-            double kI = 0.0;
-            double kD = 10.0;
-
-            double kS = 0.0;
-            double kV = 0.12;
-            double kA = 0.0;
-
-            double kG = 0.5;
+         SmartNumber kP = new SmartNumber("Intake/Gains/kP", 100.0);
+         SmartNumber kI = new SmartNumber("Intake/Gains/kI", 0.0);
+         SmartNumber kD = new SmartNumber("Intake/Gains/kD", 10.0);  
+        
+         SmartNumber kS = new SmartNumber("Intake/Gains/kS", 0.0);
+         SmartNumber kV = new SmartNumber("Intake/Gains/kV", 0.12);
+         SmartNumber kA = new SmartNumber("Intake/Gains/kA", 0.0); 
+         SmartNumber kG = new SmartNumber("Intake/Gains/kG", 0.5);
         }
     }
 
