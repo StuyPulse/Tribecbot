@@ -5,6 +5,7 @@ import java.util.concurrent.TransferQueue;
 import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.stuypulse.robot.constants.Field;
 
+import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.util.function.BooleanConsumer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,6 +17,7 @@ public class FMSutil {
     private FieldState fieldState;
     private double timeLeft;
     boolean auto;
+    private boolean autoOveride = false;
     private FieldState[] fieldStates = {fieldState.TRANSITION, fieldState.SHIFT1, fieldState.SHIFT2,
             fieldState.SHIFT3, fieldState.SHIFT4, fieldState.ENDGAME };
 
@@ -66,8 +68,9 @@ public class FMSutil {
         this(false);
     }
 
-    public void resetTimer() {
+    public void resetTimer(boolean auto) {
         timer.reset();
+        this.auto = auto;
     }
 
     public FieldState getFieldState() {
@@ -101,13 +104,17 @@ public class FMSutil {
         }
     }
 
+    public void overrideFMSAutoVictor(boolean didwin) {
+        this.autoOveride = didwin;
+    }
+
     public boolean didWinAuto() {
         String winner = DriverStation.getGameSpecificMessage(); 
         String currentAlliance = (DriverStation.getAlliance().get() == Alliance.Blue) ? "B" : "R";      
         if (winner.isEmpty()) {
             DriverStation.reportWarning("Arena Fault, no alliance won data", true);
             SmartDashboard.putBoolean("FMSUtil/nodata?", true);
-            return true; // Assume we won :)
+            return autoOveride;
         } else if (currentAlliance.equalsIgnoreCase(winner)) {
             return true;
         } else {

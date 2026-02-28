@@ -104,9 +104,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        fmSutil = new FMSutil();
+        if (fmSutil == null) fmSutil = new FMSutil();
+            fmSutil.resetTimer(false);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        
         if (auto != null) {
             auto.cancel();
         }
