@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.subsystems.hoodedshooter.hood.Hood;
 import com.stuypulse.robot.subsystems.hoodedshooter.hood.Hood.HoodState;
 import com.stuypulse.robot.subsystems.hoodedshooter.shooter.Shooter;
@@ -19,8 +20,14 @@ public class HoodedShooter extends SubsystemBase {
     private static final HoodedShooter instance;
 
     static {
-        instance = new HoodedShooter();
+        if (Robot.isReal()) {
+            instance = new HoodedShooter();
+        }
+        else {
+            instance = new HoodedShooterSim();
+        }
     }
+
     
     public static HoodedShooter getInstance(){
         return instance;

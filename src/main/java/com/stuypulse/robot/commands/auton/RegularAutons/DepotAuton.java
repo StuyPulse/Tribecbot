@@ -34,10 +34,7 @@ public class DepotAuton extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1])
             ),
 
-            new ParallelCommandGroup(
-                new WaitUntilCommand(() -> HoodedShooter.getInstance().isShooterAtTolerance()),
-                new WaitUntilCommand(() -> HoodedShooter.getInstance().isHoodAtTolerance())
-            ),
+            new WaitUntilCommand(() -> HoodedShooter.getInstance().bothAtTolerance()),
             new SpindexerRun().alongWith(
                 new HandoffRun()
             ).until(() -> DriverStation.getMatchTime() < 2).andThen(

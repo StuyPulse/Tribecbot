@@ -35,8 +35,7 @@ public class TopOneCyclePoach extends SequentialCommandGroup {
                 new IntakeStow()
             ),
             new ParallelCommandGroup(
-                new WaitUntilCommand(() -> HoodedShooter.getInstance().isShooterAtTolerance()),
-                new WaitUntilCommand(() -> HoodedShooter.getInstance().isHoodAtTolerance()),
+                new WaitUntilCommand(() -> HoodedShooter.getInstance().bothAtTolerance()),
                 new SwerveClimbAlign()
             ),
             new SpindexerRun().alongWith(

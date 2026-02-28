@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
         SmartDashboard.putNumber("Robot/Voltage of Robot", powerDistribution.getVoltage());
 
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }

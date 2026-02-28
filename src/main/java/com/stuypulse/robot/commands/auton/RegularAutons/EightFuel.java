@@ -16,13 +16,8 @@ public class EightFuel extends SequentialCommandGroup {
 
         addCommands(
 
-            new HoodedShooterKB().alongWith(
-                new ParallelCommandGroup(
-
-                    new WaitUntilCommand(() -> HoodedShooter.getInstance().isHoodAtTolerance()),
-                    new WaitUntilCommand(() -> HoodedShooter.getInstance().isShooterAtTolerance())
-
-                )
+            new HoodedShooterKB().until(
+                () -> HoodedShooter.getInstance().bothAtTolerance()
             ),
 
             new SpindexerRun().alongWith(
