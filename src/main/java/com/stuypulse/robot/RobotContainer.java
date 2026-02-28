@@ -42,6 +42,7 @@ import com.stuypulse.robot.commands.swerve.SwerveClimbAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
+import com.stuypulse.robot.commands.turret.TurretDefaultCommand;
 import com.stuypulse.robot.commands.turret.TurretFerry;
 import com.stuypulse.robot.commands.turret.TurretIdle;
 import com.stuypulse.robot.commands.turret.TurretLeftCorner;
@@ -120,6 +121,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
+        turret.setDefaultCommand(new TurretDefaultCommand());
     }
 
     /***************/
