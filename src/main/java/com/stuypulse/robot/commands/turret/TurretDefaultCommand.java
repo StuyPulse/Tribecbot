@@ -1,12 +1,10 @@
 package com.stuypulse.robot.commands.turret;
 
 import com.stuypulse.robot.constants.Field;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.turret.Turret;
 import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurretDefaultCommand extends Command {
