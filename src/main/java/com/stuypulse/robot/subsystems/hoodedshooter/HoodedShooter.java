@@ -27,7 +27,6 @@ public class HoodedShooter extends SubsystemBase {
             instance = new HoodedShooterSim();
         }
     }
-
     
     public static HoodedShooter getInstance(){
         return instance;

@@ -44,8 +44,8 @@ public class HoodImpl extends Hood {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
-            .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
+            .withPIDConstants(Gains.HoodedShooter.Hood.kP.get(), Gains.HoodedShooter.Hood.kI.get(), Gains.HoodedShooter.Hood.kD.get(), 0)
+            .withFFConstants(Gains.HoodedShooter.Hood.kS.get(), Gains.HoodedShooter.Hood.kV.get(), Gains.HoodedShooter.Hood.kA.get(), 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
             .withSoftLimits(
@@ -78,6 +78,17 @@ public class HoodImpl extends Hood {
     @Override 
     public void periodic() {
         super.periodic();
+
+        hoodConfig.updateGainsConfig(
+            hoodMotor,
+            0,
+            Gains.HoodedShooter.Hood.kP,
+            Gains.HoodedShooter.Hood.kI,
+            Gains.HoodedShooter.Hood.kD,
+            Gains.HoodedShooter.Hood.kS,
+            Gains.HoodedShooter.Hood.kV,
+            Gains.HoodedShooter.Hood.kA
+        );
 
         if (!hasUsedAbsoluteEncoder) {
             /*

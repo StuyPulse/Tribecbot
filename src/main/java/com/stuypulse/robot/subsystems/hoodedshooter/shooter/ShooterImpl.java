@@ -39,10 +39,10 @@ public class ShooterImpl extends Shooter {
             .withCurrentLimitEnable(false)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withPIDConstants(Gains.HoodedShooter.Shooter.kP, Gains.HoodedShooter.Shooter.kI,
-                    Gains.HoodedShooter.Shooter.kD, 0)
-            .withFFConstants(Gains.HoodedShooter.Shooter.kS, Gains.HoodedShooter.Shooter.kV,
-                    Gains.HoodedShooter.Shooter.kA, 0)
+            .withPIDConstants(Gains.HoodedShooter.Shooter.kP.get(), Gains.HoodedShooter.Shooter.kI.get(),
+                    Gains.HoodedShooter.Shooter.kD.get(), 0)
+            .withFFConstants(Gains.HoodedShooter.Shooter.kS.get(), Gains.HoodedShooter.Shooter.kV.get(),
+                    Gains.HoodedShooter.Shooter.kA.get(), 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
 
         shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);
@@ -76,6 +76,28 @@ public class ShooterImpl extends Shooter {
     @Override
     public void periodic() {
         super.periodic();
+
+        shooterConfig.updateGainsConfig(
+            shooterLeader,
+            0,
+            Gains.HoodedShooter.Shooter.kP,
+            Gains.HoodedShooter.Shooter.kI,
+            Gains.HoodedShooter.Shooter.kD,
+            Gains.HoodedShooter.Shooter.kS,
+            Gains.HoodedShooter.Shooter.kV,
+            Gains.HoodedShooter.Shooter.kA
+        );
+
+        shooterConfig.updateGainsConfig(
+            shooterFollower,
+            0,
+            Gains.HoodedShooter.Shooter.kP,
+            Gains.HoodedShooter.Shooter.kI,
+            Gains.HoodedShooter.Shooter.kD,
+            Gains.HoodedShooter.Shooter.kS,
+            Gains.HoodedShooter.Shooter.kV,
+            Gains.HoodedShooter.Shooter.kA
+        );
 
         if (EnabledSubsystems.SHOOTER.get()) {
             if (getState() == ShooterState.STOP) {

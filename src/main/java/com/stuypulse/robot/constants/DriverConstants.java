@@ -5,8 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.network.SmartNumber;
-
 public interface DriverConstants {
 
     public interface Driver {

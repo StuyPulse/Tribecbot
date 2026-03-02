@@ -12,47 +12,63 @@ import com.pathplanner.lib.config.PIDConstants;
 public class Gains {
 
     public interface ClimberHopper {
-        double kP = 1.0;
-        double kI = 0.0;
-        double kD = 0.20;
+        SmartNumber kP = new SmartNumber("ClimberHopper/Gains/kP", 1.0);
+        SmartNumber kI = new SmartNumber("ClimberHopper/Gains/kI", 0.0);
+        SmartNumber kD = new SmartNumber("ClimberHopper/Gains/kD", 0.20);
 
-        double kS = 0.0;
-        double kV = 0.123;
-        double kA = 0.0;
+        SmartNumber kS = new SmartNumber("ClimberHopper/Gains/kS", 0.0);
+        SmartNumber kA = new SmartNumber("ClimberHopper/Gains/kA", 0.123);
+        SmartNumber kV = new SmartNumber("ClimberHopper/Gains/kV", 0.0);
+
+        // double kP = 1.0;
+        // double kI = 0.0;
+        // double kD = 0.20;
+ 
+        // double kS = 0.0;
+        // double kV = 0.123;
+        // double kA = 0.0;
     }
 
     public interface HoodedShooter {
         public interface Shooter {
-            double kP = 0.45;
-            double kI = 0.0;
-            double kD = 0.0;
+            SmartNumber kP = new SmartNumber("HoodedShooter/Shooter/Gains/kP", 0.45);
+            SmartNumber kI = new SmartNumber("HoodedShooter/Shooter/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("HoodedShooter/Shooter/Gains/kD", 0.0);
 
-            double kS = 0.0;
-            double kV = 0.123;
-            double kA = 0.0;
+            SmartNumber kS = new SmartNumber("HoodedShooter/Shooter/Gains/kS", 0.0);
+            SmartNumber kA = new SmartNumber("HoodedShooter/Shooter/Gains/kA", 0.123);
+            SmartNumber kV = new SmartNumber("HoodedShooter/Shooter/Gains/kV", 0.0);
+
+            // double kP = 0.45;
+            // double kI = 0.0;
+            // double kD = 0.0;
+
+            // double kS = 0.0;
+            // double kV = 0.123;
+            // double kA = 0.0;
         }
 
         public interface Hood {
-            double kP = 300.0;
-            double kI = 0.0;
-            double kD = 0.0;
+            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 300.0);
+            SmartNumber kI = new SmartNumber("HoodedShooter/Hood/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("HoodedShooter/Hood/Gains/kD", 0.0);
 
-            double kS = 0.0;
-            double kV = 0.0;
-            double kA = 0.0;
+            SmartNumber kS = new SmartNumber("HoodedShooter/Hood/Gains/kS", 0.0);
+            SmartNumber kA = new SmartNumber("HoodedShooter/Hood/Gains/kA", 0.0);
+            SmartNumber kV = new SmartNumber("HoodedShooter/Hood/Gains/kV", 0.0);
+
+            // double kP = 300.0;
+            // double kI = 0.0;
+            // double kD = 0.0;
+
+            // double kS = 0.0;
+            // double kV = 0.0;
+            // double kA = 0.0;
         }
 
     }
 
     public interface Spindexer {
-        // double kP = 1.20;
-        // double kI = 0.0;
-        // double kD = 0.0;
-
-        // double kS = 0.019444;
-        // double kA = 0.010876;
-        // double kV = 0.38546;
-
         SmartNumber kP = new SmartNumber("Spindexer/Gains/kP", 1.20);
         SmartNumber kI = new SmartNumber("Spindexer/Gains/kI", 0.0);
         SmartNumber kD = new SmartNumber("Spindexer/Gains/kD", 0.0);
@@ -64,37 +80,61 @@ public class Gains {
 
     public interface Intake {
         public interface Pivot {
-            double kP = 100.0;
-            double kI = 0.0;
-            double kD = 10.0;
+            SmartNumber kP = new SmartNumber("Intake/Pivot/Gains/kP", 100.0);
+            SmartNumber kI = new SmartNumber("Intake/Pivot/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Intake/Pivot/Gains/kD", 10.0);
 
-            double kS = 0.0;
-            double kV = 0.12;
-            double kA = 0.0;
+            SmartNumber kS = new SmartNumber("Intake/Pivot/Gains/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Intake/Pivot/Gains/kA", 0.12);
+            SmartNumber kA = new SmartNumber("Intake/Pivot/Gains/kV", 0.0);
+
+            // double kP = 100.0; // 0.016973 from sysid
+            // double kI = 0.0;
+            // double kD = 10.0;
+
+            // double kS = 0.0; // 0.1728 from alpha
+            // double kA = 0.12;
+            // double kV = 0.0;
 
             double kG = 0.5;
         }
     }
 
     public interface Handoff {
-        double kP = 0.00015508; // 0.016973 from sysid
-        double kI = 0.0;
-        double kD = 0.0;
+        SmartNumber kP = new SmartNumber("Handoff/Gains/kP", 0.00015508);
+        SmartNumber kI = new SmartNumber("Handoff/Gains/kI", 0.0);
+        SmartNumber kD = new SmartNumber("Handoff/Gains/kD", 140.0);
+        
+        SmartNumber kS = new SmartNumber("Handoff/Gains/kS", 0.21149);
+        SmartNumber kV = new SmartNumber("Handoff/Gains/kV", 0.016329);
+        SmartNumber kA = new SmartNumber("Handoff/Gains/kA", 0.3652);
 
-        double kS = 0.21149; // 0.1728 from alpha
-        double kA = 0.016329;
-        double kV = 0.3652;
+        // double kP = 0.00015508; // 0.016973 from sysid
+        // double kI = 0.0;
+        // double kD = 0.0;
+
+        // double kS = 0.21149; // 0.1728 from alpha
+        // double kA = 0.016329;
+        // double kV = 0.3652;
     }
 
     public interface Turret {
         public interface slot0 {
-            double kP = 1300.0;
-            double kI = 0.0;
-            double kD = 140.0;
+            SmartNumber kP = new SmartNumber("Turret/Gains/kP", 1300.0);
+            SmartNumber kI = new SmartNumber("Turret/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Turret/Gains/kD", 140.0);
+            
+            SmartNumber kS = new SmartNumber("Turret/Gains/kS", 0.23);
+            SmartNumber kV = new SmartNumber("Turret/Gains/kV", 0.0);
+            SmartNumber kA = new SmartNumber("Turret/Gains/kA", 0.0);
 
-            double kS = 0.23; // FOUND ON 2/25 PD 8
-            double kV = 0.0;
-            double kA = 0.0;
+            // double kP = 1300.0;
+            // double kI = 0.0;
+            // double kD = 140.0;
+
+            // double kS = 0.23; // FOUND ON 2/25 PD 8
+            // double kV = 0.0;
+            // double kA = 0.0;
         }
 
         public interface slot1 {
