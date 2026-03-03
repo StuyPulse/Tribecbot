@@ -40,7 +40,7 @@ public class SpindexerImpl extends Spindexer {
             .withCurrentLimitEnable(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
             .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
             .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
@@ -49,7 +49,7 @@ public class SpindexerImpl extends Spindexer {
             .withCurrentLimitEnable(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
             .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
             .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
@@ -63,17 +63,17 @@ public class SpindexerImpl extends Spindexer {
         controller = new VelocityVoltage(getTargetRPM())
             .withEnableFOC(true);
 
-        follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Opposed);
+        follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Aligned);
 
         voltageOverride = Optional.empty();
     }
 
     public double getCurrentLeadMotorRPM() {
-        return leadMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        return leadMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.Constants.GEAR_RATIO;
     }
 
     public double getCurrentFollowerMotorRPM() {
-        return followerMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        return followerMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.Constants.GEAR_RATIO;
     }
 
     public boolean atTolerance() {

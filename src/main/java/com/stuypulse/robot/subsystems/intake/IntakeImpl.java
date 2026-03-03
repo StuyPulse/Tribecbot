@@ -88,6 +88,8 @@ public class IntakeImpl extends Intake {
             .withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Aligned);
 
+        rollerFollower.setControl(follower);
+
         velLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_VEL_DEPLOY.getDegrees());
         accelLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY.getDegrees());
 
@@ -185,10 +187,12 @@ public class IntakeImpl extends Intake {
 
                 if (getPivotAngle().getDegrees() <= Settings.Intake.THRESHHOLD_TO_START_ROLLERS.getDegrees()) {
                     rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
+                    rollerFollower.setControl(follower);
                 }
 
                 else {
                     rollerLeader.stopMotor();
+                    rollerFollower.stopMotor();
                 }
             }
         } else {

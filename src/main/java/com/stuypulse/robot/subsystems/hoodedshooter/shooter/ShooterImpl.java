@@ -43,6 +43,10 @@ public class ShooterImpl extends Shooter {
                     Gains.HoodedShooter.Shooter.kD.get(), 0)
             .withFFConstants(Gains.HoodedShooter.Shooter.kS.get(), Gains.HoodedShooter.Shooter.kV.get(),
                     Gains.HoodedShooter.Shooter.kA.get(), 0)
+
+            // .withPIDConstants(Gains.HoodedShooter.Shooter.kP, Gains.HoodedShooter.Shooter.kI, Gains.HoodedShooter.Shooter.kD, 0)
+            // .withFFConstants(Gains.HoodedShoothooter.Shooter.kP, Gains.HoodedShooter.Shooter.kI, Gains.HoodedShooter.Shooter.kD, 0)
+            // .withFFConstants(Gains.HoodedShooter.Shooter.kS, Gains.HoodedShooter.Shooter.kV, Gains.HoodedShooter.Shooter.kA, 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
 
         shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);

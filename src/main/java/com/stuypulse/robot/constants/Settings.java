@@ -126,7 +126,7 @@ public interface Settings {
         public final double HOOD_TOLERANCE_DEG = 0.5;
 
         public interface RPMs {
-            public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3400.0);
+            public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3500.0);
             public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
             public final double REVERSE = 0.0;
             public final double KB_RPM = 0.0;
@@ -193,11 +193,11 @@ public interface Settings {
              * uniquely maps to the hood’s 0–33° mechanical range without any ambiguity.
              *
              */
-            public final double GEAR_RATIO = 17024.0 / 135.0;
+            public final double GEAR_RATIO = 1064.0 / 9.0;
             public final double ENCODER_TO_MECH = 32.0 / 3.0;
 
-            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromDegrees(0.0);
-        }
+            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.01344);
+    }
     }
     public interface ShootOnTheFly {
         public final int MAX_ITERATIONS = 5;

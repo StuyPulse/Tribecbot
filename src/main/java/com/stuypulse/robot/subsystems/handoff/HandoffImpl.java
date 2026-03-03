@@ -48,7 +48,7 @@ public class HandoffImpl extends Handoff {
     }
 
     public double getCurrentRPM() {
-        return motor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        return motor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Handoff.GEAR_RATIO;
     }
 
     @Override

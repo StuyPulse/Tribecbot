@@ -14,15 +14,24 @@ import com.stuypulse.robot.commands.auton.regular.BottomTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
 import com.stuypulse.robot.commands.auton.regular.EightFuel;
 import com.stuypulse.robot.commands.auton.regular.TopTwoCycle;
-import com.stuypulse.robot.commands.auton.test.BoxTest;
+// import com.stuypulse.robot.commands.auton.test.BoxTest;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
+import com.stuypulse.robot.commands.handoff.HandoffRun;
+import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hoodedshooter.HoodAnalog;
+import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterInterpolation;
+import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
+import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterStow;
 import com.stuypulse.robot.commands.hoodedshooter.ZeroHood;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.intake.IntakeRunRollers;
+import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.SeedPivot;
+import com.stuypulse.robot.commands.spindexer.SpindexerRun;
+import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveWheelRadiusCharacterization;
@@ -50,6 +59,7 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -57,13 +67,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 public class RobotContainer {
     public interface EnabledSubsystems {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
-        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", true);
-        SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
+        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
+        SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
         SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
-        SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", false);
+        SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
-        SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", false);
+        SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
         SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", true);
     }
 
@@ -92,7 +102,7 @@ public class RobotContainer {
         swerve.configureAutoBuilder();
         configureDefaultCommands();
         configureButtonBindings();
-        configureAutons();
+        //configureAutons();
         configureSysids();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
@@ -102,7 +112,6 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Override Up", new ClimberOverrideUp());
         SmartDashboard.putData("Robot/Override Down", new ClimberOverrideDown());
         SmartDashboard.putData("Robot/Override Stop", new  ClimberOverrideStop());
-
         
         SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHood());
        
@@ -115,7 +124,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         // climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
-        turret.setDefaultCommand(new TurretDefaultCommand());
+        // turret.setDefaultCommand(new TurretDefaultCommand());
     }
 
     /***************/
@@ -124,11 +133,11 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         //hood analog
-        driver.getBottomButton()
-            .whileTrue(new HoodAnalog(driver));
+        // driver.getBottomButton()
+        //     .whileTrue(new HoodAnalog(driver));
 
 
-        // Intake Run Rollers
+        // // Intake Run Rollers
         // driver.getLeftTriggerButton()
         //     .onTrue(new IntakeRunRollers())
         //     .onFalse(new IntakeStopRollers());
@@ -142,6 +151,10 @@ public class RobotContainer {
         // driver.getBottomButton()
         //     .onTrue(new IntakeBangBang());
 
+        // driver.getTopButton()
+        //     .whileTrue(new HoodedShooterInterpolation())
+        //     .onFalse(new HoodedShooterStow());
+
         driver.getRightTriggerButton()
             .onTrue(new IntakeDeploy());
 
@@ -154,8 +167,8 @@ public class RobotContainer {
             .onTrue(new ResetLimelightIMU())
             .onFalse(new SetIMUMode(0));
         
-        driver.getTopButton()
-            .whileTrue(new TurretShoot());
+        // driver.getTopButton()
+        //     .whileTrue(new TurretShoot());
 
         // driver.getBottomButton()
         //     .whileTrue(new SwerveDriveAlignTurretToHub());
@@ -165,16 +178,16 @@ public class RobotContainer {
         //     .onFalse(new TurretIdle());
 
         // Scoring Routine using Interpolation Settings
-        // driver.getTopButton()
-        //         .whileTrue(new HoodedShooterInterpolation()
-        //                 .alongWith(new TurretShoot())
-        //                 .alongWith(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance()))
-        //                 .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
-        //                         .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-        //                         .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance()))))
-        //         .onFalse(new SpindexerStop()
-        //                 .alongWith(new HoodedShooterStow())
-        //                 .alongWith(new HandoffStop()));
+        driver.getTopButton()
+                .whileTrue(new HoodedShooterShoot()
+                        // .alongWith(new TurretShoot())
+                        .alongWith(new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance()))
+                        .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.isShooterAtTolerance())
+                                .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
+                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.isShooterAtTolerance()))))
+                .onFalse(new SpindexerStop()
+                        .alongWith(new HoodedShooterStow())
+                        .alongWith(new HandoffStop()));
 
         // // Ferry Routine using Interpolation Settings
         // driver.getBottomButton()
@@ -313,9 +326,9 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         // TESTS
-        AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new, 
-        "Box 1", "Box 2", "Box 3", "Box 4");
-        BOX_TEST.register(autonChooser);
+        // AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new, 
+        // "Box 1", "Box 2", "Box 3", "Box 4");
+        // BOX_TEST.register(autonChooser);
 
         // BASE
         AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 

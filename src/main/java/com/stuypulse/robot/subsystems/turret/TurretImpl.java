@@ -70,7 +70,7 @@ public class TurretImpl extends Turret {
             .withAbsoluteSensorDiscontinuityPoint(1.0);
 
         motor = new TalonFX(Ports.Turret.MOTOR, Ports.RIO);
-        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
+    encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
         encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.RIO);
 
         turretConfig.configure(motor);

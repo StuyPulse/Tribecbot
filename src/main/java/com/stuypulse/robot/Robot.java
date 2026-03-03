@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
     private static Alliance alliance;
     private PowerDistribution powerDistribution;
 
-    private FMSUtil fmsUtil;
+    // private FMSUtil fmsUtil;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         robot = new RobotContainer();
         powerDistribution = new PowerDistribution();
-        fmsUtil = new FMSUtil(false);
+        // fmsUtil = new FMSUtil(false);
 
         DataLogManager.start();
         SignalLogger.start();
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        SmartDashboard.putNumber("Robot/Voltage of Robot", powerDistribution.getVoltage());
+        // SmartDashboard.putNumber("Robot/Voltage of Robot", powerDistribution.getVoltage());
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
 
@@ -59,9 +59,9 @@ public class Robot extends TimedRobot {
             alliance = DriverStation.getAlliance().get();
         }
 
-        SmartDashboard.putNumber("FMSUtil/Time Left In Shift", fmsUtil.getTimeLeftInShift());
-        SmartDashboard.putBoolean("FMSUtil/Is Active Shift?", fmsUtil.isActiveShift());
-        SmartDashboard.putString("FMSUtil/Field State", fmsUtil.getCurrentFieldState().toString());
+    //     SmartDashboard.putNumber("FMSUtil/Time Left In Shift", fmsUtil.getTimeLeftInShift());
+    //     SmartDashboard.putBoolean("FMSUtil/Is Active Shift?", fmsUtil.isActiveShift());
+    //     SmartDashboard.putString("FMSUtil/Field State", fmsUtil.getCurrentFieldState().toString());
     }
 
     /*********************/
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        fmsUtil.restartTimer(true);
+        // fmsUtil.restartTimer(true);
 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        fmsUtil.restartTimer(false);
+        // fmsUtil.restartTimer(false);
 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
 
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
             auto.cancel();
         }
 
-        SmartDashboard.putBoolean("FMSUtil/Won Auto?", fmsUtil.didWinAuto());
+        // SmartDashboard.putBoolean("FMSUtil/Won Auto?", fmsUtil.didWinAuto());
     }
 
     @Override

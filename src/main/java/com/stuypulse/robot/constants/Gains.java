@@ -36,8 +36,8 @@ public class Gains {
             SmartNumber kD = new SmartNumber("HoodedShooter/Shooter/Gains/kD", 0.0);
 
             SmartNumber kS = new SmartNumber("HoodedShooter/Shooter/Gains/kS", 0.0);
-            SmartNumber kA = new SmartNumber("HoodedShooter/Shooter/Gains/kA", 0.123);
-            SmartNumber kV = new SmartNumber("HoodedShooter/Shooter/Gains/kV", 0.0);
+            SmartNumber kA = new SmartNumber("HoodedShooter/Shooter/Gains/kA", 0.0);
+            SmartNumber kV = new SmartNumber("HoodedShooter/Shooter/Gains/kV", 0.123);
 
             // double kP = 0.45;
             // double kI = 0.0;
@@ -49,11 +49,11 @@ public class Gains {
         }
 
         public interface Hood {
-            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 300.0);
+            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 400.0);
             SmartNumber kI = new SmartNumber("HoodedShooter/Hood/Gains/kI", 0.0);
             SmartNumber kD = new SmartNumber("HoodedShooter/Hood/Gains/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("HoodedShooter/Hood/Gains/kS", 0.0);
+            SmartNumber kS = new SmartNumber("HoodedShooter/Hood/Gains/kS", 0.25);
             SmartNumber kA = new SmartNumber("HoodedShooter/Hood/Gains/kA", 0.0);
             SmartNumber kV = new SmartNumber("HoodedShooter/Hood/Gains/kV", 0.0);
 
@@ -75,7 +75,7 @@ public class Gains {
 
         SmartNumber kS = new SmartNumber("Spindexer/Gains/kS", 0.25);
         SmartNumber kA = new SmartNumber("Spindexer/Gains/kA", 0.010876);
-        SmartNumber kV = new SmartNumber("Spindexer/Gains/kV", 0.9413);
+        SmartNumber kV = new SmartNumber("Spindexer/Gains/kV", 1.20); //0.9413);
     }
 
     public interface Intake {
@@ -101,13 +101,13 @@ public class Gains {
     }
 
     public interface Handoff {
-        SmartNumber kP = new SmartNumber("Handoff/Gains/kP", 0.00015508);
+        SmartNumber kP = new SmartNumber("Handoff/Gains/kP", 0.000155808);
         SmartNumber kI = new SmartNumber("Handoff/Gains/kI", 0.0);
-        SmartNumber kD = new SmartNumber("Handoff/Gains/kD", 140.0);
+        SmartNumber kD = new SmartNumber("Handoff/Gains/kD", 0.0);
         
-        SmartNumber kS = new SmartNumber("Handoff/Gains/kS", 0.21149);
-        SmartNumber kV = new SmartNumber("Handoff/Gains/kV", 0.016329);
-        SmartNumber kA = new SmartNumber("Handoff/Gains/kA", 0.3652);
+        SmartNumber kS = new SmartNumber("Handoff/Gains/kS", 0.1728);
+        SmartNumber kV = new SmartNumber("Handoff/Gains/kV", 0.12);
+        SmartNumber kA = new SmartNumber("Handoff/Gains/kA", 0.00284);
 
         // double kP = 0.00015508; // 0.016973 from sysid
         // double kI = 0.0;
