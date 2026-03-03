@@ -50,7 +50,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private final static CommandSwerveDrivetrain instance;
 
-    private FieldObject2d turret2d = Field.FIELD2D.getObject("Turret 2D");
+    // private FieldObject2d turret2d = Field.FIELD2D.getObject("Turret 2D");
     private Pose2d turretPose = new Pose2d();
 
     static {
@@ -445,7 +445,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             pose.getRotation().plus(Turret.getInstance().getAngle())
         );
 
-        turret2d.setPose(Robot.isBlue() ? turretPose : Field.transformToOppositeAlliance(turretPose));
+        // turret2d.setPose(Robot.isBlue() ? turretPose : Field.transformToOppositeAlliance(turretPose));
 
         SmartDashboard.putNumber("Turret/Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
         SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));

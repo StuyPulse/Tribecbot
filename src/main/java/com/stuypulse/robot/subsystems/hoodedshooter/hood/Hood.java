@@ -84,6 +84,8 @@ public abstract class Hood extends SubsystemBase{
         return this.driverInput;
     }
 
+
+    public abstract boolean isStalling();
     public abstract SysIdRoutine getHoodSysIdRoutine();
     public abstract void zeroHoodEncoder();
     public abstract void seedHood();

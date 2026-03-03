@@ -16,6 +16,6 @@ public class ZeroHood extends InstantCommand{
     @Override
     public void initialize() {
         hood.zeroHoodEncoder();
-        hood.seedHood();
+        // hood.seedHood();
     }
 }

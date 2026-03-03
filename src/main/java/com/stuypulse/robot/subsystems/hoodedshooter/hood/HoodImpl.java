@@ -11,6 +11,8 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,6 +50,8 @@ public class HoodImpl extends Hood {
     
     private boolean hasUsedAbsoluteEncoder;
 
+    private final BStream isStalling;
+
     public HoodImpl() {
         hoodConfig = new Motors.TalonFXConfig()
             .withCurrentLimitAmps(80.0)
@@ -59,9 +63,9 @@ public class HoodImpl extends Hood {
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
             .withSoftLimits(
-                false, false, // TODO: make true
-                Settings.HoodedShooter.Angles.MAX_ANGLE.getRotations(),
-                Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
+                true, true, 
+                Settings.HoodedShooter.Hood.FORWARD_SOFT_LIMIT.getRotations(),
+                Settings.HoodedShooter.Hood.REVERSE_SOFT_LIMIT.getRotations());
 
         hoodEncoderConfig = new Motors.CANCoderConfig()
             .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
@@ -78,6 +82,12 @@ public class HoodImpl extends Hood {
             .withEnableFOC(true);
 
         voltageOverride = Optional.empty();
+
+        isStalling = BStream.create(() -> hoodMotor.getSupplyCurrent().getValueAsDouble() > Settings.HoodedShooter.Hood.HOOD_STALL_CURRENT_LIMIT) //TODO: update value in Settings after testing
+            .filtered(new BDebounce.Both(0.5));
+
+        seedHood();
+
     }
 
     @Override
@@ -87,27 +97,47 @@ public class HoodImpl extends Hood {
 
     // TODO: INCORRECT RIGHT NOW
     @Override
-    public void zeroHoodEncoder() {
-        double currentPos = hoodEncoder.getAbsolutePosition().getValueAsDouble();
 
+    //TODO: DEBUGGGG!!!
+    public void zeroHoodEncoder() {        
         hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);
 
         double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
-        double newOffset = currentOffset - currentPos;
+
+        double positionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
+        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
 
         hoodEncoderConfig.withMagnetOffset(newOffset);
         
         hoodEncoderConfig.configure(hoodEncoder);
     }
+
+    @Override
+    public boolean isStalling() {
+        return isStalling.getAsBoolean();
+    }
     
+    /*
+    * Example:
+    * Let's say the hood rotates 0.1 rotations. Then, the encoder has rotated 0.1 * 10.67 rotations
+    * To convert the encoder reading to the mechanism position, we simply do (0.1 * 10.67) / 10.67 = 0.1
+    */
     @Override
     public void seedHood() {
         hoodMotor.setPosition(Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations() + hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
     }
 
+    public double getCorrectHoodAngle() {
+        return Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH;
+    }
+
     @Override 
     public void periodic() {
         super.periodic();
+
+        if (isStalling()) {
+            // zeroHoodEncoder();
+        }
 
         hoodConfig.updateGainsConfig(
             hoodMotor,
@@ -121,14 +151,8 @@ public class HoodImpl extends Hood {
         );
 
         if (!hasUsedAbsoluteEncoder) {
-            /*
-             * Example:
-             * Let's say the hood rotates 0.1 rotations. Then, the encoder has rotated 0.1 * 10.67 rotations
-             * To convert the encoder reading to the mechanism position, we simply do (0.1 * 10.67) / 10.67 = 0.1
-             */
-            hoodMotor.setPosition(Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations() + hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
-            // seedHood();
-            hasUsedAbsoluteEncoder = true;
+            //seedHood();
+            //hasUsedAbsoluteEncoder = true;
         }
 
         if (EnabledSubsystems.HOOD.get()) {
@@ -142,7 +166,7 @@ public class HoodImpl extends Hood {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("HoodedShooter/Hood/Hood Absolute Angle (deg)", Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
+            SmartDashboard.putNumber("HoodedShooter/Hood/Correct Hood Angle (deg)", Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
 
             SmartDashboard.putNumber("HoodedShooter/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
@@ -153,6 +177,7 @@ public class HoodImpl extends Hood {
             SmartDashboard.putBoolean("HoodedShooter/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
 
             SmartDashboard.putNumber("InterpolationTesting/Hood Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("HoodedShooter/Hood/Raw Motor Encoder Value", hoodMotor.getPosition().getValueAsDouble());
 
             SmartDashboard.putNumber("Current Draws/Hood (amps)", hoodMotor.getSupplyCurrent().getValueAsDouble());
         }

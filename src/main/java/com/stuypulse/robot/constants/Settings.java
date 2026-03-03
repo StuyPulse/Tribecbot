@@ -110,8 +110,8 @@ public interface Settings {
     }
 
     public interface Spindexer {
-        double FORWARD_SPEED = 6000.0;
-        double REVERSE_SPEED = -6000.0;
+        double FORWARD_SPEED = 4500.0;
+        double REVERSE_SPEED = -4500.0;
         double STOP_SPEED = 0.0;
 
         double RPM_TOLERANCE = 400.0;
@@ -122,7 +122,7 @@ public interface Settings {
     }
     
     public interface HoodedShooter {
-        public final double SHOOTER_TOLERANCE_RPM = 50.0;
+        public final double SHOOTER_TOLERANCE_RPM = 100.0;
         public final double HOOD_TOLERANCE_DEG = 0.5;
 
         public interface RPMs {
@@ -137,7 +137,7 @@ public interface Settings {
             public final SmartNumber SHOOT_ANGLE = new SmartNumber("HoodedShooter/Shoot State Target Angle (deg)", 15.0);
             public final SmartNumber FERRY_ANGLE = new SmartNumber("HoodedShooter/Ferry State Target Angle (deg)", 20.0);
 
-            public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7.0);
+            public final Rotation2d MIN_ANGLE= Rotation2d.fromDegrees(7.0);
             public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
             public final Rotation2d KB_ANGLE = Rotation2d.fromDegrees(12.0);
             public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
@@ -196,7 +196,12 @@ public interface Settings {
             public final double GEAR_RATIO = 1064.0 / 9.0;
             public final double ENCODER_TO_MECH = 32.0 / 3.0;
 
-            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.01344);
+            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(-0.043);
+
+            public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(37.0);
+            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(10.0);
+
+            public final double HOOD_STALL_CURRENT_LIMIT = 20.0;
     }
     }
     public interface ShootOnTheFly {
@@ -222,7 +227,7 @@ public interface Settings {
             public interface Tolerances {
                 public final double X_TOLERANCE = Units.inchesToMeters(2.0);
                 public final double Y_TOLERANCE = Units.inchesToMeters(2.0);
-                public final double THETA_TOLERANCE_DEG = 2.0;
+                public final double THETA_TOLERANCE_DEG = 3.0;
 
                 public final Pose2d POSE_TOLERANCE = new Pose2d(
                     Units.inchesToMeters(2.0),

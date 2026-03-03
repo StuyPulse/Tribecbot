@@ -66,6 +66,7 @@ public class SwerveDriveAlignTurretToHub extends Command {
                 Angle.fromRotation2d(getTargetAngle()),
                 Angle.fromRotation2d(robot.getRotation()))));
 
-        SmartDashboard.putNumber("Swerve/Target angle hub deg", turret.getPointAtTargetAngle(Field.getHubPose()).getDegrees());
+        SmartDashboard.putNumber("Swerve/Angle Error", angleController.getError().toDegrees());
+        SmartDashboard.putNumber("Swerve/Target Angle Hub Deg", turret.getPointAtTargetAngle(Field.getHubPose()).getDegrees());
     }
 }

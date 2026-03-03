@@ -49,9 +49,9 @@ public class Gains {
         }
 
         public interface Hood {
-            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 400.0);
+            SmartNumber kP = new SmartNumber("HoodedShooter/Hood/Gains/kP", 250.0); //300.0);
             SmartNumber kI = new SmartNumber("HoodedShooter/Hood/Gains/kI", 0.0);
-            SmartNumber kD = new SmartNumber("HoodedShooter/Hood/Gains/kD", 0.0);
+            SmartNumber kD = new SmartNumber("HoodedShooter/Hood/Gains/kD", 2.0); //0.5);
 
             SmartNumber kS = new SmartNumber("HoodedShooter/Hood/Gains/kS", 0.25);
             SmartNumber kA = new SmartNumber("HoodedShooter/Hood/Gains/kA", 0.0);
@@ -187,7 +187,7 @@ public class Gains {
             double akD = 0.0;
 
             PIDConstants XY = new PIDConstants(3.0, 0.0, 0.2);
-            PIDConstants THETA = new PIDConstants(3.0, 0.0, 0.2);
+            PIDConstants THETA = new PIDConstants(13.0, 0.0, 0.5);
         }
     }
 }

@@ -64,7 +64,7 @@ public class HoodAngleCalculator {
             Translation2d hubPose = Field.getHubPose().getTranslation();
             Translation2d currentPose = swerve.getTurretPose().getTranslation();
 
-            double distanceMeters = hubPose.getDistance(currentPose);
+            double distanceMeters = hubPose.getDistance(currentPose); 
 
             Rotation2d targetAngle = Rotation2d.fromRadians(distanceAngleInterpolator.get(distanceMeters));
 

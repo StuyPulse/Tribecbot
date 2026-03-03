@@ -32,6 +32,7 @@ import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.SeedPivot;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.swerve.SwerveDriveAlignTurretToHub;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveWheelRadiusCharacterization;
@@ -69,10 +70,10 @@ public class RobotContainer {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
-        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
-        SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
+        SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
         SmartBoolean LIMELIGHT = new SmartBoolean("Enabled Subsystems/Limelight Is Enabled", true);
     }
@@ -107,13 +108,13 @@ public class RobotContainer {
 
         SmartDashboard.putData("Field", Field.FIELD2D);
         SmartDashboard.putData("Robot/Reset Pivot", new SeedPivot());
-        SmartDashboard.putData("Robot/Zero Turret Encoders", new TurretZero());
+        SmartDashboard.putData("Robot/Zero Turret Encoders", new TurretZero().ignoringDisable(true));
 
         SmartDashboard.putData("Robot/Override Up", new ClimberOverrideUp());
         SmartDashboard.putData("Robot/Override Down", new ClimberOverrideDown());
         SmartDashboard.putData("Robot/Override Stop", new  ClimberOverrideStop());
         
-        SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHood());
+        SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHood().ignoringDisable(true));
        
     }
 
@@ -165,8 +166,11 @@ public class RobotContainer {
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
-            .onFalse(new SetIMUMode(0));
+            .onFalse(new SetIMUMode(0));    
         
+        driver.getRightMenuButton()
+            .onTrue(new SpindexerRun())
+            .onFalse(new SpindexerStop());
         // driver.getTopButton()
         //     .whileTrue(new TurretShoot());
 
@@ -179,12 +183,13 @@ public class RobotContainer {
 
         // Scoring Routine using Interpolation Settings
         driver.getTopButton()
-                .whileTrue(new HoodedShooterShoot()
+                .whileTrue(new HoodedShooterInterpolation()
+                .alongWith(new SwerveDriveAlignTurretToHub())
                         // .alongWith(new TurretShoot())
-                        .alongWith(new WaitUntilCommand(() -> hoodedShooter.isShooterAtTolerance()))
-                        .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.isShooterAtTolerance())
+                        .andThen(new WaitUntilCommand(() -> hoodedShooter.bothAtTolerance() ))
+                        .andThen(new HandoffRun().onlyIf(() -> hoodedShooter.bothAtTolerance())
                                 .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.isShooterAtTolerance()))))
+                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && hoodedShooter.bothAtTolerance()))))
                 .onFalse(new SpindexerStop()
                         .alongWith(new HoodedShooterStow())
                         .alongWith(new HandoffStop()));
