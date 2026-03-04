@@ -147,6 +147,7 @@ public interface Settings {
 
         public interface AngleInterpolation {
             public final double[][] distanceAngleInterpolationValues = {
+                {1.22, Units.degreesToRadians(20)},             //AGAINST THE HUB
                 {1.30, Units.degreesToRadians(16.5)},
                 {1.43, Units.degreesToRadians(21.0)},
                 {2.15, Units.degreesToRadians(23.23)},
@@ -159,6 +160,7 @@ public interface Settings {
 
         public interface RPMInterpolation {
             public final double[][] distanceRPMInterpolationValues = {
+                {1.22, 2850.0},                                         //AGAINST THE HUB
                 {1.30, 3000.0},
                 {1.43, 3000.0},
                 {2.15, 3050.0},
