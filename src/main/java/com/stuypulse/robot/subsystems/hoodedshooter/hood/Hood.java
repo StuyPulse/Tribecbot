@@ -5,10 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.hoodedshooter.hood;
 
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.hoodedshooter.HoodAngleCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,12 +58,12 @@ public abstract class Hood extends SubsystemBase{
 
     public Rotation2d getTargetAngle() {
         return switch(state) {
-            case STOW -> Settings.HoodedShooter.Angles.MIN_ANGLE;
+            case STOW -> Settings.HoodedShooter.Hood.Angles.MIN_ANGLE;
             case FERRY -> Rotation2d.fromDegrees(30);
-            case SHOOT -> Rotation2d.fromDegrees(Settings.HoodedShooter.Angles.SHOOT_ANGLE.get());
-            case KB -> Settings.HoodedShooter.Angles.KB_ANGLE;
-            case LEFT_CORNER -> Settings.HoodedShooter.Angles.LEFT_CORNER_ANGLE;
-            case RIGHT_CORNER -> Settings.HoodedShooter.Angles.RIGHT_CORNER_ANGLE;
+            case SHOOT -> Rotation2d.fromDegrees(Settings.HoodedShooter.Hood.Angles.SHOOT_ANGLE.get());
+            case KB -> Settings.HoodedShooter.Hood.Angles.KB_ANGLE;
+            case LEFT_CORNER -> Settings.HoodedShooter.Hood.Angles.LEFT_CORNER_ANGLE;
+            case RIGHT_CORNER -> Settings.HoodedShooter.Hood.Angles.RIGHT_CORNER_ANGLE;
             case INTERPOLATION -> HoodAngleCalculator.interpolateHoodAngle().get();
             case ANALOG -> hoodAnalogToOutput();
             case IDLE -> getHoodAngle();
@@ -75,8 +78,8 @@ public abstract class Hood extends SubsystemBase{
     public abstract Rotation2d getHoodAngle();
 
     public void hoodAnalogToInput(Gamepad gamepad) {
-        double hoodMin = Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees();
-        double hoodMax = Settings.HoodedShooter.Angles.MAX_ANGLE.getDegrees();
+        double hoodMin = Settings.HoodedShooter.Hood.Angles.MIN_ANGLE.getDegrees();
+        double hoodMax = Settings.HoodedShooter.Hood.Angles.MAX_ANGLE.getDegrees();
 
         this.driverInput = Rotation2d.fromDegrees(hoodMin + (gamepad.getLeftX() + 1.0) * ((hoodMax - hoodMin) / 2)); 
     }
@@ -85,7 +88,22 @@ public abstract class Hood extends SubsystemBase{
         return this.driverInput;
     }
 
+    public boolean isHoodUnderTrench() {
+        Pose2d pose = CommandSwerveDrivetrain.getInstance().getTurretPose();
 
+        boolean isBetweenRightTrenchesY = Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY();
+
+        boolean isBetweenLeftTrenchesY = Field.NearLeftTrench.rightEdge.getY() < pose.getY() && Field.NearLeftTrench.leftEdge.getY() > pose.getY();
+
+        boolean isCloseToAllianceSideTrenchX = Math.abs(pose.getX() - Field.NearRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
+
+        boolean isCloseToNeutralSideTrenchX = Math.abs(pose.getX() - Field.FarRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
+
+        boolean isUnderTrench = (isBetweenRightTrenchesY || isBetweenLeftTrenchesY) && (isCloseToAllianceSideTrenchX || isCloseToNeutralSideTrenchX);
+        
+        return isUnderTrench;
+    }
+    
     public abstract boolean isStalling();
     public abstract SysIdRoutine getHoodSysIdRoutine();
     public abstract void zeroHoodEncoderAtLowerHardstop();

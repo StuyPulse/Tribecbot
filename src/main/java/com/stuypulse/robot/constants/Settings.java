@@ -126,25 +126,6 @@ public interface Settings {
         public final double SHOOTER_TOLERANCE_RPM = 100.0;
         public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
 
-        public interface RPMs {
-            public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3500.0);
-            public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
-            public final double REVERSE = 0.0;
-            public final double KB_RPM = 0.0;
-            public final double LEFT_CORNER_RPM = 0.0;
-            public final double RIGHT_CORNER_RPM = 0.0;
-        }
-        public interface Angles {
-            public final SmartNumber SHOOT_ANGLE = new SmartNumber("HoodedShooter/Shoot State Target Angle (deg)", 15.0);
-            public final SmartNumber FERRY_ANGLE = new SmartNumber("HoodedShooter/Ferry State Target Angle (deg)", 20.0);
-
-            public final Rotation2d MIN_ANGLE= Rotation2d.fromDegrees(7.0);
-            public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
-            public final Rotation2d KB_ANGLE = Rotation2d.fromDegrees(12.0);
-            public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
-            public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
-        }
-
         public interface AngleInterpolation {
             public final double[][] distanceAngleInterpolationValues = {
                 {1.30, Units.degreesToRadians(16.5)},
@@ -178,6 +159,15 @@ public interface Settings {
         public interface Shooter {
             public final double GEAR_RATIO = 1.0;
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
+
+            public interface RPMs {
+                public final SmartNumber SHOOT_RPM = new SmartNumber("HoodedShooter/Shoot State Target RPM", 3500.0);
+                public final SmartNumber FERRY_RPM = new SmartNumber("HoodedShooter/Ferry State Target RPM", 2000.0);
+                public final double REVERSE = 0.0;
+                public final double KB_RPM = 0.0;
+                public final double LEFT_CORNER_RPM = 0.0;
+                public final double RIGHT_CORNER_RPM = 0.0;
+            }
         }
 
         public interface Hood {
@@ -200,10 +190,23 @@ public interface Settings {
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(-0.043);
 
             public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(39.0);
-            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(10.0);
+            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(8.0);
 
             public final double STALL_CURRENT_LIMIT = 20.0;
             public final double STALL_DEBOUNCE = 0.5;
+
+            public interface Angles {
+                public final SmartNumber SHOOT_ANGLE = new SmartNumber("HoodedShooter/Shoot State Target Angle (deg)", 15.0);
+                public final SmartNumber FERRY_ANGLE = new SmartNumber("HoodedShooter/Ferry State Target Angle (deg)", 20.0);
+
+                public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7.0);
+                public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
+
+                public final Rotation2d UNDER_TRENCH_ANGLE = Rotation2d.fromDegrees(11.0);
+                public final Rotation2d KB_ANGLE = Rotation2d.fromDegrees(12.0);
+                public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
+                public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
+        }
         }
     }
     public interface ShootOnTheFly {

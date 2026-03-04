@@ -84,6 +84,10 @@ public class HoodedShooter extends SubsystemBase {
         return isShooterAtTolerance() && isHoodAtTolerance();
     }
 
+    public boolean isHoodUnderTrench() {
+        return hood.isHoodUnderTrench();
+    }
+
     public boolean isShooterAtTolerance() {
         return shooter.atTolerance();
     }

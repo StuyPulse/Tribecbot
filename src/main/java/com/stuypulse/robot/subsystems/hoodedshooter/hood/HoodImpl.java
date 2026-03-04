@@ -10,6 +10,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -95,7 +96,7 @@ public class HoodImpl extends Hood {
         double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
 
         double positionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
-        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations());
+        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.HoodedShooter.Hood.Angles.MIN_ANGLE.getRotations());
 
         hoodEncoderConfig.withMagnetOffset(newOffset);
         
@@ -118,7 +119,7 @@ public class HoodImpl extends Hood {
     }
 
     private double getAbsoluteHoodAngleDeg() {
-        return Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH;
+        return Settings.HoodedShooter.Hood.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH;
     }
 
     @Override 
@@ -134,7 +135,12 @@ public class HoodImpl extends Hood {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else {
-                hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
+                if (!isHoodUnderTrench()) {
+                    hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
+                } else {
+                    setState(HoodState.STOW);
+                    hoodMotor.setControl(controller.withPosition(Settings.HoodedShooter.Hood.Angles.UNDER_TRENCH_ANGLE.getRotations()));
+                }
             }
         } else {
             hoodMotor.stopMotor();
