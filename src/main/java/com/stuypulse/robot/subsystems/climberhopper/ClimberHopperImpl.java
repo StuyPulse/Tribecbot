@@ -36,9 +36,9 @@ public class ClimberHopperImpl extends ClimberHopper {
         super();
 
         climberHopperConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withSupplyCurrentLimitAmps(50.0)
             .withStatorCurrentLimitEnabled(false)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withNeutralMode(NeutralModeValue.Brake)
             .withRampRate(Settings.ClimberHopper.RAMP_RATE)
             .withSoftLimits(

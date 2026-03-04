@@ -41,12 +41,10 @@ public class TurretImpl extends Turret {
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(80)
             .withStatorCurrentLimitEnabled(false)
-
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
             
             .withPIDConstants(Gains.Turret.slot0.kP, Gains.Turret.slot0.kI, Gains.Turret.slot0.kD, 0)
             .withFFConstants(Gains.Turret.slot0.kS, Gains.Turret.slot0.kV, Gains.Turret.slot0.kA, 0)
@@ -56,13 +54,17 @@ public class TurretImpl extends Turret {
             .withFFConstants(Gains.Turret.slot1.kS, Gains.Turret.slot1.kV, Gains.Turret.slot1.kA, 1)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 1)
             
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withRampRate(0.25)
+            
             .withSensorToMechanismRatio(Settings.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH)
 
             .withSoftLimits(
                 false, false,
                 Settings.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS,
                 Settings.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS)
-            .withMaxVoltage(6, -6); //TODO: VERIFY MAX VOLTAGE
+            
+            .withVoltageLimits(6, -6); //TODO: VERIFY MAX VOLTAGE
 
         encoder17tConfig = new Motors.CANCoderConfig()
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
@@ -73,7 +75,7 @@ public class TurretImpl extends Turret {
             .withAbsoluteSensorDiscontinuityPoint(1.0);
 
         motor = new TalonFX(Ports.Turret.MOTOR, Ports.RIO);
-    encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
+        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
         encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.RIO);
 
         turretConfig.configure(motor);
@@ -82,8 +84,7 @@ public class TurretImpl extends Turret {
 
         hasUsedAbsoluteEncoder = false;
         voltageOverride = Optional.empty();
-        controller = new PositionVoltage(getTargetAngle().getRotations())
-        .withEnableFOC(true);
+        controller = new PositionVoltage(getTargetAngle().getRotations()).withEnableFOC(true);
     }
     
     private Rotation2d getEncoderPos17t() {

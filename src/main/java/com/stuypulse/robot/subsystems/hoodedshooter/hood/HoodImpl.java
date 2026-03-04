@@ -43,15 +43,20 @@ public class HoodImpl extends Hood {
 
     public HoodImpl() {
         hoodConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(80.0)
             .withStatorCurrentLimitEnabled(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            
             .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
             .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
+            
+            .withRampRate(0.25)
+            .withNeutralMode(NeutralModeValue.Brake)
+            
             .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
+            
             .withSoftLimits(
                 true, true, 
                 Settings.HoodedShooter.Hood.FORWARD_SOFT_LIMIT.getRotations(),

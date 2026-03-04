@@ -37,23 +37,31 @@ public class SpindexerImpl extends Spindexer {
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(60)
             .withStatorCurrentLimitEnabled(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
             .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
+            
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withRampRate(0.25)
+            
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
 
         spindexerFollowerConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(60)
             .withStatorCurrentLimitEnabled(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
             .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
+            
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withRampRate(0.25)
+            
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
 
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);

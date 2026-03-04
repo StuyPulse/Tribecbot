@@ -36,14 +36,19 @@ public class ShooterImpl extends Shooter {
 
     public ShooterImpl() {
         shooterConfig = new Motors.TalonFXConfig()
-            .withStatorCurrentLimitEnabled(false)
-            .withSupplyCurrentLimitEnabled(false)
-            .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withPIDConstants(Gains.HoodedShooter.Shooter.kP.get(), Gains.HoodedShooter.Shooter.kI.get(),
-                    Gains.HoodedShooter.Shooter.kD.get(), 0)
-            .withFFConstants(Gains.HoodedShooter.Shooter.kS.get(), Gains.HoodedShooter.Shooter.kV.get(),
-                    Gains.HoodedShooter.Shooter.kA.get(), 0)
+            
+            .withSupplyCurrentLimitEnabled(false)
+            .withStatorCurrentLimitEnabled(false)
+
+            .withPIDConstants(Gains.HoodedShooter.Shooter.kP.get(), 
+                              Gains.HoodedShooter.Shooter.kI.get(),
+                              Gains.HoodedShooter.Shooter.kD.get(), 0)
+            .withFFConstants(Gains.HoodedShooter.Shooter.kS.get(), 
+                             Gains.HoodedShooter.Shooter.kV.get(),
+                             Gains.HoodedShooter.Shooter.kA.get(), 0)
+                             
+            .withNeutralMode(NeutralModeValue.Coast)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Shooter.GEAR_RATIO);
 
         shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);

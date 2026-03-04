@@ -54,24 +54,30 @@ public class IntakeImpl extends Intake {
 
     public IntakeImpl() {
         pivotConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(60)
             .withStatorCurrentLimitEnabled(false)
-            .withRampRate(0.25)
-            .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.Clockwise_Positive)
+            
             .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
             .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
-            .withGravityType(GravityTypeValue.Arm_Cosine)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 0)
-            .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
-            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations());
+            .withGravityType(GravityTypeValue.Arm_Cosine)
+            .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations())
+            
+            .withNeutralMode(NeutralModeValue.Brake)
+            .withRampRate(0.25)
+            
+            .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO);
 
         rollerConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+
             .withSupplyCurrentLimitAmps(45)
             .withStatorCurrentLimitEnabled(false)
+            
             .withRampRate(0.50)
-            .withNeutralMode(NeutralModeValue.Coast)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive);
+            .withNeutralMode(NeutralModeValue.Coast);
 
         pivot = new TalonFX(Ports.Intake.PIVOT, Ports.RIO);
         pivotConfig.configure(pivot);

@@ -363,9 +363,9 @@ public interface Motors {
 
         // VOLTAGE LIMIT CONFIGS
 
-        public TalonFXConfig withMaxVoltage(double forwardPeak, double reversePeak) {
-            voltageConfigs.PeakForwardVoltage = forwardPeak;
-            voltageConfigs.PeakReverseVoltage = reversePeak;
+        public TalonFXConfig withVoltageLimits(double peakForwardVoltage, double peakReverseVoltage) {
+            voltageConfigs.PeakForwardVoltage = peakForwardVoltage;
+            voltageConfigs.PeakReverseVoltage = peakReverseVoltage;
 
             configuration.withVoltage(voltageConfigs);
 

@@ -31,13 +31,17 @@ public class HandoffImpl extends Handoff {
 
     public HandoffImpl() {
         handoffConfig = new Motors.TalonFXConfig()
+            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+            
             .withSupplyCurrentLimitAmps(80.0)
             .withStatorCurrentLimitEnabled(false)
+            
+            .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
+            .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
+            
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
-            .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
-            .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
+            
             .withSensorToMechanismRatio(Settings.Handoff.GEAR_RATIO);
 
         motor = new TalonFX(Ports.Handoff.HANDOFF, Ports.RIO);
