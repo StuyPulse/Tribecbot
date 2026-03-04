@@ -37,7 +37,8 @@ public class SpindexerImpl extends Spindexer {
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitEnable(false)
+            .withSupplyCurrentLimitAmps(60)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
@@ -46,7 +47,8 @@ public class SpindexerImpl extends Spindexer {
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
 
         spindexerFollowerConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitEnable(false)
+            .withSupplyCurrentLimitAmps(60)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)

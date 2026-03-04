@@ -26,17 +26,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import java.util.Optional;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Motors;
-import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.util.SysId;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
 public class HoodImpl extends Hood {
     private final Motors.TalonFXConfig hoodConfig;
     private final Motors.CANCoderConfig hoodEncoderConfig;
@@ -54,7 +43,8 @@ public class HoodImpl extends Hood {
 
     public HoodImpl() {
         hoodConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitAmps(80.0)
+            .withSupplyCurrentLimitAmps(80.0)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)

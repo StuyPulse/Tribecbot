@@ -41,6 +41,9 @@ public class TurretImpl extends Turret {
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
+            .withSupplyCurrentLimitAmps(80)
+            .withStatorCurrentLimitEnabled(false)
+
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)

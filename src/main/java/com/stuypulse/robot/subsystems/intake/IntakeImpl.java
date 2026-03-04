@@ -53,11 +53,10 @@ public class IntakeImpl extends Intake {
     private BStream pivotStalling;
 
     public IntakeImpl() {
-        //TODO: refactor
         pivotConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitEnable(true)
+            .withSupplyCurrentLimitAmps(60)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
-            .withCurrentLimitAmps(60)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
             .withPIDConstants(Gains.Intake.Pivot.kP.get(), Gains.Intake.Pivot.kI.get(), Gains.Intake.Pivot.kD.get(), 0)
@@ -68,9 +67,9 @@ public class IntakeImpl extends Intake {
             .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(), Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations());
 
         rollerConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitEnable(true)
+            .withSupplyCurrentLimitAmps(45)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.50)
-            .withCurrentLimitAmps(45)
             .withNeutralMode(NeutralModeValue.Coast)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive);
 

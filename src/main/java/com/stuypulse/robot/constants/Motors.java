@@ -318,15 +318,6 @@ public interface Motors {
 
         // CURRENT LIMIT CONFIGS
 
-        public TalonFXConfig withCurrentLimitAmps(double currentLimitAmps) {
-            currentLimitsConfigs.StatorCurrentLimit = currentLimitAmps;
-            currentLimitsConfigs.StatorCurrentLimitEnable = true;
-
-            configuration.withCurrentLimits(currentLimitsConfigs);
-
-            return this;
-        }
-
         public TalonFXConfig withLowerLimitSupplyCurrent(double currentLowerLimitAmps) {
             currentLimitsConfigs.SupplyCurrentLowerLimit = currentLowerLimitAmps;
             currentLimitsConfigs.StatorCurrentLimitEnable = true;
@@ -345,8 +336,24 @@ public interface Motors {
             return this;
         }
 
-        public TalonFXConfig withCurrentLimitEnable(boolean enabled) {
+        public TalonFXConfig withSupplyCurrentLimitEnabled(boolean enabled) {
             currentLimitsConfigs.SupplyCurrentLimitEnable = enabled;
+
+            configuration.withCurrentLimits(currentLimitsConfigs);
+
+            return this;
+        }
+
+        public TalonFXConfig withStatorCurrentLimitAmps(double currentLimitAmps) {
+            currentLimitsConfigs.StatorCurrentLimit = currentLimitAmps;
+            currentLimitsConfigs.StatorCurrentLimitEnable = true;
+
+            configuration.withCurrentLimits(currentLimitsConfigs);
+
+            return this;
+        }
+
+        public TalonFXConfig withStatorCurrentLimitEnabled(boolean enabled) {
             currentLimitsConfigs.StatorCurrentLimitEnable = enabled;
 
             configuration.withCurrentLimits(currentLimitsConfigs);

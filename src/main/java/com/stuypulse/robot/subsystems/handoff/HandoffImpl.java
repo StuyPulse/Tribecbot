@@ -31,7 +31,8 @@ public class HandoffImpl extends Handoff {
 
     public HandoffImpl() {
         handoffConfig = new Motors.TalonFXConfig()
-            .withCurrentLimitAmps(80.0)
+            .withSupplyCurrentLimitAmps(80.0)
+            .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
