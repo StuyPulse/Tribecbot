@@ -118,5 +118,7 @@ public abstract class Hood extends SubsystemBase{
         SmartDashboard.putNumber("HoodedShooter/Hood/Current Angle", getHoodAngle().getDegrees());
 
         //SmartDashboard.putNumber("HoodedShooter/Hood/Analog Target Angle", hoodAnalogToOutput().getDegrees());
+
+        SmartDashboard.putBoolean("HoodedShooter/Hood/Under Trench", isHoodUnderTrench());
     }
 }

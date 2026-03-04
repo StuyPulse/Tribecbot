@@ -135,12 +135,10 @@ public class HoodImpl extends Hood {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else {
-                if (!isHoodUnderTrench()) {
-                    hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
-                } else {
+                if (isHoodUnderTrench()) {
                     setState(HoodState.STOW);
-                    hoodMotor.setControl(controller.withPosition(Settings.HoodedShooter.Hood.Angles.UNDER_TRENCH_ANGLE.getRotations()));
                 }
+                hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }
         } else {
             hoodMotor.stopMotor();

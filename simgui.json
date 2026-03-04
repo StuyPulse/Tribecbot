@@ -18,6 +18,8 @@
       "/SmartDashboard/Robot/Reset Pivot": "Command",
       "/SmartDashboard/Robot/Zero Encoders": "Command",
       "/SmartDashboard/Robot/Zero Hood Encoder": "Command",
+      "/SmartDashboard/Robot/Zero Pivot Encoder at Lower Limit (Deployed)": "Command",
+      "/SmartDashboard/Robot/Zero Pivot Encoder at Upper Limit (Stowed)": "Command",
       "/SmartDashboard/Robot/Zero Turret Encoders": "Command",
       "/SmartDashboard/Visualizers/ClimberHopper": "Mechanism2d",
       "/SmartDashboard/Visualizers/Turret": "Mechanism2d"

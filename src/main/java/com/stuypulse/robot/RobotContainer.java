@@ -20,7 +20,7 @@ import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
-import com.stuypulse.robot.commands.hoodedshooter.HoodAnalog;
+import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterFerry;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterInterpolation;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterKB;
 import com.stuypulse.robot.commands.hoodedshooter.HoodedShooterShoot;
@@ -158,6 +158,12 @@ public class RobotContainer {
 
         driver.getLeftButton()
             .whileTrue(new HoodedShooterShoot().onlyIf(() -> !hoodedShooter.isHoodUnderTrench()))
+            .onFalse(new HoodedShooterStow());
+
+
+        driver.getRightButton()
+            .whileTrue(new HoodedShooterFerry().onlyIf(
+                () -> CommandSwerveDrivetrain.getInstance().getPose().getX() > Field.getHubPose().getX()))
             .onFalse(new HoodedShooterStow());
 
         // Reset Heading
