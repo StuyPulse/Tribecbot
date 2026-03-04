@@ -48,8 +48,8 @@ public class TurretImpl extends Turret {
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
             
-            .withPIDConstants(Gains.Turret.slot0.kP.get(), Gains.Turret.slot0.kI.get(), Gains.Turret.slot0.kD.get(), 0)
-            .withFFConstants(Gains.Turret.slot0.kS.get(), Gains.Turret.slot0.kV.get(), Gains.Turret.slot0.kA.get(), 0)
+            .withPIDConstants(Gains.Turret.slot0.kP, Gains.Turret.slot0.kI, Gains.Turret.slot0.kD, 0)
+            .withFFConstants(Gains.Turret.slot0.kS, Gains.Turret.slot0.kV, Gains.Turret.slot0.kA, 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
             
             .withPIDConstants(Gains.Turret.slot1.kP, Gains.Turret.slot1.kI, Gains.Turret.slot1.kD, 1)
@@ -147,17 +147,6 @@ public class TurretImpl extends Turret {
     @Override
     public void periodic() {
         super.periodic();
-
-        turretConfig.updateGainsConfig(
-            motor,
-            0,
-            Gains.Turret.slot0.kP,
-            Gains.Turret.slot0.kI,
-            Gains.Turret.slot0.kD,
-            Gains.Turret.slot0.kS,
-            Gains.Turret.slot0.kV,
-            Gains.Turret.slot0.kA
-        );
 
         if (!hasUsedAbsoluteEncoder) {
             seedTurret();

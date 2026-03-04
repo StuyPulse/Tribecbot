@@ -59,8 +59,8 @@ public class IntakeImpl extends Intake {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withPIDConstants(Gains.Intake.Pivot.kP.get(), Gains.Intake.Pivot.kI.get(), Gains.Intake.Pivot.kD.get(), 0)
-            .withFFConstants(Gains.Intake.Pivot.kS.get(), Gains.Intake.Pivot.kV.get(), Gains.Intake.Pivot.kA.get(), Gains.Intake.Pivot.kG, 0)
+            .withPIDConstants(Gains.Intake.Pivot.kP, Gains.Intake.Pivot.kI, Gains.Intake.Pivot.kD, 0)
+            .withFFConstants(Gains.Intake.Pivot.kS, Gains.Intake.Pivot.kV, Gains.Intake.Pivot.kA, Gains.Intake.Pivot.kG, 0)
             .withGravityType(GravityTypeValue.Arm_Cosine)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 0)
             .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO)
@@ -154,17 +154,6 @@ public class IntakeImpl extends Intake {
     @Override
     public void periodic() {
         super.periodic();
-
-        pivotConfig.updateGainsConfig(
-            pivot,
-            0,
-            Gains.Intake.Pivot.kP,
-            Gains.Intake.Pivot.kI,
-            Gains.Intake.Pivot.kD,
-            Gains.Intake.Pivot.kS,
-            Gains.Intake.Pivot.kV,
-            Gains.Intake.Pivot.kA
-        );
 
         if (EnabledSubsystems.INTAKE.get()) {
 

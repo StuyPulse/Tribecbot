@@ -42,8 +42,8 @@ public class SpindexerImpl extends Spindexer {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
-            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
+            .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
+            .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
 
         spindexerFollowerConfig = new Motors.TalonFXConfig()
@@ -52,8 +52,8 @@ public class SpindexerImpl extends Spindexer {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.Clockwise_Positive)
-            .withFFConstants(Gains.Spindexer.kS.get(), Gains.Spindexer.kV.get(), Gains.Spindexer.kA.get(), 0)
-            .withPIDConstants(Gains.Spindexer.kP.get(), Gains.Spindexer.kI.get(), Gains.Spindexer.kD.get(), 0)
+            .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
+            .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
             .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
 
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);
@@ -85,28 +85,6 @@ public class SpindexerImpl extends Spindexer {
     @Override
     public void periodic() {
         super.periodic();
-
-        spindexerLeadConfig.updateGainsConfig(
-            leadMotor,
-            0,
-            Gains.Spindexer.kP,
-            Gains.Spindexer.kI,
-            Gains.Spindexer.kD,
-            Gains.Spindexer.kS,
-            Gains.Spindexer.kV,
-            Gains.Spindexer.kA
-        );
-
-        spindexerFollowerConfig.updateGainsConfig(
-            followerMotor,
-            0,
-            Gains.Spindexer.kP,
-            Gains.Spindexer.kI,
-            Gains.Spindexer.kD,
-            Gains.Spindexer.kS,
-            Gains.Spindexer.kV,
-            Gains.Spindexer.kA
-        );
 
         if (EnabledSubsystems.SPINDEXER.get()) {
             if (voltageOverride.isPresent()) {

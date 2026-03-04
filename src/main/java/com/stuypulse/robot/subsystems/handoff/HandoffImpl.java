@@ -36,8 +36,8 @@ public class HandoffImpl extends Handoff {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withFFConstants(Gains.Handoff.kS.get(), Gains.Handoff.kV.get(), Gains.Handoff.kA.get(), 0)
-            .withPIDConstants(Gains.Handoff.kP.get(), Gains.Handoff.kI.get(), Gains.Handoff.kD.get(), 0)
+            .withFFConstants(Gains.Handoff.kS, Gains.Handoff.kV, Gains.Handoff.kA, 0)
+            .withPIDConstants(Gains.Handoff.kP, Gains.Handoff.kI, Gains.Handoff.kD, 0)
             .withSensorToMechanismRatio(Settings.Handoff.GEAR_RATIO);
 
         motor = new TalonFX(Ports.Handoff.HANDOFF, Ports.RIO);
@@ -60,17 +60,6 @@ public class HandoffImpl extends Handoff {
     @Override
     public void periodic() {
         super.periodic();
-
-        handoffConfig.updateGainsConfig(
-            motor,
-            0,
-            Gains.Handoff.kP,
-            Gains.Handoff.kI,
-            Gains.Handoff.kD,
-            Gains.Handoff.kS,
-            Gains.Handoff.kV,
-            Gains.Handoff.kA
-        );
 
         if (EnabledSubsystems.HANDOFF.get()) {
             if (voltageOverride.isPresent()) {

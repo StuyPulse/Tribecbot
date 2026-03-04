@@ -48,8 +48,8 @@ public class HoodImpl extends Hood {
             .withRampRate(0.25)
             .withNeutralMode(NeutralModeValue.Brake)
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withPIDConstants(Gains.HoodedShooter.Hood.kP.get(), Gains.HoodedShooter.Hood.kI.get(), Gains.HoodedShooter.Hood.kD.get(), 0)
-            .withFFConstants(Gains.HoodedShooter.Hood.kS.get(), Gains.HoodedShooter.Hood.kV.get(), Gains.HoodedShooter.Hood.kA.get(), 0)
+            .withPIDConstants(Gains.HoodedShooter.Hood.kP, Gains.HoodedShooter.Hood.kI, Gains.HoodedShooter.Hood.kD, 0)
+            .withFFConstants(Gains.HoodedShooter.Hood.kS, Gains.HoodedShooter.Hood.kV, Gains.HoodedShooter.Hood.kA, 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
             .withSensorToMechanismRatio(Settings.HoodedShooter.Hood.GEAR_RATIO)
             .withSoftLimits(
@@ -113,28 +113,16 @@ public class HoodImpl extends Hood {
     */
     @Override
     public void seedHood() {
-        hoodMotor.setPosition(getCorrectHoodAngle());
-        // hoodMotor.setPosition(Settings.HoodedShooter.Angles.MIN_ANGLE.getRotations() + hoodEncoder.getAbsolutePosition().getValueAsDouble() / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
+        hoodMotor.setPosition(getAbsoluteHoodAngle());
     }
 
-    public double getCorrectHoodAngle() {
+    private double getAbsoluteHoodAngle() {
         return Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH;
     }
 
     @Override 
     public void periodic() {
         super.periodic();
-
-        hoodConfig.updateGainsConfig(
-            hoodMotor,
-            0,
-            Gains.HoodedShooter.Hood.kP,
-            Gains.HoodedShooter.Hood.kI,
-            Gains.HoodedShooter.Hood.kD,
-            Gains.HoodedShooter.Hood.kS,
-            Gains.HoodedShooter.Hood.kV,
-            Gains.HoodedShooter.Hood.kA
-        );
 
         if (!hasUsedAbsoluteEncoder) {
             seedHood();
@@ -152,13 +140,11 @@ public class HoodImpl extends Hood {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("HoodedShooter/Hood/Correct Hood Angle (deg)", getCorrectHoodAngle());
-            // SmartDashboard.putNumber("HoodedShooter/Hood/Correct Hood Angle (deg)", Settings.HoodedShooter.Angles.MIN_ANGLE.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.HoodedShooter.Hood.ENCODER_TO_MECH);
+            SmartDashboard.putNumber("HoodedShooter/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngle());
 
             SmartDashboard.putNumber("HoodedShooter/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("HoodedShooter/Hood/Stator Current", hoodMotor.getStatorCurrent().getValueAsDouble());
-
 
             SmartDashboard.putNumber("HoodedShooter/Hood/Closed Loop Error (deg)", hoodMotor.getClosedLoopError().getValueAsDouble() * 360.0);
             SmartDashboard.putBoolean("HoodedShooter/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
