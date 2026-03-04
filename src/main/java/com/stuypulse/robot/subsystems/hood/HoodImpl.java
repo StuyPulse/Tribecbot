@@ -3,14 +3,13 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.hoodedshooter.hood;
+package com.stuypulse.robot.subsystems.hood;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
@@ -83,7 +82,7 @@ public class HoodImpl extends Hood {
     }
 
     @Override
-    public Rotation2d getHoodAngle() {
+    public Rotation2d getAngle() {
         return Rotation2d.fromRotations(hoodMotor.getPosition().getValueAsDouble());
     }
 

@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.hoodedshooter;
+package com.stuypulse.robot.commands.superstructure;
 
 import com.stuypulse.robot.subsystems.hoodedshooter.hood.Hood;
 

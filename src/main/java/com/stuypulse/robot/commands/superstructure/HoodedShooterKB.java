@@ -3,12 +3,12 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.commands.turret;
+package com.stuypulse.robot.commands.superstructure;
 
-import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
+import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
 
-public class TurretFerry extends TurretSetState {
-    public TurretFerry() {
-        super(TurretState.FERRY);
+public class HoodedShooterKB extends HoodedShooterSetState {
+    public HoodedShooterKB() {
+        super(SuperstructureState.KB);
     }
 }

@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
+package com.stuypulse.robot.subsystems.shooter;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Gains;
@@ -62,7 +62,7 @@ public class ShooterImpl extends Shooter {
     }
 
     @Override
-    public double getShooterRPM() {
+    public double getRPM() {
         return getLeaderRPM();
     }
 

@@ -3,12 +3,12 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.commands.hoodedshooter;
+package com.stuypulse.robot.commands.superstructure;
 
-import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
+import com.stuypulse.robot.subsystems.superstructure.SuperstructureState;
 
-public class HoodedShooterLeftCorner extends HoodedShooterSetState {
-    public HoodedShooterLeftCorner() {
-        super(HoodedShooterState.LEFT_CORNER);
+public class SuperstructureLeftCorner extends SuperstructureSetState {
+    public SuperstructureLeftCorner() {
+        super(SuperstructureState.LEFT_CORNER);
     }
 }

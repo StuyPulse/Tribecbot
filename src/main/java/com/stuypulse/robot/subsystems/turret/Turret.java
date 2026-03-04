@@ -46,9 +46,8 @@ public abstract class Turret extends SubsystemBase {
     public enum TurretState {
         IDLE,
         ZERO,
-        SHOOTING,
-        FERRYING,
-        HUB,
+        SHOOT,
+        FERRY,
         LEFT_CORNER,
         RIGHT_CORNER,
         TESTING;
@@ -58,9 +57,8 @@ public abstract class Turret extends SubsystemBase {
         return switch (getState()) {
             case IDLE -> getAngle(); 
             case ZERO -> Rotation2d.kZero;
-            case SHOOTING -> getScoringAngle();
-            case FERRYING -> getFerryAngle();
-            case HUB -> Settings.Turret.HUB;
+            case SHOOT -> getScoringAngle();
+            case FERRY -> getFerryAngle();
             case LEFT_CORNER -> Settings.Turret.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Turret.RIGHT_CORNER;
             case TESTING -> driverInputToAngle();

@@ -26,10 +26,10 @@ public class TurretDefaultCommand extends Command {
         boolean isInAllianceZone = swerve.getPose().getX() < Field.getHubPose().getX();
 
         if (isInAllianceZone) {
-            turret.setState(TurretState.SHOOTING);
+            turret.setState(TurretState.SHOOT);
         }
         else {
-            turret.setState(TurretState.FERRYING);
+            turret.setState(TurretState.FERRY);
         }
     }
 

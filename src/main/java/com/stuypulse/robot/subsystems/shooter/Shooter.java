@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.hoodedshooter.shooter;
+package com.stuypulse.robot.subsystems.shooter;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
@@ -71,11 +71,11 @@ public abstract class Shooter extends SubsystemBase {
     }
 
     public boolean atTolerance() {
-        double diff = Math.abs(getTargetRPM() - getShooterRPM());
+        double diff = Math.abs(getTargetRPM() - getRPM());
         return diff < Settings.HoodedShooter.SHOOTER_TOLERANCE_RPM;
     }
 
-    public abstract double getShooterRPM();
+    public abstract double getRPM();
 
     public abstract SysIdRoutine getShooterSysIdRoutine();
 
@@ -84,7 +84,7 @@ public abstract class Shooter extends SubsystemBase {
         SmartDashboard.putString("HoodedShooter/Shooter/State", state.name());
         SmartDashboard.putString("States/Shooter", state.name());
 
-        SmartDashboard.putNumber("HoodedShooter/Shooter/Current RPM", getShooterRPM());
+        SmartDashboard.putNumber("HoodedShooter/Shooter/Current RPM", getRPM());
         SmartDashboard.putNumber("HoodedShooter/Shooter/Target RPM", getTargetRPM());
 
         SmartDashboard.putNumber("InterpolationTesting/Shooter Interpolated Target Shoot RPM", HoodAngleCalculator.interpolateShooterRPM().get());

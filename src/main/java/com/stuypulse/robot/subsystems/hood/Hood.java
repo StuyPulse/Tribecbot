@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.hoodedshooter.hood;
+package com.stuypulse.robot.subsystems.hood;
 
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -66,16 +66,16 @@ public abstract class Hood extends SubsystemBase{
             case RIGHT_CORNER -> Settings.HoodedShooter.Hood.Angles.RIGHT_CORNER_ANGLE;
             case INTERPOLATION -> HoodAngleCalculator.interpolateHoodAngle().get();
             case ANALOG -> hoodAnalogToOutput();
-            case IDLE -> getHoodAngle();
+            case IDLE -> getAngle();
         };
     }
 
     public boolean atTolerance() {
-        double error = getHoodAngle().minus(getTargetAngle()).getRotations();
+        double error = getAngle().minus(getTargetAngle()).getRotations();
         return Math.abs(error) < Settings.HoodedShooter.HOOD_TOLERANCE.getRotations();
     }
 
-    public abstract Rotation2d getHoodAngle();
+    public abstract Rotation2d getAngle();
 
     public void hoodAnalogToInput(Gamepad gamepad) {
         double hoodMin = Settings.HoodedShooter.Hood.Angles.MIN_ANGLE.getDegrees();
@@ -115,7 +115,7 @@ public abstract class Hood extends SubsystemBase{
         SmartDashboard.putString("States/Hood", state.name());
 
         SmartDashboard.putNumber("HoodedShooter/Hood/Target Angle", getTargetAngle().getDegrees());
-        SmartDashboard.putNumber("HoodedShooter/Hood/Current Angle", getHoodAngle().getDegrees());
+        SmartDashboard.putNumber("HoodedShooter/Hood/Current Angle", getAngle().getDegrees());
 
         //SmartDashboard.putNumber("HoodedShooter/Hood/Analog Target Angle", hoodAnalogToOutput().getDegrees());
 
