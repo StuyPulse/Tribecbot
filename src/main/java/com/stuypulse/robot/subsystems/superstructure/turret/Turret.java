@@ -71,7 +71,7 @@ public abstract class Turret extends SubsystemBase {
     }
 
     public Rotation2d driverInputToAngle() {
-        SmartDashboard.putNumber("SuperStructure/Turret/Driver Input", driverInput.x);
+        SmartDashboard.putNumber("Superstructure/Turret/Driver Input", driverInput.x);
         return Rotation2d.fromDegrees(driverInput.x * 180); 
     }
  
@@ -111,10 +111,10 @@ public abstract class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("SuperStructure/Turret/State", state.name());
+        SmartDashboard.putString("Superstructure/Turret/State", state.name());
         SmartDashboard.putString("States/Turret", state.name());
-        SmartDashboard.putNumber("SuperStructure/Turret/Target Angle", getTargetAngle().getDegrees());
-        SmartDashboard.putBoolean("SuperStructure/Turret/At Target Angle?", atTargetAngle());
+        SmartDashboard.putNumber("Superstructure/Turret/Target Angle", getTargetAngle().getDegrees());
+        SmartDashboard.putBoolean("Superstructure/Turret/At Target Angle?", atTargetAngle());
 
         if (Settings.DEBUG_MODE) {
             if (EnabledSubsystems.TURRET.get()) {

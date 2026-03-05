@@ -455,7 +455,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         turret2d.setPose(Robot.isBlue() ? turretPose : Field.transformToOppositeAlliance(turretPose));
 
-        SmartDashboard.putNumber("SuperStructure/Turret/Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
+        SmartDashboard.putNumber("Superstructure/Turret/Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
         SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
 
         SmartDashboard.putNumber("Swerve/Pose/X", pose.getX());

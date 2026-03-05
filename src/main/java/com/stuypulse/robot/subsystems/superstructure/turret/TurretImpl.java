@@ -168,16 +168,16 @@ public class TurretImpl extends Turret {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("SuperStructure/Turret/Relative Encoder Position (Rot)", motor.getPosition().getValueAsDouble() * 360.0);
-            SmartDashboard.putNumber("SuperStructure/Turret/Closed Loop Error (deg)", motor.getClosedLoopError().getValueAsDouble() * 360.0);
+            SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (Rot)", motor.getPosition().getValueAsDouble() * 360.0);
+            SmartDashboard.putNumber("Superstructure/Turret/Closed Loop Error (deg)", motor.getClosedLoopError().getValueAsDouble() * 360.0);
 
-            SmartDashboard.putNumber("SuperStructure/Turret/Encoder18t Abs Position (Rot)", encoder18t.getAbsolutePosition().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Turret/Encoder17t Abs Position (Rot)", encoder17t.getAbsolutePosition().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Turret/Vector Space Position (Deg)", getVectorSpaceAngle().getDegrees());
+            SmartDashboard.putNumber("Superstructure/Turret/Encoder18t Abs Position (Rot)", encoder18t.getAbsolutePosition().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Encoder17t Abs Position (Rot)", encoder17t.getAbsolutePosition().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Vector Space Position (Deg)", getVectorSpaceAngle().getDegrees());
 
-            SmartDashboard.putNumber("SuperStructure/Turret/Voltage", motor.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Turret/Stator Current", motor.getStatorCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Turret/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Voltage", motor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Stator Current", motor.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
 
             SmartDashboard.putNumber("Current Draws/Turret (amps)", motor.getSupplyCurrent().getValueAsDouble());
         }

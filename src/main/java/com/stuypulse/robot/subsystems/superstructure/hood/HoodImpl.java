@@ -145,16 +145,16 @@ public class HoodImpl extends Hood {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("SuperStructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
+            SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
 
-            SmartDashboard.putNumber("SuperStructure/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("SuperStructure/Hood/Stator Current", hoodMotor.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Hood/Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Hood/Supply Current", hoodMotor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Hood/Stator Current", hoodMotor.getStatorCurrent().getValueAsDouble());
 
-            SmartDashboard.putNumber("SuperStructure/Hood/Closed Loop Error (deg)", hoodMotor.getClosedLoopError().getValueAsDouble() * 360.0);
-            SmartDashboard.putBoolean("SuperStructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
+            SmartDashboard.putNumber("Superstructure/Hood/Closed Loop Error (deg)", hoodMotor.getClosedLoopError().getValueAsDouble() * 360.0);
+            SmartDashboard.putBoolean("Superstructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
 
-            SmartDashboard.putNumber("SuperStructure/Hood/Raw Motor Encoder Value", hoodMotor.getPosition().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value", hoodMotor.getPosition().getValueAsDouble());
             
             SmartDashboard.putNumber("InterpolationTesting/Hood Applied Voltage", hoodMotor.getMotorVoltage().getValueAsDouble());
 

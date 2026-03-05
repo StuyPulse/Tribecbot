@@ -3,6 +3,7 @@ package com.stuypulse.robot.util.superstructure;
 import java.util.function.Supplier;
 
 import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Superstructure.AngleInterpolation;
 import com.stuypulse.robot.constants.Settings.Superstructure.FerryRPMInterpolation;
 import com.stuypulse.robot.constants.Settings.Superstructure.RPMInterpolation;
@@ -22,6 +23,13 @@ public class InterpolationCalculator {
     public static InterpolatingDoubleTreeMap distanceTOFInterpolator;
 
     public static InterpolatingDoubleTreeMap ferryingDistanceRPMInterpolator;
+
+    public record InterpolatedShotInfo(
+        Rotation2d targetHoodAngle,
+        double targetRPM,
+        double flightTimeSeconds) {
+    }
+
 
     static {
         distanceAngleInterpolator = new InterpolatingDoubleTreeMap();
@@ -44,15 +52,7 @@ public class InterpolationCalculator {
             ferryingDistanceRPMInterpolator.put(pair[0], pair[1]);
         }
     }
-
-
     
-    public record InterpolatedShotInfo(
-        Rotation2d targetHoodAngle,
-        double targetRPM,
-        double flightTimeSeconds) {
-    }
-
     public static InterpolatedShotInfo interpolateShotInfo(){
         CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
 
@@ -71,9 +71,9 @@ public class InterpolationCalculator {
         double flightTime = distanceTOFInterpolator.get(distanceMeters);
         
 
-        SmartDashboard.putNumber("SuperStructure/Interpolated Target Angle", targetAngle.getDegrees());
-        SmartDashboard.putNumber("SuperStructure/Interpolated RPM", targetRPM);
-        SmartDashboard.putNumber("SuperStructure/Interpolated TOF", flightTime);
+        SmartDashboard.putNumber("Superstructure/Interpolated Target Angle", targetAngle.getDegrees());
+        SmartDashboard.putNumber("Superstructure/Interpolated RPM", targetRPM);
+        SmartDashboard.putNumber("Superstructure/Interpolated TOF", flightTime);
 
         return new InterpolatedShotInfo(
             targetAngle, 
@@ -82,21 +82,19 @@ public class InterpolationCalculator {
         );
     }
 
-    public static Supplier<Double> interpolateFerryingRPM() {
-        return () -> {
-            CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+    public static double interpolateFerryingRPM() {
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
 
-            Translation2d currentPose = swerve.getTurretPose().getTranslation();
-            Translation2d cornerPose = Field.getFerryZonePose(currentPose).getTranslation();
+        Translation2d currentPose = swerve.getTurretPose().getTranslation();
+        Translation2d cornerPose = Field.getFerryZonePose(currentPose).getTranslation();
 
-            double distanceMeters = cornerPose.getDistance(currentPose);
+        double distanceMeters = cornerPose.getDistance(currentPose);
 
-            double targetRPM = ferryingDistanceRPMInterpolator.get(distanceMeters);
+        double targetRPM = ferryingDistanceRPMInterpolator.get(distanceMeters);
 
-            SmartDashboard.putNumber("SuperStructure/Interpolated Ferrying RPM", targetRPM);
-            
-            return targetRPM;
-        };
+        SmartDashboard.putNumber("Superstructure/Interpolated Ferrying RPM", targetRPM);
+        
+        return targetRPM;
     }
 
     

@@ -152,24 +152,24 @@ public class Superstructure extends SubsystemBase {
             SOTMCalculator.updateSOTMSolution();
         }
 
-        SmartDashboard.putString("SuperStructure/State", state.name());
+        SmartDashboard.putString("Superstructure/State", state.name());
         SmartDashboard.putString("States/SuperStructure", state.name());
 
-        SmartDashboard.putNumber("SuperStructure/Target RPM", getTargetRPM());
-        SmartDashboard.putNumber("SuperStructure/Target Yaw", getTargetYaw().getDegrees());
-        SmartDashboard.putNumber("SuperStructure/Target Pitch", getTargetPitch().getDegrees());
+        SmartDashboard.putNumber("Superstructure/Target RPM", getTargetRPM());
+        SmartDashboard.putNumber("Superstructure/Target Yaw", getTargetYaw().getDegrees());
+        SmartDashboard.putNumber("Superstructure/Target Pitch", getTargetPitch().getDegrees());
 
-        SmartDashboard.putNumber("SuperStructure/Current RPM", getShooterRPM());
-        SmartDashboard.putNumber("SuperStructure/Current Yaw", getTurretAngle().getDegrees());
-        SmartDashboard.putNumber("SuperStructure/Current Pitch", getHoodAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/Current RPM", getShooterRPM());
+        SmartDashboard.putNumber("Superstructure/Current Yaw", getTurretAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/Current Pitch", getHoodAngle().getDegrees());
 
-        SmartDashboard.putNumber("SuperStructure/Hood Angle Error (Deg)", getTargetPitch().getDegrees() - getHoodAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/Hood Angle Error (Deg)", getTargetPitch().getDegrees() - getHoodAngle().getDegrees());
 
-        SmartDashboard.putBoolean("SuperStructure/Shooter At Tolerance?", isShooterAtTolerance());
-        SmartDashboard.putBoolean("SuperStructure/Hood At Tolerance?", isHoodAtTolerance());
-        SmartDashboard.putBoolean("SuperStructure/Turret At Tolerant?", isHoodAtTolerance());
+        SmartDashboard.putBoolean("Superstructure/Shooter At Tolerance?", isShooterAtTolerance());
+        SmartDashboard.putBoolean("Superstructure/Hood At Tolerance?", isHoodAtTolerance());
+        SmartDashboard.putBoolean("Superstructure/Turret At Tolerant?", isHoodAtTolerance());
 
-        SmartDashboard.putBoolean("SuperStructure/Hood/Under Trench", isHoodUnderTrench());
+        SmartDashboard.putBoolean("Superstructure/Hood/Under Trench", isHoodUnderTrench());
         SmartDashboard.putNumber("InterpolationTesting/Hood Angle", getHoodAngle().getDegrees());
         SmartDashboard.putNumber("InterpolationTesting/Shooter RPM", getShooterRPM());
     }

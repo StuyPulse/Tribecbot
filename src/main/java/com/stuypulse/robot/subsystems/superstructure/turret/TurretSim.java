@@ -104,13 +104,13 @@ public class TurretSim extends Turret {
         goal = new TrapezoidProfile.State(getTargetAngle().getRadians(), 0.0);
         setpoint = profile.calculate(Settings.DT, setpoint, goal);
 
-        SmartDashboard.putNumber("SuperStructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
-        SmartDashboard.putNumber("SuperStructure/Turret/Constraints/Max Accel (deg per s per s)", Units.radiansToDegrees(maxAngularAccelRadiansPerSecondSquared));
+        SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
+        SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Accel (deg per s per s)", Units.radiansToDegrees(maxAngularAccelRadiansPerSecondSquared));
 
-        SmartDashboard.putNumber("SuperStructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
-        SmartDashboard.putNumber("SuperStructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
+        SmartDashboard.putNumber("Superstructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
+        SmartDashboard.putNumber("Superstructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
 
-        SmartDashboard.putNumber("SuperStructure/Turret/Current Angle (deg)", sim.getOutput(0));
+        SmartDashboard.putNumber("Superstructure/Turret/Current Angle (deg)", sim.getOutput(0));
 
     controller.setNextR(VecBuilder.fill(setpoint.position, 0.0));
         controller.correct(VecBuilder.fill(sim.getOutput(0), sim.getOutput(1)));

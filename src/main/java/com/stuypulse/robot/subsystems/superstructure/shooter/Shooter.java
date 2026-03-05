@@ -59,7 +59,7 @@ public abstract class Shooter extends SubsystemBase {
         return switch(state) {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
-            case FERRY -> InterpolationCalculator.interpolateFerryingRPM().get();
+            case FERRY -> InterpolationCalculator.interpolateFerryingRPM();
             case REVERSE -> Settings.Superstructure.Shooter.RPMs.REVERSE;
             case KB -> Settings.Superstructure.Shooter.RPMs.KB_RPM;
             case LEFT_CORNER -> Settings.Superstructure.Shooter.RPMs.LEFT_CORNER_RPM;
@@ -84,11 +84,11 @@ public abstract class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("SuperStructure/Shooter/State", state.name());
+        SmartDashboard.putString("Superstructure/Shooter/State", state.name());
         SmartDashboard.putString("States/Shooter", state.name());
 
-        SmartDashboard.putNumber("SuperStructure/Shooter/Current RPM", getRPM());
-        SmartDashboard.putNumber("SuperStructure/Shooter/Target RPM", getTargetRPM());
+        SmartDashboard.putNumber("Superstructure/Shooter/Current RPM", getRPM());
+        SmartDashboard.putNumber("Superstructure/Shooter/Target RPM", getTargetRPM());
 
         SmartDashboard.putNumber("InterpolationTesting/Shooter Interpolated Target Shoot RPM", InterpolationCalculator.interpolateShotInfo().targetRPM());
     }

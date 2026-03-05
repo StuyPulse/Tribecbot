@@ -31,13 +31,13 @@ public class Gains {
 
     public interface Superstructure {
         public interface Shooter {
-            SmartNumber kP = new SmartNumber("SuperStructure/Shooter/Gains/kP", 0.45);
-            SmartNumber kI = new SmartNumber("SuperStructure/Shooter/Gains/kI", 0.0);
-            SmartNumber kD = new SmartNumber("SuperStructure/Shooter/Gains/kD", 0.0);
+            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 0.45);
+            SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("SuperStructure/Shooter/Gains/kS", 0.0);
-            SmartNumber kV = new SmartNumber("SuperStructure/Shooter/Gains/kV", 0.123);
-            SmartNumber kA = new SmartNumber("SuperStructure/Shooter/Gains/kA", 0.0);
+            SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);
+            SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
 
             // double kP = 0.45;
             // double kI = 0.0;

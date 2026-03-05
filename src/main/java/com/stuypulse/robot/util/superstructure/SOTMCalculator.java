@@ -96,7 +96,7 @@ public class SOTMCalculator {
              
         for (int i = 0; i < maxIterations; i++) {
 
-            SmartDashboard.putNumber("SuperStructure/SOTM/iteration #", i);
+            SmartDashboard.putNumber("Superstructure/SOTM/iteration #", i);
 
             double dx = fieldRelativeSpeeds.vxMetersPerSecond * t_guess;
             double dy = fieldRelativeSpeeds.vyMetersPerSecond * t_guess;
@@ -195,10 +195,10 @@ public class SOTMCalculator {
         futureTurretPose2d.setPose((Robot.isBlue() ? futureTurretPose : Field.transformToOppositeAlliance(futureTurretPose)));
   
   
-        SmartDashboard.putNumber("SuperStructure/SOTM/calculated turret angle", sol.targetTurretAngle().getDegrees());
-        SmartDashboard.putNumber("SuperStructure/SOTM/calculated hood angle", sol.targetHoodAngle().getDegrees());
-        SmartDashboard.putNumber("SuperStructure/SOTM/calculated flight time", sol.flightTime());
-        SmartDashboard.putNumber("SuperStructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated turret angle", sol.targetTurretAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated hood angle", sol.targetHoodAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated flight time", sol.flightTime());
+        SmartDashboard.putNumber("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
     }
 
     public static Rotation2d calculateHoodAngleSOTM() {
@@ -209,7 +209,7 @@ public class SOTMCalculator {
         return sol.targetTurretAngle();
     }
     
-    public static Double calculateShooterRPMSOTM() {
+    public static double calculateShooterRPMSOTM() {
         return sol.targetShooterRPM();
     }
 }
