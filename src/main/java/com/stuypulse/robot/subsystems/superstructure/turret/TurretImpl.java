@@ -57,12 +57,12 @@ public class TurretImpl extends Turret {
             .withFFConstants(Gains.Superstructure.Turret.slot1.kS, Gains.Superstructure.Turret.slot1.kV, Gains.Superstructure.Turret.slot1.kA, 1)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 1)
             
-            .withSensorToMechanismRatio(Settings.Superstructure.Turret.Constants.GEAR_RATIO_MOTOR_TO_MECH)
+            .withSensorToMechanismRatio(Settings.Superstructure.Turret.GEAR_RATIO_MOTOR_TO_MECH)
 
             .withSoftLimits(
                 false, false,
-                Settings.Superstructure.Turret.Constants.SoftwareLimit.FORWARD_MAX_ROTATIONS,
-                Settings.Superstructure.Turret.Constants.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
+                Settings.Superstructure.Turret.SoftwareLimit.FORWARD_MAX_ROTATIONS,
+                Settings.Superstructure.Turret.SoftwareLimit.BACKWARDS_MAX_ROTATIONS);
 
         encoder17tConfig = new Motors.CANCoderConfig()
             .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
@@ -139,7 +139,7 @@ public class TurretImpl extends Turret {
         if (delta > 180.0) delta -= 360;
         else if (delta < -180) delta += 360;
 
-        if (Math.abs(current + delta) < Settings.Superstructure.Turret.Constants.RANGE) return delta;
+        if (Math.abs(current + delta) < Settings.Superstructure.Turret.RANGE) return delta;
 
         return delta < 0 ? delta + 360 : delta - 360;
     }

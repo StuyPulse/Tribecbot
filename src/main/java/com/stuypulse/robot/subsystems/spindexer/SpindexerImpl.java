@@ -47,7 +47,7 @@ public class SpindexerImpl extends Spindexer {
             .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
             .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
             
-            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
+            .withSensorToMechanismRatio(Settings.Spindexer.GEAR_RATIO);
 
         spindexerFollowerConfig = new Motors.TalonFXConfig()
             .withInvertedValue(InvertedValue.Clockwise_Positive)
@@ -60,7 +60,7 @@ public class SpindexerImpl extends Spindexer {
             .withFFConstants(Gains.Spindexer.kS, Gains.Spindexer.kV, Gains.Spindexer.kA, 0)
             .withPIDConstants(Gains.Spindexer.kP, Gains.Spindexer.kI, Gains.Spindexer.kD, 0)
             
-            .withSensorToMechanismRatio(Settings.Spindexer.Constants.GEAR_RATIO);
+            .withSensorToMechanismRatio(Settings.Spindexer.GEAR_RATIO);
 
         leadMotor = new TalonFX(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, Ports.CANIVORE);
         followerMotor = new TalonFX(Ports.Spindexer.SPINDEXER_FOLLOW_MOTOR, Ports.CANIVORE);
@@ -75,11 +75,11 @@ public class SpindexerImpl extends Spindexer {
     }
 
     private double getCurrentLeadMotorRPM() {
-        return leadMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.Constants.GEAR_RATIO;
+        return leadMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
 
     private double getCurrentFollowerMotorRPM() {
-        return followerMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.Constants.GEAR_RATIO;
+        return followerMotor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
 
     private boolean atTolerance() {

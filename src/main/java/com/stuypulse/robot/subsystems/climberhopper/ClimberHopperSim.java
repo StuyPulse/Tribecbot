@@ -28,13 +28,13 @@ public class ClimberHopperSim extends ClimberHopper {
 
         sim = new ElevatorSim(
             DCMotor.getKrakenX60(1),
-            Settings.ClimberHopper.Constants.GEAR_RATIO,
-            Settings.ClimberHopper.Constants.MASS_KG,
-            Settings.ClimberHopper.Constants.DRUM_RADIUS_METERS,
-            Settings.ClimberHopper.Constants.MIN_HEIGHT_METERS,
-            Settings.ClimberHopper.Constants.MAX_HEIGHT_METERS,
+            Settings.ClimberHopper.GEAR_RATIO,
+            Settings.ClimberHopper.MASS_KG,
+            Settings.ClimberHopper.DRUM_RADIUS_METERS,
+            Settings.ClimberHopper.MIN_HEIGHT_METERS,
+            Settings.ClimberHopper.MAX_HEIGHT_METERS,
             false,
-            Settings.ClimberHopper.Constants.MIN_HEIGHT_METERS
+            Settings.ClimberHopper.MIN_HEIGHT_METERS
         );
 
         voltageOverride = Optional.empty();

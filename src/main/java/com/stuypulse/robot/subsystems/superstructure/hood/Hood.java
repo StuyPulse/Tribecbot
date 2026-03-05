@@ -57,12 +57,12 @@ public abstract class Hood extends SubsystemBase{
 
     public Rotation2d getTargetAngle() {
         return switch(state) {
-            case STOW -> Settings.Superstructure.Hood.Angles.MIN_ANGLE;
+            case STOW -> Settings.Superstructure.Hood.Angles.MIN;
             case FERRY -> Rotation2d.fromDegrees(30);
-            case SHOOT -> Rotation2d.fromDegrees(Settings.Superstructure.Hood.Angles.SHOOT_ANGLE.get());
-            case KB -> Settings.Superstructure.Hood.Angles.KB_ANGLE;
-            case LEFT_CORNER -> Settings.Superstructure.Hood.Angles.LEFT_CORNER_ANGLE;
-            case RIGHT_CORNER -> Settings.Superstructure.Hood.Angles.RIGHT_CORNER_ANGLE;
+            case SHOOT -> Rotation2d.fromDegrees(Settings.Superstructure.Hood.Angles.SHOOT.get());
+            case KB -> Settings.Superstructure.Hood.Angles.KB;
+            case LEFT_CORNER -> Settings.Superstructure.Hood.Angles.LEFT_CORNER;
+            case RIGHT_CORNER -> Settings.Superstructure.Hood.Angles.RIGHT_CORNER;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetHoodAngle();
             case SOTM -> SOTMCalculator.calculateHoodAngleSOTM();
             case ANALOG -> hoodAnalogToOutput();
@@ -78,8 +78,8 @@ public abstract class Hood extends SubsystemBase{
     public abstract Rotation2d getAngle();
 
     public void hoodAnalogToInput(Gamepad gamepad) {
-        double hoodMin = Settings.Superstructure.Hood.Angles.MIN_ANGLE.getDegrees();
-        double hoodMax = Settings.Superstructure.Hood.Angles.MAX_ANGLE.getDegrees();
+        double hoodMin = Settings.Superstructure.Hood.Angles.MIN.getDegrees();
+        double hoodMax = Settings.Superstructure.Hood.Angles.MAX.getDegrees();
 
         this.driverInput = Rotation2d.fromDegrees(hoodMin + (gamepad.getLeftX() + 1.0) * ((hoodMax - hoodMin) / 2)); 
     }

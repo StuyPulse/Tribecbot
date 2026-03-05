@@ -60,17 +60,17 @@ public abstract class Shooter extends SubsystemBase {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
             case FERRY -> InterpolationCalculator.interpolateFerryingRPM();
-            case REVERSE -> Settings.Superstructure.Shooter.RPMs.REVERSE;
-            case KB -> Settings.Superstructure.Shooter.RPMs.KB_RPM;
-            case LEFT_CORNER -> Settings.Superstructure.Shooter.RPMs.LEFT_CORNER_RPM;
-            case RIGHT_CORNER -> Settings.Superstructure.Shooter.RPMs.RIGHT_CORNER_RPM;
+            case REVERSE -> Settings.Superstructure.Shooter.RPM.REVERSE;
+            case KB -> Settings.Superstructure.Shooter.RPM.KB;
+            case LEFT_CORNER -> Settings.Superstructure.Shooter.RPM.LEFT_CORNER;
+            case RIGHT_CORNER -> Settings.Superstructure.Shooter.RPM.RIGHT_CORNER;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetRPM();
             case SOTM -> SOTMCalculator.calculateShooterRPMSOTM();
         };
     }
 
     public double getShootRPM() {
-        return Settings.Superstructure.Shooter.RPMs.SHOOT_RPM.get(); // Adjustable RPM on Glass
+        return Settings.Superstructure.Shooter.RPM.SHOOT.get(); // Adjustable RPM on Glass
     }
 
     public boolean atTolerance() {

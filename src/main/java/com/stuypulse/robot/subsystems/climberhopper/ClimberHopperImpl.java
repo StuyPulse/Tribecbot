@@ -45,7 +45,7 @@ public class ClimberHopperImpl extends ClimberHopper {
             
             .withSoftLimits(
                 false, false,
-                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.Constants.NUM_ROTATIONS_TO_REACH_TOP,
+                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.NUM_ROTATIONS_TO_REACH_TOP,
                 Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
 
         motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
@@ -68,7 +68,7 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     @Override
     public double getCurrentHeight() {
-        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.Constants.POSITION_CONVERSION_FACTOR;
+        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.POSITION_CONVERSION_FACTOR;
     }
 
     private boolean isWithinTolerance(double toleranceMeters) {
@@ -81,7 +81,7 @@ public class ClimberHopperImpl extends ClimberHopper {
     }
     
     public void resetPostionUpper() {
-        motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.Constants.NUM_ROTATIONS_TO_REACH_TOP);
+        motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.NUM_ROTATIONS_TO_REACH_TOP);
     }
     
     @Override

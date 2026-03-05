@@ -37,24 +37,24 @@ public interface Settings {
     }
 
     public interface ClimberHopper {
-        public interface Constants {
-            public final double GEAR_RATIO = 45.0;
+        /* CONSTANTS */
+        public final double GEAR_RATIO = 45.0;
 
-            public final double MIN_HEIGHT_METERS = 0.0;
-            public final double MAX_HEIGHT_METERS = 1.0;
+        public final double MIN_HEIGHT_METERS = 0.0;
+        public final double MAX_HEIGHT_METERS = 1.0;
 
-            public final double MASS_KG = 1.0;
+        public final double MASS_KG = 1.0;
 
-            public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13.0);
-            public final double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
-            public final double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60.0;
+        public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13.0);
+        public final double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
+        public final double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60.0;
 
-            public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
-        }
+        public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
+        /* CONSTANTS */
 
-        public final double CLIMBER_UP_HEIGHT_METERS = Constants.MAX_HEIGHT_METERS;
+        public final double CLIMBER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
         public final double CLIMBER_DOWN_HEIGHT_METERS = 0.2;
-        public final double HOPPER_DOWN_HEIGHT_METERS = Constants.MIN_HEIGHT_METERS;
+        public final double HOPPER_DOWN_HEIGHT_METERS = MIN_HEIGHT_METERS;
         public final double HOPPER_UP_HEIGHT_METERS = 0.5;
 
         public final double STALL = 10.0;
@@ -117,9 +117,8 @@ public interface Settings {
 
         double RPM_TOLERANCE = 400.0;
 
-        public interface Constants {
-            double GEAR_RATIO = 8.0 / 1.0;
-        }
+        /* CONSTANTS */
+        double GEAR_RATIO = 8.0 / 1.0;
     }
     
     public interface Superstructure {
@@ -175,13 +174,13 @@ public interface Settings {
             public final double GEAR_RATIO = 1.0;
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
 
-            public interface RPMs {
-                public final SmartNumber SHOOT_RPM = new SmartNumber("Superstructure/Shoot State Target RPM", 3500.0);
-                public final SmartNumber FERRY_RPM = new SmartNumber("Superstructure/Ferry State Target RPM", 2000.0);
+            public interface RPM {
+                public final SmartNumber SHOOT = new SmartNumber("Superstructure/Shoot State Target RPM", 3500.0);
+                public final SmartNumber FERRY = new SmartNumber("Superstructure/Ferry State Target RPM", 2000.0);
                 public final double REVERSE = 0.0;
-                public final double KB_RPM = 0.0;
-                public final double LEFT_CORNER_RPM = 0.0;
-                public final double RIGHT_CORNER_RPM = 0.0;
+                public final double KB = 0.0;
+                public final double LEFT_CORNER = 0.0;
+                public final double RIGHT_CORNER = 0.0;
             }
         }
 
@@ -211,16 +210,16 @@ public interface Settings {
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
-                public final SmartNumber SHOOT_ANGLE = new SmartNumber("Superstructure/Shoot State Target Angle (deg)", 15.0);
-                public final SmartNumber FERRY_ANGLE = new SmartNumber("Superstructure/Ferry State Target Angle (deg)", 20.0);
+                public final SmartNumber SHOOT = new SmartNumber("Superstructure/Shoot State Target Angle (deg)", 15.0);
+                public final SmartNumber FERRY = new SmartNumber("Superstructure/Ferry State Target Angle (deg)", 20.0);
 
-                public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7.0);
-                public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
+                public final Rotation2d MIN = Rotation2d.fromDegrees(7.0);
+                public final Rotation2d MAX = Rotation2d.fromDegrees(40.0);
 
-                public final Rotation2d UNDER_TRENCH_ANGLE = Rotation2d.fromDegrees(11.0);
-                public final Rotation2d KB_ANGLE = Rotation2d.fromDegrees(12.0);
-                public final Rotation2d LEFT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
-                public final Rotation2d RIGHT_CORNER_ANGLE = Rotation2d.fromDegrees(10.0);
+                public final Rotation2d UNDER_TRENCH = Rotation2d.fromDegrees(11.0);
+                public final Rotation2d KB = Rotation2d.fromDegrees(12.0);
+                public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(10.0);
+                public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(10.0);
             }
         }
 
@@ -238,34 +237,33 @@ public interface Settings {
             Rotation2d MAX_THEORETICAL_ROTATION = Rotation2d.fromDegrees(612);
             Rotation2d MIN_THEORETICAL_ROTATION = Rotation2d.fromDegrees(-612);
             
-            public interface Constants {
-                public final double RANGE = 210.0;
-            
-                public final double SLOT_SWITCHING_THRESHOLD_ROT = .5;
-            
-                public final Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(-4.0), Units.inchesToMeters(8.0), Rotation2d.kZero);
-                public final double TURRET_HEIGHT = Units.inchesToMeters(0.0);
-            
-                public final double GEAR_RATIO_MOTOR_TO_MECH = (60.0 / 9.0) * (95.0 / 12.0); //1425.0 / 36.0;
-            
-                public interface BigGear {
-                    public final int TEETH = 95;
-                }
-            
-                public interface Encoder17t {
-                    public final int TEETH = 17;
-                    public final Rotation2d OFFSET = new Rotation2d();
-                }
-            
-                public interface Encoder18t {
-                    public final int TEETH = 18;
-                    public final Rotation2d OFFSET = new Rotation2d();
-                }
-            
-                public interface SoftwareLimit {
-                    public final double FORWARD_MAX_ROTATIONS = 210.0 / 360.0;
-                    public final double BACKWARDS_MAX_ROTATIONS = -210.0 / 360.0;
-                }
+            /* CONSTANTS */
+            public final double RANGE = 210.0;
+        
+            public final double SLOT_SWITCHING_THRESHOLD_ROT = .5;
+        
+            public final Transform2d TURRET_OFFSET = new Transform2d(Units.inchesToMeters(-4.0), Units.inchesToMeters(8.0), Rotation2d.kZero);
+            public final double TURRET_HEIGHT = Units.inchesToMeters(0.0);
+        
+            public final double GEAR_RATIO_MOTOR_TO_MECH = (60.0 / 9.0) * (95.0 / 12.0); //1425.0 / 36.0;
+        
+            public interface BigGear {
+                public final int TEETH = 95;
+            }
+        
+            public interface Encoder17t {
+                public final int TEETH = 17;
+                public final Rotation2d OFFSET = new Rotation2d();
+            }
+        
+            public interface Encoder18t {
+                public final int TEETH = 18;
+                public final Rotation2d OFFSET = new Rotation2d();
+            }
+        
+            public interface SoftwareLimit {
+                public final double FORWARD_MAX_ROTATIONS = 210.0 / 360.0;
+                public final double BACKWARDS_MAX_ROTATIONS = -210.0 / 360.0;
             }
         }
 

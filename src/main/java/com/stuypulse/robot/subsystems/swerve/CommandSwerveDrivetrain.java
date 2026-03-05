@@ -449,7 +449,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public void periodic() {
         Pose2d pose = getPose();
         turretPose = new Pose2d(
-            pose.getTranslation().plus(Settings.Superstructure.Turret.Constants.TURRET_OFFSET.getTranslation().rotateBy(pose.getRotation())),
+            pose.getTranslation().plus(Settings.Superstructure.Turret.TURRET_OFFSET.getTranslation().rotateBy(pose.getRotation())),
             pose.getRotation().plus(Turret.getInstance().getAngle())
         );
 

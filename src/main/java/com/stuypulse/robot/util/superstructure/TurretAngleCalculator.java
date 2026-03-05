@@ -27,7 +27,7 @@ public class TurretAngleCalculator {
 
     private static double[] generateEncoderValues(int teeth) {
         double[] values = new double[NUM_POINTS];
-        double gearRatio = 1.0 * Settings.Superstructure.Turret.Constants.BigGear.TEETH / teeth;
+        double gearRatio = 1.0 * Settings.Superstructure.Turret.BigGear.TEETH / teeth;
         int i = 0;
 
         for (double angle = MIN_ANGLE_DEGREES; angle < MAX_ANGLE_DEGREES; angle += RESOLUTION) {
