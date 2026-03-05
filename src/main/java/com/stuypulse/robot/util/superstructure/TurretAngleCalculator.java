@@ -3,11 +3,15 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.util.turret;
+package com.stuypulse.robot.util.superstructure;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class TurretAngleCalculator {
 
@@ -60,5 +64,37 @@ public class TurretAngleCalculator {
 
     public static int lowestDistanceIndex() {
         return leastDistanceIndex;
+    }
+
+    public static Rotation2d getPointAtTargetAngle(Translation2d targetTranslation, Translation2d turretTranslation) {
+
+        // Vector2D turret = new Vector2D(turretPose.getTranslation());
+        // Vector2D target = new Vector2D(targetPose.getTranslation());
+
+        // Vector2D turretToTarget = target.sub(turret);
+        // Vector2D zeroVector = new Vector2D(robotPose.getRotation().getCos(), robotPose.getRotation().getSin());
+
+        // // https://www.youtube.com/watch?v=_VuZZ9_58Wg
+        // double crossProduct = zeroVector.x * turretToTarget.y - zeroVector.y * turretToTarget.x;
+        // double dotProduct = zeroVector.dot(turretToTarget);
+
+        // Rotation2d targetAngle = (Robot.isReal() ?
+        //     Rotation2d.fromRadians(-Math.atan2(crossProduct, dotProduct)) :
+        //     Rotation2d.fromRadians(Math.atan2(crossProduct, dotProduct)));
+        
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+
+        Pose2d robotPose = swerve.getPose();
+
+        double yaw = Math.atan2(
+            targetTranslation.getY() - turretTranslation.getY(),
+            targetTranslation.getX() - turretTranslation.getX() 
+        );
+        
+        Rotation2d targetAngle = Robot.isReal() ? 
+            Rotation2d.fromRadians(-yaw).plus(robotPose.getRotation()) :
+            Rotation2d.fromRadians(yaw).minus(robotPose.getRotation());
+        
+        return targetAngle;
     }
 }

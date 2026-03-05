@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.util.turret;
+package com.stuypulse.robot.util.superstructure;
 
 
 import edu.wpi.first.math.geometry.Rotation2d;

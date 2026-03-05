@@ -10,15 +10,16 @@ import com.stuypulse.stuylib.math.Vector2D;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.commands.hood.HoodAnalog;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.superstructure.SOTMSolutionCalculator;
-import com.stuypulse.robot.util.turret.TurretVisualizer;
+import com.stuypulse.robot.util.superstructure.SOTMCalculator;
+import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
+import com.stuypulse.robot.util.superstructure.TurretVisualizer;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -61,7 +62,7 @@ public abstract class Turret extends SubsystemBase {
             case IDLE -> getAngle(); 
             case ZERO -> Rotation2d.kZero;
             case SHOOT -> getScoringAngle();
-            case SOTM -> SOTMSolutionCalculator.calculateTurretAngleSOTM().get();
+            case SOTM -> SOTMCalculator.calculateTurretAngleSOTM();
             case FERRY -> getFerryAngle();
             case LEFT_CORNER -> Settings.Superstructure.Turret.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Superstructure.Turret.RIGHT_CORNER;
@@ -70,7 +71,7 @@ public abstract class Turret extends SubsystemBase {
     }
 
     public Rotation2d driverInputToAngle() {
-        SmartDashboard.putNumber("Turret/Driver Input", driverInput.x);
+        SmartDashboard.putNumber("SuperStructure/Turret/Driver Input", driverInput.x);
         return Rotation2d.fromDegrees(driverInput.x * 180); 
     }
  
@@ -80,12 +81,17 @@ public abstract class Turret extends SubsystemBase {
     }
 
     public Rotation2d getScoringAngle() {
-        return getPointAtTargetAngle(Field.getHubPose());
+        Translation2d target = Field.getHubPose().getTranslation();
+        Translation2d turret = CommandSwerveDrivetrain.getInstance().getTurretPose().getTranslation();
+        return TurretAngleCalculator.getPointAtTargetAngle(target, turret);
     }
 
     public Rotation2d getFerryAngle() {
         Pose2d robot = CommandSwerveDrivetrain.getInstance().getPose();
-        return getPointAtTargetAngle(Field.getFerryZonePose(robot.getTranslation()));
+        Translation2d target = Field.getFerryZonePose(robot.getTranslation()).getTranslation();
+        Translation2d turret = CommandSwerveDrivetrain.getInstance().getTurretPose().getTranslation();
+
+        return TurretAngleCalculator.getPointAtTargetAngle(target, turret);
     }
 
     public abstract Rotation2d getAngle();
@@ -105,10 +111,10 @@ public abstract class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Turret/State", state.name());
+        SmartDashboard.putString("SuperStructure/Turret/State", state.name());
         SmartDashboard.putString("States/Turret", state.name());
-        SmartDashboard.putNumber("Turret/Target Angle", getTargetAngle().getDegrees());
-        SmartDashboard.putBoolean("Turret/At Target Angle?", atTargetAngle());
+        SmartDashboard.putNumber("SuperStructure/Turret/Target Angle", getTargetAngle().getDegrees());
+        SmartDashboard.putBoolean("SuperStructure/Turret/At Target Angle?", atTargetAngle());
 
         if (Settings.DEBUG_MODE) {
             if (EnabledSubsystems.TURRET.get()) {
@@ -118,26 +124,5 @@ public abstract class Turret extends SubsystemBase {
                 TurretVisualizer.getInstance().updateTurretAngle(new Rotation2d(), false);
             }
         }
-    }
-
-    public Rotation2d getPointAtTargetAngle(Pose2d targetPose) {
-        Pose2d robotPose = CommandSwerveDrivetrain.getInstance().getPose();
-        Pose2d turretPose = CommandSwerveDrivetrain.getInstance().getTurretPose();
-
-        Vector2D turret = new Vector2D(turretPose.getTranslation());
-        Vector2D target = new Vector2D(targetPose.getTranslation());
-
-        Vector2D turretToTarget = target.sub(turret);
-        Vector2D zeroVector = new Vector2D(robotPose.getRotation().getCos(), robotPose.getRotation().getSin());
-
-        // https://www.youtube.com/watch?v=_VuZZ9_58Wg
-        double crossProduct = zeroVector.x * turretToTarget.y - zeroVector.y * turretToTarget.x;
-        double dotProduct = zeroVector.dot(turretToTarget);
-
-        Rotation2d targetAngle = (Robot.isReal() ?
-            Rotation2d.fromRadians(-Math.atan2(crossProduct, dotProduct)) :
-            Rotation2d.fromRadians(Math.atan2(crossProduct, dotProduct)));
-
-        return targetAngle;
     }
 }

@@ -24,6 +24,6 @@ public class HoodAnalog extends Command{
     @Override
     public void execute() {
         hood.hoodAnalogToInput(driver);
-        //SmartDashboard.putNumber("Superstructure/Hood/Analog", hood.hoodAnalogToOutput().getDegrees());
+        //SmartDashboard.putNumber("SuperStructure/Hood/Analog", hood.hoodAnalogToOutput().getDegrees());
     }
 }

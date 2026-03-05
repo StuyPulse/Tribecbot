@@ -176,8 +176,8 @@ public interface Settings {
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2);
 
             public interface RPMs {
-                public final SmartNumber SHOOT_RPM = new SmartNumber("Superstructure/Shoot State Target RPM", 3500.0);
-                public final SmartNumber FERRY_RPM = new SmartNumber("Superstructure/Ferry State Target RPM", 2000.0);
+                public final SmartNumber SHOOT_RPM = new SmartNumber("SuperStructure/Shoot State Target RPM", 3500.0);
+                public final SmartNumber FERRY_RPM = new SmartNumber("SuperStructure/Ferry State Target RPM", 2000.0);
                 public final double REVERSE = 0.0;
                 public final double KB_RPM = 0.0;
                 public final double LEFT_CORNER_RPM = 0.0;
@@ -211,8 +211,8 @@ public interface Settings {
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
-                public final SmartNumber SHOOT_ANGLE = new SmartNumber("Superstructure/Shoot State Target Angle (deg)", 15.0);
-                public final SmartNumber FERRY_ANGLE = new SmartNumber("Superstructure/Ferry State Target Angle (deg)", 20.0);
+                public final SmartNumber SHOOT_ANGLE = new SmartNumber("SuperStructure/Shoot State Target Angle (deg)", 15.0);
+                public final SmartNumber FERRY_ANGLE = new SmartNumber("SuperStructure/Ferry State Target Angle (deg)", 20.0);
 
                 public final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(7.0);
                 public final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(40.0);
@@ -272,7 +272,7 @@ public interface Settings {
         public interface SOTM {
             public final int MAX_ITERATIONS = 5;
             public final double TIME_TOLERANCE = 0.01;
-            public final SmartNumber UPDATE_DELAY = new SmartNumber("Superstructure/SOTM/Update Delay", 0.00);
+            public final SmartNumber UPDATE_DELAY = new SmartNumber("SuperStructure/SOTM/Update Delay", 0.00);
         }
     }
     
@@ -308,7 +308,7 @@ public interface Settings {
         }
 
         public interface Constraints {
-            public final double MAX_VELOCITY_M_PER_S = 4.3;
+            public final double MAX_VELOCITY_M_PER_S = 1.0; // 4.3p
             public final double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
             public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(400.0);
             public final double MAX_ANGULAR_ACCEL_RAD_PER_S = Units.degreesToRadians(900.0);

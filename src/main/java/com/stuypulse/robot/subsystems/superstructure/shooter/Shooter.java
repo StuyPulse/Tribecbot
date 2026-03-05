@@ -7,7 +7,7 @@ package com.stuypulse.robot.subsystems.superstructure.shooter;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.util.superstructure.SOTMSolutionCalculator;
+import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,7 +65,7 @@ public abstract class Shooter extends SubsystemBase {
             case LEFT_CORNER -> Settings.Superstructure.Shooter.RPMs.LEFT_CORNER_RPM;
             case RIGHT_CORNER -> Settings.Superstructure.Shooter.RPMs.RIGHT_CORNER_RPM;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetRPM();
-            case SOTM -> SOTMSolutionCalculator.calculateShooterRPMSOTM().get();
+            case SOTM -> SOTMCalculator.calculateShooterRPMSOTM();
         };
     }
 
@@ -84,11 +84,11 @@ public abstract class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Superstructure/Shooter/State", state.name());
+        SmartDashboard.putString("SuperStructure/Shooter/State", state.name());
         SmartDashboard.putString("States/Shooter", state.name());
 
-        SmartDashboard.putNumber("Superstructure/Shooter/Current RPM", getRPM());
-        SmartDashboard.putNumber("Superstructure/Shooter/Target RPM", getTargetRPM());
+        SmartDashboard.putNumber("SuperStructure/Shooter/Current RPM", getRPM());
+        SmartDashboard.putNumber("SuperStructure/Shooter/Target RPM", getTargetRPM());
 
         SmartDashboard.putNumber("InterpolationTesting/Shooter Interpolated Target Shoot RPM", InterpolationCalculator.interpolateShotInfo().targetRPM());
     }

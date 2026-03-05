@@ -5,14 +5,11 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.hood;
 
-import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.superstructure.SOTMSolutionCalculator;
+import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -67,7 +64,7 @@ public abstract class Hood extends SubsystemBase{
             case LEFT_CORNER -> Settings.Superstructure.Hood.Angles.LEFT_CORNER_ANGLE;
             case RIGHT_CORNER -> Settings.Superstructure.Hood.Angles.RIGHT_CORNER_ANGLE;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetHoodAngle();
-            case SOTM -> SOTMSolutionCalculator.calculateHoodAngleSOTM().get();
+            case SOTM -> SOTMCalculator.calculateHoodAngleSOTM();
             case ANALOG -> hoodAnalogToOutput();
             case IDLE -> getAngle();
         };
@@ -90,22 +87,6 @@ public abstract class Hood extends SubsystemBase{
     public Rotation2d hoodAnalogToOutput() {
         return this.driverInput;
     }
-
-    public boolean isHoodUnderTrench() {
-        Pose2d pose = CommandSwerveDrivetrain.getInstance().getTurretPose();
-
-        boolean isBetweenRightTrenchesY = Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY();
-
-        boolean isBetweenLeftTrenchesY = Field.NearLeftTrench.rightEdge.getY() < pose.getY() && Field.NearLeftTrench.leftEdge.getY() > pose.getY();
-
-        boolean isCloseToAllianceSideTrenchX = Math.abs(pose.getX() - Field.NearRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
-
-        boolean isCloseToNeutralSideTrenchX = Math.abs(pose.getX() - Field.FarRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
-
-        boolean isUnderTrench = (isBetweenRightTrenchesY || isBetweenLeftTrenchesY) && (isCloseToAllianceSideTrenchX || isCloseToNeutralSideTrenchX);
-        
-        return isUnderTrench;
-    }
     
     public abstract boolean isStalling();
     public abstract SysIdRoutine getHoodSysIdRoutine();
@@ -114,14 +95,13 @@ public abstract class Hood extends SubsystemBase{
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Superstructure/Hood/State", state.name());
+        SmartDashboard.putString("SuperStructure/Hood/State", state.name());
         SmartDashboard.putString("States/Hood", state.name());
 
-        SmartDashboard.putNumber("Superstructure/Hood/Target Angle", getTargetAngle().getDegrees());
-        SmartDashboard.putNumber("Superstructure/Hood/Current Angle", getAngle().getDegrees());
+        SmartDashboard.putNumber("SuperStructure/Hood/Target Angle", getTargetAngle().getDegrees());
+        SmartDashboard.putNumber("SuperStructure/Hood/Current Angle", getAngle().getDegrees());
 
-        //SmartDashboard.putNumber("Superstructure/Hood/Analog Target Angle", hoodAnalogToOutput().getDegrees());
+        //SmartDashboard.putNumber("SuperStructure/Hood/Analog Target Angle", hoodAnalogToOutput().getDegrees());
 
-        SmartDashboard.putBoolean("Superstructure/Hood/Under Trench", isHoodUnderTrench());
     }
 }

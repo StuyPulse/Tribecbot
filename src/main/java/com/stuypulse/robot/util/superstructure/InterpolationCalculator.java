@@ -69,9 +69,9 @@ public class InterpolationCalculator {
         double flightTime = distanceTOFInterpolator.get(distanceMeters);
         
 
-        SmartDashboard.putNumber("HoodedShooter/Interpolated Target Angle", targetAngle.getDegrees());
-        SmartDashboard.putNumber("HoodedShooter/Interpolated RPM", targetRPM);
-        SmartDashboard.putNumber("HoodedShooter/Interpolated TOF", flightTime);
+        SmartDashboard.putNumber("SuperStructure/Interpolated Target Angle", targetAngle.getDegrees());
+        SmartDashboard.putNumber("SuperStructure/Interpolated RPM", targetRPM);
+        SmartDashboard.putNumber("SuperStructure/Interpolated TOF", flightTime);
 
         return new InterpolatedShotInfo(
             targetAngle, 
@@ -91,7 +91,7 @@ public class InterpolationCalculator {
 
             double targetRPM = ferryingDistanceRPMInterpolator.get(distanceMeters);
 
-            SmartDashboard.putNumber("HoodedShooter/Interpolated Ferrying RPM", targetRPM);
+            SmartDashboard.putNumber("SuperStructure/Interpolated Ferrying RPM", targetRPM);
             
             return targetRPM;
         };

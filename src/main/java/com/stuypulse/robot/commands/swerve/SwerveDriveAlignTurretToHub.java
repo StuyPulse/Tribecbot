@@ -11,6 +11,7 @@ import com.stuypulse.robot.constants.Gains.Swerve.Alignment;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.math.Angle;
@@ -67,6 +68,6 @@ public class SwerveDriveAlignTurretToHub extends Command {
                 Angle.fromRotation2d(robot.getRotation()))));
 
         SmartDashboard.putNumber("Swerve/Angle Error", angleController.getError().toDegrees());
-        SmartDashboard.putNumber("Swerve/Target Angle Hub Deg", turret.getPointAtTargetAngle(Field.getHubPose()).getDegrees());
+        SmartDashboard.putNumber("Swerve/Target Angle Hub Deg", TurretAngleCalculator.getPointAtTargetAngle(Field.getHubPose().getTranslation(), swerve.getTurretPose().getTranslation()).getDegrees());
     }
 }

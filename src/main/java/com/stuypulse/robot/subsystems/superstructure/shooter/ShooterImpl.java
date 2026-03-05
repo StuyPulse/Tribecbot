@@ -117,14 +117,14 @@ public class ShooterImpl extends Shooter {
         }
 
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putNumber("Superstructure/Shooter/Leader Current (amps)", shooterLeader.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Supply Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Stator Current", shooterFollower.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Leader Current (amps)", shooterLeader.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Follower Supply Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Follower Stator Current", shooterFollower.getStatorCurrent().getValueAsDouble());
 
-            SmartDashboard.putNumber("Superstructure/Shooter/Leader Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Voltage", shooterFollower.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Leader Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Follower Voltage", shooterFollower.getMotorVoltage().getValueAsDouble());
 
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower RPM", getFollowerRPM());
+            SmartDashboard.putNumber("SuperStructure/Shooter/Follower RPM", getFollowerRPM());
 
             SmartDashboard.putNumber("InterpolationTesting/Shooter Closed Loop Error", shooterLeader.getClosedLoopError().getValueAsDouble() * 60.0);
             SmartDashboard.putNumber("InterpolationTesting/Shooter Applied Voltage", shooterLeader.getMotorVoltage().getValueAsDouble());

@@ -5,15 +5,17 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure;
 
-import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood.HoodState;
 import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter;
 import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter.ShooterState;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret.TurretState;
-import com.stuypulse.robot.util.superstructure.SOTMSolutionCalculator;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -93,7 +95,19 @@ public class Superstructure extends SubsystemBase {
     }
 
     public boolean isHoodUnderTrench() {
-        return hood.isHoodUnderTrench();
+        Pose2d pose = CommandSwerveDrivetrain.getInstance().getTurretPose();
+
+        boolean isBetweenRightTrenchesY = Field.NearRightTrench.rightEdge.getY() < pose.getY() && Field.NearRightTrench.leftEdge.getY() > pose.getY();
+
+        boolean isBetweenLeftTrenchesY = Field.NearLeftTrench.rightEdge.getY() < pose.getY() && Field.NearLeftTrench.leftEdge.getY() > pose.getY();
+
+        boolean isCloseToAllianceSideTrenchX = Math.abs(pose.getX() - Field.NearRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
+
+        boolean isCloseToNeutralSideTrenchX = Math.abs(pose.getX() - Field.FarRightTrench.rightEdge.getX()) < Field.trenchHoodTolerance;
+
+        boolean isUnderTrench = (isBetweenRightTrenchesY || isBetweenLeftTrenchesY) && (isCloseToAllianceSideTrenchX || isCloseToNeutralSideTrenchX);
+        
+        return isUnderTrench;
     }
 
     public boolean isShooterAtTolerance() {
@@ -135,7 +149,7 @@ public class Superstructure extends SubsystemBase {
     @Override
     public void periodic() {
         if (getState() == SuperstructureState.SOTM) {
-            SOTMSolutionCalculator.updateSOTMSolution();
+            SOTMCalculator.updateSOTMSolution();
         }
 
         SmartDashboard.putString("SuperStructure/State", state.name());
@@ -155,6 +169,7 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putBoolean("SuperStructure/Hood At Tolerance?", isHoodAtTolerance());
         SmartDashboard.putBoolean("SuperStructure/Turret At Tolerant?", isHoodAtTolerance());
 
+        SmartDashboard.putBoolean("SuperStructure/Hood/Under Trench", isHoodUnderTrench());
         SmartDashboard.putNumber("InterpolationTesting/Hood Angle", getHoodAngle().getDegrees());
         SmartDashboard.putNumber("InterpolationTesting/Shooter RPM", getShooterRPM());
     }
