@@ -86,7 +86,7 @@ public interface Settings {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(0.0);
 
-        Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
+        Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(15.0); 
 
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(90.0);
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(0.0);
@@ -97,7 +97,7 @@ public interface Settings {
         Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
         Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
 
-        Rotation2d THRESHHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(60.0);
+        Rotation2d THRESHHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(10.0);
 
         Rotation2d ARBITRARY_VOLTAGE_THRESHOLD = Rotation2d.fromDegrees(15.0);
         
@@ -125,44 +125,91 @@ public interface Settings {
         public final double SHOOTER_TOLERANCE_RPM = 100.0;
         public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
 
-        public interface AngleInterpolation {
-            public final double[][] distanceAngleInterpolationValues = {
+public interface AngleInterpolation {
+            double[][] distanceAngleInterpolationValues = {
                 {1.22, Units.degreesToRadians(20)},             //AGAINST THE HUB
-                {1.30, Units.degreesToRadians(16.5)},
-                {1.43, Units.degreesToRadians(21.0)},
-                {2.15, Units.degreesToRadians(23.23)},
-                {2.864967, Units.degreesToRadians(25.460189)},
-                {3.65, Units.degreesToRadians(28.0)},
-                {4.43, Units.degreesToRadians(30.65)},
-                {5.32, Units.degreesToRadians(33.5)}
+                {1.43, Units.degreesToRadians(21.0)},           //meters, radians
+                {2.15, Units.degreesToRadians(23.23)},          //KEVIN-APPROVED
+                {2.864967, Units.degreesToRadians(27)},         //KEVIN-APPROVED
+                {3.65, Units.degreesToRadians(28.0)},           //KEVIN-APPROVED
+                {4.43, Units.degreesToRadians(33.5)},           //KEVIN-APPROVED
+                {5.66, Units.degreesToRadians(39)}              //KEVIN-APPROVED
             };
         }
-
-        public interface RPMInterpolation {
-            public final double[][] distanceRPMInterpolationValues = {
-                {1.22, 2850.0},                                         //AGAINST THE HUB
-                {1.30, 3000.0},
-                {1.43, 3000.0},
-                {2.15, 3050.0},
-                {2.864967, 3215.271125},
-                {3.65, 3400.0},
-                {4.43, 3650.0},
-                {5.32, 3950.0}
+        public interface RPMInterpolation{
+            double[][] distanceRPMInterpolationValues = {
+                {1.22, 2950.0},                                         //KEVIN-APPROVED
+                {1.43, 3000.0}, // meters, RPM 
+                {2.15, 3050.0},                                         //KEVIN-APPROVED
+                {2.864967, 3150},                                       //KEVIN-APPROVED
+                {3.65, 3400.0},                                         //KEVIN-APPROVED
+                {4.43, 3600.0},                                         //KEVIN-APPROVED
+                {5.66, 3900.0}                                          //KEVIN-APPROVED
             };
         }
 
         public interface TOFInterpolation{
-            public final double[][] distanceTOFInterpolationValues = { // COLLECT THESE
-                // {1.22, 0.0},
-                {1.30, 1.01}, // seconds
-                // {1.43, 0.0},
-                // {2.15, 0.0},
-                {2.864967, 1.1},
-                // {3.65, 0.0},
-                {4.43, 1.234},
-                {5.32, 1.267}
+            // double[][] distanceTOFInterpolationValues = {
+            //     {1.30, 0.0}, // seconds
+            //     {1.43, 0.0},
+            //     {2.15, 0.0},
+            //     {2.864967, 0.0},
+            //     {3.65, 0.0},
+            //     {4.43, 0.0},
+            //     {5.32, 0.0}
+            // };
+
+            double[][] distanceTOFInterpolationValues = {
+                {1.30, 1.0}, // seconds
+                {1.43, 1.0},
+                {2.15, 1.0},
+                {2.864967, 1.0},
+                {3.65, 1.0},
+                {4.43, 1.0},
+                {5.32, 1.0}
             };
         }
+
+        // public interface AngleInterpolation {
+        //     public final double[][] distanceAngleInterpolationValues = {
+        //         {1.22, Units.degreesToRadians(20)},             //AGAINST THE HUB
+        //         {1.43, Units.degreesToRadians(21.0)},
+        //         {2.15, Units.degreesToRadians(23.23)},
+
+        //         //NEW
+        //         {2.864967, Units.degreesToRadians(25.460189)},
+        //         {3.65, Units.degreesToRadians(28.0)},
+        //         {4.43, Units.degreesToRadians(30.65)},
+        //         {5.32, Units.degreesToRadians(33.5)}
+        //     };
+        // }
+
+        // public interface RPMInterpolation {
+        //     public final double[][] distanceRPMInterpolationValues = {
+        //         {1.22, 2850.0},                                         //AGAINST THE HUB
+        //         {1.43, 3000.0},
+        //         {2.15, 3050.0},
+
+        //         //NEW
+        //         {2.864967, 3215.271125},
+        //         {3.65, 3400.0},
+        //         {4.43, 3650.0},
+        //         {5.32, 3950.0}
+        //     };
+        // }
+
+        // public interface TOFInterpolation{
+        //     public final double[][] distanceTOFInterpolationValues = { // COLLECT THESE
+        //         // {1.22, 0.0},
+        //         {1.30, 1.01}, // seconds
+        //         // {1.43, 0.0},
+        //         // {2.15, 0.0},
+        //         {2.864967, 1.1},
+        //         // {3.65, 0.0},
+        //         {4.43, 1.234},
+        //         {5.32, 1.267}
+        //     };
+        // }
 
         public interface FerryRPMInterpolation {
             public final double[][] distanceRPMInterpolationValues = {
@@ -204,7 +251,8 @@ public interface Settings {
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(-0.043);
 
             public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(39.0);
-            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(8.0);
+            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(20.0);
+            public final Rotation2d MIN_FROM_HORIZON = Rotation2d.fromDegrees(7.0);
 
             public final double STALL_CURRENT_LIMIT = 20.0;
             public final double STALL_DEBOUNCE = 0.5;
@@ -213,7 +261,7 @@ public interface Settings {
                 public final SmartNumber SHOOT = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 15.0);
                 public final SmartNumber FERRY = new SmartNumber("InterpolationTesting/Ferry State Target Angle (deg)", 20.0);
 
-                public final Rotation2d MIN = Rotation2d.fromDegrees(7.0);
+                public final Rotation2d MIN = Rotation2d.fromDegrees(20.0);
                 public final Rotation2d MAX = Rotation2d.fromDegrees(40.0);
 
                 public final Rotation2d STOW = Rotation2d.fromDegrees(11.0);
@@ -228,7 +276,7 @@ public interface Settings {
             public final Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2.0);
             
-            public final Rotation2d HUB = Rotation2d.fromDegrees(0.0);
+            public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
             public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(0.0);
             public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(0.0);
             
@@ -238,7 +286,8 @@ public interface Settings {
             Rotation2d MIN_THEORETICAL_ROTATION = Rotation2d.fromDegrees(-612);
             
             /* CONSTANTS */
-            public final double RANGE = 210.0;
+            public final double RANGE_LEFT = -45;
+            public final double RANGE_RIGHT = 390;
         
             public final double SLOT_SWITCHING_THRESHOLD_ROT = .5;
         
@@ -253,12 +302,12 @@ public interface Settings {
         
             public interface Encoder17t {
                 public final int TEETH = 17;
-                public final Rotation2d OFFSET = new Rotation2d();
+                public final Rotation2d OFFSET = new Rotation2d(); //-0.86962890625
             }
         
             public interface Encoder18t {
                 public final int TEETH = 18;
-                public final Rotation2d OFFSET = new Rotation2d();
+                public final Rotation2d OFFSET = new Rotation2d(); //-0.700927734375
             }
         
             public interface SoftwareLimit {

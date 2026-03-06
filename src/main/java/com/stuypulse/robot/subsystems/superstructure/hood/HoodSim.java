@@ -66,7 +66,7 @@ public class HoodSim extends Hood {
     }
 
     @Override
-    public void zeroHoodEncoderAtLowerHardstop() {
+    public void zeroHoodEncoderAtUpperHardstop() {
         // No-op in sim
     }
 

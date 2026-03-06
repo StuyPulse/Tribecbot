@@ -17,8 +17,8 @@ public class SwerveWheelRadiusCharacterization extends Command {
      * - Allow the robot to rotate 3-5 times when running the routine
     */
 
-    private static final double HALF_TRACK_WIDTH_INCHES = 9.0 / 2;
-    private static final double HALF_TRACK_LENGTH_INCHES = 13.0 / 2;
+    private static final double HALF_TRACK_WIDTH_INCHES = 9.0 ;
+    private static final double HALF_TRACK_LENGTH_INCHES = 13.0 ;
 
     private static final double DRIVE_RADIUS_INCHES = Math.sqrt(HALF_TRACK_WIDTH_INCHES * HALF_TRACK_WIDTH_INCHES + HALF_TRACK_LENGTH_INCHES * HALF_TRACK_LENGTH_INCHES);
     private static final double DRIVE_RADIUS_METERS = Units.inchesToMeters(DRIVE_RADIUS_INCHES);

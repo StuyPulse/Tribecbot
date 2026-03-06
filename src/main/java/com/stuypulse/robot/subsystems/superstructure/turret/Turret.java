@@ -54,6 +54,7 @@ public abstract class Turret extends SubsystemBase {
         FERRY,
         LEFT_CORNER,
         RIGHT_CORNER,
+        KB,
         TESTING;
     }
 
@@ -66,6 +67,7 @@ public abstract class Turret extends SubsystemBase {
             case FERRY -> getFerryAngle();
             case LEFT_CORNER -> Settings.Superstructure.Turret.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Superstructure.Turret.RIGHT_CORNER;
+            case KB -> Settings.Superstructure.Turret.KB;
             case TESTING -> driverInputToAngle();
         };
     }

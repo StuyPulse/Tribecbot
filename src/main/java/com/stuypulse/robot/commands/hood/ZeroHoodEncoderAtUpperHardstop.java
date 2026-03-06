@@ -4,10 +4,10 @@ import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class ZeroHoodAtLowerHardstop extends InstantCommand{
+public class ZeroHoodEncoderAtUpperHardstop extends InstantCommand{
     private final Hood hood;
 
-    public ZeroHoodAtLowerHardstop() {
+    public ZeroHoodEncoderAtUpperHardstop() {
         hood = Hood.getInstance();
 
         addRequirements(hood);
@@ -15,7 +15,7 @@ public class ZeroHoodAtLowerHardstop extends InstantCommand{
 
     @Override
     public void initialize() {
-        hood.zeroHoodEncoderAtLowerHardstop();
+        hood.zeroHoodEncoderAtUpperHardstop();
         hood.seedHood();
     }
 }

@@ -71,6 +71,8 @@ public class SpindexerImpl extends Spindexer {
         controller = new VelocityVoltage(getTargetRPM()).withEnableFOC(true);
         follower = new Follower(Ports.Spindexer.SPINDEXER_LEAD_MOTOR, MotorAlignmentValue.Aligned);
 
+        followerMotor.setControl(follower);
+
         voltageOverride = Optional.empty();
     }
 
@@ -97,15 +99,12 @@ public class SpindexerImpl extends Spindexer {
             } else {
                 if (atTolerance() && getState() == SpindexerState.STOP) {
                     leadMotor.stopMotor();
-                    followerMotor.stopMotor();
                 } else {
                     leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
-                    followerMotor.setControl(follower);
                 }
             }
         } else {
             leadMotor.stopMotor();
-            followerMotor.stopMotor();
         }
 
         if (Settings.DEBUG_MODE) {

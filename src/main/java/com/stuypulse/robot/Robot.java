@@ -52,6 +52,9 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         // SmartDashboard.putNumber("Robot/Voltage of Robot", powerDistribution.getVoltage());
+        if (!Robot.isReal()) {
+            SmartDashboard.putData(CommandScheduler.getInstance());
+        }
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
 

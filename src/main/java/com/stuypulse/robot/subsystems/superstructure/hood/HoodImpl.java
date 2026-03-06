@@ -93,13 +93,13 @@ public class HoodImpl extends Hood {
     //TODO: Implementation as of 3/3 but not yet tested
     // Should ONLY be called at the lower hardstop!
     @Override
-    public void zeroHoodEncoderAtLowerHardstop() {        
+    public void zeroHoodEncoderAtUpperHardstop() {        
         hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);
 
         double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
 
         double positionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
-        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.Superstructure.Hood.Angles.MIN.getRotations());
+        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.Superstructure.Hood.Angles.MAX.getRotations());
 
         hoodEncoderConfig.withMagnetOffset(newOffset);
         
@@ -122,7 +122,7 @@ public class HoodImpl extends Hood {
     }
 
     private double getAbsoluteHoodAngleDeg() {
-        return Settings.Superstructure.Hood.Angles.MIN.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
+        return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
     }
 
     @Override 

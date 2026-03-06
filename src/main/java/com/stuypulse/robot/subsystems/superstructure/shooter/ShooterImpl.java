@@ -103,7 +103,6 @@ public class ShooterImpl extends Shooter {
         if (EnabledSubsystems.SHOOTER.get()) {
             if (getState() == ShooterState.STOP) {
                 shooterLeader.stopMotor();
-                shooterFollower.stopMotor();
             } else if (voltageOverride.isPresent()) {
                 shooterLeader.setVoltage(voltageOverride.get());
                 shooterFollower.setControl(follower);
@@ -113,7 +112,6 @@ public class ShooterImpl extends Shooter {
             }
         } else {
             shooterLeader.stopMotor();
-            shooterFollower.stopMotor();
         }
 
         if (Settings.DEBUG_MODE) {

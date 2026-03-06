@@ -71,7 +71,7 @@ public class IntakeImpl extends Intake {
 
         rollerConfig = new Motors.TalonFXConfig()
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
-            .withNeutralMode(NeutralModeValue.Coast)
+            .withNeutralMode(NeutralModeValue.Brake)
 
             .withSupplyCurrentLimitAmps(45)
             .withStatorCurrentLimitEnabled(false)
@@ -168,11 +168,10 @@ public class IntakeImpl extends Intake {
                 // ROLLERS
                 if (getPivotAngle().getDegrees() <= Settings.Intake.THRESHHOLD_TO_START_ROLLERS.getDegrees()) {
                     rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
-                    rollerFollower.setControl(follower);
                 } else {
                     rollerLeader.stopMotor();
-                    rollerFollower.stopMotor();
                 }
+                rollerFollower.setControl(follower);
             }
         } else {
             pivot.stopMotor();

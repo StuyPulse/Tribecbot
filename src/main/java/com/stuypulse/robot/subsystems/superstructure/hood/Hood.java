@@ -108,7 +108,7 @@ public abstract class Hood extends SubsystemBase{
 
     public abstract SysIdRoutine getHoodSysIdRoutine();
 
-    public abstract void zeroHoodEncoderAtLowerHardstop();
+    public abstract void zeroHoodEncoderAtUpperHardstop();
     public abstract void seedHood();
 
     @Override
