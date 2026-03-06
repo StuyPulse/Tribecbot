@@ -2,7 +2,6 @@ package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,18 +16,16 @@ public class SwerveWheelRadiusCharacterization extends Command {
      * - Allow the robot to rotate 3-5 times when running the routine
     */
 
-    private static final double HALF_TRACK_WIDTH_INCHES = 9.0 ;
-    private static final double HALF_TRACK_LENGTH_INCHES = 13.0 ;
+    private static final double HALF_TRACK_WIDTH_INCHES = 9.0;
+    private static final double HALF_TRACK_LENGTH_INCHES = 13.0;
 
     private static final double DRIVE_RADIUS_INCHES = Math.sqrt(HALF_TRACK_WIDTH_INCHES * HALF_TRACK_WIDTH_INCHES + HALF_TRACK_LENGTH_INCHES * HALF_TRACK_LENGTH_INCHES);
     private static final double DRIVE_RADIUS_METERS = Units.inchesToMeters(DRIVE_RADIUS_INCHES);
 
     private static final double TARGET_ROTATIONAL_RATE = 1.5; // rad/s about center of rotation
     private static final double RAMP_TIME = 0.75; // seconds to reach target
-    // private static final double RAMP_RATE = 0.05;
 
     private final Timer timer = new Timer();
-    // private final SlewRateLimiter limiter = new SlewRateLimiter(RAMP_RATE);
 
     private final CommandSwerveDrivetrain swerve;
 
@@ -61,9 +58,6 @@ public class SwerveWheelRadiusCharacterization extends Command {
         } else {
             commandedRate = TARGET_ROTATIONAL_RATE; // Steady state omega
         }
-
-        // Go back to WPILib SlewRateLimiter if manual ramping doesn't work well
-        // double speed = limiter.calculate(TARGET_ROTATIONAL_RATE);
 
         swerve.setControl(swerve.getFieldCentricSwerveRequest()
             .withVelocityX(0.0)
