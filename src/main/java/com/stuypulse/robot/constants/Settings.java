@@ -86,7 +86,7 @@ public interface Settings {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(0.0);
 
-        Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(3.0); 
+        Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(15.0); 
 
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(90.0);
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(0.0);
@@ -287,6 +287,8 @@ public interface AngleInterpolation {
             
             /* CONSTANTS */
             public final double RANGE = 210.0;
+            public final double RANGE_LOWER = -45;
+            public final double RANGE_UPPER = 390;
         
             public final double SLOT_SWITCHING_THRESHOLD_ROT = .5;
         

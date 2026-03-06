@@ -146,7 +146,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Scoring Routine
         driver.getTopButton()
-                .whileTrue(new SuperstructureInterpolation().onlyIf(() -> !superstructure.isHoodUnderTrench())
+                .whileTrue(new SuperstructureInterpolation()//.onlyIf(() -> !superstructure.isHoodUnderTrench())
                     // .alongWith(new SwerveDriveAlignTurretToHub())
                     // .alongWith(new TurretShoot())
                         .andThen(new WaitUntilCommand(superstructure::atTolerance))
@@ -159,7 +159,7 @@ public class RobotContainer {
 
                                 // Scoring Routine
         driver.getBottomButton()
-                .whileTrue(new SuperstructureShoot().onlyIf(() -> !superstructure.isHoodUnderTrench())
+                .whileTrue(new SuperstructureShoot())//.onlyIf(() -> !superstructure.isHoodUnderTrench()))
                     // .alongWith(new SwerveDriveAlignTurretToHub())
                     // .alongWith(new TurretShoot())
                 .whileTrue(new SuperstructureShoot().onlyIf(() -> !swerve.isUnderTrench())
