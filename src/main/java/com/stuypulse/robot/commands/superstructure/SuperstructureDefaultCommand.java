@@ -28,25 +28,12 @@ public class SuperstructureDefaultCommand extends Command {
 
     @Override
     public void execute() {
+        if (swerve.isUnderTrench() && trench == false) {
+            CommandScheduler.getInstance().schedule(new SuperstructureStow());
+            trench = true;
+        } else {
+            trench = false;
+        }
 
-        // if (swerve.isUnderTrench()) {
-        //     new SuperstructureStow();
-        //     new SpindexerStop().alongWith(new HandoffStop());
-        // } 
-
-        // if (swerve.isUnderTrench() && trench == false) {
-        //     CommandScheduler.getInstance().schedule(new SuperstructureStow());
-        //     CommandScheduler.getInstance().schedule(new SpindexerStop().alongWith(new HandoffStop()));
-        //     trench = true;
-        // } else {
-        //     trench = false;
-        // }
-        
-        // TODO: WHAT REASON FOR THIS?
-        // if (swerve.isInOpponentZone()) {
-        //     new SpindexerStop().alongWith(new HandoffStop())
-        //         .andThen(new WaitUntilCommand(superstructure::atTolerance))
-        //         .andThen(new HandoffRun()).alongWith(new SpindexerRun());
-        // }
     }
 }

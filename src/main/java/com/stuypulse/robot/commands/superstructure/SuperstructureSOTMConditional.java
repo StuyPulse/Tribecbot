@@ -9,7 +9,7 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 
-public class SuperstructureSOTMConditional extends ConditionalCommand{
+public class SuperstructureSOTMConditional extends ConditionalCommand {
     public SuperstructureSOTMConditional() {
         super(new SuperstructureStow(), new SuperstructureSOTM(), () -> (Superstructure.getInstance().getState() == SuperstructureState.SOTM));
     }
