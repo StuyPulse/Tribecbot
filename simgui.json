@@ -21,16 +21,12 @@
       "/SmartDashboard/Robot/Zero Pivot Encoder at Lower Limit (Deployed)": "Command",
       "/SmartDashboard/Robot/Zero Pivot Encoder at Upper Limit (Stowed)": "Command",
       "/SmartDashboard/Robot/Zero Turret Encoders": "Command",
+      "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/Visualizers/ClimberHopper": "Mechanism2d",
       "/SmartDashboard/Visualizers/Hood": "Mechanism2d",
       "/SmartDashboard/Visualizers/Turret": "Mechanism2d"
     },
     "windows": {
-      "/SmartDashboard/Autonomous": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "bottom": 1914,
         "height": 8.069275856018066,
@@ -63,9 +59,6 @@
     },
     "transitory": {
       "SmartDashboard": {
-        "FieldPositions": {
-          "open": true
-        },
         "HoodedShooter": {
           "Hood": {
             "open": true

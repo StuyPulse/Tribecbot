@@ -139,7 +139,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        superstructure.setDefaultCommand(new SuperstructureDefaultCommand());
+        // superstructure.setDefaultCommand(new SuperstructureDefaultCommand());
         // climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
         // turret.setDefaultCommand(new TurretDefaultCommand());
     }
@@ -164,16 +164,16 @@ public class RobotContainer {
 
         // Scoring Routine
         driver.getBottomButton()
-                .whileTrue(new SuperstructureShoot())//.onlyIf(() -> !superstructure.isHoodUnderTrench()))
+                //.whileTrue(new SuperstructureShoot())//.onlyIf(() -> !superstructure.isHoodUnderTrench()))
                     // .alongWith(new SwerveDriveAlignTurretToHub())
                     // .alongWith(new TurretShoot())
                 .whileTrue(new SuperstructureShoot().onlyIf(() -> !swerve.isUnderTrench())
                 .alongWith(new SwerveDriveAlignTurretToHub())
                         // .alongWith(new TurretShoot())
-                        .andThen(new WaitUntilCommand(superstructure::atTolerance))
+                        //.andThen(new WaitUntilCommand(superstructure::atTolerance))
                         .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
-                                .alongWith(new WaitUntilCommand(handoff::atTolerance))
-                                .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
+                                //.alongWith(new WaitUntilCommand(handoff::atTolerance))
+                        .andThen(new SpindexerConditionalCommand())))//.onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
                 .onFalse(new SpindexerStop()
                         .alongWith(new SuperstructureStow())
                         .alongWith(new HandoffStop()));

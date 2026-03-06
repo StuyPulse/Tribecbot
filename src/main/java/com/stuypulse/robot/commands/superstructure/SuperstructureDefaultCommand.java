@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 public class SuperstructureDefaultCommand extends Command {
     private final CommandSwerveDrivetrain swerve;
     private final Superstructure superstructure;
-    // private boolean trench = false;
+    private boolean trench = false;
 
     public SuperstructureDefaultCommand() {
         swerve = CommandSwerveDrivetrain.getInstance();
@@ -29,12 +29,11 @@ public class SuperstructureDefaultCommand extends Command {
     @Override
     public void execute() {
 
-        if (swerve.isUnderTrench()) {
-            new SuperstructureStow();
-            new SpindexerStop().alongWith(new HandoffStop());
-        } 
+        // if (swerve.isUnderTrench()) {
+        //     new SuperstructureStow();
+        //     new SpindexerStop().alongWith(new HandoffStop());
+        // } 
 
-        // SIMON's WORK
         // if (swerve.isUnderTrench() && trench == false) {
         //     CommandScheduler.getInstance().schedule(new SuperstructureStow());
         //     CommandScheduler.getInstance().schedule(new SpindexerStop().alongWith(new HandoffStop()));
