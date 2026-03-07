@@ -22,7 +22,7 @@ import java.util.Optional;
 
 
 public class ClimberImpl extends Climber {
-    private final Motors.TalonFXConfig climberHopperConfig;
+    private final Motors.TalonFXConfig climberConfig;
 
     private final TalonFX motor;
     private final VoltageOut controller;
@@ -35,25 +35,25 @@ public class ClimberImpl extends Climber {
     public ClimberImpl() {
         super();
 
-        climberHopperConfig = new Motors.TalonFXConfig()
+        climberConfig = new Motors.TalonFXConfig()
             .withInvertedValue(InvertedValue.CounterClockwise_Positive)
             .withNeutralMode(NeutralModeValue.Brake)
 
             .withSupplyCurrentLimitAmps(50.0)
             .withStatorCurrentLimitEnabled(false)
-            .withRampRate(Settings.ClimberHopper.RAMP_RATE)
-            .withSensorToMechanismRatio(Settings.ClimberHopper.GEAR_RATIO)
+            .withRampRate(Settings.Climber.RAMP_RATE)
+            .withSensorToMechanismRatio(Settings.Climber.GEAR_RATIO)
             .withSoftLimits(
                 true, true,
-                Settings.ClimberHopper.MIN_ROTATIONS,
-                Settings.ClimberHopper.MAX_ROTATIONS);
+                Settings.Climber.MIN_ROTATIONS,
+                Settings.Climber.MAX_ROTATIONS);
 
-        motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
-        climberHopperConfig.configure(motor);
+        motor = new TalonFX(Ports.Climber.CLIMBER_HOPPER, Ports.CANIVORE);
+        climberConfig.configure(motor);
 
-        motor.setPosition(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS);
-        stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.ClimberHopper.STALL)
-            .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
+        motor.setPosition(Settings.Climber.CLIMBER_DOWN_ROTATIONS);
+        stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.Climber.STALL)
+            .filtered(new BDebounce.Both(Settings.Climber.DEBOUNCE));
 
         controller = new VoltageOut(0)
             .withEnableFOC(true);
@@ -77,11 +77,11 @@ public class ClimberImpl extends Climber {
 
     @Override
     public boolean atTargetHeight() {
-        return isWithinTolerance(Settings.ClimberHopper.TOLERANCE_ROTATIONS);
+        return isWithinTolerance(Settings.Climber.TOLERANCE_ROTATIONS);
     }
     
     public void resetPostionUpper() {
-        motor.setPosition(Settings.ClimberHopper.MAX_ROTATIONS);
+        motor.setPosition(Settings.Climber.MAX_ROTATIONS);
     }
     
     @Override
@@ -95,8 +95,8 @@ public class ClimberImpl extends Climber {
             if (voltageOverride.isPresent()) {
                 voltage = voltageOverride.get();
             } else if (!atTargetHeight()) {
-                    if (state == ClimberState.CLIMBER_DOWN && currentPosition > targetPosition) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
-                    else if (state == ClimberState.CLIMBER_UP && currentPosition < targetPosition) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+                    if (state == ClimberState.CLIMBER_DOWN && currentPosition > targetPosition) voltage = -Settings.Climber.MOTOR_VOLTAGE;
+                    else if (state == ClimberState.CLIMBER_UP && currentPosition < targetPosition) voltage = Settings.Climber.MOTOR_VOLTAGE;
                     else voltage = 0;
             } else {
                     voltage = 0;
@@ -108,15 +108,15 @@ public class ClimberImpl extends Climber {
         }
         
         if (Settings.DEBUG_MODE) {
-            SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
+            SmartDashboard.putBoolean("Climber/Stalling", getStalling());
             
             SmartDashboard.putBoolean("Climber/At Target Height?", atTargetHeight());
-            SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
-            SmartDashboard.putNumber("ClimberHopper/Applied Voltage", motor.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("ClimberHopper/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("ClimberHopper/Stator Current", motor.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Climber/Voltage", voltage);
+            SmartDashboard.putNumber("Climber/Applied Voltage", motor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Climber/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Climber/Stator Current", motor.getStatorCurrent().getValueAsDouble());
             
-            SmartDashboard.putNumber("Current Draws/ClimberHopper (amps)", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Current Draws/Climber (amps)", motor.getSupplyCurrent().getValueAsDouble());
         }
     }
     

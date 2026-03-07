@@ -1,4 +1,5 @@
-package com.stuypulse.robot.commands.climberhopper;
+
+package com.stuypulse.robot.commands.climber;
 
 import java.util.Optional;
 
@@ -7,16 +8,16 @@ import com.stuypulse.robot.subsystems.climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ClimberOverrideUp extends Command {
-   private final Climber climber;
+public class ClimberOverrideDown extends Command {
+    private final Climber climber;
     
-    public ClimberOverrideUp() {
+    public ClimberOverrideDown() {
         climber = Climber.getInstance();
     }
 
     @Override
     public void initialize() {
-        climber.setVoltageOverride(Optional.of(Settings.ClimberHopper.MOTOR_VOLTAGE));
+        climber.setVoltageOverride(Optional.of(-Settings.Climber.MOTOR_VOLTAGE));
     }
 
     @Override

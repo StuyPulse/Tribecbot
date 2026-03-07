@@ -1,4 +1,4 @@
-package com.stuypulse.robot.commands.climberhopper;
+package com.stuypulse.robot.commands.climber;
 
 import java.util.Optional;
 

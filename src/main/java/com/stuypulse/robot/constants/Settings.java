@@ -36,7 +36,7 @@ public interface Settings {
         
     }
 
-    public interface ClimberHopper {
+    public interface Climber {
         /* CONSTANTS */
         public final double GEAR_RATIO = 45.0;
 
@@ -53,7 +53,8 @@ public interface Settings {
         /* CONSTANTS */
 
         public final double CLIMBER_UP_ROTATIONS = MAX_ROTATIONS - 0.1; // TODO: FIND
-        public final double CLIMBER_DOWN_ROTATIONS = 0.0;
+        public final double CLIMBER_DOWN_ROTATIONS = MIN_ROTATIONS;
+        public final double CLIMBER_CLIMB_ROTATIONS = MIN_ROTATIONS;
 
         public final double STALL = 10.0;
 

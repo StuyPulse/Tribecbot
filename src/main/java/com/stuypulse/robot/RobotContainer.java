@@ -14,14 +14,13 @@ import com.stuypulse.robot.commands.auton.regular.BottomTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
 import com.stuypulse.robot.commands.auton.regular.EightFuel;
 import com.stuypulse.robot.commands.auton.regular.TopTwoCycle;
-import com.stuypulse.robot.commands.climberhopper.ClimberDown;
-// import com.stuypulse.robot.commands.auton.test.BoxTest;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideDown;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
-import com.stuypulse.robot.commands.climberhopper.ClimberStop;
+import com.stuypulse.robot.commands.climber.ClimberDown;
+import com.stuypulse.robot.commands.climber.ClimberOverrideDown;
+import com.stuypulse.robot.commands.climber.ClimberOverrideStop;
+import com.stuypulse.robot.commands.climber.ClimberOverrideUp;
+import com.stuypulse.robot.commands.climber.ClimberStop;
+import com.stuypulse.robot.commands.climber.ClimberUp;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
-import com.stuypulse.robot.commands.climberhopper.ClimberUp;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.ZeroHoodEncoderAtUpperHardstop;
@@ -97,7 +96,7 @@ public class RobotContainer {
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
 
     // Subsystem
-    // private final ClimberHopper climberHopper = ClimberHopper.getInstance();
+    // private final Climber climber = Climber.getInstance();
     private final Handoff handoff = Handoff.getInstance();
     private final Intake intake = Intake.getInstance();
     private final Spindexer spindexer = Spindexer.getInstance();
@@ -145,7 +144,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
         superstructure.setDefaultCommand(new SuperstructureDefaultCommand());
-        // climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
+        // climber.setDefaultCommand(new ClimberDefaultCommand());
         // turret.setDefaultCommand(new TurretDefaultCommand());
     }
 

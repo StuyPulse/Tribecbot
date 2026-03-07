@@ -11,14 +11,14 @@ import com.pathplanner.lib.config.PIDConstants;
 
 public class Gains {
 
-    public interface ClimberHopper {
-        SmartNumber kP = new SmartNumber("ClimberHopper/Gains/kP", 1.0);
-        SmartNumber kI = new SmartNumber("ClimberHopper/Gains/kI", 0.0);
-        SmartNumber kD = new SmartNumber("ClimberHopper/Gains/kD", 0.20);
+    public interface Climber {
+        SmartNumber kP = new SmartNumber("Climber/Gains/kP", 1.0);
+        SmartNumber kI = new SmartNumber("Climber/Gains/kI", 0.0);
+        SmartNumber kD = new SmartNumber("Climber/Gains/kD", 0.20);
 
-        SmartNumber kS = new SmartNumber("ClimberHopper/Gains/kS", 0.0);
-        SmartNumber kV = new SmartNumber("ClimberHopper/Gains/kV", 0.123);
-        SmartNumber kA = new SmartNumber("ClimberHopper/Gains/kA", 0.0);
+        SmartNumber kS = new SmartNumber("Climber/Gains/kS", 0.0);
+        SmartNumber kV = new SmartNumber("Climber/Gains/kV", 0.123);
+        SmartNumber kA = new SmartNumber("Climber/Gains/kA", 0.0);
 
         // double kP = 1.0;
         // double kI = 0.0;

@@ -25,23 +25,23 @@ public class ClimberSim extends Climber {
 
     public ClimberSim() {
         visualizer = ClimberVisualizer.getInstance();
-        positionConversionFactor = (Settings.ClimberHopper.MAX_ROTATIONS - Settings.ClimberHopper.MIN_ROTATIONS)
-                * (Settings.ClimberHopper.DRUM_RADIUS_METERS * Math.PI * 2);
+        positionConversionFactor = (Settings.Climber.MAX_ROTATIONS - Settings.Climber.MIN_ROTATIONS)
+                * (Settings.Climber.DRUM_RADIUS_METERS * Math.PI * 2);
         sim = new ElevatorSim(
                 DCMotor.getKrakenX60(1),
-                Settings.ClimberHopper.GEAR_RATIO,
-                Settings.ClimberHopper.MASS_KG,
-                Settings.ClimberHopper.DRUM_RADIUS_METERS,
-                Settings.ClimberHopper.MIN_ROTATIONS,
-                Settings.ClimberHopper.MAX_HEIGHT_METERS,
+                Settings.Climber.GEAR_RATIO,
+                Settings.Climber.MASS_KG,
+                Settings.Climber.DRUM_RADIUS_METERS,
+                Settings.Climber.MIN_ROTATIONS,
+                Settings.Climber.MAX_HEIGHT_METERS,
                 false,
-                Settings.ClimberHopper.MIN_ROTATIONS);
+                Settings.Climber.MIN_ROTATIONS);
 
         voltageOverride = Optional.empty();
     }
 
     public boolean getStalling() {
-        return sim.getCurrentDrawAmps() > Settings.ClimberHopper.STALL;
+        return sim.getCurrentDrawAmps() > Settings.Climber.STALL;
     }
 
     public double getCurrentHeight() {
@@ -59,7 +59,7 @@ public class ClimberSim extends Climber {
 
     @Override
     public boolean atTargetHeight() {
-        return isWithinTolerance(Settings.ClimberHopper.TOLERANCE_ROTATIONS * positionConversionFactor);
+        return isWithinTolerance(Settings.Climber.TOLERANCE_ROTATIONS * positionConversionFactor);
     }
 
     @Override
@@ -83,9 +83,9 @@ public class ClimberSim extends Climber {
             voltage = voltageOverride.get();
         } else if (!atTargetHeight()) {
             if (state == ClimberState.CLIMBER_DOWN && currentHeight > TargetHeight)
-                voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
+                voltage = -Settings.Climber.MOTOR_VOLTAGE;
             else if (state == ClimberState.CLIMBER_UP && currentHeight < TargetHeight)
-                voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+                voltage = Settings.Climber.MOTOR_VOLTAGE;
             else
                 voltage = 0;
         } else {

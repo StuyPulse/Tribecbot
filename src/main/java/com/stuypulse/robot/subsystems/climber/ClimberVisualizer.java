@@ -64,6 +64,6 @@ public class ClimberVisualizer {
 
         hopper.setPosition(0.8, height + 0.5);
 
-        SmartDashboard.putData("Visualizers/ClimberHopper", canvas);
+        SmartDashboard.putData("Visualizers/Climber", canvas);
     }
 }

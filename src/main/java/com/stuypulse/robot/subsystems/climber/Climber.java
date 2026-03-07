@@ -29,8 +29,9 @@ public abstract class Climber extends SubsystemBase {
     }
 
     public enum ClimberState {
-        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_ROTATIONS),
-        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
+        CLIMBER_UP(Settings.Climber.CLIMBER_UP_ROTATIONS),
+        CLIMBER_DOWN(Settings.Climber.CLIMBER_DOWN_ROTATIONS),
+        CLIMBER_CLIMB(Settings.Climber.CLIMBER_CLIMB_ROTATIONS),
         CLIMBER_STOP(0.0); //TODO: remove, for debug only
     
         private double targetHeight;

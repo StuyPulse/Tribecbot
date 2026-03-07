@@ -3,12 +3,12 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.commands.climberhopper;
+package com.stuypulse.robot.commands.climber;
 
-// import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
+import com.stuypulse.robot.subsystems.climber.Climber.ClimberState;
 
-// public class HopperUp extends ClimberHopperSetState {
-//     public HopperUp() {
-//         super(ClimberHopperState.HOPPER_UP);
-//     }
-// }
+public class ClimberDown extends ClimberSetState {
+    public ClimberDown() {
+        super(ClimberState.CLIMBER_DOWN);
+    }
+}

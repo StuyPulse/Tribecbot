@@ -16,7 +16,7 @@ public interface Ports {
         int DRIVER = 0;
     }
 
-    public interface ClimberHopper {
+    public interface Climber {
         int CLIMBER_HOPPER = 60;
     }
 

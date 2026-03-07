@@ -1,7 +1,7 @@
 package com.stuypulse.robot.commands.auton.poaching;
 
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.stuypulse.robot.commands.climberhopper.ClimberDown;
+import com.stuypulse.robot.commands.climber.ClimberDown;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
