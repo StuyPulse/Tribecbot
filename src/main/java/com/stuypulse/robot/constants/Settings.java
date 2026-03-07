@@ -161,24 +161,15 @@ public interface AngleInterpolation {
         }
 
         public interface TOFInterpolation{
-            // double[][] distanceTOFInterpolationValues = {
-            //     {1.30, 0.0}, // seconds
-            //     {1.43, 0.0},
-            //     {2.15, 0.0},
-            //     {2.864967, 0.0},
-            //     {3.65, 0.0},
-            //     {4.43, 0.0},
-            //     {5.32, 0.0}
-            // };
 
             double[][] distanceTOFInterpolationValues = {
-                {1.30, 1.0}, // seconds
-                {1.43, 1.0},
-                {2.15, 1.0},
-                {2.864967, 1.0},
-                {3.65, 1.0},
-                {4.43, 1.0},
-                {5.32, 1.0}
+                {1.22, 1.115}, // seconds
+                // {1.43,},
+                // {2.15, },
+                {2.864967, 1.205},
+                {3.65, 1.32},
+                // {4.43, },
+                {5.66, 1.29}  
             };
         }
 
