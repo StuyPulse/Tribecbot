@@ -154,6 +154,7 @@ public interface Settings {
                 {5.66, Units.degreesToRadians(39)}              //KEVIN-APPROVED
             };
         }
+
         public interface RPMInterpolation{
             double[][] distanceRPMInterpolationValues = {
                 {1.22, 2950.0},                                         //KEVIN-APPROVED
@@ -168,7 +169,6 @@ public interface Settings {
         }
 
         public interface TOFInterpolation{
-
             double[][] distanceTOFInterpolationValues = {
                 {1.22, 1.115}, // seconds
                 // {1.43,},
@@ -177,6 +177,24 @@ public interface Settings {
                 {3.65, 1.32},
                 // {4.43, },
                 {5.66, 1.29}  
+            };
+        }
+
+        public interface FerryRPMInterpolation {
+            double[][] ferryDistanceRPMInterpolation = {
+                {5.16, 3800.0},
+                {6.94, 4050.0},
+                {7.87, 4300.0},
+                {9.77, 4550.0}
+            };
+        }
+
+        public interface FerryTOFInterpolation {
+            double [][] FerryTOFInterpolationInterpolation = {
+                // {5.16, },
+                // {6.94, },
+                // {7.87, },
+                // {9.77, },
             };
         }
 
@@ -220,12 +238,6 @@ public interface Settings {
         //         {5.32, 1.267}
         //     };
         // }
-
-        public interface FerryRPMInterpolation {
-            public final double[][] distanceRPMInterpolationValues = {
-                {3.79, 3450.0}
-            };
-        }
 
         public interface Shooter {
             public final double GEAR_RATIO = 1.0;
