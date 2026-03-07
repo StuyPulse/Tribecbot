@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.climberhopper;
+package com.stuypulse.robot.subsystems.climber;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
@@ -21,7 +21,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import java.util.Optional;
 
 
-public class ClimberHopperImpl extends ClimberHopper {
+public class ClimberImpl extends Climber {
     private final Motors.TalonFXConfig climberHopperConfig;
 
     private final TalonFX motor;
@@ -32,7 +32,7 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     private Optional<Double> voltageOverride;
 
-    public ClimberHopperImpl() {
+    public ClimberImpl() {
         super();
 
         climberHopperConfig = new Motors.TalonFXConfig()
@@ -44,14 +44,14 @@ public class ClimberHopperImpl extends ClimberHopper {
             .withRampRate(Settings.ClimberHopper.RAMP_RATE)
             .withSensorToMechanismRatio(Settings.ClimberHopper.GEAR_RATIO)
             .withSoftLimits(
-                false, false,
+                true, true,
                 Settings.ClimberHopper.MIN_ROTATIONS,
                 Settings.ClimberHopper.MAX_ROTATIONS);
 
         motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
         climberHopperConfig.configure(motor);
 
-        motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
+        motor.setPosition(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS);
         stalling = BStream.create(() -> motor.getStatorCurrent().getValueAsDouble() > Settings.ClimberHopper.STALL)
             .filtered(new BDebounce.Both(Settings.ClimberHopper.DEBOUNCE));
 
@@ -67,17 +67,12 @@ public class ClimberHopperImpl extends ClimberHopper {
     }
 
     @Override
-    public double getCurrentHeight() {
-        return this.motor.getPosition().getValueAsDouble();
-    }
-
-    @Override
     public double getCurrentRotations() {
         return motor.getPosition().getValueAsDouble();
     }
 
     private boolean isWithinTolerance(double toleranceMeters) {
-        return Math.abs(getState().getTargetHeight() - getCurrentHeight()) < toleranceMeters;
+        return Math.abs(getState().getTargetHeight() - getCurrentRotations()) < toleranceMeters;
     }
 
     @Override
@@ -86,27 +81,27 @@ public class ClimberHopperImpl extends ClimberHopper {
     }
     
     public void resetPostionUpper() {
-        motor.setPosition(Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.NUM_ROTATIONS_TO_REACH_TOP);
+        motor.setPosition(Settings.ClimberHopper.MAX_ROTATIONS);
     }
     
     @Override
     public void periodic() {
         super.periodic();
-        
-        if (voltageOverride.isPresent()) {
-            voltage = voltageOverride.get();
-        } else { 
-            if (!atTargetHeight()) {
-                if (getState() == ClimberHopperState.CLIMBER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
-                else if (getState() == ClimberHopperState.CLIMBER_UP) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
-                else if (getState() == ClimberHopperState.HOPPER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
-                else if (getState() == ClimberHopperState.STOP) voltage = 0;
-            } else {
-                voltage = 0;
-            }
-        }
-        
         if (EnabledSubsystems.CLIMBER_HOPPER.get()) {
+            ClimberState state = getState();
+            double currentPosition = getCurrentRotations();
+            double targetPosition = state.getTargetHeight();
+
+            if (voltageOverride.isPresent()) {
+                voltage = voltageOverride.get();
+            } else if (!atTargetHeight()) {
+                    if (state == ClimberState.CLIMBER_DOWN && currentPosition > targetPosition) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
+                    else if (state == ClimberState.CLIMBER_UP && currentPosition < targetPosition) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
+                    else voltage = 0;
+            } else {
+                    voltage = 0;
+            
+            }
             motor.setControl(controller.withOutput(voltage));
         } else {
             motor.stopMotor();
@@ -115,7 +110,6 @@ public class ClimberHopperImpl extends ClimberHopper {
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
             
-            SmartDashboard.putNumber("ClimberHopper/Current Height", getCurrentHeight());
             SmartDashboard.putBoolean("Climber/At Target Height?", atTargetHeight());
             SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
             SmartDashboard.putNumber("ClimberHopper/Applied Voltage", motor.getMotorVoltage().getValueAsDouble());

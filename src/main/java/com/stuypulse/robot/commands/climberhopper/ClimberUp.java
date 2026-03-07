@@ -5,10 +5,10 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.climberhopper;
 
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
+import com.stuypulse.robot.subsystems.climber.Climber.ClimberState;
 
 public class ClimberUp extends ClimberHopperSetState {
     public ClimberUp() {
-        super(ClimberHopperState.CLIMBER_UP);
+        super(ClimberState.CLIMBER_UP);
     }
 }

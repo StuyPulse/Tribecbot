@@ -4,15 +4,15 @@ package com.stuypulse.robot.commands.climberhopper;
 import java.util.Optional;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
+import com.stuypulse.robot.subsystems.climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ClimberOverrideDown extends Command {
-    private final ClimberHopper climberHopper;
+    private final Climber climberHopper;
     
     public ClimberOverrideDown() {
-        climberHopper = ClimberHopper.getInstance();
+        climberHopper = Climber.getInstance();
     }
 
     @Override

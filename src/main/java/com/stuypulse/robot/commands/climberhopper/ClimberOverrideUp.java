@@ -3,24 +3,24 @@ package com.stuypulse.robot.commands.climberhopper;
 import java.util.Optional;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
+import com.stuypulse.robot.subsystems.climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ClimberOverrideUp extends Command {
-   private final ClimberHopper climberHopper;
+   private final Climber climber;
     
     public ClimberOverrideUp() {
-        climberHopper = ClimberHopper.getInstance();
+        climber = Climber.getInstance();
     }
 
     @Override
     public void initialize() {
-        climberHopper.setVoltageOverride(Optional.of(Settings.ClimberHopper.MOTOR_VOLTAGE));
+        climber.setVoltageOverride(Optional.of(Settings.ClimberHopper.MOTOR_VOLTAGE));
     }
 
     @Override
     public void end(boolean interrupted) {
-        climberHopper.setVoltageOverride(Optional.empty());
+        climber.setVoltageOverride(Optional.empty());
     }
 }

@@ -5,25 +5,25 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.climberhopper;
 
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
+import com.stuypulse.robot.subsystems.climber.Climber;
+import com.stuypulse.robot.subsystems.climber.Climber.ClimberState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 
 public class ClimberHopperDefaultCommand extends Command {
-    private final ClimberHopper climberHopper;
+    private final Climber climber;
     // private final CommandSwerveDrivetrain swerve;
     // private Pose2d pose;
     // private boolean flag = false; // To prevent repeated stalling under trench
 
     public ClimberHopperDefaultCommand() {
-        climberHopper = ClimberHopper.getInstance();
+        climber = Climber.getInstance();
         // swerve = CommandSwerveDrivetrain.getInstance();
         // pose = swerve.getPose();
 
         
-        addRequirements(climberHopper);
+        addRequirements(climber);
     }
 
     @Override
@@ -70,9 +70,9 @@ public class ClimberHopperDefaultCommand extends Command {
         // SmartDashboard.putBoolean("ClimberHopper/UnderTrench", isUnderTrench);
 
         // !!! AFTER ABANDONING VERTICAL EXPANSION:
-        if (climberHopper.getState() != ClimberHopperState.CLIMBER_DOWN) {
+        if (climber.getState() != ClimberState.CLIMBER_DOWN) {
             // Set the hopper down
-            climberHopper.setState(ClimberHopperState.HOPPER_DOWN);
+            climber.setState(ClimberState.CLIMBER_DOWN);
         }
     }
 }

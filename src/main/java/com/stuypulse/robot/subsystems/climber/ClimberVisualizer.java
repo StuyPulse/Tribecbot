@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.climberhopper;
+package com.stuypulse.robot.subsystems.climber;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
-public class ClimberHopperVisualizer {
-    private static final ClimberHopperVisualizer instance;
+public class ClimberVisualizer {
+    private static final ClimberVisualizer instance;
 
     static {
-        instance = new ClimberHopperVisualizer();
+        instance = new ClimberVisualizer();
     }
 
-    public static ClimberHopperVisualizer getInstance() {
+    public static ClimberVisualizer getInstance() {
         return instance;
     }
 
@@ -28,7 +28,7 @@ public class ClimberHopperVisualizer {
     private final MechanismRoot2d bot;
     private final MechanismRoot2d climber;
 
-    ClimberHopperVisualizer() {
+    ClimberVisualizer() {
         canvas = new Mechanism2d(2.5, 2.5);
         hopper = canvas.getRoot("Hopper", 0.8, 1);
         bot = canvas.getRoot("Bot", 0.8, 0.5); 

@@ -22,7 +22,6 @@ import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
 import com.stuypulse.robot.commands.climberhopper.ClimberStop;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
 import com.stuypulse.robot.commands.climberhopper.ClimberUp;
-import com.stuypulse.robot.commands.climberhopper.HopperDown;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.ZeroHoodEncoderAtUpperHardstop;
@@ -224,8 +223,8 @@ public class RobotContainer {
         // .alongWith(new HandoffStop()));
 
         // SOTM Toggle
-        driver.getRightButton()
-                .onTrue(new SuperstructureSOTMConditional().onlyIf(() -> !swerve.isUnderTrench()));
+        // driver.getRightButton()
+        //         .onTrue(new SuperstructureSOTMConditional().onlyIf(() -> !swerve.isUnderTrench()));
         // .andThen(new WaitUntilCommand(superstructure::atTolerance))
         // .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
         // .alongWith(new WaitUntilCommand(handoff::atTolerance))
@@ -247,27 +246,27 @@ public class RobotContainer {
         if (Settings.DEBUG_MODE) {
         //TODO: remove after testing
             // Climber Up
-            driver.getRightBumper()
+            driver.getRightButton()
                     .whileTrue(new ClimberUp())
                     .onFalse(new ClimberStop());
 
             // Climber Down
-            driver.getLeftBumper()
+            driver.getLeftButton()
                     .onTrue(new ClimberDown())
                     .onFalse(new ClimberStop());
         }
 
         // Left Corner Shoot
-        driver.getLeftButton()
-                .whileTrue(
-                        new SwerveXMode().alongWith(
-                                new SuperstructureLeftCorner().alongWith(
-                                        new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
-                                                new SpindexerRun().alongWith(new HandoffRun()))))
-                .onFalse(
-                        new SuperstructureStow().alongWith(
-                                new SpindexerRun().alongWith(
-                                        new HandoffStop())));
+        // driver.getLeftButton()
+        //         .whileTrue(
+        //                 new SwerveXMode().alongWith(
+        //                         new SuperstructureLeftCorner().alongWith(
+        //                                 new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
+        //                                         new SpindexerRun().alongWith(new HandoffRun()))))
+        //         .onFalse(
+        //                 new SuperstructureStow().alongWith(
+        //                         new SpindexerRun().alongWith(
+        //                                 new HandoffStop())));
 
         // Right Corner Shoot
         // driver.getRightButton()

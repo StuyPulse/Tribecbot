@@ -3,7 +3,7 @@
 /* Use of this source code is governed by an MIT-style license */
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
-package com.stuypulse.robot.subsystems.climberhopper;
+package com.stuypulse.robot.subsystems.climber;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
@@ -13,35 +13,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Optional;
 
-public abstract class ClimberHopper extends SubsystemBase {
-    private static final ClimberHopper instance;
+public abstract class Climber extends SubsystemBase {
+    private static final Climber instance;
     
     static {
-        // if (Robot.isReal()) {
-            instance = new ClimberHopperImpl();
-        // } else {
-        //    // instance = new ClimberHopperSim();
-        // }
+        if (Robot.isReal()) {
+            instance = new ClimberImpl();
+        } else {
+           instance = new ClimberSim();
+        }
     }
 
-    public static ClimberHopper getInstance() {
+    public static Climber getInstance() {
         return instance;
     }
 
-    public enum ClimberHopperState {
+    public enum ClimberState {
         CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_ROTATIONS),
         CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
-        HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_ROTATIONS),
-        HOPPER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
-        // CLIMBER_UP(Settings.ClimberHopper.),
-        // CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_HEIGHT_METERS),
-        // HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_ROTATIONS),
-        // HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN_HEIGHT_METERS),
-        STOP(0.0);
+        CLIMBER_STOP(0.0); //TODO: remove, for debug only
     
         private double targetHeight;
         
-        private ClimberHopperState(double targetHeight) {
+        private ClimberState(double targetHeight) {
             this.targetHeight = targetHeight;
         }
         
@@ -51,22 +45,21 @@ public abstract class ClimberHopper extends SubsystemBase {
 
     }
     
-    private ClimberHopperState state;
+    private ClimberState state;
 
-    protected ClimberHopper() {
-        this.state = ClimberHopperState.HOPPER_DOWN;
+    protected Climber() {
+        this.state = ClimberState.CLIMBER_DOWN;
     }
     
-    public ClimberHopperState getState() {
+    public ClimberState getState() {
         return state;
     }
 
-    public void setState(ClimberHopperState state) {
+    public void setState(ClimberState state) {
         this.state = state;
     }
 
     public abstract boolean getStalling();
-    public abstract double getCurrentHeight();
     public abstract double getCurrentRotations();
     public abstract boolean atTargetHeight();
     
@@ -79,6 +72,6 @@ public abstract class ClimberHopper extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("ClimberHopper/State", getState().toString());
+        SmartDashboard.putString("Climber/State", getState().toString());
     }
 }

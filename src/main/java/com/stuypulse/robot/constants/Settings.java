@@ -40,9 +40,8 @@ public interface Settings {
         /* CONSTANTS */
         public final double GEAR_RATIO = 45.0;
 
-        public final double MIN_HEIGHT_METERS = 0.0;
 
-        public final double MIN_ROTATIONS = -0.1;
+        public final double MIN_ROTATIONS = 0.0;
         public final double MAX_HEIGHT_METERS = 0.2032;
         public final double MAX_ROTATIONS = 1.75;
 
@@ -51,31 +50,15 @@ public interface Settings {
         public final double MASS_KG = 1.0;
 
         public final double DRUM_RADIUS_METERS = Units.inchesToMeters(0.75);
-        // public final double NUM_ROTATIONS_TO_REACH_TOP = MAX_ROTATIONS - MIN_ROTATIONS;
-        public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (2.0 * Math.PI * DRUM_RADIUS_METERS); // TODO: verify this 
-        public final double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
-        public final double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60.0;
-
-
-        // public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
         /* CONSTANTS */
 
-        // public final double CLIMBER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
-        public final double CLIMBER_UP_ROTATIONS = 1.67; // TODO: FIND
-        // public final double CLIMBER_DOWN_HEIGHT_METERS = MIN_HEIGHT_METERS;
+        public final double CLIMBER_UP_ROTATIONS = MAX_ROTATIONS - 0.1; // TODO: FIND
         public final double CLIMBER_DOWN_ROTATIONS = 0.0;
-        // public final double HOPPER_DOWN_HEIGHT_METERS = MIN_HEIGHT_METERS;
-        public final double HOPPER_DOWN_ROTATIONS = MIN_ROTATIONS;
-        // public final double HOPPER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
-        public final double HOPPER_UP_ROTATIONS = MAX_ROTATIONS;
 
         public final double STALL = 10.0;
 
-        public final double ROTATIONS_AT_BOTTOM = 0.0;
-
         public final double DEBOUNCE = 0.25;
 
-        public final double GYRO_TOLERANCE = 0.0;
 
         // public final double HEIGHT_TOLERANCE_METERS = 0.015;
         public final double TOLERANCE_ROTATIONS = 0.1; // TODO: tune tolerance for 12V
