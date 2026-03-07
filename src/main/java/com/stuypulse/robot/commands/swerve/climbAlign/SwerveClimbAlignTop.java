@@ -5,21 +5,43 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.swerve.climbAlign;
 
+import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.pidToPose.SwerveDrivePIDToPose;
+import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.Field;
+import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 public class SwerveClimbAlignTop extends SwerveDrivePIDToPose{
-    public SwerveClimbAlignTop(){
+    private final Gamepad driver;
+
+    public SwerveClimbAlignTop(Gamepad driver){
         super(new Pose2d(Field.towerFarCenter.getX(), Field.towerFarCenter.getY() + Field.barDisplacement + Field.DISTANCE_TO_RUNGS, new Rotation2d(Units.degreesToRadians(180))));
+        this.driver = driver;
     }
 
     @Override
     public void execute(){
         super.execute();
+    }
+
+    @Override
+    public boolean isFinished() {
+        if (driver != null) {
+            return (driver.getLeftStick().distance() > DriverConstants.Driver.Drive.DEADBAND
+                    || driver.getRightStick().distance() > DriverConstants.Driver.Turn.DEADBAND) ? true : false;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        CommandScheduler.getInstance().schedule(new SwerveDriveDrive(driver));
     }
 }

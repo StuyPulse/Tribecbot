@@ -38,6 +38,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Scheduler": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Visualizers/ClimberHopper": {
         "window": {
           "visible": true
@@ -65,6 +70,9 @@
     "transitory": {
       "SmartDashboard": {
         "ClimberHopper": {
+          "open": true
+        },
+        "Driver": {
           "open": true
         },
         "HoodedShooter": {

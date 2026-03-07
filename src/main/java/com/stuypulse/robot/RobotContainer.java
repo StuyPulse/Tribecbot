@@ -55,6 +55,7 @@ import com.stuypulse.robot.commands.turret.TurretShoot;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
 import com.stuypulse.robot.commands.vision.SetIMUMode;
+import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -79,7 +80,6 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-
 public class RobotContainer {
     public interface EnabledSubsystems {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
@@ -101,7 +101,7 @@ public class RobotContainer {
     private final Handoff handoff = Handoff.getInstance();
     private final Intake intake = Intake.getInstance();
     private final Spindexer spindexer = Spindexer.getInstance();
-    
+
     private final CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
     private final LimelightVision vision = LimelightVision.getInstance();
     private final Turret turret = Turret.getInstance();
@@ -122,15 +122,20 @@ public class RobotContainer {
         configureSysids();
 
         SmartDashboard.putData("Field", Field.FIELD2D);
-        SmartDashboard.putData("Robot/Zero Pivot Encoder at Lower Limit (Deployed)", new ZeroPivotDeployed().ignoringDisable(true));
-        SmartDashboard.putData("Robot/Zero Pivot Encoder at Upper Limit (Stowed)", new ZeroPivotStowed().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Zero Pivot Encoder at Lower Limit (Deployed)",
+                new ZeroPivotDeployed().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Zero Pivot Encoder at Upper Limit (Stowed)",
+                new ZeroPivotStowed().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Turret Encoders", new ZeroTurret().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHoodEncoderAtUpperHardstop().ignoringDisable(true));
 
         SmartDashboard.putData("Robot/Override Up", new ClimberOverrideUp());
         SmartDashboard.putData("Robot/Override Down", new ClimberOverrideDown());
-        SmartDashboard.putData("Robot/Override Stop", new  ClimberOverrideStop());
-       
+        SmartDashboard.putData("Robot/Override Stop", new ClimberOverrideStop());
+
+        SmartDashboard.putNumber("Driver/Left Stick Distance", driver.getLeftStick().distance());
+        SmartDashboard.putNumber("Driver/Right Stick Distance", driver.getRightStick().distance());
+
     }
 
     /****************/
@@ -150,196 +155,203 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Scoring Routine
-        driver.getTopButton()
-                .whileTrue(new SuperstructureInterpolation()//.onlyIf(() -> !superstructure.isHoodUnderTrench())
-                    // .alongWith(new SwerveDriveAlignTurretToHub())
-                    // .alongWith(new TurretShoot())
-                        .andThen(new WaitUntilCommand(superstructure::atTolerance))
-                        .andThen(new HandoffRun().onlyIf(superstructure::atTolerance)
-                                .alongWith(new WaitUntilCommand(handoff::atTolerance))
-                                .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
-                .onFalse(new SpindexerStop()
-                        .alongWith(new SuperstructureStow())
-                        .alongWith(new HandoffStop()));
+        // driver.getTopButton()
+        // .whileTrue(new SuperstructureInterpolation()//.onlyIf(() ->
+        // !superstructure.isHoodUnderTrench())
+        // // .alongWith(new SwerveDriveAlignTurretToHub())
+        // // .alongWith(new TurretShoot())
+        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
+        // .andThen(new HandoffRun().onlyIf(superstructure::atTolerance)
+        // .alongWith(new WaitUntilCommand(handoff::atTolerance))
+        // .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() &&
+        // superstructure.atTolerance()))))
+        // .onFalse(new SpindexerStop()
+        // .alongWith(new SuperstructureStow())
+        // .alongWith(new HandoffStop()));
 
         // Scoring Routine
         driver.getBottomButton()
-                //.whileTrue(new SuperstructureShoot())//.onlyIf(() -> !superstructure.isHoodUnderTrench()))
-                    // .alongWith(new SwerveDriveAlignTurretToHub())
-                    // .alongWith(new TurretShoot())
+                // .whileTrue(new SuperstructureShoot())//.onlyIf(() ->
+                // !superstructure.isHoodUnderTrench()))
+                // .alongWith(new SwerveDriveAlignTurretToHub())
+                // .alongWith(new TurretShoot())
                 .whileTrue(new SuperstructureShoot().onlyIf(() -> !swerve.isUnderTrench())
-                .alongWith(new SwerveDriveAlignTurretToHub())
+                        .alongWith(new SwerveDriveAlignTurretToHub())
                         // .alongWith(new TurretShoot())
-                        //.andThen(new WaitUntilCommand(superstructure::atTolerance))
+                        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
                         .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
-                                //.alongWith(new WaitUntilCommand(handoff::atTolerance))
-                        .andThen(new SpindexerConditionalCommand())))//.onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
+                                // .alongWith(new WaitUntilCommand(handoff::atTolerance))
+                                .andThen(new SpindexerConditionalCommand())))// .onlyIf(() -> handoff.atTolerance() &&
+                                                                             // superstructure.atTolerance()))))
                 .onFalse(new SpindexerStop()
                         .alongWith(new SuperstructureStow())
                         .alongWith(new HandoffStop()));
 
         // Intake Deploy
         driver.getRightTriggerButton()
-            .onTrue(new IntakeDeploy());
+                .onTrue(new IntakeDeploy());
 
         // driver.getRightBumper()
-        //     .whileTrue(new SwerveWheelRadiusCharacterization());
+        // .whileTrue(new SwerveWheelRadiusCharacterization());
 
         // Intake Stow
         driver.getLeftTriggerButton()
-            .onTrue(new IntakeStow());
+                .onTrue(new IntakeStow());
 
         // driver.getRightButton()
-        //     .whileTrue(new SuperstructureFerry().onlyIf(() -> !swerve.isUnderTrench())
-        //             // .alongWith(new TurretShoot())
-        //             .andThen(new WaitUntilCommand(superstructure::atTolerance))
-        //             .andThen(new HandoffRun().onlyIf(superstructure::atTolerance)
-        //                     .alongWith(new WaitUntilCommand(handoff::atTolerance))
-        //                     .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
-        //     .onFalse(new SpindexerStop()
-        //             .alongWith(new SuperstructureStow())
-        //             .alongWith(new HandoffStop()));
-        
+        // .whileTrue(new SuperstructureFerry().onlyIf(() -> !swerve.isUnderTrench())
+        // // .alongWith(new TurretShoot())
+        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
+        // .andThen(new HandoffRun().onlyIf(superstructure::atTolerance)
+        // .alongWith(new WaitUntilCommand(handoff::atTolerance))
+        // .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() &&
+        // superstructure.atTolerance()))))
+        // .onFalse(new SpindexerStop()
+        // .alongWith(new SuperstructureStow())
+        // .alongWith(new HandoffStop()));
+
         // // SOTM
         // driver.getRightButton()
-        //         .whileTrue(new SuperstructureSOTM().onlyIf(() -> !swerve.isUnderTrench())
-        //                 .andThen(new WaitUntilCommand(superstructure::atTolerance))
-        //                 .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
-        //                         .alongWith(new WaitUntilCommand(handoff::atTolerance))
-        //                         .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
-        //         .onFalse(new SpindexerStop()
-        //                 .alongWith(new SuperstructureStow())
-        //                 .alongWith(new HandoffStop()));
+        // .whileTrue(new SuperstructureSOTM().onlyIf(() -> !swerve.isUnderTrench())
+        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
+        // .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
+        // .alongWith(new WaitUntilCommand(handoff::atTolerance))
+        // .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance()
+        // && superstructure.atTolerance()))))
+        // .onFalse(new SpindexerStop()
+        // .alongWith(new SuperstructureStow())
+        // .alongWith(new HandoffStop()));
 
         // SOTM Toggle
         driver.getRightButton()
                 .onTrue(new SuperstructureSOTMConditional().onlyIf(() -> !swerve.isUnderTrench()));
-                        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
-                        // .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
-                        //         .alongWith(new WaitUntilCommand(handoff::atTolerance))
-                        //         .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))));
+        // .andThen(new WaitUntilCommand(superstructure::atTolerance))
+        // .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
+        // .alongWith(new WaitUntilCommand(handoff::atTolerance))
+        // .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance()
+        // && superstructure.atTolerance()))));
 
         // Reset Heading
         driver.getDPadUp()
-            .onTrue(new SwerveResetHeading())
-            .onTrue(new ResetLimelightIMU())
-            .onFalse(new SetIMUMode(0));
-        
+                .onTrue(new SwerveResetHeading())
+                .onTrue(new ResetLimelightIMU())
+                .onFalse(new SetIMUMode(0));
+
         // Climb Align
         driver.getTopButton()
-            .whileTrue(new SwerveClimbAlign().alongWith(new ClimberUp()).andThen(new SwerveXMode()));
-
+                .whileTrue(
+                        new SwerveClimbAlign(driver).alongWith(new ClimberUp()).andThen(new SwerveXMode()))
+                .onFalse(new ClimberDown());
         if (Settings.DEBUG_MODE) {
             // Climber Up
             driver.getRightBumper()
-                .whileTrue(new ClimberUp());
+                    .whileTrue(new ClimberUp());
 
             // Climber Down
             driver.getLeftBumper()
-                .onTrue(new ClimberDown());
+                    .onTrue(new ClimberDown());
         } else {
             // Climber Up
             driver.getRightBumper()
-                .whileTrue(new ClimberUp())
-                .onFalse(new HopperDown());
+                    .whileTrue(new ClimberUp())
+                    .onFalse(new HopperDown());
 
             // Climber Down
             driver.getLeftBumper()
-                .onTrue(new ClimberDown());
+                    .onTrue(new ClimberDown());
         }
 
         // Left Corner Shoot
         driver.getLeftButton()
-            .whileTrue(
-                new SwerveXMode().alongWith(
-                    new SuperstructureLeftCorner().alongWith(
-                            new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
-            .onFalse(
-                new SuperstructureStow().alongWith(
-                new SpindexerRun().alongWith(
-                new HandoffStop()))
-            );
+                .whileTrue(
+                        new SwerveXMode().alongWith(
+                                new SuperstructureLeftCorner().alongWith(
+                                        new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
+                                                new SpindexerRun().alongWith(new HandoffRun()))))
+                .onFalse(
+                        new SuperstructureStow().alongWith(
+                                new SpindexerRun().alongWith(
+                                        new HandoffStop())));
 
         // Right Corner Shoot
         // driver.getRightButton()
-        //     .whileTrue(
-        //         new SwerveXMode().alongWith(
-        //             new SuperstructureRightCorner().alongWith(
-        //                     new WaitUntilCommand(() -> superstructure.atTolerance()).andThen(
-        //                         new SpindexerRun().alongWith(new HandoffRun())))))
-        //     .onFalse(
-        //         new SuperstructureStow().alongWith(
-        //         new SpindexerRun().alongWith(
-        //         new HandoffStop()))
-        //     );
+        // .whileTrue(
+        // new SwerveXMode().alongWith(
+        // new SuperstructureRightCorner().alongWith(
+        // new WaitUntilCommand(() -> superstructure.atTolerance()).andThen(
+        // new SpindexerRun().alongWith(new HandoffRun())))))
+        // .onFalse(
+        // new SuperstructureStow().alongWith(
+        // new SpindexerRun().alongWith(
+        // new HandoffStop()))
+        // );
 
         // Hub Shoot
         // driver.getBottomButton()
-        //     .whileTrue(
-        //         new SwerveXMode().alongWith(
-        //             new SuperstructureKB().alongWith(
-        //                     new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
-        //                         new SpindexerRun().alongWith(new HandoffRun()))))
-        //     .onFalse(
-        //         new SuperstructureStow().alongWith(
-        //         new SpindexerRun().alongWith(
-        //         new HandoffStop()))
-        //     );
-
+        // .whileTrue(
+        // new SwerveXMode().alongWith(
+        // new SuperstructureKB().alongWith(
+        // new WaitUntilCommand(() -> superstructure.atTolerance())).andThen(
+        // new SpindexerRun().alongWith(new HandoffRun()))))
+        // .onFalse(
+        // new SuperstructureStow().alongWith(
+        // new SpindexerRun().alongWith(
+        // new HandoffStop()))
+        // );
 
         // // Ferry Routine using Interpolation Settings
         // driver.getBottomButton()
-        //         .onTrue(new SuperstructureFerry()
-        //                 .alongWith(new TurretFerry())
-        //                 .alongWith(new WaitUntilCommand(() -> superstructure.bothAtTolerance()))
-        //                 .andThen(new HandoffRun().onlyIf(() -> superstructure.bothAtTolerance())
-        //                         .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
-        //                         .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() && superstructure.bothAtTolerance())))      
-        //         )
-        //         .onFalse(new SpindexerStop()
-        //                 .alongWith(new SuperstructureStow())
-        //                 .alongWith(new HandoffStop()));
+        // .onTrue(new SuperstructureFerry()
+        // .alongWith(new TurretFerry())
+        // .alongWith(new WaitUntilCommand(() -> superstructure.bothAtTolerance()))
+        // .andThen(new HandoffRun().onlyIf(() -> superstructure.bothAtTolerance())
+        // .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
+        // .andThen(new SpindexerRun().onlyIf(() -> handoff.atTolerance() &&
+        // superstructure.bothAtTolerance())))
+        // )
+        // .onFalse(new SpindexerStop()
+        // .alongWith(new SuperstructureStow())
+        // .alongWith(new HandoffStop()));
 
-//-------------------------------------------------------------------------------------------------------------------------\\
-//-------------------------------------------------------------------------------------------------------------------------\\
-//-------------------------------------------------------------------------------------------------------------------------\\
-//-------------------------------------------------------------------------------------------------------------------------\\
-//-------------------------------------------------------------------------------------------------------------------------\\
-    /* 
-    
-        // Ferry In Place
-        driver.getDPadLeft()
-            .whileTrue(
-                new SwerveXMode().alongWith(
-                    new SuperstructureFerry().alongWith(
-                        new TurretFerry()).alongWith(
-                            new WaitUntilCommand(() -> superstructure.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> superstructure.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
-            .onFalse(
-                new SuperstructureStow().alongWith(
-                new SpindexerRun().alongWith(
-                new HandoffStop()))
-            );
-
-        // Score In Place
-        driver.getDPadRight()
-            .whileTrue(
-                new SwerveXMode().alongWith(
-                    new SuperstructureShoot().alongWith(
-                        new TurretShoot()).alongWith(
-                            new WaitUntilCommand(() -> superstructure.isHoodAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> superstructure.isShooterAtTolerance())).alongWith(
-                            new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
-                                new SpindexerRun().alongWith(new HandoffRun()))))
-            .onFalse(
-                new SuperstructureStow().alongWith(
-                new SpindexerRun().alongWith(
-                new HandoffStop()))
-            );
-    */
+        // -------------------------------------------------------------------------------------------------------------------------\\
+        // -------------------------------------------------------------------------------------------------------------------------\\
+        // -------------------------------------------------------------------------------------------------------------------------\\
+        // -------------------------------------------------------------------------------------------------------------------------\\
+        // -------------------------------------------------------------------------------------------------------------------------\\
+        /*
+         * 
+         * // Ferry In Place
+         * driver.getDPadLeft()
+         * .whileTrue(
+         * new SwerveXMode().alongWith(
+         * new SuperstructureFerry().alongWith(
+         * new TurretFerry()).alongWith(
+         * new WaitUntilCommand(() -> superstructure.isHoodAtTolerance())).alongWith(
+         * new WaitUntilCommand(() -> superstructure.isShooterAtTolerance())).alongWith(
+         * new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+         * new SpindexerRun().alongWith(new HandoffRun()))))
+         * .onFalse(
+         * new SuperstructureStow().alongWith(
+         * new SpindexerRun().alongWith(
+         * new HandoffStop()))
+         * );
+         * 
+         * // Score In Place
+         * driver.getDPadRight()
+         * .whileTrue(
+         * new SwerveXMode().alongWith(
+         * new SuperstructureShoot().alongWith(
+         * new TurretShoot()).alongWith(
+         * new WaitUntilCommand(() -> superstructure.isHoodAtTolerance())).alongWith(
+         * new WaitUntilCommand(() -> superstructure.isShooterAtTolerance())).alongWith(
+         * new WaitUntilCommand(() -> turret.atTargetAngle())).andThen(
+         * new SpindexerRun().alongWith(new HandoffRun()))))
+         * .onFalse(
+         * new SuperstructureStow().alongWith(
+         * new SpindexerRun().alongWith(
+         * new HandoffStop()))
+         * );
+         */
     }
 
     /**************/
@@ -352,44 +364,44 @@ public class RobotContainer {
 
         autonChooser.addOption("Wheel Radius", new SwerveWheelRadiusCharacterization());
         // TESTS
-        // AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new, 
+        // AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new,
         // "Box 1", "Box 2", "Box 3", "Box 4");
         // BOX_TEST.register(autonChooser);
 
         // BASE
-        AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 
-        "");
+        AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new,
+                "");
         EIGHT_FUEL.register(autonChooser);
 
         // DEPOT
-        AutonConfig DEPOT_AUTON = new AutonConfig("Depot Auton", DepotAuton::new, 
-        "Top Bump To Depot", "Depot To Tower Left");
+        AutonConfig DEPOT_AUTON = new AutonConfig("Depot Auton", DepotAuton::new,
+                "Top Bump To Depot", "Depot To Tower Left");
         DEPOT_AUTON.register(autonChooser);
 
         // ONE CYCLES
-        AutonConfig TOP_ONE_CYCLE_POACH = new AutonConfig("Top One Cycle (Poach)", TopOneCyclePoach::new,  
-        "Top Trench To NZ (P)", "Top NZ To Tower Left (P)");
+        AutonConfig TOP_ONE_CYCLE_POACH = new AutonConfig("Top One Cycle (Poach)", TopOneCyclePoach::new,
+                "Top Trench To NZ (P)", "Top NZ To Tower Left (P)");
         TOP_ONE_CYCLE_POACH.register(autonChooser);
 
-        AutonConfig BOTTOM_ONE_CYCLE_POACH = new AutonConfig("Bottom One Cycle (Poach)", BottomOneCyclePoach::new,  
-        "Bottom Trench To NZ (P)", "Bottom NZ To Tower Right (P)");
+        AutonConfig BOTTOM_ONE_CYCLE_POACH = new AutonConfig("Bottom One Cycle (Poach)", BottomOneCyclePoach::new,
+                "Bottom Trench To NZ (P)", "Bottom NZ To Tower Right (P)");
         BOTTOM_ONE_CYCLE_POACH.register(autonChooser);
 
         // TWO CYCLES
-        AutonConfig TOP_TWO_CYCLE = new AutonConfig("Top Two Cycle", TopTwoCycle::new,  
-        "Top Trench To NZ", "Top NZ To Score", "Top Score To NZ", "Top NZ To Tower Left");
+        AutonConfig TOP_TWO_CYCLE = new AutonConfig("Top Two Cycle", TopTwoCycle::new,
+                "Top Trench To NZ", "Top NZ To Score", "Top Score To NZ", "Top NZ To Tower Left");
         TOP_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig BOTTOM_TWO_CYCLE = new AutonConfig("Bottom Two Cycle", BottomTwoCycle::new,  
-        "Bottom Trench To NZ", "Bottom NZ To Score", "Bottom Score To NZ", "Bottom NZ To Tower Right");
+        AutonConfig BOTTOM_TWO_CYCLE = new AutonConfig("Bottom Two Cycle", BottomTwoCycle::new,
+                "Bottom Trench To NZ", "Bottom NZ To Score", "Bottom Score To NZ", "Bottom NZ To Tower Right");
         BOTTOM_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig TOP_TWO_CYCLE_POACH = new AutonConfig("Top Two Cycle (Poach)", TopTwoCyclePoach::new,  
-        "Top Trench To NZ (P)", "Top NZ To Score (P)", "Top Score To NZ", "Top NZ To Tower Left");  
+        AutonConfig TOP_TWO_CYCLE_POACH = new AutonConfig("Top Two Cycle (Poach)", TopTwoCyclePoach::new,
+                "Top Trench To NZ (P)", "Top NZ To Score (P)", "Top Score To NZ", "Top NZ To Tower Left");
         TOP_TWO_CYCLE_POACH.register(autonChooser);
 
-        AutonConfig BOTTOM_TWO_CYCLE_POACH = new AutonConfig("Bottom Two Cycle (Poach)", BottomTwoCyclePoach::new,  
-        "Bottom Trench To NZ (P)", "Bottom NZ To Score (P)", "Bottom Score To NZ", "Bottom NZ To Tower Right");
+        AutonConfig BOTTOM_TWO_CYCLE_POACH = new AutonConfig("Bottom Two Cycle (Poach)", BottomTwoCyclePoach::new,
+                "Bottom Trench To NZ (P)", "Bottom NZ To Score (P)", "Bottom Score To NZ", "Bottom NZ To Tower Right");
         BOTTOM_TWO_CYCLE_POACH.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
@@ -401,41 +413,64 @@ public class RobotContainer {
         autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
         autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
         autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
-        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
+        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse));
 
-        autonChooser.addOption("SysID Rotation Translation Dynamic Forwards", swerve.sysidRotationDynamic(Direction.kForward));
-        autonChooser.addOption("SysID Rotation Translation Dynamic Backwards", swerve.sysidRotationDynamic(Direction.kReverse));
-        autonChooser.addOption("SysID Rotation Translation Quasi Forwards", swerve.sysidRotationQuasiStatic(Direction.kForward));
-        autonChooser.addOption("SysID Rotation Translation Quasi Backwards", swerve.sysidRotationQuasiStatic(Direction.kReverse)); 
-        
+        autonChooser.addOption("SysID Rotation Translation Dynamic Forwards",
+                swerve.sysidRotationDynamic(Direction.kForward));
+        autonChooser.addOption("SysID Rotation Translation Dynamic Backwards",
+                swerve.sysidRotationDynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Rotation Translation Quasi Forwards",
+                swerve.sysidRotationQuasiStatic(Direction.kForward));
+        autonChooser.addOption("SysID Rotation Translation Quasi Backwards",
+                swerve.sysidRotationQuasiStatic(Direction.kReverse));
 
-        // autonChooser.addOption("SysID Turret Dynamic Forwards", turret.getSysIdRoutine().dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Turret Dynamic Reverse", turret.getSysIdRoutine().dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Turret Quasistatic Forwards", turret.getSysIdRoutine().quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Turret Quasistatic Reverse", turret.getSysIdRoutine().quasistatic(Direction.kReverse));
+        // autonChooser.addOption("SysID Turret Dynamic Forwards",
+        // turret.getSysIdRoutine().dynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Turret Dynamic Reverse",
+        // turret.getSysIdRoutine().dynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Turret Quasistatic Forwards",
+        // turret.getSysIdRoutine().quasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Turret Quasistatic Reverse",
+        // turret.getSysIdRoutine().quasistatic(Direction.kReverse));
 
-        // autonChooser.addOption("SysID Module Rotation Dynamic Forwards", swerve.sysIdRotDynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Module Rotation Dynamic Backwards", swerve.sysIdRotDynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Module Rotation Quasi Forwards", swerve.sysIdRotQuasi(Direction.kForward));
-        // autonChooser.addOption("SysID Module Rotation Quasi Backwards", swerve.sysIdRotQuasi(Direction.kReverse));
+        // autonChooser.addOption("SysID Module Rotation Dynamic Forwards",
+        // swerve.sysIdRotDynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Module Rotation Dynamic Backwards",
+        // swerve.sysIdRotDynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Module Rotation Quasi Forwards",
+        // swerve.sysIdRotQuasi(Direction.kForward));
+        // autonChooser.addOption("SysID Module Rotation Quasi Backwards",
+        // swerve.sysIdRotQuasi(Direction.kReverse));
 
         // SysIdRoutine shooterSysId = shooter.getShooterSysIdRoutine();
-        // autonChooser.addOption("SysID Shooter Dynamic Forwards", shooterSysId.dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Shooter Dynamic Backwards", shooterSysId.dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Shooter Quasi Forwards", shooterSysId.quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Shooter Quasi Backwards", shooterSysId.quasistatic(Direction.kReverse));
+        // autonChooser.addOption("SysID Shooter Dynamic Forwards",
+        // shooterSysId.dynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Shooter Dynamic Backwards",
+        // shooterSysId.dynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Shooter Quasi Forwards",
+        // shooterSysId.quasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Shooter Quasi Backwards",
+        // shooterSysId.quasistatic(Direction.kReverse));
 
         // SysIdRoutine hoodSysId = hood.getHoodSysIdRoutine();
-        // autonChooser.addOption("SysID Hood Dynamic Forwards", hoodSysId.dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Hood Dynamic Backwards", hoodSysId.dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Hood Quasi Forwards", hoodSysId.quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Hood Quasi Backwards", hoodSysId.quasistatic(Direction.kReverse));
+        // autonChooser.addOption("SysID Hood Dynamic Forwards",
+        // hoodSysId.dynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Hood Dynamic Backwards",
+        // hoodSysId.dynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Hood Quasi Forwards",
+        // hoodSysId.quasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Hood Quasi Backwards",
+        // hoodSysId.quasistatic(Direction.kReverse));
 
         // SysIdRoutine intakePivotSysId = intake.getPivotSysIdRoutine();
-        // autonChooser.addOption("SysID Intake Pivot Dynamic Forwards", intakePivotSysId.dynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Intake Pivot Dynamic Backwards", intakePivotSysId.dynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Intake Pivot Quasi Forwards", intakePivotSysId.quasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Intake Pivot Quasi Backwards", intakePivotSysId.quasistatic(Direction.kReverse));
+        // autonChooser.addOption("SysID Intake Pivot Dynamic Forwards",
+        // intakePivotSysId.dynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Intake Pivot Dynamic Backwards",
+        // intakePivotSysId.dynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Intake Pivot Quasi Forwards",
+        // intakePivotSysId.quasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Intake Pivot Quasi Backwards",
+        // intakePivotSysId.quasistatic(Direction.kReverse));
 
         SysIdRoutine spindexerSysId = spindexer.getSysIdRoutine();
         autonChooser.addOption("SysID Spindexer Dynamic Forwards", spindexerSysId.dynamic(Direction.kForward));

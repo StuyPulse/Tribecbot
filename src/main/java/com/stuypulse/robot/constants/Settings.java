@@ -43,7 +43,7 @@ public interface Settings {
         public final double MIN_HEIGHT_METERS = 0.0;
 
         // public final double MIN_ROTATIONS = -0.1;
-        public final double MAX_HEIGHT_METERS = 0.25;
+        public final double MAX_HEIGHT_METERS = 0.2032;
         // public final double MAX_ROTATIONS = 20;
 
         public final double MASS_KG = 1.0;
@@ -75,12 +75,12 @@ public interface Settings {
 
         public final double GYRO_TOLERANCE = 0.0;
 
-        public final double HEIGHT_TOLERANCE_METERS = 0.1;
+        public final double HEIGHT_TOLERANCE_METERS = 0.015;
         // public final double TOLERANCE_ROTATIONS = 0.1;
 
         public final double RAMP_RATE = 50.0;
 
-        public final double MOTOR_VOLTAGE = 1.0;
+        public final double MOTOR_VOLTAGE = 12.0;
     }
 
     public interface Handoff {
