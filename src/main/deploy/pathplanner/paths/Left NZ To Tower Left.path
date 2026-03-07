@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.785836298932384,
+        "y": 4.4169513641755636
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.139679715302492,
+        "y": 4.38467378410439
+      },
+      "isLocked": false,
+      "linkedName": "NZ Top Center"
+    },
+    {
+      "anchor": {
+        "x": 6.2903084223013055,
+        "y": 6.256773428232503
+      },
+      "prevControl": {
+        "x": 6.258030842230131,
+        "y": 5.492870699881376
+      },
+      "nextControl": {
+        "x": 6.344786942972187,
+        "y": 7.546098417443335
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.6118742586002375,
+        "y": 7.666227758007118
+      },
+      "prevControl": {
+        "x": 6.3441043890865965,
+        "y": 7.687746144721235
+      },
+      "nextControl": {
+        "x": 2.707370456345143,
+        "y": 7.642569325680967
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2227283511269282,
+        "y": 4.922633451957295
+      },
+      "prevControl": {
+        "x": 2.5461091340450777,
+        "y": 7.343451957295374
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Tower Left 1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.1406491499227187,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 2.24884080370944,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.75,
+    "maxAcceleration": 6.75,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "To Tower",
+  "idealStartingState": {
+    "velocity": 3.5,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

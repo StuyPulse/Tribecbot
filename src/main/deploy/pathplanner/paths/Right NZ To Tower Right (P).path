@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.28075919335706,
+        "y": 3.6638078291814944
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.15043890865955,
+        "y": 3.179644128113879
+      },
+      "isLocked": false,
+      "linkedName": "NZ Bottom Center (P)"
+    },
+    {
+      "anchor": {
+        "x": 6.236512455516015,
+        "y": 2.1360023724792403
+      },
+      "prevControl": {
+        "x": 6.258030842230132,
+        "y": 3.0074970344009486
+      },
+      "nextControl": {
+        "x": 6.200408475809454,
+        "y": 0.6737911943635129
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.60111506524318,
+        "y": 0.6727520759193351
+      },
+      "prevControl": {
+        "x": 5.97829181494662,
+        "y": 0.6297153024911029
+      },
+      "nextControl": {
+        "x": 3.4004720478367103,
+        "y": 0.7102721702132873
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.9645077105575333,
+        "y": 2.5448517200474496
+      },
+      "prevControl": {
+        "x": 2.6644602609727146,
+        "y": 0.6835112692763936
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Tower Right 1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0896445131375578,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 2.2812982998454565,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.75,
+    "maxAcceleration": 6.75,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": "To Tower",
+  "idealStartingState": {
+    "velocity": 3.5,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
