@@ -80,7 +80,7 @@ public interface Settings {
 
         public final double RAMP_RATE = 50.0;
 
-        public final double MOTOR_VOLTAGE = 12.0;
+        public final double MOTOR_VOLTAGE = 1.0; //TODO: set to 12
     }
 
     public interface Handoff {

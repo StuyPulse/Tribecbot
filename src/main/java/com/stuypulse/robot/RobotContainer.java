@@ -19,6 +19,7 @@ import com.stuypulse.robot.commands.climberhopper.ClimberDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideDown;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
 import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
+import com.stuypulse.robot.commands.climberhopper.ClimberStop;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
 import com.stuypulse.robot.commands.climberhopper.ClimberUp;
 import com.stuypulse.robot.commands.climberhopper.HopperDown;
@@ -242,23 +243,18 @@ public class RobotContainer {
                 .whileTrue(
                         new SwerveClimbAlign(driver).alongWith(new ClimberUp()).andThen(new SwerveXMode()))
                 .onFalse(new ClimberDown());
+                
         if (Settings.DEBUG_MODE) {
-            // Climber Up
-            driver.getRightBumper()
-                    .whileTrue(new ClimberUp());
-
-            // Climber Down
-            driver.getLeftBumper()
-                    .onTrue(new ClimberDown());
-        } else {
+        //TODO: remove after testing
             // Climber Up
             driver.getRightBumper()
                     .whileTrue(new ClimberUp())
-                    .onFalse(new HopperDown());
+                    .onFalse(new ClimberStop());
 
             // Climber Down
             driver.getLeftBumper()
-                    .onTrue(new ClimberDown());
+                    .onTrue(new ClimberDown())
+                    .onFalse(new ClimberStop());
         }
 
         // Left Corner Shoot
