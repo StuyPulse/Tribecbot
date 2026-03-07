@@ -38,6 +38,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Visualizers/ClimberHopper": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Visualizers/Hood": {
         "window": {
           "visible": true
@@ -59,6 +64,9 @@
     },
     "transitory": {
       "SmartDashboard": {
+        "ClimberHopper": {
+          "open": true
+        },
         "HoodedShooter": {
           "Hood": {
             "open": true

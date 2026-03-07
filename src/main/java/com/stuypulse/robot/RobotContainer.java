@@ -223,7 +223,7 @@ public class RobotContainer {
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
-            .onFalse(new SetIMUMode(0));   
+            .onFalse(new SetIMUMode(0));
         
         // Climb Align
         driver.getTopButton()

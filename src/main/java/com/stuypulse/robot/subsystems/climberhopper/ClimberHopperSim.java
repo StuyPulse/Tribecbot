@@ -97,7 +97,9 @@ public class ClimberHopperSim extends ClimberHopper {
         SmartDashboard.putNumber("ClimberHopper/Voltage", voltage);
         SmartDashboard.putNumber("ClimberHopper/Current", sim.getCurrentDrawAmps());
         SmartDashboard.putBoolean("ClimberHopper/Stalling", getStalling());
+        SmartDashboard.putBoolean("ClimberHopper/At Target Height", atTargetHeight());
         SmartDashboard.putNumber("ClimberHopper/Height", getCurrentHeight());
+        // SmartDashboard.putNumber("ClimberHopper/Num of rotations to reach top", Settings.ClimberHopper.NUM_ROTATIONS_TO_REACH_TOP);
         visualizer.update(getCurrentHeight());
 
         sim.update(0.02);

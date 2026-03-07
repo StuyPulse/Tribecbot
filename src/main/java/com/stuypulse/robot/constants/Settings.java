@@ -43,18 +43,19 @@ public interface Settings {
         public final double MIN_HEIGHT_METERS = 0.0;
 
         // public final double MIN_ROTATIONS = -0.1;
-        public final double MAX_HEIGHT_METERS = 2.884;
+        public final double MAX_HEIGHT_METERS = 0.25;
         // public final double MAX_ROTATIONS = 20;
 
         public final double MASS_KG = 1.0;
 
+        public final double DRUM_RADIUS_METERS = Units.inchesToMeters(0.75);
         // public final double NUM_ROTATIONS_TO_REACH_TOP = MAX_ROTATIONS - MIN_ROTATIONS;
-        public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13.0); // TODO: verify this 
+        public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (2.0 * Math.PI * DRUM_RADIUS_METERS); // TODO: verify this 
         public final double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
         public final double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60.0;
 
 
-        public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
+        // public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
         /* CONSTANTS */
 
         public final double CLIMBER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
