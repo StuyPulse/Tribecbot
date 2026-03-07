@@ -45,7 +45,7 @@ public class InterpolationCalculator {
         }
 
         ferryingDistanceRPMInterpolator = new InterpolatingDoubleTreeMap();
-        for(double[] pair: FerryRPMInterpolation.distanceRPMInterpolationValues) {
+        for(double[] pair: FerryRPMInterpolation.ferryDistanceRPMInterpolation) {
             ferryingDistanceRPMInterpolator.put(pair[0], pair[1]);
         }
     }
