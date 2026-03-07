@@ -45,8 +45,8 @@ public class ClimberHopperImpl extends ClimberHopper {
             .withSensorToMechanismRatio(Settings.ClimberHopper.GEAR_RATIO)
             .withSoftLimits(
                 false, false,
-                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM + Settings.ClimberHopper.NUM_ROTATIONS_TO_REACH_TOP,
-                Settings.ClimberHopper.ROTATIONS_AT_BOTTOM);
+                Settings.ClimberHopper.MIN_ROTATIONS,
+                Settings.ClimberHopper.MAX_ROTATIONS);
 
         motor = new TalonFX(Ports.ClimberHopper.CLIMBER_HOPPER, Ports.CANIVORE);
         climberHopperConfig.configure(motor);
@@ -68,7 +68,7 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     @Override
     public double getCurrentHeight() {
-        return this.motor.getPosition().getValueAsDouble() * Settings.ClimberHopper.POSITION_CONVERSION_FACTOR;
+        return this.motor.getPosition().getValueAsDouble();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ClimberHopperImpl extends ClimberHopper {
 
     @Override
     public boolean atTargetHeight() {
-        return isWithinTolerance(Settings.ClimberHopper.HEIGHT_TOLERANCE_METERS);
+        return isWithinTolerance(Settings.ClimberHopper.TOLERANCE_ROTATIONS);
     }
     
     public void resetPostionUpper() {
@@ -100,6 +100,7 @@ public class ClimberHopperImpl extends ClimberHopper {
                 if (getState() == ClimberHopperState.CLIMBER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
                 else if (getState() == ClimberHopperState.CLIMBER_UP) voltage = Settings.ClimberHopper.MOTOR_VOLTAGE;
                 else if (getState() == ClimberHopperState.HOPPER_DOWN) voltage = -Settings.ClimberHopper.MOTOR_VOLTAGE;
+                else if (getState() == ClimberHopperState.STOP) voltage = 0;
             } else {
                 voltage = 0;
             }

@@ -17,11 +17,11 @@ public abstract class ClimberHopper extends SubsystemBase {
     private static final ClimberHopper instance;
     
     static {
-        if (Robot.isReal()) {
+        // if (Robot.isReal()) {
             instance = new ClimberHopperImpl();
-        } else {
-            instance = new ClimberHopperSim();
-        }
+        // } else {
+        //    // instance = new ClimberHopperSim();
+        // }
     }
 
     public static ClimberHopper getInstance() {
@@ -29,14 +29,14 @@ public abstract class ClimberHopper extends SubsystemBase {
     }
 
     public enum ClimberHopperState {
-        // CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_ROTATIONS),
-        // CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
-        // // HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_ROTATIONS),
-        // HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN_ROTATIONS),
-        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_HEIGHT_METERS),
-        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_HEIGHT_METERS),
+        CLIMBER_UP(Settings.ClimberHopper.CLIMBER_UP_ROTATIONS),
+        CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
+        HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_ROTATIONS),
+        HOPPER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_ROTATIONS),
+        // CLIMBER_UP(Settings.ClimberHopper.),
+        // CLIMBER_DOWN(Settings.ClimberHopper.CLIMBER_DOWN_HEIGHT_METERS),
         // HOPPER_UP(Settings.ClimberHopper.HOPPER_UP_ROTATIONS),
-        HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN_HEIGHT_METERS),
+        // HOPPER_DOWN(Settings.ClimberHopper.HOPPER_DOWN_HEIGHT_METERS),
         STOP(0.0);
     
         private double targetHeight;
