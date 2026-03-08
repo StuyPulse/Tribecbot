@@ -32,8 +32,8 @@ public class ShooterImpl extends Shooter {
     private final TalonFX shooterLeader;
     private final TalonFX shooterFollower;
 
-    // private final VelocityVoltage shooterController;
-    private final VelocityTorqueCurrentFOC shooterController;
+    private final VelocityVoltage shooterController;
+    // private final VelocityTorqueCurrentFOC shooterController;
     private final Follower follower;
 
     private Optional<Double> voltageOverride;
@@ -61,8 +61,8 @@ public class ShooterImpl extends Shooter {
         shooterConfig.configure(shooterLeader);
         shooterConfig.configure(shooterFollower);
 
-        // shooterController = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE).withEnableFOC(true);
-        shooterController = new VelocityTorqueCurrentFOC(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE);
+        shooterController = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE).withEnableFOC(true);
+        // shooterController = new VelocityTorqueCurrentFOC(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE);
         follower = new Follower(Ports.Superstructure.Shooter.MOTOR_LEAD, MotorAlignmentValue.Opposed);
 
         shooterFollower.setControl(follower);

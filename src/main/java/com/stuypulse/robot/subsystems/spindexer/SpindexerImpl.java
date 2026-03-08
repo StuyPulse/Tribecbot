@@ -98,9 +98,7 @@ public class SpindexerImpl extends Spindexer {
                 leadMotor.setVoltage(voltageOverride.get());
             } else {
                 /**
-                 * THE FOLLOWING CODE IS NOT A MISTAKE
-                 * 
-                 * WHEN STOPPING THE 
+                 * THE FOLLOWING LINE IS NOT A MISTAKE
                  */
                 if (atTolerance() && getState() == SpindexerState.STOP) {
                     leadMotor.stopMotor();

@@ -155,10 +155,10 @@ public interface Settings {
         public interface RPMInterpolation{
             double[][] distanceRPMInterpolationValues = {
                 {1.22, 2700.0},                                         //BLAY-APPROVED, LOCKED IN
-                {2.15, 2900.0},                                         //BLAY-APPROVED
+                {2.15, 2930.0},                                         //BLAY-APPROVED
                 {3.38, 3200},                                           //BLAY-APPROVED
                 {4.43, 3550.0},                                         //BLAY-APPROVED
-                {5.66, 3900.0}                                          //KEVIN-APPROVED
+                {5.66, 3850.0}                                          //KEVIN-APPROVED
             };
         }
 
@@ -174,10 +174,10 @@ public interface Settings {
 
         public interface FerryRPMInterpolation {
             double[][] ferryDistanceRPMInterpolation = {
-                {5.16, 3800.0},
-                {6.94, 4050.0},
-                {7.87, 4300.0},
-                {9.77, 4550.0}
+                {5.16, 3500.0},
+                {6.94, 3700.0},
+                {7.87, 4000.0},
+                {9.77, 4500.0}
             };
         }
 

@@ -101,7 +101,7 @@ public class RobotContainer {
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
-        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", false);
+        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
         SmartBoolean RIGHT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Right Limelight Is Enabled", true);
     }
 
@@ -206,7 +206,7 @@ public class RobotContainer {
         driver.getLeftBumper()
             .onTrue(new IntakeStopRollers());
 
-            // driver.getRightBumper()
+        // driver.getRightBumper()
         //     .whileTrue(new IntakeOuttake())
         //     .onFalse(new IntakeRunRollers());
 
@@ -233,7 +233,7 @@ public class RobotContainer {
                 .alongWith(new SpindexerRun()))
             .onFalse(new SuperstructureFerry().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
         
-            // FOTM
+        // FOTM
         // driver.getDPadRight()
         //     .onTrue(new IntakeRunRollers())
         //     .onTrue(new ConditionalCommand(

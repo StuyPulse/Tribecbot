@@ -506,6 +506,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         SmartDashboard.putNumber("Superstructure/Turret/Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
         SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Hub", turretPose.getTranslation().getDistance(Field.hubCenter.getTranslation()));
+        SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Ferry Zone", turretPose.getTranslation().getDistance(Field.getFerryZonePose(pose.getTranslation()).getTranslation()));
 
         SmartDashboard.putNumber("Swerve/Pose/X", pose.getX());
         SmartDashboard.putNumber("Swerve/Pose/Y", pose.getY());

@@ -206,7 +206,7 @@ public class TurretImpl extends Turret {
             SmartDashboard.putNumber("Superstructure/Turret/Voltage", turretMotor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Turret/Stator Current", turretMotor.getStatorCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Turret/Supply Current", turretMotor.getSupplyCurrent().getValueAsDouble());
-
+            
             SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetDeg);
 
             SmartDashboard.putNumber("Current Draws/Turret (amps)", turretMotor.getSupplyCurrent().getValueAsDouble());
