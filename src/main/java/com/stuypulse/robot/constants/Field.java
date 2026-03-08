@@ -31,7 +31,7 @@ public interface Field {
     double LENGTH = Units.inchesToMeters(651.200);
 
     public static final double trenchHopperTolerance = Units.inchesToMeters(50);
-    public static final double trenchHoodTolerance = Units.inchesToMeters(10);
+    public static final double trenchHoodTolerance = Units.inchesToMeters(20);
 
     // Alliance relative hub center coordinates
     public static final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
@@ -61,8 +61,8 @@ public interface Field {
     }
 
     // 1.0 meters from driverstation wall and field wall
-    public final Pose2d leftFerryZone = new Pose2d(1.0, WIDTH - 1.0, new Rotation2d());
-    public final Pose2d rightFerryZone = new Pose2d(1.0, 1.0, new Rotation2d());
+    public final Pose2d leftFerryZone = new Pose2d(Units.inchesToMeters(31.5), Units.inchesToMeters(WIDTH - 34.5), new Rotation2d());
+    public final Pose2d rightFerryZone = new Pose2d(Units.inchesToMeters(20.75), Units.inchesToMeters(76), new Rotation2d());
     // public final Pose2d rightFerryZone = new Pose2d(1.0 + Units.feetToMeters(6), 1.0 + Units.feetToMeters(3), new Rotation2d()); //TODO: GET ACTUAL POS
 
     public static Pose2d getFerryZonePose(Translation2d robot) { 

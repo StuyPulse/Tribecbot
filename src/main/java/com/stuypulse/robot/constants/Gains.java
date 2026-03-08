@@ -31,13 +31,23 @@ public class Gains {
 
     public interface Superstructure {
         public interface Shooter {
-            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 0.45);
+
+            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 10.0);
             SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
             SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
-            SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
-            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);//0.11650);
+            SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 10.32);
+            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.0835);
             SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
+
+            // BELOW ARE VELOCITY PID AND VOLTAGEBASED FF GAINS 
+            // SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 0.45);
+            // SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
+            // SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
+
+            // SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
+            // SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);//0.11650);
+            // SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
 
             // double kP = 0.45;
             // double kI = 0.0;

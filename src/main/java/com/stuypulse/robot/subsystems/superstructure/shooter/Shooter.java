@@ -40,7 +40,8 @@ public abstract class Shooter extends SubsystemBase {
         LEFT_CORNER,
         RIGHT_CORNER,  
         INTERPOLATION,
-        SOTM;
+        SOTM,
+        FOTM;
     }
 
     public Shooter() {
@@ -66,6 +67,7 @@ public abstract class Shooter extends SubsystemBase {
             case RIGHT_CORNER -> Settings.Superstructure.Shooter.RPM.RIGHT_CORNER;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetRPM();
             case SOTM -> SOTMCalculator.calculateShooterRPMSOTM();
+            case FOTM -> SOTMCalculator.calculateShooterRPMFOTM();
         };
     }
 

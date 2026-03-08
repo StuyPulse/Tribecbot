@@ -156,24 +156,24 @@ public class IntakeImpl extends Intake {
     @Override
     public void periodic() {
         super.periodic();
-        PivotState state = getPivotState();
+        PivotState pivotState = getPivotState();
 
         if (EnabledSubsystems.INTAKE.get()) {
             if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
                 // PIVOT
-                if (state == PivotState.DEPLOY
+                if (pivotState == PivotState.DEPLOY
                         && getPivotAngle().getDegrees() <= Settings.Intake.ARBITRARY_VOLTAGE_THRESHOLD.getDegrees()) {
                     pivot.setControl(new VoltageOut(-Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
-                } else if (state == PivotState.DIGESTION_DOWN || state == PivotState.DIGESTION_UP) {
-                    pivot.setControl(new MotionMagicVoltage(state.getTargetAngle().getRotations())); //TODO: verify motion profile works
+                } else if (pivotState == PivotState.DIGESTION_DOWN || pivotState == PivotState.DIGESTION_UP) {
+                    pivot.setControl(new MotionMagicVoltage(pivotState.getTargetAngle().getRotations())); //TODO: verify motion profile works
                 } else {
-                    pivot.setControl(new PositionVoltage(state.getTargetAngle().getRotations()));
+                    pivot.setControl(new PositionVoltage(pivotState.getTargetAngle().getRotations()));
                 }
 
                 // ROLLERS
-                if (getPivotState() == PivotState.DEPLOY
+                if (pivotState == PivotState.DEPLOY
                         && getPivotAngle().getDegrees() <= Settings.Intake.THRESHOLD_TO_START_ROLLERS.getDegrees()) {
                     rollerLeader.setControl(rollerController.withOutput(getRollerState().getTargetDutyCycle()));
                 } else {

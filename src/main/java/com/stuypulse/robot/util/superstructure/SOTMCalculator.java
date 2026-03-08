@@ -22,11 +22,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SOTMCalculator {
     public static final double g = 9.81;
 
-    public static SOTMSolution sol;
+    public static SOTMSolution hubSol;
+    public static SOTMSolution ferrySol;
 
     private static FieldObject2d hubPose2d;
     private static FieldObject2d virtualHubPose2d;
     private static FieldObject2d futureTurretPose2d;
+
+    private static FieldObject2d ferryPose2d;
+    private static FieldObject2d virtualFerryPose2d;
 
     public record SOTMSolution(
         Rotation2d targetHoodAngle,
@@ -37,11 +41,19 @@ public class SOTMCalculator {
     }
 
     static {
-        sol = new SOTMSolution(
+        hubSol = new SOTMSolution(
             Hood.getInstance().getAngle(),
             Turret.getInstance().getAngle(),
             Shooter.getInstance().getRPM(), 
             Field.getHubPose(), 
+            0.0
+        );
+
+        ferrySol = new SOTMSolution(
+            Hood.getInstance().getAngle(),
+            Turret.getInstance().getAngle(),
+            Shooter.getInstance().getRPM(), 
+            Field.rightFerryZone, 
             0.0
         );
 
@@ -140,13 +152,13 @@ public class SOTMCalculator {
         );
     }
 
-
     public static void updateSOTMSolution() {
 
         CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
         
         Pose2d robotPose = swerve.getPose();
         Pose2d hubPose = Field.getHubPose();
+        Pose2d ferryPose = Field.getFerryZonePose(robotPose.getTranslation());
         
         ChassisSpeeds robotRelativeSpeeds = swerve.getChassisSpeeds();
         ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
@@ -180,7 +192,7 @@ public class SOTMCalculator {
         );
         
 
-        SOTMSolution solution = solveShootOnTheMove(
+        SOTMSolution hubSolution = solveShootOnTheMove(
             futureTurretPose,
             hubPose,
             fieldRelativeSpeeds,
@@ -188,28 +200,57 @@ public class SOTMCalculator {
             Settings.Superstructure.SOTM.TIME_TOLERANCE
         );
 
-        sol = solution;
+        SOTMSolution ferrySolution = solveShootOnTheMove(
+            futureTurretPose,
+            ferryPose,
+            fieldRelativeSpeeds,
+            Settings.Superstructure.SOTM.MAX_ITERATIONS,
+            Settings.Superstructure.SOTM.TIME_TOLERANCE
+        );
 
-        hubPose2d.setPose(Robot.isBlue() ? hubPose : Field.transformToOppositeAlliance(hubPose));
-        virtualHubPose2d.setPose((Robot.isBlue() ? sol.virtualPose() : Field.transformToOppositeAlliance(sol.virtualPose())));
+        hubSol = hubSolution;
+        ferrySol = ferrySolution;
+
+        ferryPose2d.setPose(Robot.isBlue() ? ferryPose : Field.transformToOppositeAlliance(hubPose));
+        virtualFerryPose2d.setPose((Robot.isBlue() ? ferrySol.virtualPose() : Field.transformToOppositeAlliance(ferrySol.virtualPose())));
+
+        // hubPose2d.setPose(Robot.isBlue() ? hubPose : Field.transformToOppositeAlliance(hubPose));
+        // virtualHubPose2d.setPose((Robot.isBlue() ? hubSol.virtualPose() : Field.transformToOppositeAlliance(hubSol.virtualPose())));
         futureTurretPose2d.setPose((Robot.isBlue() ? futureTurretPose : Field.transformToOppositeAlliance(futureTurretPose)));
   
   
-        SmartDashboard.putNumber("Superstructure/SOTM/calculated turret angle", sol.targetTurretAngle().getDegrees());
-        SmartDashboard.putNumber("Superstructure/SOTM/calculated hood angle", sol.targetHoodAngle().getDegrees());
-        SmartDashboard.putNumber("Superstructure/SOTM/calculated flight time", sol.flightTime());
-        SmartDashboard.putNumber("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated turret angle", hubSol.targetTurretAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated hood angle", hubSol.targetHoodAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/SOTM/calculated flight time", hubSol.flightTime());
+        SmartDashboard.putNumber("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(hubSol.virtualPose().getTranslation()));
+
+        SmartDashboard.putNumber("Superstructure/FOTM/calculated turret angle", ferrySol.targetTurretAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/FOTM/calculated hood angle", ferrySol.targetHoodAngle().getDegrees());
+        SmartDashboard.putNumber("Superstructure/FOTM/calculated flight time", ferrySol.flightTime());
+        SmartDashboard.putNumber("Superstructure/FOTM/turret dist to ferry pose", futureTurretPose.getTranslation().getDistance(ferrySol.virtualPose().getTranslation()));
     }
 
     public static Rotation2d calculateHoodAngleSOTM() {
-        return sol.targetHoodAngle();
+        return hubSol.targetHoodAngle();
     }
     
     public static Rotation2d calculateTurretAngleSOTM() {
-        return sol.targetTurretAngle();
+        return hubSol.targetTurretAngle();
     }
     
     public static double calculateShooterRPMSOTM() {
-        return sol.targetShooterRPM();
+        return hubSol.targetShooterRPM();
+    }
+
+    public static Rotation2d calculateHoodAngleFOTM() {
+        return ferrySol.targetHoodAngle();
+    }
+    
+    public static Rotation2d calculateTurretAngleFOTM() {
+        return ferrySol.targetTurretAngle();
+    }
+    
+    public static double calculateShooterRPMFOTM() {
+        return ferrySol.targetShooterRPM();
     }
 }

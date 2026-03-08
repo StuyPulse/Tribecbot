@@ -42,16 +42,6 @@
         "window": {
           "visible": true
         }
-      },
-      "/SmartDashboard/Visualizers/Hood": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Visualizers/Turret": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
@@ -79,10 +69,14 @@
         "Intake": {
           "open": true
         },
+        "States": {
+          "open": true
+        },
         "Superstructure": {
           "Hood": {
             "open": true
-          }
+          },
+          "open": true
         },
         "Swerve": {
           "open": true

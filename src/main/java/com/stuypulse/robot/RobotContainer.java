@@ -27,6 +27,7 @@ import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.ZeroHoodEncoderAtUpperHardstop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeDigestion;
+import com.stuypulse.robot.commands.intake.IntakeOuttake;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
@@ -36,6 +37,7 @@ import com.stuypulse.robot.commands.spindexer.SpindexerConditionalCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureDefaultCommand;
+import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFerry;
 import com.stuypulse.robot.commands.superstructure.SuperstructureInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureKB;
@@ -160,7 +162,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Scoring Routine
-        driver.getTopButton()
+        driver.getBottomButton()
             .whileTrue(new SwerveXMode())
                 .onTrue(new IntakeRunRollers())
                 .whileTrue(new SuperstructureShoot()
@@ -173,7 +175,7 @@ public class RobotContainer {
                         .alongWith(new HandoffStop()));
 
         // Interpolation-based Scoring
-        driver.getBottomButton()
+        driver.getTopButton()
             .whileTrue(new SwerveXMode())
                 .onTrue(new IntakeRunRollers())
                 .whileTrue(new SuperstructureInterpolation()
@@ -191,8 +193,9 @@ public class RobotContainer {
 
         // Intake Deploy
         driver.getRightTriggerButton()
-            .onTrue(new IntakeDeploy());
-
+        .onTrue(new IntakeDeploy());
+        // .onTrue(new SuperstructureShoot()); // TODO: put shooter in shoot --> turn off sotm
+        
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
@@ -203,29 +206,45 @@ public class RobotContainer {
         driver.getLeftBumper()
             .onTrue(new IntakeStopRollers());
 
-        // SOTM
-        // should be right menu
-        driver.getRightButton()
-                .whileTrue(new SuperstructureSOTM().onlyIf(() -> !swerve.isUnderTrench())
-                        .andThen(new WaitUntilCommand(superstructure::atTolerance))
-                        .andThen(new HandoffConditionalCommand().onlyIf(superstructure::atTolerance)
-                                .alongWith(new WaitUntilCommand(handoff::atTolerance))
-                                .andThen(new SpindexerConditionalCommand().onlyIf(() -> handoff.atTolerance() && superstructure.atTolerance()))))
-                .onFalse(new SpindexerStop()
-                        .alongWith(new SuperstructureStow())
-                        .alongWith(new HandoffStop()));
+            // driver.getRightBumper()
+        //     .whileTrue(new IntakeOuttake())
+        //     .onFalse(new IntakeRunRollers());
 
-        // Scoring SOTM
-        // driver.getRightMenuButton()
+        // SOTM
+        driver.getRightMenuButton()
+            .onTrue(new IntakeRunRollers())
+            .onTrue(new ConditionalCommand(
+                new ParallelCommandGroup(
+                    new SuperstructureInterpolation(),
+                    new SpindexerStop(),
+                    new HandoffStop()
+                ),
+                new SuperstructureSOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+                    .andThen(new SpindexerRun()).alongWith(new HandoffRun()),
+                () -> superstructure.getState() == SuperstructureState.SOTM
+            ));
+
+        // Ferrying In Place
+        driver.getDPadRight()
+            .whileTrue(new SwerveXMode())
+            .whileTrue(new SuperstructureFerry().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+                .andThen(new HandoffRun())
+                .andThen(new WaitUntilCommand(handoff::atTolerance))
+                .alongWith(new SpindexerRun()))
+            .onFalse(new SuperstructureFerry().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+        
+            // FOTM
+        // driver.getDPadRight()
+        //     .onTrue(new IntakeRunRollers())
         //     .onTrue(new ConditionalCommand(
         //         new ParallelCommandGroup(
         //             new SuperstructureInterpolation(),
         //             new SpindexerStop(),
         //             new HandoffStop()
         //         ),
-        //         new SuperstructureSOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+        //         new SuperstructureFOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
         //             .andThen(new SpindexerRun()).alongWith(new HandoffRun()),
-        //         () -> superstructure.getState() == SuperstructureState.SOTM
+        //         () -> superstructure.getState() == SuperstructureState.FOTM
         //     ));
 
         // digestion by moving the pivot
@@ -304,12 +323,6 @@ public class RobotContainer {
         //     .onTrue(new ResetLimelightIMU())
         //     .onFalse(new SetIMUMode(0)); 
 
-        // // Ferrying In Place
-        // driver.getDPadRight()
-        //     .whileTrue(new SwerveXMode())
-        //     .whileTrue(new SuperstructureFerry().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-        //         .andThen(new SpindexerRun()).alongWith(new HandoffRun()))
-        //     .onFalse(new SuperstructureFerry().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
 
         // /** 
         // // Ferrying SOTM

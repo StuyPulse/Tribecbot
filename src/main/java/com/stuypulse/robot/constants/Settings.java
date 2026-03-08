@@ -144,39 +144,31 @@ public interface Settings {
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
-                {1.22, Units.degreesToRadians(20)},             //AGAINST THE HUB
-                {1.43, Units.degreesToRadians(21.0)},           //meters, radians
-                {2.15, Units.degreesToRadians(23.23)},          //KEVIN-APPROVED
-                {2.864967, Units.degreesToRadians(27)},         //KEVIN-APPROVED
-                // {3.38, Units.degreesToRadians(37.5)},                
-                {3.65, Units.degreesToRadians(28.0)},           //KEVIN-APPROVED
-                {4.43, Units.degreesToRadians(33.5)},           //KEVIN-APPROVED
+                {1.22, Units.degreesToRadians(22.5)},           //BLAY-APPROVED (ALMOST AGAINST HUB), LOCKED IN
+                {2.15, Units.degreesToRadians(27)},             //BLAY-APPROVED
+                {3.38, Units.degreesToRadians(37)},             //BLAY-APPROVED   
+                {4.43, Units.degreesToRadians(39)},             //BLAY-APPROVED
                 {5.66, Units.degreesToRadians(39)}              //KEVIN-APPROVED
             };
         }
 
         public interface RPMInterpolation{
             double[][] distanceRPMInterpolationValues = {
-                {1.22, 2950.0},                                         //KEVIN-APPROVED
-                {1.43, 3000.0}, // meters, RPM 
-                {2.15, 3050.0},                                         //KEVIN-APPROVED
-                {2.864967, 3150},                                       //KEVIN-APPROVED
-                //{3.38, 3200}
-                {3.65, 3400.0},                                         //KEVIN-APPROVED
-                {4.43, 3600.0},                                         //KEVIN-APPROVED
+                {1.22, 2700.0},                                         //BLAY-APPROVED, LOCKED IN
+                {2.15, 2900.0},                                         //BLAY-APPROVED
+                {3.38, 3200},                                           //BLAY-APPROVED
+                {4.43, 3550.0},                                         //BLAY-APPROVED
                 {5.66, 3900.0}                                          //KEVIN-APPROVED
             };
         }
 
         public interface TOFInterpolation{
             double[][] distanceTOFInterpolationValues = {
-                {1.22, 1.115}, // seconds
-                // {1.43,},
+                {1.22, 0.965}, // seconds
                 // {2.15, },
-                {2.864967, 1.205},
-                {3.65, 1.32},
-                // {4.43, },
-                {5.66, 1.29}  
+                {3.38, 1.32},  
+                {4.43, 1.125},
+                {5.66, 1.29}
             };
         }
 
@@ -286,7 +278,7 @@ public interface Settings {
                 public final Rotation2d MIN = Rotation2d.fromDegrees(20.0);
                 public final Rotation2d MAX = Rotation2d.fromDegrees(40.0);
 
-                public final Rotation2d STOW = Rotation2d.fromDegrees(11.0);
+                public final Rotation2d STOW = Rotation2d.fromDegrees(21.0);
                 public final Rotation2d KB = Rotation2d.fromDegrees(12.0);
                 public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(10.0);
                 public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(10.0);
@@ -357,7 +349,9 @@ public interface Settings {
             public final double MAX_VELOCITY_SOTM_M_PER_S = 1.00; 
 
             public final double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
-            public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(400.0);
+            public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(300.0);
+            public final double MAX_ANGULAR_VEL_SOTM_RAD_PER_S = Units.degreesToRadians(75.0);
+
             public final double MAX_ANGULAR_ACCEL_RAD_PER_S_SQUARED = Units.degreesToRadians(900.0);
 
             public final PathConstraints DEFAULT_CONSTRAINTS =

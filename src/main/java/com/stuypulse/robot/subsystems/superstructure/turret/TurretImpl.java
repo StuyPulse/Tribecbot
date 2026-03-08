@@ -31,13 +31,15 @@ public class TurretImpl extends Turret {
     private final Motors.CANCoderConfig encoder17tConfig;
     private final Motors.CANCoderConfig encoder18tConfig;
 
-    private final TalonFX motor;
+    private final TalonFX turretMotor;
     private final CANcoder encoder17t;
     private final CANcoder encoder18t;
 
     private boolean hasUsedAbsoluteEncoder;
     private Optional<Double> voltageOverride;
     private final PositionVoltage controller;
+
+    private boolean isWrapping;
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
@@ -74,11 +76,11 @@ public class TurretImpl extends Turret {
             .withMagnetOffset(Settings.Superstructure.Turret.Encoder18t.OFFSET.getRotations())
             .withAbsoluteSensorDiscontinuityPoint(1.0);
 
-        motor = new TalonFX(Ports.Superstructure.Turret.MOTOR, Ports.RIO);
+        turretMotor = new TalonFX(Ports.Superstructure.Turret.MOTOR, Ports.RIO);
         encoder17t = new CANcoder(Ports.Superstructure.Turret.ENCODER17T, Ports.RIO);
         encoder18t = new CANcoder(Ports.Superstructure.Turret.ENCODER18T, Ports.RIO);
 
-        turretConfig.configure(motor);
+        turretConfig.configure(turretMotor);
         encoder17tConfig.configure(encoder17t);
         encoder18tConfig.configure(encoder18t);
 
@@ -121,12 +123,16 @@ public class TurretImpl extends Turret {
 
     public void seedTurret() {
         // motor.setPosition(0); //TODO: SEED USING CRT INSTEAD OF TS, TS IS TEMP
-        motor.setPosition(getVectorSpaceAngle().getRotations());
+        turretMotor.setPosition(getVectorSpaceAngle().getRotations());
+    }
+
+    public boolean isWrapping() {
+        return isWrapping;
     }
     
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRotations(motor.getPosition().getValueAsDouble());
+        return Rotation2d.fromRotations(turretMotor.getPosition().getValueAsDouble());
     }
     
     @Override
@@ -153,7 +159,7 @@ public class TurretImpl extends Turret {
     public void periodic() {
         super.periodic();
 
-        turretConfig.updateGainsConfig(motor, 1, 
+        turretConfig.updateGainsConfig(turretMotor, 1, 
         Gains.Superstructure.Turret.slot1.kP, 
         Gains.Superstructure.Turret.slot1.kI,
         Gains.Superstructure.Turret.slot1.kD,
@@ -170,8 +176,8 @@ public class TurretImpl extends Turret {
         double currentAngle = getAngle().getDegrees();
         double actualTargetDeg = currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
 
-        boolean isWrapping =    Math.abs(actualTargetDeg - currentAngle) > 
-                                Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
+        isWrapping =    Math.abs(actualTargetDeg - currentAngle) > 
+                        Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
         int slot = 0;
 
         if(isWrapping) {
@@ -180,30 +186,30 @@ public class TurretImpl extends Turret {
 
         if (EnabledSubsystems.TURRET.get()) {
             if (voltageOverride.isPresent()) {
-                motor.setVoltage(voltageOverride.get());
+                turretMotor.setVoltage(voltageOverride.get());
             } else {
-                motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withSlot(slot));
+                turretMotor.setControl(controller.withPosition(actualTargetDeg / 360.0).withSlot(slot));
             }
         } else {
-            motor.stopMotor();
+            turretMotor.stopMotor();
         }
 
         if (Settings.DEBUG_MODE) {
 
-            SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (Rot)", motor.getPosition().getValueAsDouble() * 360.0);
-            SmartDashboard.putNumber("Superstructure/Turret/Closed Loop Error (deg)", motor.getClosedLoopError().getValueAsDouble() * 360.0);
+            SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (Rot)", turretMotor.getPosition().getValueAsDouble() * 360.0);
+            SmartDashboard.putNumber("Superstructure/Turret/Closed Loop Error (deg)", turretMotor.getClosedLoopError().getValueAsDouble() * 360.0);
 
             SmartDashboard.putNumber("Superstructure/Turret/Encoder18t Abs Position (Rot)", encoder18t.getAbsolutePosition().getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Turret/Encoder17t Abs Position (Rot)", encoder17t.getAbsolutePosition().getValueAsDouble());
             // SmartDashboard.putNumber("Superstructure/Turret/Vector Space Position (Deg)", getVectorSpaceAngle().getDegrees());
 
-            SmartDashboard.putNumber("Superstructure/Turret/Voltage", motor.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Turret/Stator Current", motor.getStatorCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Turret/Supply Current", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Voltage", turretMotor.getMotorVoltage().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Stator Current", turretMotor.getStatorCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Superstructure/Turret/Supply Current", turretMotor.getSupplyCurrent().getValueAsDouble());
 
             SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetDeg);
 
-            SmartDashboard.putNumber("Current Draws/Turret (amps)", motor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putNumber("Current Draws/Turret (amps)", turretMotor.getSupplyCurrent().getValueAsDouble());
         }
     }
     
@@ -218,9 +224,9 @@ public class TurretImpl extends Turret {
                 6,
                 "Turret",
                 voltage -> setVoltageOverride(Optional.of(voltage)),
-                () -> this.motor.getPosition().getValueAsDouble(),
-                () -> this.motor.getVelocity().getValueAsDouble(),
-                () -> this.motor.getMotorVoltage().getValueAsDouble(),
+                () -> this.turretMotor.getPosition().getValueAsDouble(),
+                () -> this.turretMotor.getVelocity().getValueAsDouble(),
+                () -> this.turretMotor.getMotorVoltage().getValueAsDouble(),
                 getInstance());
     }
 }

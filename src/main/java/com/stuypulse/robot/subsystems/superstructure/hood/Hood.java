@@ -47,6 +47,7 @@ public abstract class Hood extends SubsystemBase{
         RIGHT_CORNER,
         INTERPOLATION,
         SOTM,
+        FOTM,
         ANALOG,
         IDLE;
     }
@@ -77,6 +78,7 @@ public abstract class Hood extends SubsystemBase{
             case RIGHT_CORNER -> Settings.Superstructure.Hood.Angles.RIGHT_CORNER;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetHoodAngle();
             case SOTM -> SOTMCalculator.calculateHoodAngleSOTM();
+            case FOTM -> SOTMCalculator.calculateHoodAngleFOTM();
             case ANALOG -> hoodAnalogToOutput();
             case IDLE -> getAngle();
         };

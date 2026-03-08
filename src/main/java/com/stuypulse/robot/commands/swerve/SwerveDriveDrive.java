@@ -17,22 +17,31 @@ import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 
 import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
 import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Swerve;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveDriveDrive extends Command {
 
     private final CommandSwerveDrivetrain swerve;
+    private final Superstructure superstructure;
 
     private final Gamepad driver;
+
+    private double maxVelocity;
 
     private final VStream speed;
     private final IStream turn;
 
     public SwerveDriveDrive(Gamepad driver) {
         swerve = CommandSwerveDrivetrain.getInstance();
+        superstructure = Superstructure.getInstance();
 
         speed = VStream.create(this::getDriverInputAsVelocity)
         .filtered(
@@ -63,10 +72,20 @@ public class SwerveDriveDrive extends Command {
 
     @Override
     public void execute() {
+        Vector2D speedVector = speed.get();
+        double angularVel = turn.get();
+
+        if (speedVector.magnitude() > 0.05 && superstructure.getState() == SuperstructureState.SOTM) {
+            speedVector = speedVector.normalize().mul(Settings.Swerve.Constraints.MAX_VELOCITY_SOTM_M_PER_S);
+            // angularVel = (angularVel / Swerve.Constraints.MAX_ANGULAR_VEL_RAD_PER_S) * Settings.Swerve.Constraints.MAX_ANGULAR_VEL_SOTM_RAD_PER_S;
+        }
+
+        SmartDashboard.putNumber("Swerve/SOTM velocity x", speedVector.x * Settings.Swerve.Constraints.MAX_VELOCITY_SOTM_M_PER_S);
+        SmartDashboard.putNumber("Swerve/SOTM velocity y", speedVector.y * Settings.Swerve.Constraints.MAX_VELOCITY_SOTM_M_PER_S);
+
         swerve.setControl(swerve.getFieldCentricSwerveRequest()
-            .withVelocityX(speed.get().x)
-            .withVelocityY(speed.get().y)
-            .withRotationalRate(-turn.getAsDouble())
-        );
+            .withVelocityX(speedVector.x)
+            .withVelocityY(speedVector.y)
+            .withRotationalRate(-angularVel));
     }
 }

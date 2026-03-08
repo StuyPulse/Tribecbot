@@ -49,6 +49,7 @@ public class Superstructure extends SubsystemBase {
         STOW(HoodState.STOW, ShooterState.SHOOT, TurretState.SHOOT),
         SHOOT(HoodState.SHOOT, ShooterState.SHOOT, TurretState.SHOOT),
         FERRY(HoodState.FERRY, ShooterState.FERRY, TurretState.FERRY),
+        FOTM(HoodState.FOTM, ShooterState.FOTM, TurretState.FOTM),
         REVERSE(HoodState.SHOOT, ShooterState.REVERSE, TurretState.SHOOT),
         KB(HoodState.KB, ShooterState.KB, TurretState.KB),
         LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER, TurretState.SHOOT),
@@ -126,9 +127,14 @@ public class Superstructure extends SubsystemBase {
         return turret.getAngle();
     }
 
+    public boolean isWrapping() {
+        return turret.isWrapping();
+    }
+
     @Override
     public void periodic() {
-        if (getState() == SuperstructureState.SOTM) {
+        SuperstructureState state = getState();
+        if (state == SuperstructureState.SOTM || state == SuperstructureState.FOTM) {
             SOTMCalculator.updateSOTMSolution();
         }
 

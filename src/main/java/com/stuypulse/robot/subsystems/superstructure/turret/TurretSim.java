@@ -142,4 +142,10 @@ public class TurretSim extends Turret {
                 () -> sim.getInput(0),
                 getInstance());
     }
+
+    @Override
+    public boolean isWrapping() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isWrapping'");
+    }
 }

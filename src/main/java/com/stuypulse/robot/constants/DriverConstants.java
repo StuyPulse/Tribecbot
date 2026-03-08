@@ -14,7 +14,7 @@ public interface DriverConstants {
         public interface Drive {
             double DEADBAND = 0.05; //TODO: tune to philip's request
             double RC = 0.05; 
-            int POWER = 2;
+            int POWER = 3;
         }
         public interface Turn {
             double DEADBAND = 0.05;

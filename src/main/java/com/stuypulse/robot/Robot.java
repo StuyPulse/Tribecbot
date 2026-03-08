@@ -105,7 +105,9 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {}
 
     @Override
-    public void autonomousExit() {}
+    public void autonomousExit(
+        
+    ) {}
 
     /*******************/
     /*** TELEOP MODE ***/
@@ -116,7 +118,8 @@ public class Robot extends TimedRobot {
         // fmsUtil.restartTimer(false);
 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        CommandScheduler.getInstance().schedule(new SetIMUMode(Settings.Vision.INTERNAL_EXTERNAL_ASSIST_INDEX));
+        // CommandScheduler.getInstance().schedule(new SetIMUMode(Settings.Vision.INTERNAL_EXTERNAL_ASSIST_INDEX));
+        CommandScheduler.getInstance().schedule(new SetIMUMode(0));
 
         if (auto != null) {
             auto.cancel();

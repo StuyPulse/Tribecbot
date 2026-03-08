@@ -51,6 +51,7 @@ public abstract class Turret extends SubsystemBase {
         ZERO,
         SHOOT,
         SOTM,
+        FOTM,
         FERRY,
         LEFT_CORNER,
         RIGHT_CORNER,
@@ -64,6 +65,7 @@ public abstract class Turret extends SubsystemBase {
             case ZERO -> Rotation2d.kZero;
             case SHOOT -> getScoringAngle();
             case SOTM -> SOTMCalculator.calculateTurretAngleSOTM();
+            case FOTM -> SOTMCalculator.calculateTurretAngleFOTM();
             case FERRY -> getFerryAngle();
             case LEFT_CORNER -> Settings.Superstructure.Turret.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Superstructure.Turret.RIGHT_CORNER;
@@ -102,6 +104,8 @@ public abstract class Turret extends SubsystemBase {
 
     public abstract void seedTurret();
     public abstract void zeroEncoders();
+
+    public abstract boolean isWrapping();
    
     public void setState(TurretState state) {
         this.state = state;
