@@ -64,7 +64,7 @@ public abstract class Shooter extends SubsystemBase {
         return switch(state) {
             case STOP -> 0;
             case SHOOT -> getShootRPM();
-            case FERRY -> InterpolationCalculator.interpolateFerryingRPM();
+            case FERRY -> InterpolationCalculator.interpolateFerryingInfo().targetRPM();
             case REVERSE -> Settings.Superstructure.Shooter.RPM.REVERSE;
             case KB -> Settings.Superstructure.Shooter.RPM.KB;
             case LEFT_CORNER -> Settings.Superstructure.Shooter.RPM.LEFT_CORNER;
