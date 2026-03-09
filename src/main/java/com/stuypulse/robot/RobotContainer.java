@@ -72,6 +72,7 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
@@ -84,6 +85,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -142,9 +144,17 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Override Up", new ClimberOverrideUp());
         SmartDashboard.putData("Robot/Override Down", new ClimberOverrideDown());
         SmartDashboard.putData("Robot/Override Stop", new  ClimberOverrideStop());
-        SmartDashboard.putData("Handoff Reverse", new HandoffReverse());
+        SmartDashboard.putData("Handoff Reverse", 
+            new ConditionalCommand(
+                new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
+                new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
+                () -> handoff.getState() == HandoffState.FORWARD));
         SmartDashboard.putData("Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
-        SmartDashboard.putData("Spindexer Reverse", new SpindexerReverse());
+        SmartDashboard.putData("Spindexer Reverse", 
+            new ConditionalCommand(
+                new SpindexerReverse().andThen(new WaitCommand(0.25)).andThen(new SpindexerRun()), 
+                new SpindexerReverse().andThen(new WaitCommand(0.25).andThen(new SpindexerStop())),
+                () -> spindexer.getState() == SpindexerState.FORWARD));
        
     }
 
