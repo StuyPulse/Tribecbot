@@ -6,6 +6,7 @@
 
 package com.stuypulse.robot.commands.handoff;
 
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 
@@ -16,7 +17,8 @@ public class HandoffConditionalCommand extends ConditionalCommand {
             new HandoffRun(),
             () -> {
                 CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
-                return swerve.isBehindTower() || swerve.isBehindHub();
+                Superstructure superstructure = Superstructure.getInstance();
+                return swerve.isBehindTower() || swerve.isBehindHub() || superstructure.isTurretWrapping();
             }
         );
     }
