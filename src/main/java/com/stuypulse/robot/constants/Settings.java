@@ -271,7 +271,7 @@ public interface Settings {
             public final double MAX_ANGULAR_VEL_FOTM_RAD_PER_S = Units.degreesToRadians(150.0);
 
             public final double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
-            public final double MAX_ACCEL_M_PER_S_SQUARED_STOM = 15.0;
+            public final double MAX_ACCEL_M_PER_S_SQUARED_SOTM = 15.0;
             public final double MAX_ACCEL_M_PER_S_SQUARED_FOTM = 15.0;
             public final double MAX_ANGULAR_ACCEL_RAD_PER_S_SQUARED = Units.degreesToRadians(900.0);
 

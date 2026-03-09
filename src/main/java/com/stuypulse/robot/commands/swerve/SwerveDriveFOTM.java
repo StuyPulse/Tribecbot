@@ -31,12 +31,10 @@ public class SwerveDriveFOTM extends Command{
     private final VStream speed;
     private final IStream turn;
 
-    private final VRateLimit fotmAcellLimit;
 
     public SwerveDriveFOTM(Gamepad driver) {
        swerve = CommandSwerveDrivetrain.getInstance();
         superstructure = Superstructure.getInstance();
-        fotmAcellLimit = new VRateLimit(Settings.Swerve.Constraints.MAX_ACCEL_M_PER_S_SQUARED_FOTM);
         
         speed = VStream.create(this::getDriverInputAsVelocity)
         .filtered(
@@ -44,7 +42,7 @@ public class SwerveDriveFOTM extends Command{
             x -> x.clamp(1),
             x -> x.pow(Drive.POWER),
             x -> x.mul(Swerve.Constraints.MAX_VELOCITY_FOTM_M_PER_S),
-            fotmAcellLimit,
+            new VRateLimit(Settings.Swerve.Constraints.MAX_ACCEL_M_PER_S_SQUARED_FOTM),
             new VLowPassFilter(Drive.RC)
         );
 
@@ -52,7 +50,7 @@ public class SwerveDriveFOTM extends Command{
         .filtered(
             x -> SLMath.deadband(x, Turn.DEADBAND),
             x -> SLMath.spow(x, Turn.POWER),
-            x -> x * Swerve.Constraints.MAX_VELOCITY_FOTM_M_PER_S,
+            x -> x * Swerve.Constraints.MAX_ANGULAR_VEL_FOTM_RAD_PER_S,
             new LowPassFilter(Turn.RC)
         );
 
