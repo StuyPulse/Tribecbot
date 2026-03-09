@@ -134,8 +134,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("Robot/Spindexer Reverse", 
             new ConditionalCommand(
-                new SpindexerReverse().andThen(new WaitCommand(0.25)).andThen(new SpindexerRun()), 
-                new SpindexerReverse().andThen(new WaitCommand(0.25).andThen(new SpindexerStop())),
+                new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
+                new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
                 () -> spindexer.getState() == SpindexerState.FORWARD));
     }
 
@@ -145,8 +145,8 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        spindexer.setDefaultCommand(new SpindexerDefaultCommand());
-        handoff.setDefaultCommand(new HandoffDefaultCommand());
+        // spindexer.setDefaultCommand(new SpindexerDefaultCommand());
+        // handoff.setDefaultCommand(new HandoffDefaultCommand());
     }
 
     /***************/
@@ -157,15 +157,15 @@ public class RobotContainer {
         // Scoring Routine 
         driver.getTopButton()
             .whileTrue(new SwerveXMode())
-                .onTrue(new IntakeRunRollers())
-                .whileTrue(new SuperstructureInterpolation()
-                        .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.INTERPOLATION))
-                            .andThen(new HandoffRun())
+            .onTrue(new IntakeRunRollers())
+            .whileTrue(new SuperstructureInterpolation()
+                    .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+                        .andThen(new HandoffRun())
                         .alongWith(new WaitUntilCommand(() -> handoff.atTolerance() && handoff.getState() == HandoffState.FORWARD))
                             .andThen(new SpindexerRun()))
-                .onFalse(new SpindexerStop()
-                        .alongWith(new SuperstructureStow())
-                        .alongWith(new HandoffStop()));
+            .onFalse(new SpindexerStop()
+                    .alongWith(new SuperstructureStow())
+                    .alongWith(new HandoffStop()));
 
         // Intake Stow
         driver.getLeftTriggerButton()
@@ -183,8 +183,8 @@ public class RobotContainer {
             .onFalse(new SetIMUMode(0));   
 
         // Stop Rollers
-        driver.getLeftBumper()
-            .onTrue(new IntakeStopRollers());
+        // driver.getLeftBumper()
+        //     .onTrue(new IntakeStopRollers());
 
         // driver.getRightBumper()
         //     .whileTrue(new IntakeOuttake())
@@ -193,6 +193,7 @@ public class RobotContainer {
         // Ferrying In Place
         driver.getDPadRight()
             .whileTrue(new SwerveXMode())
+            .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureFerry()
                     .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.INTERPOLATION))
                         .andThen(new HandoffRun())
@@ -226,6 +227,9 @@ public class RobotContainer {
                 () -> superstructure.getState() == SuperstructureState.FOTM
             ));
 
+        driver.getLeftBumper()
+            .whileTrue(new SwerveXMode());
+
 //--------------------------------------------------------------------------------------------------------------------------\\
 
         // // Manual Left Corner Scoring
@@ -249,9 +253,6 @@ public class RobotContainer {
         //         .andThen(new SpindexerRun()).alongWith(new HandoffRun()))
         //     .onFalse(new SuperstructureInterpolation().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
 
-        // // Swerve X Wheels
-        // driver.getLeftBumper()
-        //     .whileTrue(new SwerveXMode());
     }
 
     /**************/
@@ -263,9 +264,9 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         // BASE
-        AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 
-        "");
-        EIGHT_FUEL.register(autonChooser);
+        // AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 
+        // "");
+        // EIGHT_FUEL.register(autonChooser);
 
         // DEPOT
         AutonConfig DEPOT_AUTON = new AutonConfig("Depot Auton", DepotAuton::new, 
@@ -273,13 +274,13 @@ public class RobotContainer {
         DEPOT_AUTON.register(autonChooser);
 
         // ONE CYCLES
-        AutonConfig LEFT_ONE_CYCLE = new AutonConfig("Left One Cycle", LeftOneCycle::new,  
-        "Left Trench To NZ", "Left NZ To Score");
-        LEFT_ONE_CYCLE.register(autonChooser);
+        // AutonConfig LEFT_ONE_CYCLE = new AutonConfig("Left One Cycle", LeftOneCycle::new,  
+        // "Left Trench To NZ", "Left NZ To Score");
+        // LEFT_ONE_CYCLE.register(autonChooser);
 
-        AutonConfig RIGHT_ONE_CYCLE = new AutonConfig("Right One Cycle", RightOneCycle::new,  
-        "Right Trench To NZ", "Right NZ To Score");
-        RIGHT_ONE_CYCLE.register(autonChooser);
+        // AutonConfig RIGHT_ONE_CYCLE = new AutonConfig("Right One Cycle", RightOneCycle::new,  
+        // "Right Trench To NZ", "Right NZ To Score");
+        // RIGHT_ONE_CYCLE.register(autonChooser);
 
         // TWO CYCLES
         AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new,  
@@ -296,10 +297,10 @@ public class RobotContainer {
 
     public void configureSysids() {
 
-        // autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
-        // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
-        // autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
-        // autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
+        autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
+        autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
+        autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
+        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
 
         // autonChooser.addOption("SysID Rotation Translation Dynamic Forwards", swerve.sysidRotationDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Rotation Translation Dynamic Backwards", swerve.sysidRotationDynamic(Direction.kReverse));

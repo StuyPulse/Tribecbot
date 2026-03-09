@@ -162,8 +162,8 @@ public class IntakeImpl extends Intake {
             SmartDashboard.putNumber("Intake/Pivot Supply Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Intake/Pivot Stator Current (amps)", pivot.getStatorCurrent().getValueAsDouble());
 
-            SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimit.get());
-            SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimit.get());
+            // SmartDashboard.putNumber("Intake/Pivot Max Velocity Limit (deg/s)", velLimit.get()); Causing issues
+            // SmartDashboard.putNumber("Intake/Pivot Max Accel Limit (deg/s^2)", accelLimit.get()); Causing issues
 
             SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
                     Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
