@@ -55,20 +55,29 @@ public interface Field {
     
     public final double DISTANCE_TO_RUNGS = Units.inchesToMeters(20); // placeholder value, how far away in terms of y-cord from the rung
 
-    public static boolean closerToTop(){
-        return (CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.towerFarCenter.getY());
+    public static boolean closerToTop() {
+        return CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.towerFarCenter.getY();
     }
 
-    // 1.0 meters from driverstation wall and field wall
-    public final Pose2d leftFerryZone = new Pose2d(Units.inchesToMeters(31.5), Units.inchesToMeters(WIDTH - 34.5), new Rotation2d());
-    public final Pose2d rightFerryZone = new Pose2d(Units.inchesToMeters(20.75), Units.inchesToMeters(76), new Rotation2d());
-    // public final Pose2d rightFerryZone = new Pose2d(1.0 + Units.feetToMeters(6), 1.0 + Units.feetToMeters(3), new Rotation2d()); //TODO: GET ACTUAL POS
+    public final Pose2d leftFerryZone = new Pose2d(
+        Units.inchesToMeters(31.5), 
+        WIDTH - Units.inchesToMeters(34.5), 
+        new Rotation2d()
+    );
+
+    public final Pose2d rightFerryZone = new Pose2d(
+        Units.inchesToMeters(31.5), 
+        Units.inchesToMeters(34.5), 
+        new Rotation2d()
+    );
 
     public static Pose2d getFerryZonePose(Translation2d robot) { 
-        if (robot.getDistance(leftFerryZone.getTranslation()) > robot.getDistance(rightFerryZone.getTranslation())) {
-            return rightFerryZone;
-        } else {
+        double fieldMidY = WIDTH / 2.0;
+        
+        if (robot.getY() > fieldMidY) {
             return leftFerryZone;
+        } else {
+            return rightFerryZone;
         }
     }
 

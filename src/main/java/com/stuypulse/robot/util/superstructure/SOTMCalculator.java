@@ -53,7 +53,7 @@ public class SOTMCalculator {
             Hood.getInstance().getAngle(),
             Turret.getInstance().getAngle(),
             Shooter.getInstance().getRPM(), 
-            Field.rightFerryZone, 
+            Field.getFerryZonePose(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()), 
             0.0
         );
 
@@ -194,7 +194,6 @@ public class SOTMCalculator {
                 0
             )
         );
-        
 
         SOTMSolution hubSolution = solveShootOnTheMove(
             futureTurretPose,

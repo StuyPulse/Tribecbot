@@ -222,8 +222,7 @@ public class RobotContainer {
                     new SpindexerStop(),
                     new HandoffStop()
                 ),
-                new SuperstructureFOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                    .andThen(new SpindexerRun()).alongWith(new HandoffRun()),
+                new SuperstructureFOTM(),
                 () -> superstructure.getState() == SuperstructureState.FOTM
             ));
 
