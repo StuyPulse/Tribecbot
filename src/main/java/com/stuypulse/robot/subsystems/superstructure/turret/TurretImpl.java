@@ -49,7 +49,6 @@ public class TurretImpl extends Turret {
             .withSupplyCurrentLimitAmps(80)
             .withStatorCurrentLimitEnabled(false)
             .withRampRate(0.25)
-            // .withVoltageLimits(6, -6) //TODO: VERIFY MAX VOLTAGE
             
             .withPIDConstants(Gains.Superstructure.Turret.slot0.kP, Gains.Superstructure.Turret.slot0.kI, Gains.Superstructure.Turret.slot0.kD, 0)
             .withFFConstants(Gains.Superstructure.Turret.slot0.kS, Gains.Superstructure.Turret.slot0.kV, Gains.Superstructure.Turret.slot0.kA, 0)
@@ -122,7 +121,6 @@ public class TurretImpl extends Turret {
     }
 
     public void seedTurret() {
-        // motor.setPosition(0); //TODO: SEED USING CRT INSTEAD OF TS, TS IS TEMP
         turretMotor.setPosition(getVectorSpaceAngle().getRotations());
     }
 
@@ -174,11 +172,10 @@ public class TurretImpl extends Turret {
         double currentAngle = getAngle().getDegrees();
         double actualTargetDeg = currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
 
-        isWrapping =    Math.abs(actualTargetDeg - currentAngle) > 
-                        Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
+        isWrapping = Math.abs(actualTargetDeg - currentAngle) > Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
         int slot = 0;
 
-        if(isWrapping) {
+        if (isWrapping) {
             slot = 1;
         }
 

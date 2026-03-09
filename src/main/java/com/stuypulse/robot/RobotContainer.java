@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.auton.regular.LeftOneCycle;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightOneCycle;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
+import com.stuypulse.robot.commands.handoff.HandoffDefaultCommand;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -25,6 +26,7 @@ import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.ZeroPivotDeployed;
 import com.stuypulse.robot.commands.intake.ZeroPivotStowed;
 import com.stuypulse.robot.commands.spindexer.SpindexerConditionalCommand;
+import com.stuypulse.robot.commands.spindexer.SpindexerDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
@@ -122,15 +124,15 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Seed Turret", new SeedTurret().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHoodEncoderAtUpperHardstop().ignoringDisable(true));
 
-        SmartDashboard.putData("Handoff Reverse", 
+        SmartDashboard.putData("Robot/Handoff Reverse", 
             new ConditionalCommand(
                 new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
                 new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
                 () -> handoff.getState() == HandoffState.FORWARD));
 
-        SmartDashboard.putData("Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
+        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
 
-        SmartDashboard.putData("Spindexer Reverse", 
+        SmartDashboard.putData("Robot/Spindexer Reverse", 
             new ConditionalCommand(
                 new SpindexerReverse().andThen(new WaitCommand(0.25)).andThen(new SpindexerRun()), 
                 new SpindexerReverse().andThen(new WaitCommand(0.25).andThen(new SpindexerStop())),
@@ -156,9 +158,9 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
                 .onTrue(new IntakeRunRollers())
                 .whileTrue(new SuperstructureInterpolation()
-                        .andThen(new WaitUntilCommand(superstructure::atTolerance))
+                        .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.INTERPOLATION))
                             .andThen(new HandoffRun())
-                        .andThen(new WaitUntilCommand(handoff::atTolerance))
+                        .alongWith(new WaitUntilCommand(() -> handoff.atTolerance() && handoff.getState() == HandoffState.FORWARD))
                             .andThen(new SpindexerRun()))
                 .onFalse(new SpindexerStop()
                         .alongWith(new SuperstructureStow())
@@ -190,10 +192,11 @@ public class RobotContainer {
         // Ferrying In Place
         driver.getDPadRight()
             .whileTrue(new SwerveXMode())
-            .whileTrue(new SuperstructureFerry().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                .andThen(new HandoffRun())
-                .andThen(new WaitUntilCommand(handoff::atTolerance))
-                .alongWith(new SpindexerRun()))
+            .whileTrue(new SuperstructureFerry()
+                    .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.INTERPOLATION))
+                        .andThen(new HandoffRun())
+                    .alongWith(new WaitUntilCommand(() -> handoff.atTolerance() && handoff.getState() == HandoffState.FORWARD))
+                        .andThen(new SpindexerRun()))
             .onFalse(new SuperstructureFerry().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
         
         // SOTM
@@ -205,8 +208,7 @@ public class RobotContainer {
                     new SpindexerStop(),
                     new HandoffStop()
                 ),
-                new SuperstructureSOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                    .andThen(new SpindexerRun()).alongWith(new HandoffRun()),
+                new SuperstructureSOTM(),
                 () -> superstructure.getState() == SuperstructureState.SOTM
             ));
 

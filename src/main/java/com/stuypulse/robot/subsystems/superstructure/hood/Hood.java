@@ -91,7 +91,7 @@ public abstract class Hood extends SubsystemBase{
         if (Robot.isReal()) {
             return Math.abs(error) < Settings.Superstructure.HOOD_TOLERANCE.getRotations();
         } else {
-            return Math.abs(error) < Settings.Superstructure.HOOD_TOLERANCE.getRotations() + (0.5 / 360.0);
+            return Math.abs(error) < Settings.Superstructure.HOOD_TOLERANCE.getRotations() + (2 / 360.0);
         }
     }
 

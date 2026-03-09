@@ -8,9 +8,9 @@ package com.stuypulse.robot.commands.handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class HandoffSetState extends InstantCommand{
+public class HandoffSetState extends Command {
     private final Handoff handoff;
     private HandoffState state;
 
@@ -23,5 +23,10 @@ public class HandoffSetState extends InstantCommand{
     @Override
     public void initialize() {
         handoff.setState(state);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 }

@@ -40,6 +40,8 @@ public class TurretSim extends Turret {
     private double maxAngularVelRadiansPerSecond;
     private double maxAngularAccelRadiansPerSecondSquared;
 
+    private boolean isWrapping;
+
     private Optional<Double> voltageOverride;
 
     public TurretSim() {
@@ -72,6 +74,7 @@ public class TurretSim extends Turret {
         setpoint = new TrapezoidProfile.State();
 
         voltageOverride = Optional.empty();
+        isWrapping = false;
     }
 
     @Override
@@ -89,6 +92,17 @@ public class TurretSim extends Turret {
         return;
     }
 
+    @Override
+    public boolean isWrapping() {
+        return isWrapping;
+    }
+
+    @Override
+    public boolean atTolerance() {
+        double error = getAngle().minus(getTargetAngle()).getRotations();
+        return Math.abs(error) < Settings.Superstructure.Turret.TOLERANCE.getRotations();
+    }
+
     private double getAngularVelocityRadPerSec() {
         return sim.getOutput(1);
     }
@@ -97,11 +111,31 @@ public class TurretSim extends Turret {
         voltageOverride = volts;
     }
 
+    private double getDelta(double target, double current) {
+        double delta = (target - current) % 360;
+        
+        if (delta > 180.0) delta -= 360;
+        else if (delta < -180) delta += 360;
+
+        if (current + delta < Settings.Superstructure.Turret.RANGE_LEFT) return delta + 360;
+        if (current + delta > Settings.Superstructure.Turret.RANGE_RIGHT) return delta - 360;
+
+        return delta;
+    }
+
     @Override
     public void periodic() {
         super.periodic();
+
+        double currentAngle = getAngle().getDegrees();
+        double targetAngle = getTargetAngle().getDegrees();
+        double delta = getDelta(targetAngle, currentAngle);
+        double actualTargetDeg = currentAngle + delta;
+
+        isWrapping = Math.abs(actualTargetDeg - currentAngle) > 
+                     Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
         
-        goal = new TrapezoidProfile.State(getTargetAngle().getRadians(), 0.0);
+        goal = new TrapezoidProfile.State(Units.degreesToRadians(actualTargetDeg), 0.0);
         setpoint = profile.calculate(Settings.DT, setpoint, goal);
 
         SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
@@ -109,10 +143,11 @@ public class TurretSim extends Turret {
 
         SmartDashboard.putNumber("Superstructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
         SmartDashboard.putNumber("Superstructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
+        SmartDashboard.putNumber("Superstructure/Turret/Current Angle (deg)", Units.radiansToDegrees(sim.getOutput(0)));
+        SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetDeg);
+        SmartDashboard.putBoolean("Superstructure/Turret/Is Wrapping", isWrapping);
 
-        SmartDashboard.putNumber("Superstructure/Turret/Current Angle (deg)", sim.getOutput(0));
-
-    controller.setNextR(VecBuilder.fill(setpoint.position, 0.0));
+        controller.setNextR(VecBuilder.fill(setpoint.position, 0.0));
         controller.correct(VecBuilder.fill(sim.getOutput(0), sim.getOutput(1)));
         controller.predict(Settings.DT);
 
@@ -141,11 +176,5 @@ public class TurretSim extends Turret {
                 () -> getAngularVelocityRadPerSec(),
                 () -> sim.getInput(0),
                 getInstance());
-    }
-
-    @Override
-    public boolean isWrapping() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isWrapping'");
     }
 }
