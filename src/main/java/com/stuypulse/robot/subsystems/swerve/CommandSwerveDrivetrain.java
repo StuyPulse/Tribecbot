@@ -546,7 +546,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SmartDashboard.putNumber("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
         
         SmartDashboard.putNumber("Swerve/Angular Velocity (rad per s)", chassisSpeeds.omegaRadiansPerSecond);
-        
         SmartDashboard.putNumber("Swerve/Distance From Hub (meters)", Field.hubCenter.getTranslation().getDistance(getPose().getTranslation()));
     }
 }

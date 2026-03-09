@@ -39,6 +39,8 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.superstructure.SuperstructureShoot;
 import com.stuypulse.robot.commands.superstructure.SuperstructureStow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.commands.swerve.SwerveDriveFOTM;
+import com.stuypulse.robot.commands.swerve.SwerveDriveSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveWheelRadiusCharacterization;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
@@ -208,11 +210,11 @@ public class RobotContainer {
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
-                    new SuperstructureInterpolation(),
+                    new SuperstructureInterpolation(), 
                     new SpindexerStop(),
                     new HandoffStop()
                 ),
-                new SuperstructureSOTM(),
+                new SuperstructureSOTM().alongWith(new SwerveDriveSOTM(driver)),
                 () -> superstructure.getState() == SuperstructureState.SOTM
             ));
 
@@ -225,7 +227,7 @@ public class RobotContainer {
                     new SpindexerStop(),
                     new HandoffStop()
                 ),
-                new SuperstructureFOTM(),
+                new SuperstructureFOTM().alongWith(new SwerveDriveFOTM(driver)),
                 () -> superstructure.getState() == SuperstructureState.FOTM
             ));
 
