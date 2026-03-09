@@ -43,7 +43,7 @@ public class SpindexerDefaultCommand extends Command {
         
         if (!shouldRun) {
             spindexer.setState(SpindexerState.STOP);
-        } else if (shouldRun && superstructure.getState() == SuperstructureState.SOTM) {
+        } else if (shouldRun && (superstructure.getState() == SuperstructureState.SOTM || superstructure.getState() == SuperstructureState.FOTM)) {
             spindexer.setState(SpindexerState.FORWARD);
         }
     }

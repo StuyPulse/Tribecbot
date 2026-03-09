@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightOneCycle;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
 import com.stuypulse.robot.commands.handoff.HandoffDefaultCommand;
+// import com.stuypulse.robot.commands.handoff.HandoffDefaultCommand;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -27,6 +28,7 @@ import com.stuypulse.robot.commands.intake.ZeroPivotDeployed;
 import com.stuypulse.robot.commands.intake.ZeroPivotStowed;
 import com.stuypulse.robot.commands.spindexer.SpindexerConditionalCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerDefaultCommand;
+// import com.stuypulse.robot.commands.spindexer.SpindexerDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
@@ -145,8 +147,8 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        // spindexer.setDefaultCommand(new SpindexerDefaultCommand());
-        // handoff.setDefaultCommand(new HandoffDefaultCommand());
+        spindexer.setDefaultCommand(new SpindexerDefaultCommand());
+        handoff.setDefaultCommand(new HandoffDefaultCommand());
     }
 
     /***************/
@@ -195,7 +197,7 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureFerry()
-                    .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.INTERPOLATION))
+                    .alongWith(new WaitUntilCommand(() -> superstructure.atTolerance() && superstructure.getState() == SuperstructureState.FERRY))
                         .andThen(new HandoffRun())
                     .alongWith(new WaitUntilCommand(() -> handoff.atTolerance() && handoff.getState() == HandoffState.FORWARD))
                         .andThen(new SpindexerRun()))

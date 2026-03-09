@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
@@ -66,8 +67,8 @@ public interface Field {
     );
 
     public final Pose2d rightFerryZone = new Pose2d(
-        Units.inchesToMeters(31.5), 
-        Units.inchesToMeters(34.5), 
+        Units.inchesToMeters(20.75), 
+        Units.inchesToMeters(76), 
         new Rotation2d()
     );
 

@@ -41,7 +41,7 @@ public class HandoffDefaultCommand extends Command {
         
         if (!shouldRun) {
             handoff.setState(HandoffState.STOP);
-        } else if (shouldRun && superstructure.getState() == SuperstructureState.SOTM) {
+        } else if (shouldRun && (superstructure.getState() == SuperstructureState.SOTM || superstructure.getState() == SuperstructureState.FOTM)) {
             handoff.setState(HandoffState.FORWARD);
         }
     }

@@ -132,9 +132,12 @@ public class IntakeImpl extends Intake {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
                 // PIVOT
-                if (pivotState == PivotState.DEPLOY && getPivotAngle().getDegrees() <= Settings.Intake.ARBITRARY_VOLTAGE_THRESHOLD.getDegrees()) {
+                if (pivotState == PivotState.DEPLOY && getPivotAngle().getDegrees() <= Settings.Intake.ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE.getDegrees()) {
                     pivot.setControl(new VoltageOut(-Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
-                } else {
+                } else if (pivotState == PivotState.HOMING) {
+                    pivot.setControl(new VoltageOut(-Settings.Intake.HOMING_VOLTAGE));
+                }
+                else {
                     pivot.setControl(new PositionVoltage(pivotState.getTargetAngle().getRotations()));
                 }
 
@@ -145,6 +148,10 @@ public class IntakeImpl extends Intake {
                     rollerLeader.stopMotor();
                 }
                 rollerFollower.setControl(follower);
+            }
+
+            if (pivotState == PivotState.HOMING && pivotStalling()) {
+                zeroPivotDeployed();
             }
         } else {
             pivot.stopMotor();

@@ -65,6 +65,7 @@ public abstract class Handoff extends SubsystemBase {
 
     public abstract SysIdRoutine getSysIdRoutine();
     public abstract void setVoltageOverride(Optional<Double> voltage);
+    public abstract boolean isHandoffStalling();
 
     @Override
     public void periodic() {

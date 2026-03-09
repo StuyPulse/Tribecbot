@@ -133,12 +133,6 @@ public class TurretImpl extends Turret {
         return Rotation2d.fromRotations(turretMotor.getPosition().getValueAsDouble());
     }
     
-    @Override
-    public boolean atTolerance() {
-        double error = getAngle().minus(getTargetAngle()).getRotations();
-        return Math.abs(error) < Settings.Superstructure.Turret.TOLERANCE.getRotations();
-    }
-    
     private double getDelta(double target, double current) {
         double delta = (target - current) % 360;
         

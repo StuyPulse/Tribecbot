@@ -11,6 +11,8 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -28,6 +30,7 @@ public class HandoffImpl extends Handoff {
     private final VelocityVoltage controller;
 
     private Optional<Double> voltageOverride;
+    private BStream isStalling;
 
     public HandoffImpl() {
         handoffConfig = new Motors.TalonFXConfig()
@@ -48,6 +51,14 @@ public class HandoffImpl extends Handoff {
 
         controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE).withEnableFOC(true);
         voltageOverride = Optional.empty();
+
+        isStalling = BStream.create(() -> motor.getSupplyCurrent().getValueAsDouble() > Settings.Handoff.HANDOFF_STALL_CURRENT.getAsDouble())
+            .filtered(new BDebounce.Both(0.5));
+    }
+
+    @Override
+    public boolean isHandoffStalling() {
+        return isStalling.get();
     }
 
     public double getCurrentRPM() {
@@ -61,7 +72,13 @@ public class HandoffImpl extends Handoff {
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
-            }  else {
+            } 
+            // else if (isHandoffStalling()) { //TODO: debug logic
+            //     setState(HandoffState.REVERSE);
+            //     motor.setControl(controller.withVelocity(getTargetRPM() / 60.0).withEnableFOC(true));
+
+            // }
+              else {
                 motor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
             }
         } else {

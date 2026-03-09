@@ -38,6 +38,8 @@ public interface Settings {
         double HANDOFF_REVERSE = -500.0;
         double RPM_TOLERANCE = 200.0;
         SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
+
+        SmartNumber HANDOFF_STALL_CURRENT = new SmartNumber("Handoff/Stall Current Limit for Reverse", 30.0);
     }
 
     public interface Intake {
@@ -51,7 +53,8 @@ public interface Settings {
 
         Rotation2d THRESHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(10.0);
 
-        Rotation2d ARBITRARY_VOLTAGE_THRESHOLD = Rotation2d.fromDegrees(15.0);
+        Rotation2d ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE = Rotation2d.fromDegrees(15.0);
+        double HOMING_VOLTAGE = 3.0;
         
         double PUSHDOWN_VOLTAGE = 3.0;
 
@@ -76,8 +79,8 @@ public interface Settings {
         public final double SHOOTER_TOLERANCE_RPM = 100.0;
         public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
 
-        public final double SHOOTER_SOTM_TOLERANCE_RPM = 150.0;
-        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(2.0);
+        public final double SHOOTER_SOTM_TOLERANCE_RPM = 350.0;
+        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(3.0);
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
@@ -114,7 +117,14 @@ public interface Settings {
                 {5.16, 3500.0},
                 {6.94, 3700.0},
                 {7.87, 4000.0},
-                {9.77, 4500.0}
+                {9.77, 4500.0},
+                {10.694, 4795.0},       //STARTING FROM HERE THE DATA IS UNRELIABLE!!!
+                {11.516, 5000.0},
+                {12.416, 5295.0},
+                {13.316, 5500.0},
+                {14.216, 5795.0},
+                {15.148, 6000.0},
+                {16.54, 6300}           //FIELD LENGTH
             };
         }
 
@@ -169,7 +179,7 @@ public interface Settings {
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
-                public final SmartNumber SHOOT = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 15.0);
+                public final SmartNumber SHOOT = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 20.0);
                 public final SmartNumber FERRY = new SmartNumber("InterpolationTesting/Ferry State Target Angle (deg)", 20.0);
 
                 public final Rotation2d MIN = Rotation2d.fromDegrees(20.0);
@@ -186,7 +196,7 @@ public interface Settings {
             public final Rotation2d MAX_VEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2.0);
-            public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(4.0);
+            public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
             public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(0.0);

@@ -19,12 +19,12 @@ public interface Cameras {
 
     public Camera[] LimelightCameras = {
             new Camera("limelight-right", //.381, .2325, .2069592
-                    new Pose3d(Units.inchesToMeters(-14.962), Units.inchesToMeters(9.164), Units.inchesToMeters(8.118), //TODO: check this offset
+                    new Pose3d(Units.inchesToMeters( -9.164), Units.inchesToMeters(14.962), Units.inchesToMeters(8.118), //TODO: check this offset
                     // new Pose3d(0.0,0.0,0.0,
                     new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(31.08), Units.degreesToRadians(-80))),
                     RobotContainer.EnabledSubsystems.RIGHT_LIMELIGHT),
             new Camera("limelight-left", 
-                    new Pose3d(Units.inchesToMeters(2.490), Units.inchesToMeters(14.8620), Units.inchesToMeters(7.920157), 
+                    new Pose3d(Units.inchesToMeters(2.490), Units.inchesToMeters(-14.8620), Units.inchesToMeters(7.920157), 
                     // new Pose3d(0.0,0.0,0.0,
                     new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(15.0), Units.degreesToRadians(71.0))), //289
                     RobotContainer.EnabledSubsystems.LEFT_LIMELIGHT),

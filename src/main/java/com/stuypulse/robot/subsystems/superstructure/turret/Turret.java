@@ -82,7 +82,7 @@ public abstract class Turret extends SubsystemBase {
     public boolean atTolerance() {
         double error = getAngle().minus(getTargetAngle()).getRotations();
 
-        if (state == TurretState.SOTM) {
+        if (state == TurretState.SOTM || state == TurretState.FOTM) {
             return Math.abs(error) < Settings.Superstructure.Turret.SOTM_TOLERANCE.getRotations();
         } else {
             return Math.abs(error) < Settings.Superstructure.Turret.TOLERANCE.getRotations();

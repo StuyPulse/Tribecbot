@@ -101,4 +101,10 @@ public class HandoffSim extends Handoff {
                 () -> sim.getInput(0),
                 getInstance());
     }
+
+    @Override
+    public boolean isHandoffStalling() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isHandoffStalling'");
+    }
 }
