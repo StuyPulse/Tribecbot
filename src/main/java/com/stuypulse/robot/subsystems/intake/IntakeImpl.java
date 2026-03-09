@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -23,7 +22,6 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Gains.Intake.Pivot;
 import com.stuypulse.robot.util.SettableNumber;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -40,8 +38,6 @@ public class IntakeImpl extends Intake {
     private final TalonFX pivot;
     private final TalonFX rollerLeader;
     private final TalonFX rollerFollower;
-
-    private final MotionMagicVoltage pivotController;
 
     private final DutyCycleOut rollerController;
     private final Follower follower;
@@ -67,16 +63,13 @@ public class IntakeImpl extends Intake {
                         Gains.Intake.Pivot.kG, 0)
                 .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 0)
                 .withGravityType(GravityTypeValue.Arm_Cosine)
-                .withMotionProfile(Settings.Intake.PIVOT_MAX_VEL_STOW.getRotations(),
-                        Settings.Intake.PIVOT_MAX_ACCEL_STOW.getRotations())
 
                 .withSensorToMechanismRatio(Settings.Intake.GEAR_RATIO);
 
         rollerConfig = new Motors.TalonFXConfig()
                 .withInvertedValue(InvertedValue.CounterClockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Brake)
-
-                .withSupplyCurrentLimitAmps(Settings.Intake.CURRENT_LIMIT)
+                .withSupplyCurrentLimitAmps(45.0)
                 .withStatorCurrentLimitEnabled(false)
                 .withRampRate(0.50);
 
@@ -89,14 +82,10 @@ public class IntakeImpl extends Intake {
         rollerFollower = new TalonFX(Ports.Intake.ROLLER_FOLLOWER, Ports.RIO);
         rollerConfig.configure(rollerFollower);
 
-        pivotController = new MotionMagicVoltage(getPivotState().getTargetAngle().getRotations()).withEnableFOC(true);
         rollerController = new DutyCycleOut(getRollerState().getTargetDutyCycle()).withEnableFOC(true);
         follower = new Follower(Ports.Intake.ROLLER_LEADER, MotorAlignmentValue.Aligned);
 
         rollerFollower.setControl(follower);
-
-        velLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_VEL_DEPLOY.getDegrees());
-        accelLimit = new SettableNumber(Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY.getDegrees());
 
         pivotVoltageOverride = Optional.empty();
 
@@ -123,26 +112,6 @@ public class IntakeImpl extends Intake {
         return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
     }
 
-    private void setMotionProfileConstraints(Rotation2d velLimit, Rotation2d accelLimit) {
-        this.velLimit.set(velLimit.getDegrees());
-        this.accelLimit.set(accelLimit.getDegrees());
-        pivotConfig.withMotionProfile(velLimit.getRotations(), accelLimit.getRotations());
-        pivotConfig.configure(pivot);
-    }
-
-    @Override
-    public void setPivotState(PivotState pivotState) {
-        super.setPivotState(pivotState);
-
-        if (getPivotState() == PivotState.STOW) {
-            setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_STOW, Settings.Intake.PIVOT_MAX_ACCEL_STOW);
-        } else if (getPivotState() == PivotState.DEPLOY) {
-            setMotionProfileConstraints(Settings.Intake.PIVOT_MAX_VEL_DEPLOY, Settings.Intake.PIVOT_MAX_ACCEL_DEPLOY);
-        }
-
-        SmartDashboard.putString("Intake/Profile Constraints", getPivotState().name());
-    }
-
     @Override
     public void zeroPivotStowed() {
         pivot.setPosition(Settings.Intake.PIVOT_MAX_ANGLE.getRotations());
@@ -165,8 +134,6 @@ public class IntakeImpl extends Intake {
                 // PIVOT
                 if (pivotState == PivotState.DEPLOY && getPivotAngle().getDegrees() <= Settings.Intake.ARBITRARY_VOLTAGE_THRESHOLD.getDegrees()) {
                     pivot.setControl(new VoltageOut(-Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
-                } else if (pivotState == PivotState.DIGESTION_DOWN || pivotState == PivotState.DIGESTION_UP) {
-                    pivot.setControl(new MotionMagicVoltage(pivotState.getTargetAngle().getRotations())); //TODO: verify motion profile works
                 } else {
                     pivot.setControl(new PositionVoltage(pivotState.getTargetAngle().getRotations()));
                 }

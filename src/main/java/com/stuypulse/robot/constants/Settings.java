@@ -30,59 +30,6 @@ public interface Settings {
     public final boolean DEBUG_MODE = true;
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
 
-    public interface HubDATA {
-        public final double[] shiftStartTimes = {0.0, 10.0, 35.0, 60.0, 85.0, 110.0};
-        public final double[] shiftEndTimes = {10.0, 35.0, 60.0, 85.0, 110.0, 140.0};
-        
-    }
-
-    public interface ClimberHopper {
-        /* CONSTANTS */
-        public final double GEAR_RATIO = 45.0;
-
-        public final double MIN_HEIGHT_METERS = 0.0;
-
-        // public final double MIN_ROTATIONS = -0.1;
-        public final double MAX_HEIGHT_METERS = 2.884;
-        // public final double MAX_ROTATIONS = 20;
-
-        public final double MASS_KG = 1.0;
-
-        // public final double NUM_ROTATIONS_TO_REACH_TOP = MAX_ROTATIONS - MIN_ROTATIONS;
-        // public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (0.480 / 13.0); // TODO: verify this 
-        public final double NUM_ROTATIONS_TO_REACH_TOP = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / Units.inchesToMeters(2 * Math.PI * 0.75); // TODO: verify this 
-        public final double POSITION_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP;
-        public final double VELOCITY_CONVERSION_FACTOR = (MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / NUM_ROTATIONS_TO_REACH_TOP / 60.0;
-
-
-        public final double DRUM_RADIUS_METERS = ((MAX_HEIGHT_METERS - MIN_HEIGHT_METERS) / (NUM_ROTATIONS_TO_REACH_TOP / GEAR_RATIO)) / 2.0 / Math.PI;
-        /* CONSTANTS */
-
-        public final double CLIMBER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
-        // public final double CLIMBER_UP_ROTATIONS = MAX_ROTATIONS; // TODO: FIND
-        public final double CLIMBER_DOWN_HEIGHT_METERS = MIN_HEIGHT_METERS;
-        // public final double CLIMBER_DOWN_ROTATIONS = MIN_ROTATIONS;
-        public final double HOPPER_DOWN_HEIGHT_METERS = MIN_HEIGHT_METERS;
-        // public final double HOPPER_DOWN_ROTATIONS = MIN_ROTATIONS;
-        public final double HOPPER_UP_HEIGHT_METERS = MAX_HEIGHT_METERS;
-        // public final double HOPPER_UP_ROTATIONS = MAX_ROTATIONS;
-
-        public final double STALL = 10.0;
-
-        public final double ROTATIONS_AT_BOTTOM = 0.0;
-
-        public final double DEBOUNCE = 0.25;
-
-        public final double GYRO_TOLERANCE = 0.0;
-
-        public final double HEIGHT_TOLERANCE_METERS = 0.1;
-        // public final double TOLERANCE_ROTATIONS = 0.1;
-
-        public final double RAMP_RATE = 50.0;
-
-        public final double MOTOR_VOLTAGE = 1.0;
-    }
-
     public interface Handoff {
         public final double GEAR_RATIO = 3.0 / 1.0;
 
@@ -97,19 +44,10 @@ public interface Settings {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(90.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(0.0);
 
-        Rotation2d DIGESTION_UP_ANGLE = Rotation2d.fromDegrees(70); // TODO: verify
-        Rotation2d DIGESTION_DOWN_ANGLE = Rotation2d.fromDegrees(20);
-
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(5.0); 
 
         Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(88.0);
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(-10.0);
-
-        Rotation2d PIVOT_MAX_VEL_DEPLOY = Rotation2d.fromDegrees(720.0);
-        Rotation2d PIVOT_MAX_ACCEL_DEPLOY = Rotation2d.fromDegrees(1440.0);
-
-        Rotation2d PIVOT_MAX_VEL_STOW = Rotation2d.fromDegrees(360.0);
-        Rotation2d PIVOT_MAX_ACCEL_STOW = Rotation2d.fromDegrees(600.0);
 
         Rotation2d THRESHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(10.0);
 
@@ -119,12 +57,8 @@ public interface Settings {
 
         double GEAR_RATIO = 37.93;
         
-        double debugVoltage = 0; //TODO: set value
-        SmartNumber debugDutyCycle = new SmartNumber("Intake/Debug Duty Cycle", 0.1);
         double STALL_CURRENT_LIMIT = 0; //TODO: set value
         double STALL_DEBOUNCE = 1.0; //TODO: VERIFY
-        double DIGESTION_DEBOUNCE = 0.2; //TODO: verify
-        double CURRENT_LIMIT = 45.0;
     }
 
     public interface Spindexer {
@@ -189,47 +123,6 @@ public interface Settings {
                 // {9.77, },
             };
         }
-
-        // public interface AngleInterpolation {
-        //     public final double[][] distanceAngleInterpolationValues = {
-        //         {1.22, Units.degreesToRadians(20)},             //AGAINST THE HUB
-        //         {1.43, Units.degreesToRadians(21.0)},
-        //         {2.15, Units.degreesToRadians(23.23)},
-
-        //         //NEW
-        //         {2.864967, Units.degreesToRadians(25.460189)},
-        //         {3.65, Units.degreesToRadians(28.0)},
-        //         {4.43, Units.degreesToRadians(30.65)},
-        //         {5.32, Units.degreesToRadians(33.5)}
-        //     };
-        // }
-
-        // public interface RPMInterpolation {
-        //     public final double[][] distanceRPMInterpolationValues = {
-        //         {1.22, 2850.0},                                         //AGAINST THE HUB
-        //         {1.43, 3000.0},
-        //         {2.15, 3050.0},
-
-        //         //NEW
-        //         {2.864967, 3215.271125},
-        //         {3.65, 3400.0},
-        //         {4.43, 3650.0},
-        //         {5.32, 3950.0}
-        //     };
-        // }
-
-        // public interface TOFInterpolation{
-        //     public final double[][] distanceTOFInterpolationValues = { // COLLECT THESE
-        //         // {1.22, 0.0},
-        //         {1.30, 1.01}, // seconds
-        //         // {1.43, 0.0},
-        //         // {2.15, 0.0},
-        //         {2.864967, 1.1},
-        //         // {3.65, 0.0},
-        //         {4.43, 1.234},
-        //         {5.32, 1.267}
-        //     };
-        // }
 
         public interface Shooter {
             public final double GEAR_RATIO = 1.0;

@@ -40,9 +40,7 @@ public abstract class Intake extends SubsystemBase {
 
     public enum PivotState {
         DEPLOY(Settings.Intake.PIVOT_DEPLOY_ANGLE),
-        STOW(Settings.Intake.PIVOT_STOW_ANGLE),
-        DIGESTION_UP(Settings.Intake.DIGESTION_UP_ANGLE),
-        DIGESTION_DOWN(Settings.Intake.DIGESTION_DOWN_ANGLE);
+        STOW(Settings.Intake.PIVOT_STOW_ANGLE);
 
         private final Rotation2d targetAngle;
 

@@ -7,20 +7,13 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
-// import com.stuypulse.robot.commands.auton.test.BoxTest;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
 import com.stuypulse.robot.commands.auton.regular.EightFuel;
 import com.stuypulse.robot.commands.auton.regular.LeftOneCycle;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightOneCycle;
-import com.stuypulse.robot.commands.climberhopper.ClimberDown;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideDown;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideStop;
-import com.stuypulse.robot.commands.climberhopper.ClimberOverrideUp;
 import com.stuypulse.robot.commands.handoff.HandoffConditionalCommand;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
-import com.stuypulse.robot.commands.climberhopper.ClimberUp;
-import com.stuypulse.robot.commands.climberhopper.HopperDown;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.ZeroHoodEncoderAtUpperHardstop;
@@ -45,6 +38,7 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveWheelRadiusCharacterization;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
+import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
 import com.stuypulse.robot.commands.vision.SetIMUMode;
@@ -86,7 +80,6 @@ public class RobotContainer {
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
         SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
-        SmartBoolean CLIMBER_HOPPER = new SmartBoolean("Enabled Subsystems/Climber-Hopper Is Enabled", false);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
 
@@ -99,7 +92,6 @@ public class RobotContainer {
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
 
     // Subsystem
-    // private final ClimberHopper climberHopper = ClimberHopper.getInstance();
     private final Handoff handoff = Handoff.getInstance();
     private final Intake intake = Intake.getInstance();
     private final Spindexer spindexer = Spindexer.getInstance();
@@ -127,24 +119,22 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Zero Pivot Encoder at Lower Limit (Deployed)", new ZeroPivotDeployed().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Pivot Encoder at Upper Limit (Stowed)", new ZeroPivotStowed().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Turret Encoders", new ZeroTurret().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Seed Turret", new SeedTurret().ignoringDisable(true));
         SmartDashboard.putData("Robot/Zero Hood Encoder", new ZeroHoodEncoderAtUpperHardstop().ignoringDisable(true));
 
-        SmartDashboard.putData("Robot/Override Up", new ClimberOverrideUp());
-        SmartDashboard.putData("Robot/Override Down", new ClimberOverrideDown());
-        SmartDashboard.putData("Robot/Override Stop", new  ClimberOverrideStop());
         SmartDashboard.putData("Handoff Reverse", 
             new ConditionalCommand(
                 new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
                 new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
                 () -> handoff.getState() == HandoffState.FORWARD));
+
         SmartDashboard.putData("Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
+
         SmartDashboard.putData("Spindexer Reverse", 
             new ConditionalCommand(
                 new SpindexerReverse().andThen(new WaitCommand(0.25)).andThen(new SpindexerRun()), 
                 new SpindexerReverse().andThen(new WaitCommand(0.25).andThen(new SpindexerStop())),
                 () -> spindexer.getState() == SpindexerState.FORWARD));
-        SmartDashboard.putData("Turret Seed", new ZeroTurret());
-       
     }
 
     /****************/
@@ -153,8 +143,6 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        // superstructure.setDefaultCommand(new SuperstructureDefaultCommand());
-        // climberHopper.setDefaultCommand(new ClimberHopperDefaultCommand());
         // turret.setDefaultCommand(new TurretDefaultCommand());
     }
 
@@ -262,14 +250,6 @@ public class RobotContainer {
         // // Swerve X Wheels
         // driver.getLeftBumper()
         //     .whileTrue(new SwerveXMode());
-
-        // /** 
-        // // Climb
-        // driver.getRightBumper()
-        //     .whileTrue(new ClimberUp().alongWith(new IntakeDeploy())
-        //         .andThen(new SwerveClimbAlign()))
-        //     .onFalse(new ClimberDown());
-        // **/
     }
 
     /**************/
@@ -279,11 +259,6 @@ public class RobotContainer {
     public void configureAutons() {
 
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
-
-        // TESTS
-        // AutonConfig BOX_TEST = new AutonConfig("Box Test", BoxTest::new, 
-        // "Box 1", "Box 2", "Box 3", "Box 4");
-        // BOX_TEST.register(autonChooser);
 
         // BASE
         AutonConfig EIGHT_FUEL = new AutonConfig("Eight Fuel", EightFuel::new, 
@@ -329,7 +304,6 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Rotation Translation Quasi Forwards", swerve.sysidRotationQuasiStatic(Direction.kForward));
         // autonChooser.addOption("SysID Rotation Translation Quasi Backwards", swerve.sysidRotationQuasiStatic(Direction.kReverse)); 
         
-
         // autonChooser.addOption("SysID Turret Dynamic Forwards", turret.getSysIdRoutine().dynamic(Direction.kForward));
         // autonChooser.addOption("SysID Turret Dynamic Reverse", turret.getSysIdRoutine().dynamic(Direction.kReverse));
         // autonChooser.addOption("SysID Turret Quasistatic Forwards", turret.getSysIdRoutine().quasistatic(Direction.kForward));
