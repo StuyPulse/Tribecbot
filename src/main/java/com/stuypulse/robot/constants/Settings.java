@@ -102,7 +102,7 @@ public interface Settings {
                 {2.15, 2930.0},                                         //BLAY-APPROVED
                 {3.38, 3200},                                           //BLAY-APPROVED
                 {4.43, 3550.0},                                         //BLAY-APPROVED
-                {5.66, 3850.0}                                          //KEVIN-APPROVED
+                {5.66, 3900.0}                                          //KEVIN-APPROVED
             };
         }
 
@@ -178,11 +178,12 @@ public interface Settings {
             public final double ENCODER_TO_MECH = 32.0 / 3.0;
             public final double HOOD_HOMING_VOLTAGE = 2.0;
 
-            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(-0.052);
+            public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.795);
 
             public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(39.0);
             public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(20.0);
             public final Rotation2d MIN_FROM_HORIZON = Rotation2d.fromDegrees(7.0);
+            public final Rotation2d MAX_FROM_HORIZON = Rotation2d.fromDegrees(40.0);
 
             public final double STALL_CURRENT_LIMIT = 20.0;
             public final double STALL_DEBOUNCE = 0.5;
@@ -211,8 +212,8 @@ public interface Settings {
             public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
-            public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(-127);
-            public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(-60);
+            public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(-127.0);
+            public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(-60.0);
             
             double RESOLUTION_OF_ABSOLUTE_ENCODER = 0.1;
             double WRAP_DEBOUNCE = 0.5;

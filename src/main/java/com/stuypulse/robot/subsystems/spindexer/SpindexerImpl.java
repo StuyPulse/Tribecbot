@@ -10,6 +10,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -112,20 +113,13 @@ public class SpindexerImpl extends Spindexer {
                 leadMotor.setVoltage(voltageOverride.get());
             } else {
                 // DO NOT REMOVE BELOW LINE - needed to brake the motor in STOP state
-                if (atTolerance() && getState() == SpindexerState.STOP) {
+                if (getState() == SpindexerState.STOP) {
+                    leadMotor.stopMotor();
+                } else if (Superstructure.getInstance().isTurretWrapping()) {
                     leadMotor.stopMotor();
                 } else {
                     leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
                 }
-
-                // if (isStalling()) {
-                //     if (timer.hasElapsed(0.25)) {
-                //         timer.reset();
-                //     }
-                //     else {
-                //         leadMotor.setControl(controller.withVelocity(Settings.Spindexer.REVERSE_SPEED));
-                //     }
-                // }
             }
         } else {
             leadMotor.stopMotor();

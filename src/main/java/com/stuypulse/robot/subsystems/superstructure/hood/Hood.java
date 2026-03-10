@@ -123,6 +123,10 @@ public abstract class Hood extends SubsystemBase{
     public abstract void zeroHoodEncoderAtUpperHardstop();
     public abstract void seedHood();
 
+    public abstract void seedHoodAtUpperHardStop();
+    public abstract void zeroHoodEncodersAfterSeed();
+    
+
     @Override
     public void periodic() {
         SmartDashboard.putString("Superstructure/Hood/State", state.name());

@@ -9,6 +9,7 @@
       "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Robot/Handoff Reverse": "Command",
       "/SmartDashboard/Robot/Intake Reverse": "Command",
+      "/SmartDashboard/Robot/Seed Hood Relative Encoder At Upper Hardstop": "Command",
       "/SmartDashboard/Robot/Seed Turret": "Command",
       "/SmartDashboard/Robot/Spindexer Reverse": "Command",
       "/SmartDashboard/Robot/Zero Hood Encoder": "Command",
@@ -36,6 +37,11 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/Scheduler": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
@@ -48,13 +54,7 @@
         "Handoff": {
           "open": true
         },
-        "Spindexer": {
-          "open": true
-        },
         "States": {
-          "open": true
-        },
-        "Superstructure": {
           "open": true
         },
         "open": true

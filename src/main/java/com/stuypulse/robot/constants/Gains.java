@@ -135,13 +135,13 @@ public class Gains {
 
     public interface Swerve {
         public interface Drive {
-            double kP = 0.3838;
+            double kP = 0.10224;
             double kI = 0.0;
             double kD = 0.0;
 
-            double kS = 0.20896;
-            double kV = 0.12464;
-            double kA = 0.014877;
+            double kS = 0.19896;
+            double kV = 0.12528;
+            double kA = 0.011662;
         }
 
         public interface Turn {

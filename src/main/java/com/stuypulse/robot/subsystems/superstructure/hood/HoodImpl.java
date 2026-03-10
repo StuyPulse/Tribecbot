@@ -114,8 +114,13 @@ public class HoodImpl extends Hood {
         hoodMotor.setPosition(getAbsoluteHoodAngleDeg() / 360.0);
     }
 
+    @Override
+    public void seedHoodAtUpperHardStop() {
+        hoodMotor.setPosition(Rotation2d.fromDegrees(40).getRotations());
+    }
+
     private double getAbsoluteHoodAngleDeg() {
-        return hoodEncoder.getPosition().getValueAsDouble() * 360.0; //Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getPosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
+        return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
     }
 
     @Override
@@ -177,6 +182,24 @@ public class HoodImpl extends Hood {
                 () -> hoodMotor.getMotorVoltage().getValueAsDouble(),
                 getInstance()
         );
+    }
+
+    
+    @Override
+    public void zeroHoodEncodersAfterSeed() { //only use if you are seeded -> might add a boolean to double check that we are in seed at Upper Hardstop ^^
+        hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);
+
+        double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
+
+        double encoderPositionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
+        double encoderPositionWithOutOffset = encoderPositionWithCurrentOffset - currentOffset;
+
+        //double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.Superstructure.Hood.Angles.MAX.getRotations());
+        double newOffset =  encoderPositionWithOutOffset - hoodMotor.getPosition().getValueAsDouble(); 
+
+        hoodEncoderConfig.withMagnetOffset(newOffset);
+
+        hoodEncoderConfig.configure(hoodEncoder);
     }
 
 }

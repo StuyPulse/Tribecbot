@@ -235,25 +235,25 @@ public class SOTMCalculator {
         ).transformBy(robotToTurret);
 
         
-        Vector2D oppositeDirection = new Vector2D(new Translation2d(
-            -fieldRelativeSpeeds.vxMetersPerSecond,
-            -fieldRelativeSpeeds.vyMetersPerSecond
-        ));
+        // Vector2D oppositeDirection = new Vector2D(new Translation2d(
+        //     -fieldRelativeSpeeds.vxMetersPerSecond,
+        //     -fieldRelativeSpeeds.vyMetersPerSecond
+        // ));
 
-        if (oppositeDirection.magnitude() < Settings.Swerve.MODULE_VELOCITY_DEADBAND_M_PER_S) {
-            oppositeDirection = Vector2D.kOrigin;
-        }
-        else {
-            oppositeDirection = oppositeDirection.normalize();
-        }
+        // if (oppositeDirection.magnitude() < Settings.Swerve.MODULE_VELOCITY_DEADBAND_M_PER_S) {
+        //     oppositeDirection = Vector2D.kOrigin;
+        // }
+        // else {
+        //     oppositeDirection = oppositeDirection.normalize();
+        // }
 
-        hubPose = hubPose.exp(
-            new Twist2d(
-                oppositeDirection.x * Field.HUB_RADIUS,
-                oppositeDirection.y * Field.HUB_RADIUS,
-                0
-            )
-        );
+        // hubPose = hubPose.exp(
+        //     new Twist2d(
+        //         oppositeDirection.x * Field.HUB_RADIUS,
+        //         oppositeDirection.y * Field.HUB_RADIUS,
+        //         0
+        //     )
+        // );
 
         hubSol = solveSOTM(
             futureTurretPose,
@@ -329,7 +329,8 @@ public class SOTMCalculator {
     }
 
     public static Rotation2d calculateHoodAngleFOTM() {
-        return ferrySol.targetHoodAngle();
+        // return ferrySol.targetHoodAngle();
+        return Rotation2d.fromDegrees(39);
     }
     
     public static Rotation2d calculateTurretAngleFOTM() {

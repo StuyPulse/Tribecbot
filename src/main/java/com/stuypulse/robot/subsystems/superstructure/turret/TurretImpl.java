@@ -160,7 +160,7 @@ public class TurretImpl extends Turret {
         if (!hasUsedAbsoluteEncoder) {
             seedTurret();
             hasUsedAbsoluteEncoder = true;
-            System.out.println("Absolute Encoder Reset triggered");
+            System.out.println("Absolute Encoder Reset triggered"); //TODO: remove, printing consumes resouces on driver station (source wpilib themselves) 
         }
 
         double currentAngle = getAngle().getDegrees();

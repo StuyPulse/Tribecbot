@@ -115,4 +115,16 @@ public class HoodSim extends Hood {
             SmartDashboard.putNumber("Superstructure/Hood/Sim Height (m)", sim.getPositionMeters());
         }
     }
+
+    @Override
+    public void seedHoodAtUpperHardStop() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'seedHoodAtUpperHardStop'");
+    }
+
+    @Override
+    public void zeroHoodEncodersAfterSeed() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'zeroHoodEncodersAfterSeed'");
+    }
 }

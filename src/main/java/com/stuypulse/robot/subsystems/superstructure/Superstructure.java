@@ -52,8 +52,8 @@ public class Superstructure extends SubsystemBase {
         FOTM(HoodState.FOTM, ShooterState.FOTM, TurretState.FOTM),
         REVERSE(HoodState.SHOOT, ShooterState.REVERSE, TurretState.SHOOT),
         KB(HoodState.KB, ShooterState.KB, TurretState.KB),
-        LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER, TurretState.SHOOT),
-        RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER, TurretState.SHOOT),
+        LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER, TurretState.LEFT_CORNER),
+        RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER, TurretState.RIGHT_CORNER),
         INTERPOLATION(HoodState.INTERPOLATION, ShooterState.INTERPOLATION, TurretState.SHOOT),
         SOTM(HoodState.SOTM, ShooterState.SOTM, TurretState.SOTM);
 
