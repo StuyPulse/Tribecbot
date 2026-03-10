@@ -142,7 +142,7 @@ public class SwerveDrivePIDToPose extends Command {
     }
 
     private boolean isAlignedTheta() {
-        return Math.abs(targetPose.get().getRotation().minus(swerve.getPose().getRotation()).getRadians()) < thetaTolerance.doubleValue();
+        return Math.abs(targetPose.get().getRotation().minus(swerve.getPose().getRotation()).getDegrees()) < thetaTolerance.doubleValue();
     }
 
     private boolean isAligned() {
@@ -163,6 +163,8 @@ public class SwerveDrivePIDToPose extends Command {
         SmartDashboard.putNumber("Alignment/Target x", targetPose.get().getX());
         SmartDashboard.putNumber("Alignment/Target y", targetPose.get().getY());
         SmartDashboard.putNumber("Alignment/Target angle", targetPose.get().getRotation().getDegrees());
+
+        SmartDashboard.putNumber("Alignment/Error of Angle Controller)", controller.getError().omegaRadiansPerSecond);
 
         SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative X (m per s)", controller.getOutput().vxMetersPerSecond);
         SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative Y (m per s)", controller.getOutput().vyMetersPerSecond);

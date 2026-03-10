@@ -52,6 +52,7 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveWheelRadiusCharacterization;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
+import com.stuypulse.robot.commands.swerve.pidToPose.SwerveDrivePIDToPose;
 import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.TurretLeftCorner;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
@@ -77,6 +78,8 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -137,6 +140,7 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Seed Turret", new SeedTurret().ignoringDisable(true));
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop().ignoringDisable(true));
         SmartDashboard.putData("Robot/Ryan Testing Seed Hood Encoder (NEW)", new NewZeroAtUpperHardstop());
+
 
         SmartDashboard.putData("Robot/Handoff Reverse", 
             new ConditionalCommand(
@@ -205,17 +209,17 @@ public class RobotContainer {
             .onFalse(new IntakeRunRollers());
 
         // Ferrying In Place
-        driver.getDPadRight()
-            .whileTrue(new SwerveXMode())
-            .onTrue(new IntakeRunRollers())
-            .whileTrue(new SuperstructureInterpolation() // CURRENTLY, THIS PROVES THE FERRYING STATE IS BLOCKING SPINDEXER AND HANDOFF SOMEWHERE IN THE CODE
-                    .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.INTERPOLATION && superstructure.atTolerance()))
-                        .andThen(new HandoffRun())
-                    .alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance()))
-                        .andThen(new SpindexerRun()))
-            .onFalse(new SpindexerStop()
-                .alongWith(new SuperstructureStow())
-                .alongWith(new HandoffStop()));
+        // driver.getDPadRight()
+        //     .whileTrue(new SwerveXMode())
+        //     .onTrue(new IntakeRunRollers())
+        //     .whileTrue(new SuperstructureInterpolation() // CURRENTLY, THIS PROVES THE FERRYING STATE IS BLOCKING SPINDEXER AND HANDOFF SOMEWHERE IN THE CODE
+        //             .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.INTERPOLATION && superstructure.atTolerance()))
+        //                 .andThen(new HandoffRun())
+        //             .alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance()))
+        //                 .andThen(new SpindexerRun()))
+        //     .onFalse(new SpindexerStop()
+        //         .alongWith(new SuperstructureStow())
+        //         .alongWith(new HandoffStop()));
         
         // SOTM
         driver.getRightMenuButton()

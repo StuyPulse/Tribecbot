@@ -171,8 +171,8 @@ public class Gains {
             double akI = 0.0;
             double akD = 0.0;
 
-            PIDConstants XY = new PIDConstants(6.5, 0, 0.2);
-            PIDConstants THETA = new PIDConstants(15.0, 0, 0.2);
+            PIDConstants XY = new PIDConstants(2.2, 0, 0.0);
+            PIDConstants THETA = new PIDConstants(3, 0, 0.0);
 
             // PIDConstants XY = new PIDConstants(3.0, 0.0, 0.2);
             // PIDConstants THETA = new PIDConstants(13.0, 0.0, 0.5);

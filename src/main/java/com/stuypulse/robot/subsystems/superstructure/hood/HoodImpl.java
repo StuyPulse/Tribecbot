@@ -163,6 +163,8 @@ public class HoodImpl extends Hood {
             SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value", hoodMotor.getPosition().getValueAsDouble());
 
             SmartDashboard.putNumber("Current Draws/Hood (amps)", hoodMotor.getSupplyCurrent().getValueAsDouble());
+            SmartDashboard.putBoolean("Prematch Checks/Hood at Top?", getAngle().getDegrees() > 39.0);
+
         }
     }
 

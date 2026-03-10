@@ -116,7 +116,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SysIdRoutine m_sysIdRoutineChassisTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
             /* This is in meters per second², but SysId only supports "volts per second" */
-            Volts.of(1).per(Second),
+            Volts.of(0.5).per(Second),
             /* This is in meters per second, but SysId only supports "volts" */
             Volts.of(Settings.Swerve.Constraints.MAX_VELOCITY_M_PER_S),
             null, // Use default timeout (10 s)
@@ -126,7 +126,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         new SysIdRoutine.Mechanism(
             output -> {
                 /* output is actually meters per second, but SysId only supports "volts" */
-                setControl(getFieldCentricSwerveRequest().withVelocityX(output.in(Volts)).withVelocityY(0).withRotationalRate(0));
+                setControl(getRobotCentricSwerveRequest().withVelocityX(output.in(Volts)).withVelocityY(0).withRotationalRate(0));
                 /* also log the requested output for SysId */
                 SignalLogger.writeDouble("Target X Velocity ('voltage')", output.in(Volts));
                 SignalLogger.writeDouble("X Position", getPose().getX());
@@ -183,7 +183,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     );
 
     /* The SysId routine to test */
-    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineModuleTranslation;
+    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineChassisTranslation;
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
