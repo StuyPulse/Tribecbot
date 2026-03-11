@@ -77,7 +77,7 @@ public abstract class Hood extends SubsystemBase{
 
         return switch(state) {
             case STOW -> Settings.Superstructure.Hood.Angles.STOW;
-            case FERRY -> Rotation2d.fromDegrees(39);
+            case FERRY -> Settings.Superstructure.Hood.Angles.FERRY_ANGLE;
             case SHOOT -> Rotation2d.fromDegrees(Settings.Superstructure.Hood.Angles.SHOOT.get());
             case KB -> Settings.Superstructure.Hood.Angles.KB;
             case LEFT_CORNER -> Settings.Superstructure.Hood.Angles.LEFT_CORNER;

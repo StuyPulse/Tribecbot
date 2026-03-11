@@ -82,9 +82,10 @@ public interface Settings {
     
     public interface Superstructure {
         public final double SHOOTER_TOLERANCE_RPM = 100.0;
-        public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
+        public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.2);
 
         public final double SHOOTER_SOTM_TOLERANCE_RPM = 350.0;
+        public final double SHOOTER_FOTM_TOLERANCE_RPM = 250.0;
         public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(3.0);
 
         public interface AngleInterpolation {
@@ -124,12 +125,12 @@ public interface Settings {
                 {7.87, 4000.0},
                 {9.77, 4500.0},
                 {10.694, 4795.0},       //STARTING FROM HERE THE DATA IS UNRELIABLE!!!
-                {11.516, 5000.0},
-                {12.416, 5295.0},
-                {13.316, 5500.0},
-                {14.216, 5795.0},
-                {15.148, 6000.0},
-                {16.54, 6300}           //FIELD LENGTH
+                {11.516, 4950.0},
+                {12.416, 5100.0},
+                {13.316, 5250.0},
+                {14.216, 5375.0},
+                {15.148, 5400.0},
+                {16.54, 5500}           //FIELD LENGTH
             };
         }
 
@@ -181,7 +182,7 @@ public interface Settings {
 
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.795);
 
-            public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(39.0);
+            public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(40.0);
             public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(20.0);
             public final Rotation2d MIN_FROM_HORIZON = Rotation2d.fromDegrees(7.0);
             public final Rotation2d MAX_FROM_HORIZON = Rotation2d.fromDegrees(40.0);
@@ -195,7 +196,7 @@ public interface Settings {
 
                 public final SmartNumber SHOOT = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 20.0);
                 public final SmartNumber FERRY = new SmartNumber("InterpolationTesting/Ferry State Target Angle (deg)", 20.0);
-
+                public final Rotation2d FERRY_ANGLE = Rotation2d.fromDegrees(40.0);
                 public final Rotation2d MIN = Rotation2d.fromDegrees(20.0);
                 public final Rotation2d MAX = Rotation2d.fromDegrees(40.0);
 

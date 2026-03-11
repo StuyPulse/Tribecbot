@@ -334,8 +334,10 @@ public class SOTMCalculator {
     }
 
     public static Rotation2d calculateHoodAngleFOTM() {
+        //TODO: don't forget to change this back to the solution!!
         // return ferrySol.targetHoodAngle();
-        return Rotation2d.fromDegrees(39);
+        // return Rotation2d.fromDegrees(40);
+        return Settings.Superstructure.Hood.Angles.FERRY_ANGLE;
     }
     
     public static Rotation2d calculateTurretAngleFOTM() {
