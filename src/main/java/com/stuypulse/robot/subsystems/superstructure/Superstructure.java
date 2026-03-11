@@ -44,7 +44,7 @@ public class Superstructure extends SubsystemBase {
     }
     
     public enum SuperstructureState {
-        STOW(HoodState.STOW, ShooterState.SHOOT, TurretState.SHOOT),
+        STOW(HoodState.STOW, ShooterState.INTERPOLATION, TurretState.SHOOT),
         SHOOT(HoodState.SHOOT, ShooterState.SHOOT, TurretState.SHOOT),
         FERRY(HoodState.FERRY, ShooterState.FERRY, TurretState.FERRY),
         FOTM(HoodState.FOTM, ShooterState.FOTM, TurretState.FOTM),
@@ -53,6 +53,7 @@ public class Superstructure extends SubsystemBase {
         LEFT_CORNER(HoodState.LEFT_CORNER, ShooterState.LEFT_CORNER, TurretState.LEFT_CORNER),
         RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER, TurretState.RIGHT_CORNER),
         INTERPOLATION(HoodState.INTERPOLATION, ShooterState.INTERPOLATION, TurretState.SHOOT),
+        AUTO_INTERPOLATION(HoodState.STOW, ShooterState.INTERPOLATION, TurretState.SHOOT),
         SOTM(HoodState.SOTM, ShooterState.SOTM, TurretState.SOTM);
 
         private HoodState hoodState;

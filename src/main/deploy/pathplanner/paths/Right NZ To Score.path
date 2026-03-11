@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.2371174377224206,
-        "y": 0.3284578884934768
+        "x": 7.90771754636234,
+        "y": 0.3280741797432247
       },
       "isLocked": false,
       "linkedName": "Right Center NZ"
     },
     {
       "anchor": {
-        "x": 3.508573466476462,
-        "y": 0.44452211126961516
+        "x": 3.042781740370898,
+        "y": 0.5221540656205423
       },
       "prevControl": {
-        "x": 7.64596678529063,
-        "y": 0.5651601423487547
+        "x": 7.46780313837375,
+        "y": 0.5221540656205423
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.782940802036919,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

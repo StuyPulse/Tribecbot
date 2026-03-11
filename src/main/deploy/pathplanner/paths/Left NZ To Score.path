@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.118766310794782,
-        "y": 7.590913404507711
+        "x": 7.6360057061340925,
+        "y": 7.703109843081313
       },
       "isLocked": false,
       "linkedName": "NZ Left Center"
@@ -20,8 +20,8 @@
         "y": 7.580154211150653
       },
       "prevControl": {
-        "x": 6.698850802869312,
-        "y": 7.679411990665766
+        "x": 7.7653922967189715,
+        "y": 7.6125392296718974
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7829408020369174,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

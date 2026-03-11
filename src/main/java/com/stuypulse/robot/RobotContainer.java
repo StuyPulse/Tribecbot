@@ -250,7 +250,7 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.atTolerance())
+                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance())
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
 
@@ -259,7 +259,7 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureRightCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.atTolerance())
+                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance())
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
 
@@ -268,7 +268,7 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureKB().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.atTolerance())
+                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance())
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
         

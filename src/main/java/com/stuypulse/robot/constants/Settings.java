@@ -213,8 +213,8 @@ public interface Settings {
             public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
-            public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(-127.0);
-            public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(-60.0);
+            public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(-233.0);
+            public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(53.0);
             
             double RESOLUTION_OF_ABSOLUTE_ENCODER = 0.1;
             double WRAP_DEBOUNCE = 0.5;

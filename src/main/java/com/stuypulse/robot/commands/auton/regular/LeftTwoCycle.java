@@ -12,6 +12,7 @@ import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureInterpolation;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -34,16 +35,17 @@ public class LeftTwoCycle extends SequentialCommandGroup {
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
                 new WaitCommand(0.5).andThen(new IntakeDeploy())
             ),
-            new SuperstructureInterpolation(),
 
             // Trip 1 To Score
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]).alongWith(
-                new WaitCommand(0.5).andThen(new SuperstructureInterpolation())
+                new WaitCommand(0.5).andThen(new SuperstructureAutoInterpolation())
             ),
+            new SuperstructureInterpolation(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().alongWith(new WaitUntilCommand(() -> Handoff.getInstance().atTolerance())).andThen(
                 new SpindexerRun()
-            ).andThen(new WaitCommand(5.0)),
+            ).andThen(new WaitCommand(4.0)),
+            new SuperstructureAutoInterpolation(),
 
             // NZ Trip 2
             new ParallelCommandGroup(
@@ -51,6 +53,7 @@ public class LeftTwoCycle extends SequentialCommandGroup {
                 new HandoffStop(),
                 new SpindexerStop()
             ),
+            new SuperstructureInterpolation(),
 
             new ParallelCommandGroup(
                 new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance())
