@@ -34,8 +34,6 @@ public class SpindexerImpl extends Spindexer {
 
     private final TalonFX leadMotor;
     private final TalonFX followerMotor;
-    private final Timer timer;
-    private boolean timerTriggered;
 
     private final VelocityVoltage controller;
     private final Follower follower;
@@ -83,10 +81,6 @@ public class SpindexerImpl extends Spindexer {
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
 
         followerMotor.setControl(follower);
-
-        timer = new Timer();
-
-        timerTriggered = false;
 
         voltageOverride = Optional.empty();
     }

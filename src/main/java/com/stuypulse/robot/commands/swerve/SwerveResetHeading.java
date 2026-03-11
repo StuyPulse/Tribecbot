@@ -14,9 +14,4 @@ public class SwerveResetHeading extends InstantCommand {
     public SwerveResetHeading() {
         super(() -> CommandSwerveDrivetrain.getInstance().resetRotation(Rotation2d.kZero));
     }
-
-    // @Override
-    // public void initialize() {
-    //     CommandSwerveDrivetrain.getInstance().getPigeon2().reset();
-    // }
 }

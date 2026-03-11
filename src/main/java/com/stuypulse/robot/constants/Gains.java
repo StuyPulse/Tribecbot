@@ -11,57 +11,21 @@ import com.pathplanner.lib.config.PIDConstants;
 
 public class Gains {
 
-    public interface ClimberHopper {
-        SmartNumber kP = new SmartNumber("ClimberHopper/Gains/kP", 1.0);
-        SmartNumber kI = new SmartNumber("ClimberHopper/Gains/kI", 0.0);
-        SmartNumber kD = new SmartNumber("ClimberHopper/Gains/kD", 0.20);
-
-        SmartNumber kS = new SmartNumber("ClimberHopper/Gains/kS", 0.0);
-        SmartNumber kV = new SmartNumber("ClimberHopper/Gains/kV", 0.123);
-        SmartNumber kA = new SmartNumber("ClimberHopper/Gains/kA", 0.0);
-
-        // double kP = 1.0;
-        // double kI = 0.0;
-        // double kD = 0.20;
- 
-        // double kS = 0.0;
-        // double kV = 0.123;
-        // double kA = 0.0;
-    }
-
     public interface Superstructure {
         public interface Shooter {
-
-            // SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 10.0);
-            // SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
-            // SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
-
-            // SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 10.32);
-            // SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.0835);
-            // SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
-
-            // BELOW ARE VELOCITY PID AND VOLTAGEBASED FF GAINS 
             SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 0.45);
             SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
             SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
             SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
-            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);//0.11650);
+            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);
             SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
-
-            // double kP = 0.45;
-            // double kI = 0.0;
-            // double kD = 0.0;
-
-            // double kS = 0.0;
-            // double kV = 0.123;
-            // double kA = 0.0;
         }
 
         public interface Hood {
-            double kP = 250.0;   //300.0;
+            double kP = 250.0;
             double kI = 0.0;
-            double kD = 2.0;     //0.5
+            double kD = 2.0;
 
             double kS = 0.25;
             double kV = 0.0;
@@ -97,20 +61,12 @@ public class Gains {
         double kD = 10.0;
 
         double kS = 0.25;
-        double kV = 1.2; //0.9413
+        double kV = 1.2;
         double kA = 0.010876;
     }
 
     public interface Intake {
         public interface Pivot {
-            // double kP = 100.0;
-            // double kI = 0.0;
-            // double kD = 10.0;
-
-            // double kS = 0.0;
-            // double kV = 0.12;
-            // double kA = 0.0;
-
             SmartNumber kP = new SmartNumber("Intake/Pivot/Gains/kP", 100.0);
             SmartNumber kI = new SmartNumber("Intake/Pivot/Gains/kI", 0.0);
             SmartNumber kD = new SmartNumber("Intake/Pivot/Gains/kD", 10.0);
@@ -124,7 +80,7 @@ public class Gains {
     }
 
     public interface Handoff {
-        double kP = 0.00015508; // 0.016973 from sysid
+        double kP = 0.00015508;
         double kI = 0.0;
         double kD = 0.0;
 
@@ -155,27 +111,8 @@ public class Gains {
         }
 
         public interface Alignment {
-            public interface Rotation {
-                double kp = 112.3;
-                double ki = 0.0;
-                double kd = 2.3758;
-                double ks = 0.31395;
-                double kv = 0.10969;
-                double ka = 0.026589;
-            }
-
-            double kP = 0.0;
-            double kI = 0.0;
-            double kD = 0.0;
-            double akP = 0.0;
-            double akI = 0.0;
-            double akD = 0.0;
-
             PIDConstants XY = new PIDConstants(2.2, 0, 0.0);
             PIDConstants THETA = new PIDConstants(3, 0, 0.0);
-
-            // PIDConstants XY = new PIDConstants(3.0, 0.0, 0.2);
-            // PIDConstants THETA = new PIDConstants(13.0, 0.0, 0.5);
         }
     }
 }

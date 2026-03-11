@@ -83,22 +83,6 @@ public class HoodImpl extends Hood {
         return Rotation2d.fromRotations(hoodMotor.getPosition().getValueAsDouble());
     }
 
-    //TODO: Implementation as of 3/3 but not yet tested
-    // Should ONLY be called at the lower hardstop!
-    @Override
-    public void zeroHoodEncoderAtUpperHardstop() {
-        hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);
-
-        double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
-
-        double positionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
-        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.Superstructure.Hood.Angles.MAX.getRotations());
-
-        hoodEncoderConfig.withMagnetOffset(newOffset);
-
-        hoodEncoderConfig.configure(hoodEncoder);
-    }
-
     @Override
     public boolean isStalling() {
         return isStalling.getAsBoolean();
@@ -128,12 +112,14 @@ public class HoodImpl extends Hood {
         super.periodic();
 
         if (!hasUsedAbsoluteEncoder) {
-            seedHood();
+            // seedHood();
+            seedHoodAtUpperHardStop();
             hasUsedAbsoluteEncoder = true;
         }
 
         if (isStalling() && getState() == HoodState.HOMING) {
-            seedHood();
+            // seedHood();
+            seedHoodAtUpperHardStop();
             setState(HoodState.IDLE);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED", true);
         }
@@ -186,7 +172,23 @@ public class HoodImpl extends Hood {
         );
     }
 
-    
+
+    //TODO: Implementation as of 3/3 but not yet tested
+    // Should ONLY be called at the lower hardstop!
+    @Override
+    public void zeroHoodEncoderAtUpperHardstop() {
+        hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);
+
+        double currentOffset = hoodEncoderConfig.getConfiguration().MagnetSensor.MagnetOffset;
+
+        double positionWithCurrentOffset = hoodEncoder.getPosition().getValueAsDouble();
+        double newOffset = -((positionWithCurrentOffset - currentOffset) - Settings.Superstructure.Hood.Angles.MAX.getRotations());
+
+        hoodEncoderConfig.withMagnetOffset(newOffset);
+
+        hoodEncoderConfig.configure(hoodEncoder);
+    }
+
     @Override
     public void zeroHoodEncodersAfterSeed() { //only use if you are seeded -> might add a boolean to double check that we are in seed at Upper Hardstop ^^
         hoodEncoder.getConfigurator().refresh(hoodEncoderConfig.getConfiguration().MagnetSensor);

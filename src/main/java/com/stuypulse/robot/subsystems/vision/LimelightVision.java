@@ -95,14 +95,6 @@ public class LimelightVision extends SubsystemBase{
         enabled.set(false);
     }
 
-    // public void setCameraEnabled(String name, boolean enabled) {
-    //     for (int i = 0; i < names.length; i++) {
-    //         if (names[i].equals(name)) {
-    //             camerasEnabled[i].set(enabled);
-    //         }
-    //     } 
-    // }
-
     public void setMegaTagMode(MegaTagMode mode) {
         this.megaTagMode = mode;
     }
