@@ -182,6 +182,10 @@ public class TurretImpl extends Turret {
             turretMotor.stopMotor();
         }
 
+        SmartDashboard.putBoolean("Robot/CAN/Main/Turret Motor Connected? (ID " + String.valueOf(turretMotor.getDeviceID()) + ")", turretMotor.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Turret 17t Encoder Connected? (ID " + String.valueOf(encoder17t.getDeviceID()) + ")", encoder17t.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Turret 18t Encoder Connected? (ID " + String.valueOf(encoder18t.getDeviceID()) + ")", encoder18t.isConnected());
+
         if (Settings.DEBUG_MODE) {
 
             SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (Rot)", turretMotor.getPosition().getValueAsDouble() * 360.0);

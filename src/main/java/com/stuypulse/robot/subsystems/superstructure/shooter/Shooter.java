@@ -57,9 +57,9 @@ public abstract class Shooter extends SubsystemBase {
     }
 
     public double getTargetRPM() {
-        if(Settings.Superstructure.Shooter.RPM.OVERRIDEN.get()) {
-            return Settings.Superstructure.Shooter.RPM.OVERRIDE_VALUE.get();
-        }
+        // if(Settings.Superstructure.Shooter.RPM.OVERRIDEN.get()) {
+        //     return Settings.Superstructure.Shooter.RPM.OVERRIDE_VALUE.get();
+        // }
         
         return switch(state) {
             case STOP -> 0;

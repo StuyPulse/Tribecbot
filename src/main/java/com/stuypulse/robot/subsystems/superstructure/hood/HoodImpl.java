@@ -137,6 +137,9 @@ public class HoodImpl extends Hood {
             hoodMotor.stopMotor();
         }
 
+        SmartDashboard.putBoolean("Robot/CAN/Main/Hood Motor Connected? (ID " + String.valueOf(hoodMotor.getDeviceID()) + ")", hoodMotor.isConnected());
+        // SmartDashboard.putBoolean("Robot/CAN/Main/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
+
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
 

@@ -10,6 +10,7 @@ import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -45,16 +46,23 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        PortForwarder.add(5801, "10.6.94.11", 5801);
+        PortForwarder.add(5801, "10.6.94.12", 5801);
+        PortForwarder.add(5801, "10.6.94.13", 5801);
+
         CommandScheduler.getInstance().run();
         if (!Robot.isReal()) {
             SmartDashboard.putData(CommandScheduler.getInstance());
         }
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
+        
 
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+
+
     }
 
     /*********************/
@@ -68,14 +76,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        CommandScheduler.getInstance().schedule(new SetIMUMode(Settings.Vision.RESET_IMU_INDEX));
+        CommandScheduler.getInstance().schedule(new SetIMUMode(0));
+
     }
 
     /***********************/
     /*** AUTONOMOUS MODE ***/
     /***********************/  
 
-    @Override
+    @Override 
     public void autonomousInit() {
 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));

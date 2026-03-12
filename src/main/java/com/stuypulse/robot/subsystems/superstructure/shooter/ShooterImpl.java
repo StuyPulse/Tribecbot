@@ -114,6 +114,9 @@ public class ShooterImpl extends Shooter {
             shooterLeader.stopMotor();
         }
 
+        SmartDashboard.putBoolean("Robot/CAN/Main/Shooter Leader Motor Connected? (ID " + String.valueOf(shooterLeader.getDeviceID()) + ")", shooterLeader.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Shooter Follower Motor Connected? (ID " + String.valueOf(shooterFollower.getDeviceID()) + ")", shooterFollower.isConnected());
+
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("Superstructure/Shooter/Leader Current (amps)", shooterLeader.getSupplyCurrent().getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Shooter/Follower Supply Current (amps)", shooterFollower.getSupplyCurrent().getValueAsDouble());

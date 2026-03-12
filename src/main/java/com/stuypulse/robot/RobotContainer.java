@@ -83,7 +83,7 @@ public class RobotContainer {
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
-        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
+        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", false);
         SmartBoolean RIGHT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Right Limelight Is Enabled", true);
     }
 
@@ -165,8 +165,8 @@ public class RobotContainer {
                     .alongWith(new HandoffStop()));
 
         // Intake Stow
-        driver.getLeftTriggerButton()
-            .onTrue(new IntakeStow());
+        // driver.getLeftTriggerButton()
+        //     .onTrue(new IntakeStow());
 
         // Intake Deploy
         driver.getRightTriggerButton()

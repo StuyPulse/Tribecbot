@@ -172,6 +172,10 @@ public class IntakeImpl extends Intake {
             rollerFollower.stopMotor();
         }
 
+        SmartDashboard.putBoolean("Robot/CAN/Main/Intake Pivot Motor Connected? (ID " + String.valueOf(pivot.getDeviceID()) + ")", pivot.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Leader Motor Connected? (ID " + String.valueOf(rollerLeader.getDeviceID()) + ")", rollerLeader.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID " + String.valueOf(rollerFollower.getDeviceID()) + ")", rollerFollower.isConnected());
+
         if (Settings.DEBUG_MODE) {
             // PIVOT
             SmartDashboard.putBoolean("Intake/Voltage Override", pivotVoltageOverride.isPresent());

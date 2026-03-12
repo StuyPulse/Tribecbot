@@ -532,10 +532,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 SmartDashboard.putNumber(prefix + "/Stator Current", getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
                 SmartDashboard.putNumber(prefix + "/Supply Current", getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
             }
+            //TODO: ADD DRIVETRAIN CAN LOGGING TYTYTY -95
+            // SmartDashboard.putBoolean("Robot/CAN/Main/Drive Left Motor Connected? (ID " + String.valueOf(.getDeviceID()) + ")", turretMotor.isConnected());
         }
-
+        
         Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
-
+        
         
         if (Settings.DEBUG_MODE) {}
         ChassisSpeeds chassisSpeeds = getChassisSpeeds();

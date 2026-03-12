@@ -118,6 +118,9 @@ public class SpindexerImpl extends Spindexer {
             leadMotor.stopMotor();
         }
 
+        SmartDashboard.putBoolean("Robot/CAN/Main/Spindexer Leader Motor Connected? (ID " + String.valueOf(leadMotor.getDeviceID()) + ")", leadMotor.isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Spindexer Follower Motor Connected? (ID " + String.valueOf(followerMotor.getDeviceID()) + ")", followerMotor.isConnected());
+
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("Spindexer/Lead Motor RPM", getCurrentLeadMotorRPM());
             SmartDashboard.putNumber("Spindexer/Follower Motor RPM", getCurrentFollowerMotorRPM());
