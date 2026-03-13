@@ -13,7 +13,10 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,6 +69,18 @@ public class HandoffImpl extends Handoff {
     public double getCurrentRPM() {
         return motor.getVelocity().getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Handoff.GEAR_RATIO;
     }
+
+    public boolean shouldStop() {
+        // boolean isStopState = getState() == HandoffState.STOP;
+        // boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
+        // boolean isBehindHubWhileFerrying = Superstructure.getInstance().getState() == SuperstructureState.FOTM && CommandSwerveDrivetrain.getInstance().isBehindHub();
+
+        // return isStopState || isTurretWrapping || isBehindHubWhileFerrying;
+
+        boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
+
+        return isTurretWrapping;
+    }
     
     @Override
     public void periodic() {
@@ -74,7 +89,7 @@ public class HandoffImpl extends Handoff {
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
-            } else if (Superstructure.getInstance().isTurretWrapping()) {
+            } else if (shouldStop()) {
                 motor.stopMotor();
             } else {
                 motor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));

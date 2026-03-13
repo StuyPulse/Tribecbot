@@ -13,7 +13,10 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -97,6 +100,18 @@ public class SpindexerImpl extends Spindexer {
         return Math.abs(error) <= Settings.Spindexer.RPM_TOLERANCE;
     }
 
+    public boolean shouldStop() {
+        // boolean isStopState = getState() == SpindexerState.STOP;
+        // boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
+        // boolean isBehindHubWhileFerrying = Superstructure.getInstance().getState() == SuperstructureState.FOTM && CommandSwerveDrivetrain.getInstance().isBehindHub();
+
+        // return isStopState || isTurretWrapping || isBehindHubWhileFerrying;
+
+        boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
+
+        return isTurretWrapping;
+    }
+
     @Override
     public void periodic() {
         super.periodic();
@@ -105,10 +120,7 @@ public class SpindexerImpl extends Spindexer {
             if (voltageOverride.isPresent()) {
                 leadMotor.setVoltage(voltageOverride.get());
             } else {
-                // DO NOT REMOVE BELOW LINE - needed to brake the motor in STOP state
-                if (getState() == SpindexerState.STOP) {
-                    leadMotor.stopMotor();
-                } else if (Superstructure.getInstance().isTurretWrapping()) {
+                if (shouldStop()) {
                     leadMotor.stopMotor();
                 } else {
                     leadMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
