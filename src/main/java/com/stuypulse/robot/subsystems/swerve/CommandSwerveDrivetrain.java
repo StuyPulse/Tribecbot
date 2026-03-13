@@ -507,7 +507,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             motor.getDriveMotor().getConfigurator().apply(newConfigs);
         }
     }
-    
+
     @Override
     public void periodic() {
         Pose2d pose = getPose();
@@ -549,12 +549,26 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 SmartDashboard.putNumber(prefix + "/Stator Current", getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
                 SmartDashboard.putNumber(prefix + "/Supply Current", getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
             }
-            //TODO: ADD DRIVETRAIN CAN LOGGING TYTYTY -95
-            // SmartDashboard.putBoolean("Robot/CAN/Main/Drive Left Motor Connected? (ID " + String.valueOf(.getDeviceID()) + ")", turretMotor.isConnected());
         }
+
+        // CAN SIGNAL LOGGING
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Left Drive Motor Connected? (ID " + String.valueOf(TunerConstants.kFrontLeftDriveMotorId) + ")", getModule(0).getDriveMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Left Steer Motor Connected? (ID " + String.valueOf(TunerConstants.kFrontLeftSteerMotorId) + ")", getModule(0).getSteerMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Left CANcoder Connected? (ID " + String.valueOf(TunerConstants.kFrontLeftEncoderId) + ")", getModule(0).getEncoder().isConnected());
+        
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Right Drive Motor Connected? (ID " + String.valueOf(TunerConstants.kFrontRightDriveMotorId) + ")", getModule(1).getDriveMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Right Steer Motor Connected? (ID " + String.valueOf(TunerConstants.kFrontRightSteerMotorId) + ")", getModule(1).getSteerMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Front Right CANcoder Connected? (ID " + String.valueOf(TunerConstants.kFrontRightEncoderId) + ")", getModule(1).getEncoder().isConnected());
+        
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Left Drive Motor Connected? (ID " + String.valueOf(TunerConstants.kBackLeftDriveMotorId) + ")", getModule(2).getDriveMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Left Steer Motor Connected? (ID " + String.valueOf(TunerConstants.kBackLeftSteerMotorId) + ")", getModule(2).getSteerMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Left CANcoder Connected? (ID " + String.valueOf(TunerConstants.kBackLeftEncoderId) + ")", getModule(2).getEncoder().isConnected());
+        
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Right Drive Motor Connected? (ID " + String.valueOf(TunerConstants.kBackRightDriveMotorId) + ")", getModule(3).getDriveMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Right Steer Motor Connected? (ID " + String.valueOf(TunerConstants.kBackRightSteerMotorId) + ")", getModule(3).getSteerMotor().isConnected());
+        SmartDashboard.putBoolean("Robot/CAN/Main/Back Right CANcoder Connected? (ID " + String.valueOf(TunerConstants.kBackRightEncoderId) + ")", getModule(3).getEncoder().isConnected());
         
         Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
-        
         
         if (Settings.DEBUG_MODE) {}
         ChassisSpeeds chassisSpeeds = getChassisSpeeds();
