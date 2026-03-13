@@ -13,6 +13,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,13 +74,9 @@ public class HandoffImpl extends Handoff {
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
-            } 
-            // else if (isHandoffStalling()) { //TODO: debug logic
-            //     setState(HandoffState.REVERSE);
-            //     motor.setControl(controller.withVelocity(getTargetRPM() / 60.0).withEnableFOC(true));
-
-            // }
-              else {
+            } else if (Superstructure.getInstance().isTurretWrapping()) {
+                motor.stopMotor();
+            } else {
                 motor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
             }
         } else {
