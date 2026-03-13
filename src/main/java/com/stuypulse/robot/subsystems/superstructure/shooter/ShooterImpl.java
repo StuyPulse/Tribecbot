@@ -152,4 +152,10 @@ public class ShooterImpl extends Shooter {
             getInstance()
         );
     }
+
+    @Override
+    public double getCurrentDraw() {
+        return  shooterLeader.getSupplyCurrent().getValueAsDouble() + 
+                shooterFollower.getSupplyCurrent().getValueAsDouble();
+    }
 }

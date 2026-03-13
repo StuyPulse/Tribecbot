@@ -216,4 +216,9 @@ public class IntakeSim extends Intake {
     public void teleopInit() {
         return;
     }
+
+    @Override
+    public double getCurrentDraw() {
+        return 0;
+    }
 }

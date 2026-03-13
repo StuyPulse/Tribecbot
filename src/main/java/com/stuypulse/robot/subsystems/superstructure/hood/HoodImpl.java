@@ -210,4 +210,8 @@ public class HoodImpl extends Hood {
         hoodEncoderConfig.configure(hoodEncoder);
     }
 
+    @Override
+    public double getCurrentDraw() {
+        return hoodMotor.getSupplyCurrent().getValueAsDouble();
+    }
 }

@@ -104,7 +104,11 @@ public class HandoffSim extends Handoff {
 
     @Override
     public boolean isHandoffStalling() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isHandoffStalling'");
+        return false;
+    }
+
+    @Override
+    public double getCurrentDraw() {
+        return 0;
     }
 }

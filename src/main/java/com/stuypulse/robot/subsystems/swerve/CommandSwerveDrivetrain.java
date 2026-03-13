@@ -508,6 +508,26 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
+    public double getTotalDriveSupplyCurrent() {
+        double total = 0.0;
+
+        for(SwerveModule<TalonFX, TalonFX, CANcoder> module: getModules()) {
+            total += module.getDriveMotor().getSupplyCurrent().getValueAsDouble();
+        }
+
+        return total;
+    }
+
+    public double getTotalSteerSupplyCurrent() {
+        double total = 0.0;
+
+        for(SwerveModule<TalonFX, TalonFX, CANcoder> module: getModules()) {
+            total += module.getSteerMotor().getSupplyCurrent().getValueAsDouble();
+        }
+
+        return total;
+    }
+
     @Override
     public void periodic() {
         Pose2d pose = getPose();

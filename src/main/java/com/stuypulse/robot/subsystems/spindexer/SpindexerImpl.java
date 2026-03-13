@@ -182,4 +182,10 @@ public class SpindexerImpl extends Spindexer {
             getInstance()
         );
     }
+
+    @Override
+    public double getCurrentDraw() {
+        return  leadMotor.getSupplyCurrent().getValueAsDouble() + 
+                followerMotor.getSupplyCurrent().getValueAsDouble();
+    }
 }

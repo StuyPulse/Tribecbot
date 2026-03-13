@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+
+        robot.periodic();
     }
 
     /*********************/

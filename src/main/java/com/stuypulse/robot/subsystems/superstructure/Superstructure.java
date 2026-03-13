@@ -126,6 +126,10 @@ public class Superstructure extends SubsystemBase {
         return turret.isWrapping();
     }
 
+    public double getCurrentDraw() {
+        return turret.getCurrentDraw() + shooter.getCurrentDraw() + hood.getCurrentDraw();
+    }
+
     @Override
     public void periodic() {
         SuperstructureState state = getState();

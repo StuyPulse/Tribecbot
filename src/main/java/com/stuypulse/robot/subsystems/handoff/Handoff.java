@@ -73,6 +73,8 @@ public abstract class Handoff extends SubsystemBase {
     public abstract void setVoltageOverride(Optional<Double> voltage);
     public abstract boolean isHandoffStalling();
 
+    public abstract double getCurrentDraw();
+
     @Override
     public void periodic() {
         super.periodic();

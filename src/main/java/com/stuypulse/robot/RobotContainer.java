@@ -379,4 +379,15 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autonChooser.getSelected();
     }
+
+    public void periodic() {
+        double totalCurrentDraw =   handoff.getCurrentDraw() +
+                                    intake.getCurrentDraw() +
+                                    spindexer.getCurrentDraw() +
+                                    superstructure.getCurrentDraw() +
+                                    swerve.getTotalDriveSupplyCurrent() +
+                                    swerve.getTotalSteerSupplyCurrent();
+                                    
+        SmartDashboard.putNumber("Current Draws/Total", totalCurrentDraw);
+    }
 }

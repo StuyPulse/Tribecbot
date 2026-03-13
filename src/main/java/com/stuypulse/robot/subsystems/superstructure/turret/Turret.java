@@ -111,6 +111,8 @@ public abstract class Turret extends SubsystemBase {
     public abstract void zeroEncoders();
 
     public abstract boolean isWrapping();
+    public abstract double getCurrentDraw();
+
    
     public void setState(TurretState state) {
         this.state = state;

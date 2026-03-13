@@ -100,4 +100,9 @@ public class ShooterSim extends Shooter {
                 () -> sim.getInput(0),
                 getInstance());
     }
+
+    @Override
+    public double getCurrentDraw() {
+        return 0;
+    }
 }

@@ -126,4 +126,9 @@ public class HandoffImpl extends Handoff {
             () -> motor.getMotorVoltage().getValueAsDouble(),
             getInstance());
     }
+    
+    @Override
+    public double getCurrentDraw(){
+        return motor.getSupplyCurrent().getValueAsDouble();
+    }
 }

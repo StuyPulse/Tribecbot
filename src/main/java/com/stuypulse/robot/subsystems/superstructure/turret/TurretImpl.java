@@ -221,4 +221,9 @@ public class TurretImpl extends Turret {
                 () -> this.turretMotor.getMotorVoltage().getValueAsDouble(),
                 getInstance());
     }
+
+    @Override
+    public double getCurrentDraw() {
+        return turretMotor.getSupplyCurrent().getValueAsDouble();
+    }
 }

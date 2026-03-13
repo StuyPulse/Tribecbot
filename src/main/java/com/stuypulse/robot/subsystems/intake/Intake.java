@@ -97,6 +97,7 @@ public abstract class Intake extends SubsystemBase {
     public abstract void zeroPivotStowed();
 
     public abstract void teleopInit();
+    public abstract double getCurrentDraw();
 
     @Override
     public void periodic() {

@@ -118,13 +118,16 @@ public class HoodSim extends Hood {
 
     @Override
     public void seedHoodAtUpperHardStop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'seedHoodAtUpperHardStop'");
+        return;
     }
 
     @Override
     public void zeroHoodEncodersAfterSeed() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'zeroHoodEncodersAfterSeed'");
+        return;
+    }
+
+    @Override
+    public double getCurrentDraw() {
+        return 0;
     }
 }

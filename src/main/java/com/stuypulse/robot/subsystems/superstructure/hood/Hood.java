@@ -123,6 +123,7 @@ public abstract class Hood extends SubsystemBase{
     public abstract void seedHoodAtUpperHardStop();
     public abstract void zeroHoodEncodersAfterSeed();
     
+    public abstract double getCurrentDraw();
 
     @Override
     public void periodic() {

@@ -238,4 +238,11 @@ public class IntakeImpl extends Intake {
                 () -> pivot.getMotorVoltage().getValueAsDouble(),
                 getInstance());
     }
+
+    @Override
+    public double getCurrentDraw() {
+       return   pivot.getSupplyCurrent().getValueAsDouble() + 
+                rollerFollower.getSupplyCurrent().getValueAsDouble() + 
+                rollerLeader.getSupplyCurrent().getValueAsDouble();
+    }
 }
