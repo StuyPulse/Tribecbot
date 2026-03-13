@@ -8,10 +8,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.intake.IntakeTeleopInit;
 import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
 import com.stuypulse.robot.commands.turret.SeedTurret;
-import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import edu.wpi.first.net.PortForwarder;

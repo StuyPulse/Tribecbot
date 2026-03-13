@@ -5,10 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot;
 
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
-import com.stuypulse.stuylib.network.SmartBoolean;
-
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
@@ -22,7 +18,6 @@ import com.stuypulse.robot.commands.intake.IntakeOuttake;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
-import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.ZeroPivotDeployed;
 import com.stuypulse.robot.commands.intake.ZeroPivotStowed;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
@@ -42,6 +37,9 @@ import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
+import com.stuypulse.robot.commands.vision.EnableBackLimelight;
+import com.stuypulse.robot.commands.vision.EnableLeftLimelight;
+import com.stuypulse.robot.commands.vision.EnableRightLimelight;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
 import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
@@ -62,6 +60,9 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -138,6 +139,10 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop().ignoringDisable(true));
         SmartDashboard.putData("Robot/Set Megatag 1", new SetMegaTagMode(MegaTagMode.MEGATAG1).ignoringDisable(true));
         SmartDashboard.putData("Robot/Set Megatag 2", new SetMegaTagMode(MegaTagMode.MEGATAG2).ignoringDisable(true));
+
+        SmartDashboard.putData("Robot/Set Left LL PF", new EnableLeftLimelight());
+        SmartDashboard.putData("Robot/Set Right LL PF", new EnableRightLimelight());
+        SmartDashboard.putData("Robot/Set Back LL PF", new EnableBackLimelight());
 
         SmartDashboard.putData("Robot/Handoff Reverse", 
             new ConditionalCommand(
