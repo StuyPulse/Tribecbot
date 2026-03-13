@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -13,11 +15,9 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix6.CANBus;
-import com.pathplanner.lib.path.PathConstraints;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -314,5 +314,9 @@ public interface Settings {
         public final Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694.0);
         public final int RESET_IMU_INDEX = 1;
         public final int INTERNAL_EXTERNAL_ASSIST_INDEX = 4;
+        public final Translation2d INVALID_POSITION = new Translation2d(8.2705, 4.0345);
+        public final double INVALID_POSITION_TOLERANCE_M = 0.05;
+        public final double MAX_ANGULAR_VELOCITY_RAD_SEC = 2 * Math.PI;
+
     }
 }

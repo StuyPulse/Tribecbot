@@ -168,7 +168,15 @@ public class LimelightVision extends SubsystemBase {
 
                     // Adding to pose estimator
 
-                    if (poseEstimate != null && poseEstimate.tagCount > 0 && (poseEstimate.pose.getX() != 0.0 && poseEstimate.pose.getY() != 0.0)) {
+                    if (poseEstimate != null && poseEstimate.tagCount > 0 )  {
+                        if (poseEstimate.pose.getTranslation().getDistance(Settings.Vision.INVALID_POSITION) < Settings.Vision.INVALID_POSITION_TOLERANCE_M){
+                            return;
+                        }
+
+                        if (CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond > Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
+                            return;
+                        }
+
                         Pose2d robotPose = poseEstimate.pose;
                         double timestamp = poseEstimate.timestampSeconds;
 
@@ -204,7 +212,6 @@ public class LimelightVision extends SubsystemBase {
                     SmartDashboard.putNumber("Vision/Limelight Robot Yaw", LimelightHelpers.getIMUData(limelightName).robotYaw);
                     // this is just the yaw of the internal imu 
                     SmartDashboard.putNumber("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
-
                 }
                 if (Settings.DEBUG_MODE) {
                     String limelightName = names[i];
