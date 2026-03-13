@@ -168,23 +168,34 @@ public class LimelightVision extends SubsystemBase {
 
                     // Adding to pose estimator
 
+                    boolean notNull = false;
+                    boolean withinAngularVelocityTolerance = false;
+                    boolean withinInvalidPositionTolerance = false;
+
                     if (poseEstimate != null && poseEstimate.tagCount > 0 )  {
+                        notNull = true;
+
                         if (poseEstimate.pose.getTranslation().getDistance(Settings.Vision.INVALID_POSITION) < Settings.Vision.INVALID_POSITION_TOLERANCE_M){
-                            return;
+                            withinInvalidPositionTolerance = true;
                         }
 
-                        if (CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond > Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
-                            return;
+                        if (CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond < Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
+                            withinAngularVelocityTolerance = true;
                         }
 
                         Pose2d robotPose = poseEstimate.pose;
                         double timestamp = poseEstimate.timestampSeconds;
 
-                        if (megaTagMode == MegaTagMode.MEGATAG1) {
+                        if (megaTagMode == MegaTagMode.MEGATAG1 && notNull && withinAngularVelocityTolerance && !withinInvalidPositionTolerance) {
                             CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp, Settings.Vision.MT1_STDEVS);
                         } else {
                             CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp, Settings.Vision.MT2_STDEVS);
                         }
+
+
+                        SmartDashboard.putBoolean("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
+                        SmartDashboard.putBoolean("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
+                        SmartDashboard.putBoolean("Vision/Not Null", notNull);
 
                         SmartDashboard.putNumber("Vision/Pose X Component", robotPose.getX());
                         SmartDashboard.putNumber("Vision/Pose Y Component", robotPose.getY());

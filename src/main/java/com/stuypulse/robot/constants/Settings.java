@@ -269,7 +269,7 @@ public interface Settings {
         public interface Constraints {
             public final double MAX_VELOCITY_M_PER_S = 4.93; 
             public final double MAX_VELOCITY_SOTM_M_PER_S = 2.00;
-            public final double MAX_VELOCITY_FOTM_M_PER_S = 2.00;
+            public final double MAX_VELOCITY_FOTM_M_PER_S = 3.00;
 
             public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(300.0);
             public final double MAX_ANGULAR_VEL_SOTM_RAD_PER_S = Units.degreesToRadians(75.0);
@@ -277,7 +277,7 @@ public interface Settings {
 
             public final double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
             public final double MAX_ACCEL_M_PER_S_SQUARED_SOTM = 5.0;
-            public final double MAX_ACCEL_M_PER_S_SQUARED_FOTM = 15.0;
+            public final double MAX_ACCEL_M_PER_S_SQUARED_FOTM = 10.0;
             public final double MAX_ANGULAR_ACCEL_RAD_PER_S_SQUARED = Units.degreesToRadians(900.0);
 
             public final PathConstraints DEFAULT_CONSTRAINTS =
