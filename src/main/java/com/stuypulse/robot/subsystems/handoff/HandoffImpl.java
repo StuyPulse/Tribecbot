@@ -77,9 +77,10 @@ public class HandoffImpl extends Handoff {
 
         // return isStopState || isTurretWrapping || isBehindHubWhileFerrying;
 
+        boolean isStopState = getState() == HandoffState.STOP;
         boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
 
-        return isTurretWrapping;
+        return isStopState || isTurretWrapping;
     }
     
     @Override

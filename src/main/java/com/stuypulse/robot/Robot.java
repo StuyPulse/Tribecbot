@@ -48,10 +48,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        PortForwarder.add(5801, "10.6.94.11", 5801);
-        PortForwarder.add(5801, "10.6.94.12", 5801);
-        PortForwarder.add(5801, "10.6.94.13", 5801);
-
         CommandScheduler.getInstance().run();
         if (!Robot.isReal()) {
             SmartDashboard.putData(CommandScheduler.getInstance());
@@ -73,7 +69,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
-        CommandScheduler.getInstance().schedule(new SeedTurret());
+        // CommandScheduler.getInstance().schedule(new SeedTurret());
     }
 
     @Override
@@ -86,8 +82,8 @@ public class Robot extends TimedRobot {
     @Override 
     public void autonomousInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        CommandScheduler.getInstance().schedule(new SeedTurret());
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
+        // CommandScheduler.getInstance().schedule(new SeedTurret());
 
         auto = robot.getAutonomousCommand();
 

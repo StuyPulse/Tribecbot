@@ -102,9 +102,10 @@ public class SpindexerImpl extends Spindexer {
 
         // return isStopState || isTurretWrapping || isBehindHubWhileFerrying;
 
+        boolean isStopState = getState() == SpindexerState.STOP;
         boolean isTurretWrapping = Superstructure.getInstance().isTurretWrapping();
 
-        return isTurretWrapping;
+        return isStopState || isTurretWrapping;
     }
 
 
