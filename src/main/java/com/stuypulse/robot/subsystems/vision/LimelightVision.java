@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems.vision;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Cameras;
+import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
@@ -94,7 +95,7 @@ public class LimelightVision extends SubsystemBase {
                 .filtered(new BDebounce.Both(Settings.Vision.BUZZ_DEBOUNCE));
     }
 
-    public void setTagWhitelist(int... ids) {
+    public void setAllLTagWhitelist(int... ids) {
         for (String name : names) {
             LimelightHelpers.SetFiducialIDFiltersOverride(name, ids);
         }
@@ -132,6 +133,32 @@ public class LimelightVision extends SubsystemBase {
         for (String name : names) {
             LimelightHelpers.SetIMUAssistAlpha(name, assistValue);
         }
+    }
+
+    /**
+     * Allows all tags except the specified ones by setting blacklisted tag
+     * indexes to -1 in the full tag list before applying the new list.
+     *
+     * @param tagsToBlacklist array of tag IDs to exclude from detection
+     * @param limelight the name of the Limelight camera to configure
+     */
+    public void setTagBlacklist(int[] tagsToBlacklist, String limelight) {
+        int[] allowedTags = Field.ALL_TAGS;
+        for (int i = 0; i < tagsToBlacklist.length; i++) {
+            allowedTags[tagsToBlacklist[i]] = -1;
+        }
+        LimelightHelpers.SetFiducialIDFiltersOverride(limelight, allowedTags);
+    }
+
+    /**
+     * Restricts detection to only the specified tags by passing them directly
+     * as the whitelist.
+     *
+     * @param tagsToWhitelist array of tag IDs to allow for detection
+     * @param limelight the name of the Limelight camera to configure
+     */
+    public void setTagWhitelist(int[] tagsToWhitelist, String limelight) {
+        LimelightHelpers.SetFiducialIDFiltersOverride(limelight, tagsToWhitelist);
     }
 
     public IMUData[] getIMUData() {
