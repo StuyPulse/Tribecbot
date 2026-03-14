@@ -503,7 +503,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             module.getDriveMotor().getConfigurator().refresh(newConfigs);
             newConfigs = newConfigs
                     .withCurrentLimits(new CurrentLimitsConfigs()
-                        .withStatorCurrentLimit(100)
+                        .withStatorCurrentLimit(80)
                         .withStatorCurrentLimitEnable(true));
                         
             module.getDriveMotor().getConfigurator().apply(newConfigs);
