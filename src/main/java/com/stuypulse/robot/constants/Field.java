@@ -43,7 +43,7 @@ public interface Field {
 
     public static final double OPPONENT_ZONE_X = LENGTH - Units.inchesToMeters(158.6);
 
-    public static final double hubTolerance = Units.inchesToMeters(283);
+    public static final double hubTolerance = Units.inchesToMeters(100);
 
     public static Pose2d getHubPose() {
         return hubCenter;
