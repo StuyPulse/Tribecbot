@@ -11,6 +11,7 @@ import com.stuypulse.robot.commands.vision.WhitelistAllTags;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -28,7 +29,7 @@ public class Robot extends TimedRobot {
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
-    private int resetLoggingCounter = 0;
+    private static int periodicCounter = 0;
     private Command selectedAuto;
 
     public static boolean isBlue() {
@@ -47,14 +48,18 @@ public class Robot extends TimedRobot {
         DataLogManager.start();
         SignalLogger.start();
     }
+    
+    public static int getPeriodicCounter() {
+        return periodicCounter;
+    }
 
     @Override
     public void robotPeriodic() {
-        if (resetLoggingCounter % 50 == 0) {
+        if (periodicCounter % 50 == 0) {
             DataLogManager.getLog().resume();
         }
 
-        resetLoggingCounter++;
+        periodicCounter++;
 
         
         CommandScheduler.getInstance().run();
@@ -83,7 +88,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        if (resetLoggingCounter % 50 == 0) {
+        if (periodicCounter % 50 == 0) {
             selectedAuto = robot.getAutonomousCommand();
 
             switch (selectedAuto.getName()) {

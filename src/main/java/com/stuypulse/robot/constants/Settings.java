@@ -28,6 +28,7 @@ import edu.wpi.first.math.util.Units;
 
 public interface Settings {
     public final double DT = 0.020;
+    public final int LOGGING_FREQUENCY = 2;
     public final double SECONDS_IN_A_MINUTE = 60.0;
     public final boolean DEBUG_MODE = true;
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
