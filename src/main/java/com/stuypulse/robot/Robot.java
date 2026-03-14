@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
+import com.stuypulse.robot.commands.vision.WhitelistAllTags;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -61,8 +62,6 @@ public class Robot extends TimedRobot {
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
-        
-
 
         robot.periodic();
     }
@@ -74,7 +73,6 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
-        // CommandScheduler.getInstance().schedule(new SeedTurret());
     }
 
     @Override
@@ -88,7 +86,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
-        // CommandScheduler.getInstance().schedule(new SeedTurret());
 
         auto = robot.getAutonomousCommand();
 
@@ -110,8 +107,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        // CommandScheduler.getInstance().schedule(new IntakeTeleopInit());
-        // CommandScheduler.getInstance().schedule(new SwerveTeleopInit());
+        CommandScheduler.getInstance().schedule(new WhitelistAllTags("limelight-left"));
 
         
         if (auto != null) {
