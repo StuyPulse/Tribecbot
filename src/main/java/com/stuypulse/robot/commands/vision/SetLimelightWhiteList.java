@@ -27,4 +27,8 @@ public class SetLimelightWhiteList extends InstantCommand {
         vision.setTagWhitelist(whitelistedArray, limelightName);
     }
     
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
 }

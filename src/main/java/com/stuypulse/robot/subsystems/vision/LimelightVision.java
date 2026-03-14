@@ -144,9 +144,11 @@ public class LimelightVision extends SubsystemBase {
      */
     public void setTagBlacklist(int[] tagsToBlacklist, String limelight) {
         int[] allowedTags = Field.ALL_TAGS;
+        
         for (int i = 0; i < tagsToBlacklist.length; i++) {
-            allowedTags[tagsToBlacklist[i] - 1] = -1;
+            allowedTags[tagsToBlacklist[i] - 1] = 0;
         }
+        
         LimelightHelpers.SetFiducialIDFiltersOverride(limelight, allowedTags);
     }
 

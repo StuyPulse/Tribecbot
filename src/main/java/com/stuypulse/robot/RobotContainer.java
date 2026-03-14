@@ -46,6 +46,7 @@ import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTags;
 import com.stuypulse.robot.commands.vision.WhitelistOutpostTags;
+import com.stuypulse.robot.commands.vision.WhitelistTowerTags;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
@@ -148,9 +149,11 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Set Right LL PF", new EnableRightLimelight());
         SmartDashboard.putData("Robot/Set Back LL PF", new EnableBackLimelight());
 
-        SmartDashboard.putData("Robot/Whitelist Outpost Tags", new WhitelistOutpostTags("limelight-left"));
-        SmartDashboard.putData("Robot/Whitelist All Tags", new WhitelistAllTags("limelight-left"));
-        // SmartDashboard.putData("Robot/Whitelist Trench Tags", new WhitelistOutpostTags("limelight-left"));
+        SmartDashboard.putData("Robot/WL Outpost Tags Left-Camera", new WhitelistOutpostTags("limelight-left").ignoringDisable(true));
+        SmartDashboard.putData("Robot/Reset WL Left-Camera", new WhitelistAllTags("limelight-left").ignoringDisable(true));
+
+        SmartDashboard.putData("Robot/WL Tower Tags Right-Camera", new WhitelistTowerTags("limelight-right").ignoringDisable(true));
+        SmartDashboard.putData("Robot/Reset WL Right-Camera", new WhitelistAllTags("limelight-right").ignoringDisable(true));
 
         SmartDashboard.putData("Robot/Handoff Reverse", 
             new ConditionalCommand(
@@ -392,7 +395,12 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autonChooser.getSelected();
+        if (autonChooser.getSelected() == null) {
+            return new DoNothingAuton();
+        }
+        else {
+            return autonChooser.getSelected();
+        }
     }
 
     public void periodic() {
