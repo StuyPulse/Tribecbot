@@ -208,7 +208,15 @@ public class SOTMCalculator {
             sol = newSol;
 
         }
-        
+
+        if (virtualPose.getY() >= Field.WIDTH) {
+            virtualPose = new Pose2d(virtualPose.getX(), Field.WIDTH, virtualPose.getRotation());
+        }
+
+        else if (virtualPose.getY() <= 0) {
+            virtualPose = new Pose2d(virtualPose.getX(), 0, virtualPose.getRotation());
+        }
+
         Translation2d virtualTranslation = virtualPose.getTranslation();
         Translation2d turretTranslation = turretPose.getTranslation();
 
