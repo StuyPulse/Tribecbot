@@ -254,7 +254,7 @@ public interface Settings {
 
         public interface SOTM {
             public final int MAX_ITERATIONS = 10;
-            double TIME_TOLERANCE = 1e-5;
+            double TIME_TOLERANCE = 1e-3;
             SmartNumber UPDATE_DELAY = new SmartNumber("Superstructure/SOTM/update delay", 0.23);
         }
     }
