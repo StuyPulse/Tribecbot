@@ -71,8 +71,7 @@ public class Robot extends TimedRobot {
 
         double batteryVoltage = RobotController.getBatteryVoltage();
         energyUtil.setBatteryVoltage(batteryVoltage);
-        energyUtil.periodic();
-
+        robot.logEnergyForAllSubsystems(energyUtil);
         CommandScheduler.getInstance().run();
         if (!Robot.isReal()) {
             SmartDashboard.putData(CommandScheduler.getInstance());
