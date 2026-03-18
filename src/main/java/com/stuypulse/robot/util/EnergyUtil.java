@@ -60,7 +60,7 @@ public class EnergyUtil {
 
         SmartDashboard.putNumber("EnergyUtil/Total Supply Current Amps", totalCurrent);
         SmartDashboard.putNumber("EnergyUtil/Total Supply Power Watts", totalPower);
-        SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", totalCurrent);
+        SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", totalEnergy);
 
         for (var entry : subsytemCurrents.entrySet()) {
             SmartDashboard.putNumber("EnergyLogger/Supply Current Amps/" + entry.getKey(), entry.getValue());

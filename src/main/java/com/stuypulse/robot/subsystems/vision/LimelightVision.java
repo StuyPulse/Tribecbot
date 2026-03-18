@@ -53,7 +53,6 @@ public class LimelightVision extends SubsystemBase {
 
     private boolean hasData;
     private BStream debouncedHasData;
-    private boolean poseSeeded;
 
     public enum MegaTagMode {
         MEGATAG1,
@@ -91,7 +90,6 @@ public class LimelightVision extends SubsystemBase {
         debouncedHasData = BStream.create(
                 () -> hasData)
                 .filtered(new BDebounce.Both(Settings.Vision.BUZZ_DEBOUNCE));
-        poseSeeded = false;
     }
 
     public void setAllLTagWhitelist(int... ids) {

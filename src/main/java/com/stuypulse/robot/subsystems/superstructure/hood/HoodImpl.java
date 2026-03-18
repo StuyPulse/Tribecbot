@@ -212,6 +212,6 @@ public class HoodImpl extends Hood {
 
     @Override
     public double getCurrentDraw() {
-        return hoodMotor.getSupplyCurrent().getValueAsDouble();
+        return Math.abs(hoodMotor.getSupplyCurrent().getValueAsDouble());
     }
 }

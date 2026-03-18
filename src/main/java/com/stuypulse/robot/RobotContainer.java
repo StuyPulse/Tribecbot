@@ -412,6 +412,7 @@ public class RobotContainer {
     }
 
     public void periodic() {
+        //TODO: get from energy util after testing
         double totalCurrentDraw =   handoff.getCurrentDraw() +
                                     intake.getCurrentDraw() +
                                     spindexer.getCurrentDraw() +
