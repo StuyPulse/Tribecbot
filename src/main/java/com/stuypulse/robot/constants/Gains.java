@@ -18,7 +18,7 @@ public class Gains {
             SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
             SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
-            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.123);
+            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.1228);
             SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
         }
 

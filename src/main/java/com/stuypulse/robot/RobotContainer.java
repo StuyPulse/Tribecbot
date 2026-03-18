@@ -31,6 +31,7 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureKB;
 import com.stuypulse.robot.commands.superstructure.SuperstructureLeftCorner;
 import com.stuypulse.robot.commands.superstructure.SuperstructureRightCorner;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
+import com.stuypulse.robot.commands.superstructure.SuperstructureShoot;
 import com.stuypulse.robot.commands.superstructure.SuperstructureStow;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveFOTM;
@@ -45,7 +46,6 @@ import com.stuypulse.robot.commands.vision.EnableRightLimelight;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
 import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
-import com.stuypulse.robot.commands.vision.WhitelistAllTags;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.WhitelistOutpostTags;
 import com.stuypulse.robot.commands.vision.WhitelistTowerTags;
@@ -184,8 +184,8 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData())))
             .onTrue(new WaitUntilCommand(() -> spindexer.canStartIntakeRollers()).andThen(new IntakeRunRollers()))
-            .whileTrue(new SuperstructureInterpolation()
-                    .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.INTERPOLATION && superstructure.atTolerance()))
+            .whileTrue(new SuperstructureShoot()
+                    .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.SHOOT && superstructure.atTolerance()))
                         .andThen(new HandoffRun())
                         .alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance()))
                             .andThen(new SpindexerRun()))
