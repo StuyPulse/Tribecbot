@@ -37,7 +37,7 @@ public interface Settings {
         public final double GEAR_RATIO = 3.0 / 1.0;
 
         double HANDOFF_STOP = 0.0;
-        double HANDOFF_MAX = 6000.0;
+        double HANDOFF_MAX = 5000.0;
         double HANDOFF_REVERSE = -500.0;
         double RPM_TOLERANCE = 2200.0;
         double RPM_SOTM_TOLERANCE = 700.0;

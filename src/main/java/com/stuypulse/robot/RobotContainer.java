@@ -197,7 +197,7 @@ public class RobotContainer {
         driver.getTopButton()
             .whileTrue(new SwerveXMode())
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData())))
-            .onTrue(new WaitUntilCommand(() -> spindexer.canStartIntakeRollers()).andThen(new IntakeRunRollers()))
+            // .onTrue(new WaitUntilCommand(() -> spindexer.canStartIntakeRollers()).andThen(new IntakeRunRollers()))
             .whileTrue(new SuperstructureInterpolation()
                     .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.INTERPOLATION && superstructure.atTolerance()))
                         .andThen(new HandoffRun())

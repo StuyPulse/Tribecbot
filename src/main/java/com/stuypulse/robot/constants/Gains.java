@@ -14,7 +14,7 @@ public class Gains {
     public interface Superstructure {
         public interface Shooter {
             // VTC PID
-            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 5);
+            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 10.0);
             SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
             SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
