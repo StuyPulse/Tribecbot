@@ -36,7 +36,6 @@ deploy {
                 // getTargetTypeClass is a shortcut to get the class type using a string
 
                 frcJava(getArtifactTypeClass('FRCJavaArtifact')) {
-                    // // Enable VisualVM connection
                     // jvmArgs.add("-Dcom.sun.management.jmxremote=true")
                     // jvmArgs.add("-Dcom.sun.management.jmxremote.port=1198")
                     // jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")

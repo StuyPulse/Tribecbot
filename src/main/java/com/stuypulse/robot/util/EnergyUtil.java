@@ -3,8 +3,11 @@ package com.stuypulse.robot.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.constants.Settings;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -16,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class EnergyUtil {
     private double totalCurrent = 0.0;
-    private double totalPower = 0.0;
-    private double totalEnergy = 0.0;
+    private double totalPowerWatts = 0.0;
+    private double totalEnergyWattHours = 0.0;
     private double batteryVoltage = 12.6;
     private double rioCurrent = 0.0;
 
@@ -26,44 +29,43 @@ public class EnergyUtil {
     private Map<String, Double> subsytemEnergies = new HashMap<>();
 
     public void logEnergyUsage(String subsystem, double amps) {
-        double power = amps * batteryVoltage; // Supply current draw of the subsystem
-        double energy = power * Settings.DT;
+        double powerWatts = amps * batteryVoltage; // Supply current draw of the subsystem
+        double energyWattHours = joulesToWattHours(powerWatts * Robot.getRobotTime());
 
         totalCurrent += amps;
-        totalPower += power;
-        totalEnergy += energy;
+        totalPowerWatts += powerWatts;
+        totalEnergyWattHours += energyWattHours;
 
         subsytemCurrents.put(subsystem, amps);
-        subsytemPowers.put(subsystem, power);
-        subsytemEnergies.merge(subsystem, energy, (a, b) -> {
+        subsytemPowers.put(subsystem, powerWatts);
+        subsytemEnergies.merge(subsystem, energyWattHours, (a, b) -> {
             return a + b;
         });
 
-        String[] keys = subsystem.split("/|-");
-        if (keys.length < 2) {
-            return;
-        }
+        // String[] keys = subsystem.split("/|-");
+        // if (keys.length < 2) {
+        //     return;
+        // }
 
-        String subkey = "";
-        for (int i = 0; i < keys.length - 1; i++) {
-            subkey += keys[i];
-            if (i < keys.length - 2) {
-                subkey += "/";
-            }
-            subsytemCurrents.merge(subkey, amps, Double::sum);
-            subsytemPowers.merge(subkey, power, Double::sum);
-            subsytemEnergies.merge(subkey, energy, Double::sum);
-        }
+        // String subkey = "";
+        // for (int i = 0; i < keys.length - 1; i++) {
+        //     subkey += keys[i];
+        //     if (i < keys.length - 2) {
+        //         subkey += "/";
+        //     }
+        //     subsytemCurrents.merge(subkey, amps, Double::sum);
+        //     subsytemPowers.merge(subkey, powerWatts, Double::sum);
+        //     subsytemEnergies.merge(subkey, energyWattHours, Double::sum);
+        // }
     }
 
     public void periodic() {
 
         SmartDashboard.putNumber("EnergyUtil/Total Supply Current Amps", totalCurrent);
         totalCurrent = 0.0;
-        SmartDashboard.putNumber("EnergyUtil/Total Supply Power Watts", totalPower);
-        totalPower = 0.0;
-        SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", totalEnergy);
-        totalEnergy = 0.0;
+        SmartDashboard.putNumber("EnergyUtil/Total Supply Power Watts", totalPowerWatts);
+        totalPowerWatts = 0.0;
+        SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", totalEnergyWattHours);
 
         for (var entry : subsytemCurrents.entrySet()) {
             SmartDashboard.putNumber("EnergyUtil/Supply Current Amps/" + entry.getKey(), entry.getValue());
@@ -74,9 +76,7 @@ public class EnergyUtil {
             subsytemPowers.put(entry.getKey(), 0.0);
         }
         for (var entry : subsytemEnergies.entrySet()) {
-            SmartDashboard.putNumber(
-                    "EnergyUtil/Energy watt hours/" + entry.getKey(),
-                    joulesToWattHours(entry.getValue()));
+            SmartDashboard.putNumber("EnergyUtil/Energy watt hours/" + entry.getKey(), entry.getValue());
         }
     }
 
