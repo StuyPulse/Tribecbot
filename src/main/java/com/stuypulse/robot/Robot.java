@@ -5,6 +5,11 @@
 /***************************************************************/
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTags;
@@ -29,7 +34,15 @@ import com.ctre.phoenix6.SignalLogger;
 
 public class Robot extends TimedRobot {
 
+    public enum RobotMode {
+        DISABLED,
+        AUTON,
+        TELEOP,
+        TEST
+    }
+
     private RobotContainer robot;
+    private static RobotMode mode;
     private Command auto;
     private static Alliance alliance;
     private static int periodicCounter = 0;
@@ -49,6 +62,10 @@ public class Robot extends TimedRobot {
         return timer.get();
     }
 
+    public static RobotMode getMode() {
+        return mode;
+    }
+
     /*************************/
     /*** ROBOT SCHEDULEING ***/
     /*************************/
@@ -57,6 +74,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         robot = new RobotContainer();
         selectedAuto = robot.getAutonomousCommand();
+        mode = RobotMode.DISABLED;
         timer.start();
 
         DataLogManager.start();
@@ -102,6 +120,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        mode = RobotMode.DISABLED;
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
     }
 
@@ -129,6 +148,7 @@ public class Robot extends TimedRobot {
 
     @Override 
     public void autonomousInit() {
+        mode = RobotMode.AUTON;
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
@@ -152,6 +172,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        mode = RobotMode.TELEOP;
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
@@ -172,6 +193,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
+        mode = RobotMode.TEST;
         CommandScheduler.getInstance().cancelAll();
     }
 

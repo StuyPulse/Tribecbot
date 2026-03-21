@@ -42,6 +42,8 @@ public class LimelightVision extends SubsystemBase {
 
     private String[] names;
     private SmartBoolean enabled;
+    private int maxTagCount;
+    // private SmartBoolean[] camerasEnabled;
     private MegaTagMode megaTagMode;
 
     private Pose2d[] limelightPoseArray;
@@ -65,6 +67,8 @@ public class LimelightVision extends SubsystemBase {
         backLimelightPosePublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Back", Pose2d.struct).publish();
 
         names = new String[Cameras.LimelightCameras.length];
+
+        maxTagCount = 0;
 
         for (int i = 0; i < Cameras.LimelightCameras.length; i++) {
             names[i] = Cameras.LimelightCameras[i].getName();
@@ -107,6 +111,10 @@ public class LimelightVision extends SubsystemBase {
 
     public void setMegaTagMode(MegaTagMode mode) {
         this.megaTagMode = mode;
+    }
+
+    public int getMaxTagCount() {
+        return this.maxTagCount;
     }
 
     public void setIMUMode(int mode) {
@@ -191,6 +199,8 @@ public class LimelightVision extends SubsystemBase {
         if (enabled.get()) {
             hasData = false;
 
+        this.maxTagCount = 0;
+
             for (int i = 0; i < names.length; i++) {
                 if (Cameras.LimelightCameras[i].isEnabled()) {
                     String limelightName = names[i];
@@ -220,6 +230,7 @@ public class LimelightVision extends SubsystemBase {
                     }
 
                     // Adding to pose estimator
+
                     boolean notNull = false;
                     boolean withinAngularVelocityTolerance = false;
                     boolean withinInvalidPositionTolerance = false;
@@ -247,6 +258,7 @@ public class LimelightVision extends SubsystemBase {
                             CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp, Settings.Vision.MT2_STDEVS);
                             hasData = true;
                         }
+
 
                         SmartDashboard.putBoolean("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
                         SmartDashboard.putBoolean("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);

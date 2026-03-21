@@ -5,6 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import java.sql.Time;
+import java.time.Duration;
+
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -18,6 +21,16 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.*;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
+import edu.wpi.first.wpilibj.util.Color;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -30,16 +43,16 @@ public interface Settings {
     public final double DT = 0.020;
     public final int LOGGING_FREQUENCY = 2;
     public final double SECONDS_IN_A_MINUTE = 60.0;
-    public final SmartBoolean DEBUG_MODE = new SmartBoolean("Robot/DebugMode", true);
+    public final SmartBoolean DEBUG_MODE = new SmartBoolean("Robot/DebugMode", false);
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
 
     public interface Handoff {
         public final double GEAR_RATIO = 3.0 / 1.0;
 
         double HANDOFF_STOP = 0.0;
-        double HANDOFF_MAX = 5000.0;
+        double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
-        double RPM_TOLERANCE = 2200.0;
+        double RPM_TOLERANCE = 200.0;
         double RPM_SOTM_TOLERANCE = 700.0;
         SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
 
@@ -76,6 +89,7 @@ public interface Settings {
         double RPM_TOLERANCE = 800.0;
         double TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE = 1500.0;
         double STALL_CURRENT_LIMIT = 40.0; // random number as of 3/9
+
 
         /* CONSTANTS */
         double GEAR_RATIO = 8.0 / 1.0;
@@ -212,7 +226,7 @@ public interface Settings {
             public final Rotation2d MAX_VEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2.0);
-            public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(3.0);
+            public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             public final Rotation2d FOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
@@ -308,6 +322,39 @@ public interface Settings {
                 public final double ALIGNMENT_DEBOUNCE = 0.15;
             }
         }
+    }
+
+    public interface LED {
+
+        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kGreen);
+
+        // LEDPattern CLIMB_ALIGNING = LEDPattern.solid(Color.kYellow);
+        // LEDPattern CLIMB_ALIGNED = LEDPattern.solid(Color.kGreen);
+        // LEDPattern CLIMBING = LEDPattern.solid(Color.kRed);
+
+        LEDPattern TURRET_WRAPPING = LEDPattern.solid(Color.kRed);
+        LEDPattern LEFT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+        LEDPattern RIGHT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+
+        LEDPattern SOTM_ON = LEDPattern.solid(Color.kCyan);
+        LEDPattern FOTM_ON = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 120.0));
+
+        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kPurple);
+        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kBlue);
+        LEDPattern KB_DISTANCE = LEDPattern.solid(Color.kPink);
+
+        LEDPattern REVERSE = LEDPattern.solid(Color.kWhite);
+
+        LEDPattern RESET_HEADING = LEDPattern.solid(Color.kYellow);
+        LEDPattern X_WHEELS = LEDPattern.solid(Color.kRed);
+        LEDPattern INTAKE_STOW = LEDPattern.solid(Color.kBrown);
+        LEDPattern INTAKE_DEPLOYED = LEDPattern.solid(Color.kOrange);
+
+        LEDPattern DISABLED_ALIGNED = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+
+        public final int DESIRED_TAGS_WHEN_DISABLED = 2;
+        public final int LED_LENGTH = 0; // TBA
+
     }
 
     public interface Vision {

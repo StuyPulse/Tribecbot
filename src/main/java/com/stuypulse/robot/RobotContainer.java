@@ -74,15 +74,16 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+
+
 public class RobotContainer {
     public interface EnabledSubsystems {
+
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", true);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
@@ -90,10 +91,12 @@ public class RobotContainer {
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
         SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
         SmartBoolean RIGHT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Right Limelight Is Enabled", true);
+
     }
 
     // Gamepads
@@ -115,7 +118,7 @@ public class RobotContainer {
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-    // RobotContainer
+    // Robot container
     public RobotContainer() {
         swerve.configureAutoBuilder();
         configureDefaultCommands();
@@ -127,12 +130,65 @@ public class RobotContainer {
         SmartDashboard.putData("Field", Field.FIELD2D);
     }
 
+    public void logEnergyForAllSubsystems(EnergyUtil energyUtil) {
+        energyUtil.logEnergyUsage(handoff.getName(), handoff.getCurrentDraw());
+        energyUtil.logEnergyUsage(intake.getName(), intake.getCurrentDraw());
+        energyUtil.logEnergyUsage(spindexer.getName(), spindexer.getCurrentDraw());
+        energyUtil.logEnergyUsage(swerve.getName() + " drive", swerve.getTotalDriveSupplyCurrent());
+        energyUtil.logEnergyUsage(swerve.getName() + " turn", swerve.getTotalSteerSupplyCurrent());
+        energyUtil.logEnergyUsage(turret.getName(), turret.getCurrentDraw());
+        energyUtil.logEnergyUsage(shooter.getName(), shooter.getCurrentDraw());
+        energyUtil.logEnergyUsage(hood.getName(), hood.getCurrentDraw());
+
+        energyUtil.periodic();
+    }
+
     /****************/
     /*** DEFAULTS ***/
     /****************/
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+    }
+
+    /***************/
+    /*** ELASTIC ***/
+    /***************/
+
+    private void configureElasticButtons() {
+        SmartDashboard.putData("Robot/Zero Pivot Encoder at Lower Limit (Deployed)", new ZeroPivotDeployed().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Zero Pivot Encoder at Upper Limit (Stowed)", new ZeroPivotStowed().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Zero Turret Encoders", new ZeroTurret().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Seed Turret", new SeedTurret().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop().ignoringDisable(true));
+        SmartDashboard.putData("Robot/Set Megatag 1", new SetMegaTagMode(MegaTagMode.MEGATAG1).ignoringDisable(true));
+        SmartDashboard.putData("Robot/Set Megatag 2", new SetMegaTagMode(MegaTagMode.MEGATAG2).ignoringDisable(true));
+
+        SmartDashboard.putData("Robot/Set Left LL PF", new EnableLeftLimelight());
+        SmartDashboard.putData("Robot/Set Right LL PF", new EnableRightLimelight());
+        SmartDashboard.putData("Robot/Set Back LL PF", new EnableBackLimelight());
+
+        SmartDashboard.putData("Robot/WL Outpost Tags Left-Camera", new WhitelistOutpostTags("limelight-left").ignoringDisable(true));
+        // SmartDashboard.putData("Robot/Reset WL Left-Camera", new WhitelistAllTags("limelight-left").ignoringDisable(true));
+
+        SmartDashboard.putData("Robot/WL Tower Tags Right-Camera", new WhitelistTowerTags("limelight-right").ignoringDisable(true));
+        // SmartDashboard.putData("Robot/Reset WL Right-Camera", new WhitelistAllTags("limelight-right").ignoringDisable(true));
+
+        SmartDashboard.putData("Robot/Whitelist All Cameras", new WhitelistAllTagsForAllCameras());
+
+        SmartDashboard.putData("Robot/Handoff Reverse", 
+            new ConditionalCommand(
+                new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
+                new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
+                () -> handoff.getState() == HandoffState.FORWARD));
+
+        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
+
+        SmartDashboard.putData("Robot/Spindexer Reverse", 
+            new ConditionalCommand(
+                new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
+                new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
+                () -> spindexer.getState() == SpindexerState.FORWARD));
     }
 
     /***************/
@@ -143,27 +199,16 @@ public class RobotContainer {
         // Scoring Routine 
         driver.getTopButton()
             .whileTrue(new SwerveXMode())
-            .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
-            .whileTrue(
-                new SuperstructureInterpolation()
-                    .andThen(
-                        Commands.parallel(
-                            new StartEndCommand(
-                                () -> handoff.setState(HandoffState.FORWARD),
-                                () -> handoff.setState(HandoffState.STOP),
-                                handoff),
-                            new StartEndCommand(
-                                () -> spindexer.setState(SpindexerState.FORWARD),
-                                () -> spindexer.setState(SpindexerState.STOP),
-                                spindexer)
-                        )
-                        .onlyWhile(superstructure::isReadyToShoot)
-                        .repeatedly()
-                    )
-            )
+            .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData())))
+            .onTrue(new WaitUntilCommand(() -> spindexer.canStartIntakeRollers()).andThen(new IntakeRunRollers()))
+            .whileTrue(new SuperstructureInterpolation()
+                    .alongWith(new WaitUntilCommand(() -> superstructure.getState() == SuperstructureState.INTERPOLATION && superstructure.atTolerance()))
+                        .andThen(new HandoffRun())
+                        .alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance()))
+                            .andThen(new SpindexerRun()))
             .onFalse(new SpindexerStop()
-                .alongWith(new SuperstructureStow())
-                .alongWith(new HandoffStop()));
+                    .alongWith(new SuperstructureStow())
+                    .alongWith(new HandoffStop()));
 
         // Intake Stow
         // driver.getLeftTriggerButton()
@@ -174,7 +219,7 @@ public class RobotContainer {
             .onTrue(new IntakeDeploy());
             // .onTrue(new SuperstructureStow()                    
             //         .alongWith(new SpindexerStop()) //TODO: test this logic
-            //         .alongWith(new HandoffStop()));
+            //         .alongWith(new HandoffStop())); // TURNS OFF SOTM
         
         // Reset Heading
         driver.getDPadUp()
@@ -184,8 +229,7 @@ public class RobotContainer {
 
         // Stop Rollers
         driver.getLeftBumper()
-            .onTrue(new IntakeDeploy()
-                .andThen(new IntakeStopRollers()));
+            .onTrue(new IntakeDeploy().andThen(new IntakeStopRollers()));
 
         driver.getRightBumper()
             .whileTrue(new IntakeOuttake())
@@ -218,21 +262,10 @@ public class RobotContainer {
                     new HandoffStop()
                 ),
                 new ParallelCommandGroup(
-                    new SuperstructureSOTM()
-                        .andThen(
-                            Commands.parallel(
-                                new StartEndCommand(
-                                    () -> handoff.setState(HandoffState.FORWARD),
-                                    () -> handoff.setState(HandoffState.STOP),
-                                    handoff),
-                                new StartEndCommand(
-                                    () -> spindexer.setState(SpindexerState.FORWARD),
-                                    () -> spindexer.setState(SpindexerState.STOP),
-                                    spindexer)
-                            )
-                            .onlyWhile(superstructure::isReadyToShoot)
-                            .repeatedly()
-                        ),
+                    new SuperstructureSOTM().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+                        .andThen(new HandoffRun())
+                    .alongWith(new WaitUntilCommand(() -> handoff.atTolerance()))
+                        .andThen(new SpindexerRun()),
                     new SwerveDriveSOTM(driver)
                 ),
                 () -> superstructure.getState() == SuperstructureState.SOTM
@@ -288,44 +321,7 @@ public class RobotContainer {
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD && handoff.atTolerance())
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
-    }
-
-    /***************/
-    /*** ELASTIC ***/
-    /***************/
-
-    private void configureElasticButtons() {
-        // Zeroing and Homing
-        SmartDashboard.putData("Robot/Zero Pivot Encoder at Lower Limit (Deployed)", new ZeroPivotDeployed().ignoringDisable(true));
-        SmartDashboard.putData("Robot/Zero Pivot Encoder at Upper Limit (Stowed)", new ZeroPivotStowed().ignoringDisable(true));
-        SmartDashboard.putData("Robot/Zero Turret Encoders", new ZeroTurret().ignoringDisable(true));
-        SmartDashboard.putData("Robot/Seed Turret", new SeedTurret().ignoringDisable(true));
-        SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop().ignoringDisable(true));
-
-        // Vision
-        SmartDashboard.putData("Robot/Set Megatag 1", new SetMegaTagMode(MegaTagMode.MEGATAG1).ignoringDisable(true));
-        SmartDashboard.putData("Robot/Set Megatag 2", new SetMegaTagMode(MegaTagMode.MEGATAG2).ignoringDisable(true));
-
-        SmartDashboard.putData("Robot/Set Left LL PF", new EnableLeftLimelight());
-        SmartDashboard.putData("Robot/Set Right LL PF", new EnableRightLimelight());
-        SmartDashboard.putData("Robot/Set Back LL PF", new EnableBackLimelight());
-
-        SmartDashboard.putData("Robot/Whitelist All Cameras", new WhitelistAllTagsForAllCameras());
-
-        // Unjamming
-        SmartDashboard.putData("Robot/Handoff Reverse", 
-            new ConditionalCommand(
-                new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
-                new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
-                () -> handoff.getState() == HandoffState.FORWARD));
-
-        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE));
-
-        SmartDashboard.putData("Robot/Spindexer Reverse", 
-            new ConditionalCommand(
-                new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
-                new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
-                () -> spindexer.getState() == SpindexerState.FORWARD));
+        
     }
 
     /**************/
@@ -430,19 +426,6 @@ public class RobotContainer {
         else {
             return autonChooser.getSelected();
         }
-    }
-
-    public void logEnergyForAllSubsystems(EnergyUtil energyUtil) {
-        energyUtil.logEnergyUsage(handoff.getName(), handoff.getCurrentDraw());
-        energyUtil.logEnergyUsage(intake.getName(), intake.getCurrentDraw());
-        energyUtil.logEnergyUsage(spindexer.getName(), spindexer.getCurrentDraw());
-        energyUtil.logEnergyUsage(swerve.getName() + " drive", swerve.getTotalDriveSupplyCurrent());
-        energyUtil.logEnergyUsage(swerve.getName() + " turn", swerve.getTotalSteerSupplyCurrent());
-        energyUtil.logEnergyUsage(turret.getName(), turret.getCurrentDraw());
-        energyUtil.logEnergyUsage(shooter.getName(), shooter.getCurrentDraw());
-        energyUtil.logEnergyUsage(hood.getName(), hood.getCurrentDraw());
-
-        energyUtil.periodic();
     }
 
     public void periodic() {
