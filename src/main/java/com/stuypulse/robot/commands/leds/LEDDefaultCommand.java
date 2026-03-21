@@ -1,32 +1,23 @@
 package com.stuypulse.robot.commands.leds;
 
+import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.superstructure.*;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
-import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter.HoodedShooterState;
-import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.subsystems.turret.Turret;
-import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
-import com.stuypulse.robot.subsystems.climberhopper.ClimberHopper.ClimberHopperState;
 import com.stuypulse.stuylib.input.Gamepad;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class LEDDefaultCommand extends Command {
     private final LEDController leds;
-    private final HoodedShooter hoodedShooter;
-    private final Turret turret;
-    private final ClimberHopper climberHopper;
-    
+    private final Superstructure superstructure;
+
     public LEDDefaultCommand() {
         leds = LEDController.getInstance();
-        hoodedShooter = HoodedShooter.getInstance();
-        turret = Turret.getInstance();
-        climberHopper = ClimberHopper.getInstance();
+        superstructure = Superstructure.getInstance();
 
         addRequirements(leds);
     }

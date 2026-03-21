@@ -333,85 +333,9 @@ public interface Settings {
         int LED_LENGTH = 40;
 
         public enum LEDState {
-            PRESSED_TOP_BUTTON(LEDPattern.solid(Color.kLightBlue)), //swerve climb align
-            PRESSED_LEFT_BUTTON(LEDPattern.solid(Color.kSkyBlue)), //left corner shoot
-            PRESSED_RIGHT_BUTTON(LEDPattern.solid(Color.kBlueViolet)), //right corner shoot
-            PRESSED_BOT_BUTTON(LEDPattern.solid(Color.kAliceBlue)), //hub shoot
-
-            PRESSED_RIGHT_MENU(LEDPattern.solid(Color.kAliceBlue)),
-            PRESSED_LEFT_MENU(LEDPattern.solid(Color.kLightBlue)),
-
-            PRESSED_LEFT_TRIGGER(LEDPattern.solid(Color.kDarkBlue)), //intake on
-            PRESSED_RIGHT_TRIGGER(LEDPattern.solid(Color.kCadetBlue)), //intake off
-
-            PRESSED_LEFT_BUMPER(LEDPattern.solid(Color.kFirstBlue)), //climb down
-            PRESSED_RIGHT_BUMPER(LEDPattern.solid(Color.kRoyalBlue)), //climb up
-            CLIMBING(LEDPattern.solid(Color.kLightSkyBlue)),
-            CLIMB_IS_ALIGNED(LEDPattern.solid(Color.kMediumBlue)),
-
             PRESSED_LEFT_DPAD(LEDPattern.solid(Color.kSlateBlue)), //ferry in place
             PRESSED_RIGHT_DPAD(LEDPattern.solid(Color.kSteelBlue)), //score in place
-       
-            SHOOTING_ON_THE_MOVE(LEDPattern.solid(Color.kOrange)),
-            VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(Color.kAzure)),
-            FERRYING_MODE(LEDPattern.solid(Color.kRoyalBlue)),
-            SHOOTING_MODE(LEDPattern.solid(Color.kAqua)),
 
-            PRESSED_DOWN_DPAD(LEDPattern.solid(Color.kDodgerBlue)), //unjam
-            PRESSED_TOP_DPAD(LEDPattern.solid(Color.kCornflowerBlue)), //reset heading
-            TRENCH_PASS(LEDPattern.solid(Color.kGreen).breathe(Seconds.of(0.4))),
-            TRENCH_LOWERING(LEDPattern.solid(Color.kYellow)),
-            TRENCH_E_STOP(LEDPattern.solid(Color.kRed)),
-
-            //TODO: Turret wrapping 
-            APPROACHING_LEFT_CORNER(LEDPattern.solid(Color.kWheat)),
-            LEFT_CORNER(LEDPattern.solid(Color.kAntiqueWhite)),
-            APPROACHING_RIGHT_CORNER(LEDPattern.solid(Color.kBlanchedAlmond)),
-            RIGHT_CORNER(LEDPattern.solid(Color.kAqua)),
-
-            DISABLED_ALIGNED(LEDPattern.solid(Color.kPurple)),
-            DEFAULT_SETTING(LEDPattern.kOff);
-            
-            public LEDPattern pattern;
-
-            private LEDState(LEDPattern pattern) {
-                this.pattern = pattern;
-            }
-
-        }
-
-    }
-   
-    public interface Vision {
-        Vector<N3> MT1_STDEVS = VecBuilder.fill(0.5, 0.5, 1.0);
-        Vector<N3> MT2_STDEVS = VecBuilder.fill(0.7, 0.7, 694694);
-    }
-
-    public interface LEDS {
-        double DESIRED_TAGS_WHEN_DISABLED = 2;
-        int LED_LENGTH = 40;
-
-        public enum LEDState {
-            // PRESSED_TOP_BUTTON(LEDPattern.solid(Color.kLightBlue)), //swerve climb align
-            // PRESSED_LEFT_BUTTON(LEDPattern.solid(Color.kSkyBlue)), //left corner shoot
-            // PRESSED_RIGHT_BUTTON(LEDPattern.solid(Color.kBlueViolet)), //right corner shoot
-            // PRESSED_BOT_BUTTON(LEDPattern.solid(Color.kAliceBlue)), //hub shoot
-
-            // PRESSED_RIGHT_MENU(LEDPattern.solid(Color.kAliceBlue)),
-            // PRESSED_LEFT_MENU(LEDPattern.solid(Color.kLightBlue)),
-
-            // PRESSED_LEFT_TRIGGER(LEDPattern.solid(Color.kDarkBlue)), //intake on
-            // PRESSED_RIGHT_TRIGGER(LEDPattern.solid(Color.kCadetBlue)), //intake off
-
-            // PRESSED_RIGHT_BUMPER(LEDPattern.solid(Color.kRoyalBlue)), //climb up
-
-            // CLIMB_IS_ALIGNING(LEDPattern.solid(Color.kYellow)),
-            // CLIMB_IS_ALIGNED(LEDPattern.solid(Color.kMediumBlue)),
-            // CLIMBING(LEDPattern.solid(Color.kRed)),
-
-            PRESSED_LEFT_DPAD(LEDPattern.solid(Color.kSlateBlue)), //ferry in place
-            PRESSED_RIGHT_DPAD(LEDPattern.solid(Color.kSteelBlue)), //score in place
-       
             SHOOTING_ON_THE_MOVE(LEDPattern.solid(Color.kOrange)),
             VEL_HIGH_SHOOTING_PAUSED(LEDPattern.solid(Color.kAzure)),
 
@@ -422,9 +346,6 @@ public interface Settings {
             TRENCH_LOWERING(LEDPattern.solid(Color.kYellow)),
             TRENCH_E_STOP(LEDPattern.solid(Color.kRed)),
 
-            //TODO: Turret wrapping 
-            APPROACHING_LEFT_CORNER(LEDPattern.solid(Color.kWheat)),
-            LEFT_CORNER(LEDPattern.solid(Color.kAntiqueWhite)),
             APPROACHING_RIGHT_CORNER(LEDPattern.solid(Color.kBlanchedAlmond)),
             RIGHT_CORNER(LEDPattern.solid(Color.kAqua)),
 
@@ -438,5 +359,8 @@ public interface Settings {
             }
 
         }
+
     }
+
+
 }

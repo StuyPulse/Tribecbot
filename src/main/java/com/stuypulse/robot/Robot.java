@@ -32,6 +32,7 @@ import com.ctre.phoenix6.SignalLogger;
 public class Robot extends TimedRobot {
 
     private RobotContainer robot;
+    private Command auto;
     private static Alliance alliance;
     private static int periodicCounter = 0;
     private Command selectedAuto;
@@ -103,10 +104,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
- 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
-        
-        mode = RobotMode.DISABLED;
     }
 
     @Override

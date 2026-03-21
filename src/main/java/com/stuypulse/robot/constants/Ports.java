@@ -54,7 +54,7 @@ public interface Ports {
     }
 
     public interface LED {
-        int LED_PORT = 9;
+        int LED_PORT = 0; //Rachel said it's on rio pwm port 0
     }
 
 }

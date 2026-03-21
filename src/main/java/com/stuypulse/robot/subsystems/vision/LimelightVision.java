@@ -190,9 +190,6 @@ public class LimelightVision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        this.maxTagCount = 0;
-
-        this.maxTagCount = 0;
 
         if (enabled.get()) {
             hasData = false;

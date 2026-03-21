@@ -69,6 +69,7 @@ import com.stuypulse.robot.util.EnergyUtil;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -90,6 +91,7 @@ public class RobotContainer {
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Are Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
         SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
@@ -98,8 +100,6 @@ public class RobotContainer {
 
     // Gamepads
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public static final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-    public static final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
 
     // Subsystem
@@ -117,7 +117,7 @@ public class RobotContainer {
     private final Superstructure superstructure = Superstructure.getInstance();
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
-    private final LEDController leds = LEDController.getInstance();
+ 
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
