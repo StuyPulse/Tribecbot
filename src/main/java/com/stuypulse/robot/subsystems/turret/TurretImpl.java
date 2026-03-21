@@ -5,13 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.turret;
 
-
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Turret.Constants;
 import com.stuypulse.robot.util.SysId;
+import com.stuypulse.robot.util.turret.TurretAngleCalculator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,24 +30,24 @@ public class TurretImpl extends Turret {
     private boolean hasUsedAbsoluteEncoder;
     private Optional<Double> voltageOverride;
     private final PositionVoltage controller;
-    
+
 
     public TurretImpl() {
-        motor = new TalonFX(Ports.Turret.MOTOR, Ports.bus);
-        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.bus);
-        encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.bus);
+        motor = new TalonFX(Ports.Turret.MOTOR, Ports.RIO);
+        encoder17t = new CANcoder(Ports.Turret.ENCODER17T, Ports.RIO);
+        encoder18t = new CANcoder(Ports.Turret.ENCODER18T, Ports.RIO);
 
         Motors.Turret.TURRET.configure(motor);
-        encoder17t.getConfigurator().apply(Motors.Turret.ENCODER_17T);
-        encoder18t.getConfigurator().apply(Motors.Turret.ENCODER_18T);
 
-        // motor.getConfigurator().apply(Motors.Turret.turretSoftwareLimitSwitchConfigs);
+        motor.getConfigurator().apply(Motors.Turret.SLOT_0);
+        motor.getConfigurator().apply(Motors.Turret.SOFT_LIMITS);
 
         seedTurret();
 
         hasUsedAbsoluteEncoder = false;
         voltageOverride = Optional.empty();
-        controller = new PositionVoltage(getTargetAngle().getRotations());
+        controller = new PositionVoltage(getTargetAngle().getRotations())
+            .withEnableFOC(true);
     }
 
     private Rotation2d getEncoderPos17t() {
@@ -58,33 +58,34 @@ public class TurretImpl extends Turret {
         return Rotation2d.fromRotations(this.encoder18t.getAbsolutePosition().getValueAsDouble());
     }
 
-    public Rotation2d getAbsoluteTurretAngle() {
-        final int inverseMod17t = 1;
-        final int inverseMod18t = -1;
-
-        final Rotation2d encoder17tPosition = getEncoderPos17t();
-        final double numberOfGearTeethRotated17 = (encoder17tPosition.getRotations()
-                * (double) Constants.Encoder17t.TEETH);
-
-        final Rotation2d encoder18tPosition = getEncoderPos18t();
-        final double numberOfGearTeethRotated18 = (encoder18tPosition.getRotations()
-                * (double) Constants.Encoder18t.TEETH);
-
-        final double crt_Partial17 = numberOfGearTeethRotated17 * inverseMod17t * Constants.Encoder17t.TEETH;
-        final double crt_Partial18 = numberOfGearTeethRotated18 * inverseMod18t * Constants.Encoder18t.TEETH;
-
-        double crt_pos = (crt_Partial17 + crt_Partial18)
-                % (Constants.Encoder17t.TEETH * Constants.Encoder18t.TEETH);
-
-        // Java's % operator is not actually the same as the modulo operator, the lines below account for that 
-        crt_pos = (crt_pos < 0) ? (crt_pos + Constants.Encoder17t.TEETH * Constants.Encoder18t.TEETH)
-                : crt_pos;
-
-        final double turretAngle = (crt_pos / (double) Constants.BigGear.TEETH);
-
-        return Rotation2d.fromRotations(turretAngle);
+    public Rotation2d getVectorSpaceAngle() {
+        return TurretAngleCalculator.getAbsoluteAngle(getEncoderPos17t().getDegrees(), getEncoderPos18t().getDegrees());
     }
-    
+
+    public void zeroEncoders() {
+        double encoderPos17T = encoder17t.getAbsolutePosition().getValueAsDouble();
+        double encoderPos18T = encoder18t.getAbsolutePosition().getValueAsDouble();
+
+        encoder17t.getConfigurator().refresh(Motors.Turret.ENCODER_17T.getConfiguration().MagnetSensor);
+        encoder18t.getConfigurator().refresh(Motors.Turret.ENCODER_18T.getConfiguration().MagnetSensor);
+
+        double currentOffset17T = Motors.Turret.ENCODER_17T.getConfiguration().MagnetSensor.MagnetOffset;
+        double currentOffset18T = Motors.Turret.ENCODER_18T.getConfiguration().MagnetSensor.MagnetOffset;
+
+        double newOffset17T = currentOffset17T - encoderPos17T;
+        double newOffset18T = currentOffset18T - encoderPos18T;
+
+        Motors.Turret.ENCODER_17T.withMagnetOffset(newOffset17T);
+        Motors.Turret.ENCODER_18T.withMagnetOffset(newOffset18T);
+
+        Motors.Turret.ENCODER_17T.configure(encoder17t);
+        Motors.Turret.ENCODER_18T.configure(encoder18t);
+    }
+
+    public void seedTurret() {
+        motor.setPosition(getVectorSpaceAngle().getRotations());
+    }
+
     @Override
     public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(motor.getPosition().getValueAsDouble());
@@ -102,20 +103,16 @@ public class TurretImpl extends Turret {
         else if (delta < -180) delta += 360;
 
         if (Math.abs(current + delta) < Constants.RANGE) return delta;
-        
+
         return delta < 0 ? delta + 360 : delta - 360;
     }
 
-    public void seedTurret() {
-        motor.setPosition(0.0);
-    }
-    
     @Override
     public void periodic() {
         super.periodic();
 
-        if (!hasUsedAbsoluteEncoder || getAbsoluteTurretAngle().getRotations() > 1.0 || getAngle().getRotations() < 0.0) {
-            motor.setPosition((getAbsoluteTurretAngle().getDegrees() % 360.0) / 360.0);
+        if (!hasUsedAbsoluteEncoder) {
+            motor.setPosition(getVectorSpaceAngle().getRotations());
             hasUsedAbsoluteEncoder = true;
             System.out.println("Absolute Encoder Reset triggered");
         }
@@ -130,7 +127,7 @@ public class TurretImpl extends Turret {
             if (voltageOverride.isPresent()) {
                 motor.setVoltage(voltageOverride.get());
             } else {
-                motor.setControl(controller.withPosition(actualTargetDeg / 360.0).withEnableFOC(true));
+                motor.setControl(controller.withPosition(actualTargetDeg / 360.0));
             }
         } else {
             motor.stopMotor();
@@ -139,7 +136,7 @@ public class TurretImpl extends Turret {
         if (Settings.DEBUG_MODE) {
             SmartDashboard.putNumber("Turret/Encoder18t Abs Position (Rot)", encoder18t.getAbsolutePosition().getValueAsDouble());
             SmartDashboard.putNumber("Turret/Encoder17t Abs Position (Rot)", encoder17t.getAbsolutePosition().getValueAsDouble());
-            SmartDashboard.putNumber("Turret/CRT Position (Rot)", getAbsoluteTurretAngle().getRotations());
+            SmartDashboard.putNumber("Turret/Vector Space Position (Rot)", getVectorSpaceAngle().getRotations());
             SmartDashboard.putNumber("Turret/Relative Encoder Position (Rot)", motor.getPosition().getValueAsDouble() * 360.0);
             SmartDashboard.putNumber("Turret/Voltage", motor.getMotorVoltage().getValueAsDouble());
             SmartDashboard.putNumber("Turret/Error", motor.getClosedLoopError().getValueAsDouble() * 360.0);

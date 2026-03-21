@@ -5,13 +5,11 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.intake;
 
-import com.stuypulse.robot.subsystems.intake.Intake.IntakeState;
+import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
+import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 
-public class IntakeOutake extends IntakeSetState {
-    /**
-     * Sets the State of the Intake to Outaking
-     */
-    public IntakeOutake() {
-        super(IntakeState.OUTAKE);
+public class IntakeDeploy extends IntakeSetState {
+    public IntakeDeploy() {
+        super(PivotState.DEPLOYED, RollerState.INTAKE);
     }
 }

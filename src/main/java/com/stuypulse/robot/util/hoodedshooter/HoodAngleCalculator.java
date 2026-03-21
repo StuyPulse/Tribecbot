@@ -4,28 +4,34 @@
 /* that can be found in the repository LICENSE file.           */
 /***************************************************************/
 package com.stuypulse.robot.util.hoodedshooter;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.HoodedShooter.AngleInterpolation;
 import com.stuypulse.robot.constants.Settings.HoodedShooter.FerryRPMInterpolation;
 import com.stuypulse.robot.constants.Settings.HoodedShooter.RPMInterpolation;
-import com.stuypulse.robot.subsystems.hoodedshooter.HoodedShooter;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.hoodedshooter.ShotCalculator.AlignAngleSolution;
+import com.stuypulse.robot.util.hoodedshooter.ShotCalculator.SOTMSolution;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.function.Supplier;
 
 public class HoodAngleCalculator {
+
+    public static SOTMSolution sol;
+
+    private static FieldObject2d hubPose2d;
+    private static FieldObject2d virtualHubPose2d;
+    private static FieldObject2d futureTurretPose2d;
+
     public static InterpolatingDoubleTreeMap distanceAngleInterpolator;
     public static InterpolatingDoubleTreeMap distanceRPMInterpolator;
     public static InterpolatingDoubleTreeMap ferryingDistanceRPMInterpolator;
@@ -72,12 +78,10 @@ public class HoodAngleCalculator {
         return () -> {
             CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
 
-            Translation2d hubPose = Field.getHubPose().getTranslation();
-            Translation2d currentPose = swerve.getTurretPose().getTranslation();
+            Pose2d hubPose = Field.getHubPose();
+            Pose2d turretPose = swerve.getTurretPose();
 
-            double distanceMeters = hubPose.getDistance(currentPose);
-
-            double targetRPM = distanceRPMInterpolator.get(distanceMeters);
+            double targetRPM = ShotCalculator.solveInterpolation(turretPose, hubPose).targetRPM();
 
             SmartDashboard.putNumber("HoodedShooter/Interpolated RPM", targetRPM);
             
@@ -102,40 +106,55 @@ public class HoodAngleCalculator {
         };
     }
 
-    public static Supplier<Rotation2d> calculateHoodAngleSOTM() {
-        return () -> {
-            CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
-            HoodedShooter hdsr = HoodedShooter.getInstance();
-            
-            Pose2d currentPose = swerve.getPose();
-            Pose2d turretPose = swerve.getTurretPose();
-            
-            ChassisSpeeds robotRelSpeeds = swerve.getChassisSpeeds();
-            ChassisSpeeds fieldRelSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
-                robotRelSpeeds, 
-                currentPose.getRotation()
-            );
-            
-            Pose3d targetPose = Field.hubCenter3d;
-            Pose3d turretPose3d = new Pose3d(new Translation3d(turretPose.getX(), turretPose.getY(), Settings.Turret.Constants.TURRET_HEIGHT), new Rotation3d());
+    public static void updateSOTMSolution() {
 
-            double axMetersPerSecondSquared = swerve.getPigeon2().getAccelerationX().getValueAsDouble();
-            double ayMetersPerSecondSquared = swerve.getPigeon2().getAccelerationY().getValueAsDouble();
-            
-            double shooterRPS = hdsr.getTargetRPM() / 60.0;
-            
-            AlignAngleSolution sol = ShotCalculator.solveShootOnTheFly(
-                turretPose3d,
-                targetPose,
-                axMetersPerSecondSquared,
-                ayMetersPerSecondSquared,
-                fieldRelSpeeds, // current speeds
-                shooterRPS,
-                Settings.ShootOnTheFly.MAX_ITERATIONS,
-                Settings.ShootOnTheFly.TIME_TOLERANCE
-            );
-            
-            return sol.launchPitchAngle();
-        };
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+        
+        Pose2d robotPose = swerve.getPose();
+        Pose2d hubPose = Field.getHubPose();
+        
+        ChassisSpeeds robotRelativeSpeeds = swerve.getChassisSpeeds();
+        ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
+            robotRelativeSpeeds, 
+            robotPose.getRotation()
+        );
+
+        Pose2d futureTurretPose = swerve.getTurretPose().exp(
+            new Twist2d(
+                robotRelativeSpeeds.vxMetersPerSecond * Settings.ShootOnTheFly.UPDATE_DELAY.doubleValue(),
+                robotRelativeSpeeds.vyMetersPerSecond * Settings.ShootOnTheFly.UPDATE_DELAY.doubleValue(),
+                0
+            )
+        );
+        
+
+        SOTMSolution solution = ShotCalculator.solveShootOnTheMove(
+            futureTurretPose,
+            robotPose,
+            hubPose,
+            fieldRelativeSpeeds,
+            Settings.ShootOnTheFly.MAX_ITERATIONS,
+            Settings.ShootOnTheFly.TIME_TOLERANCE
+        );
+
+        sol = solution;
+
+        hubPose2d.setPose(Robot.isBlue() ? hubPose : Field.transformToOppositeAlliance(hubPose));
+        virtualHubPose2d.setPose((Robot.isBlue() ? sol.virtualPose() : Field.transformToOppositeAlliance(sol.virtualPose())));
+        futureTurretPose2d.setPose((Robot.isBlue() ? futureTurretPose : Field.transformToOppositeAlliance(futureTurretPose)));
+  
+  
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Turret Angle", sol.targetTurretAngle().getDegrees());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Hood Angle", sol.targetHoodAngle().getDegrees());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Calculated Flight time", sol.flightTime());
+        SmartDashboard.putNumber("HoodedShooter/SOTM/Turret Dist to Virtual Pose", futureTurretPose.getTranslation().getDistance(sol.virtualPose().getTranslation()));
+    }
+
+    public static Supplier<Rotation2d> calculateHoodAngleSOTM() {
+        return () -> sol.targetHoodAngle();
+    }
+
+    public static Supplier<Rotation2d> calculateTurretAngleSOTM() {
+        return () -> sol.targetTurretAngle();
     }
 }

@@ -5,13 +5,11 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.intake;
 
-import com.stuypulse.robot.subsystems.intake.Intake.IntakeState;
+import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
+import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 
-public class IntakeStop extends IntakeSetState {
-    /**
-     * Sets the State of the Intake to Stowing
-     */
-    public IntakeStop() {
-        super(IntakeState.STOW);
+public class IntakeStow extends IntakeSetState {
+    public IntakeStow() {
+        super(PivotState.STOWED, RollerState.STOP);
     }
 }

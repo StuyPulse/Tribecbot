@@ -60,10 +60,10 @@ public abstract class Turret extends SubsystemBase {
             case ZERO -> Rotation2d.kZero;
             case SHOOTING -> getScoringAngle();
             case FERRYING -> getFerryAngle();
-            case TESTING -> driverInputToAngle();
             case HUB -> Settings.Turret.HUB;
             case LEFT_CORNER -> Settings.Turret.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Turret.RIGHT_CORNER;
+            case TESTING -> driverInputToAngle();
         };
     }
 
@@ -117,7 +117,7 @@ public abstract class Turret extends SubsystemBase {
 
     public Rotation2d getPointAtTargetAngle(Pose2d targetPose) {
         Pose2d robotPose = CommandSwerveDrivetrain.getInstance().getPose();
-        Pose2d turretPose = CommandSwerveDrivetrain.getInstance().getTurretPose(); // TODO: TEST IF THIS PLUS SHOULD BE MINUS
+        Pose2d turretPose = CommandSwerveDrivetrain.getInstance().getTurretPose();
 
         Vector2D turret = new Vector2D(turretPose.getTranslation());
         Vector2D target = new Vector2D(targetPose.getTranslation());

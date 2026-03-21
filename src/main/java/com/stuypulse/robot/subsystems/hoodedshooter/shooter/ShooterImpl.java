@@ -30,10 +30,11 @@ public class ShooterImpl extends Shooter {
     private Optional<Double> voltageOverride;
 
     public ShooterImpl() {
-        shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD);
-        shooterFollower = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_FOLLOW);
+        shooterLeader = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_LEAD, Ports.RIO);
+        shooterFollower = new TalonFX(Ports.HoodedShooter.Shooter.MOTOR_FOLLOW, Ports.RIO);
 
-        shooterController = new VelocityVoltage(getTargetRPM() / 60.0);
+        shooterController = new VelocityVoltage(getTargetRPM() / 60.0)
+            .withEnableFOC(true);
         follower = new Follower(Ports.HoodedShooter.Shooter.MOTOR_LEAD, MotorAlignmentValue.Opposed);
 
         Motors.HoodedShooter.Shooter.SHOOTER.configure(shooterLeader);
@@ -69,7 +70,7 @@ public class ShooterImpl extends Shooter {
                 shooterLeader.setVoltage(voltageOverride.get());
                 shooterFollower.setControl(follower);
             } else {
-                shooterLeader.setControl(shooterController.withVelocity(getTargetRPM() / 60.0).withEnableFOC(true));
+                shooterLeader.setControl(shooterController.withVelocity(getTargetRPM() / 60.0));
                 shooterFollower.setControl(follower);
             }
         } else {

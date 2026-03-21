@@ -44,6 +44,7 @@ public class LimelightVision extends SubsystemBase{
         MEGATAG1,
         MEGATAG2 
     }
+    private int maxTagCount;
 
     public LimelightVision() {
         names = new String[Cameras.LimelightCameras.length];
@@ -74,6 +75,8 @@ public class LimelightVision extends SubsystemBase{
         maxTagCount = 0;
 
         megaTagMode = MegaTagMode.MEGATAG1;
+
+        maxTagCount = 0;
     }
 
     public void setTagWhitelist(int... ids) {
@@ -112,8 +115,14 @@ public class LimelightVision extends SubsystemBase{
         return this.maxTagCount;
     }
 
+    public int getMaxTagCount() {
+        return this.maxTagCount;
+    }
+
     @Override
     public void periodic() {
+        this.maxTagCount = 0;
+
         this.maxTagCount = 0;
 
         if (enabled.get()) {
