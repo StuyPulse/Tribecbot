@@ -22,6 +22,8 @@ import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.ZeroPivotDeployed;
 import com.stuypulse.robot.commands.intake.ZeroPivotStowed;
+import com.stuypulse.robot.commands.leds.LEDApplyPattern;
+import com.stuypulse.robot.commands.leds.LEDDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
@@ -51,10 +53,12 @@ import com.stuypulse.robot.commands.vision.WhitelistOutpostTags;
 import com.stuypulse.robot.commands.vision.WhitelistTowerTags;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -115,6 +119,8 @@ public class RobotContainer {
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 
+    private final LEDController leds = LEDController.getInstance();
+
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -149,6 +155,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
+        leds.setDefaultCommand(new LEDDefaultCommand().ignoringDisable(true));
     }
 
     /***************/
@@ -225,6 +232,7 @@ public class RobotContainer {
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
+            .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
             .onFalse(new SetIMUMode(0));   
 
         // Stop Rollers
@@ -291,7 +299,8 @@ public class RobotContainer {
             ));
 
         driver.getDPadDown()
-            .whileTrue(new SwerveXMode());
+            .whileTrue(new SwerveXMode())
+            .onTrue(new LEDApplyPattern(Settings.LED.X_WHEELS));
 
 //--------------------------------------------------------------------------------------------------------------------------\\
 

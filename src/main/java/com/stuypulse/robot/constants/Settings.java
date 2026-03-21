@@ -353,7 +353,7 @@ public interface Settings {
         LEDPattern DISABLED_ALIGNED = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
-        public final int LED_LENGTH = 0; // TBA
+        public final int LED_LENGTH = 50; // TBA
 
     }
 

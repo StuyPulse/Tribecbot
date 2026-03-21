@@ -11,9 +11,15 @@ import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
+import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
+import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
@@ -32,6 +38,7 @@ public class LEDDefaultCommand extends Command{
     private final Hood hood;
     private final Shooter shooter;
     private final Turret turret;
+    private final Superstructure superstructure;
     private final LimelightVision vision;
 
     public LEDDefaultCommand() {
@@ -43,6 +50,7 @@ public class LEDDefaultCommand extends Command{
         this.hood = Hood.getInstance();
         this.shooter = Shooter.getInstance();
         this.turret = Turret.getInstance();
+        this.superstructure = Superstructure.getInstance();
         this.vision = LimelightVision.getInstance();
 
         addRequirements(leds);
@@ -62,7 +70,35 @@ public class LEDDefaultCommand extends Command{
             if (swerve.isUnderTrench()) {
                 leds.applyPattern(Settings.LED.PASSING_TRENCH);
             }
-            else if ()
+            else if (turret.isWrapping()) {
+                leds.applyPattern(Settings.LED.TURRET_WRAPPING);
+            }
+            else if (superstructure.getState() == SuperstructureState.LEFT_CORNER) {
+                leds.applyPattern(Settings.LED.LEFT_CORNER);
+            }
+            else if (superstructure.getState() == SuperstructureState.RIGHT_CORNER) {
+                leds.applyPattern(Settings.LED.RIGHT_CORNER);
+            } 
+            else if (superstructure.getState() == SuperstructureState.KB) {
+                leds.applyPattern(Settings.LED.KB_DISTANCE);
+            }
+            else if (superstructure.getState() == SuperstructureState.SOTM) {
+                leds.applyPattern(Settings.LED.SOTM_ON);
+            }
+            else if (superstructure.getState() == SuperstructureState.FOTM) {
+                leds.applyPattern(Settings.LED.FOTM_ON);
+            }
+            else if (spindexer.getState() == SpindexerState.REVERSE || 
+                     handoff.getState() == HandoffState.REVERSE ||
+                     intake.getRollerState() == RollerState.OUTTAKE) {
+                leds.applyPattern(Settings.LED.REVERSE);
+            } 
+            else if (intake.getPivotState() == PivotState.STOW) {
+                leds.applyPattern(Settings.LED.INTAKE_STOW);
+            }
+            else if (intake.getPivotState() == PivotState.DEPLOY) {
+                leds.applyPattern(Settings.LED.INTAKE_DEPLOYED);
+            }
         }
     }
 }
