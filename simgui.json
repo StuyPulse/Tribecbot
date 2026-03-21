@@ -9,7 +9,10 @@
       "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Robot/Handoff Reverse": "Command",
       "/SmartDashboard/Robot/Intake Reverse": "Command",
+      "/SmartDashboard/Robot/Reset WL Left-Camera": "Command",
+      "/SmartDashboard/Robot/Reset WL Right-Camera": "Command",
       "/SmartDashboard/Robot/Ryan Testing Seed Hood Encoder (NEW)": "Command",
+      "/SmartDashboard/Robot/Scheduled Commands": "Scheduler",
       "/SmartDashboard/Robot/Seed Hood Relative Encoder At Upper Hardstop": "Command",
       "/SmartDashboard/Robot/Seed Turret": "Command",
       "/SmartDashboard/Robot/Set Back LL PF": "Command",
@@ -18,6 +21,9 @@
       "/SmartDashboard/Robot/Set Megatag 2": "Command",
       "/SmartDashboard/Robot/Set Right LL PF": "Command",
       "/SmartDashboard/Robot/Spindexer Reverse": "Command",
+      "/SmartDashboard/Robot/WL Outpost Tags Left-Camera": "Command",
+      "/SmartDashboard/Robot/WL Tower Tags Right-Camera": "Command",
+      "/SmartDashboard/Robot/Whitelist All Cameras": "Command",
       "/SmartDashboard/Robot/Zero Hood Encoder": "Command",
       "/SmartDashboard/Robot/Zero Pivot Encoder at Lower Limit (Deployed)": "Command",
       "/SmartDashboard/Robot/Zero Pivot Encoder at Upper Limit (Stowed)": "Command",
@@ -58,6 +64,9 @@
           "open": true
         },
         "Handoff": {
+          "open": true
+        },
+        "Intake": {
           "open": true
         },
         "States": {

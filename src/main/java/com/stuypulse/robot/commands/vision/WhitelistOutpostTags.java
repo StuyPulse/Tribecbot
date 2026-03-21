@@ -5,6 +5,6 @@ import com.stuypulse.robot.constants.Field;
 
 public class WhitelistOutpostTags extends SetLimelightWhiteList {
     public WhitelistOutpostTags (String limelightName) {
-        super(Robot.isBlue() ? Field.BLUE_HP_TAG_IDS: Field.RED_HP_TAG_IDS, limelightName);
+        super(Robot.isBlue() ? Field.BLUE_OUTPOST_TAG_IDS: Field.RED_OUTPOST_TAG_IDS, limelightName);
     }
 }

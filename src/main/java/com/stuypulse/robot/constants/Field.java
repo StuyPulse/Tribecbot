@@ -43,7 +43,8 @@ public interface Field {
 
     public static final double OPPONENT_ZONE_X = LENGTH - Units.inchesToMeters(158.6);
 
-    public static final double hubTolerance = Units.inchesToMeters(100);
+    public static final double hubToleranceX = Units.inchesToMeters(100);
+    public static final double hubToleranceY = Units.inchesToMeters(6);
 
     public static Pose2d getHubPose() {
         return hubCenter;
@@ -226,8 +227,8 @@ public interface Field {
     public final int[] BLUE_TRENCH_TAG_IDS = {17, 22, 23, 28};
     public final int[] RED_TOWER_TAG_IDS = {15, 16};
     public final int[] BLUE_TOWER_TAG_IDS = {31, 32};
-    public final int[] RED_HP_TAG_IDS = {13, 14};
-    public final int[] BLUE_HP_TAG_IDS = {29, 30};
+    public final int[] RED_OUTPOST_TAG_IDS = {13, 14};
+    public final int[] BLUE_OUTPOST_TAG_IDS = {29, 30};
     public final int[] ALL_TAGS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
 
     /* TRANSFORM FUNCTIONS */

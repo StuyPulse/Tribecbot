@@ -8,6 +8,10 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTags;
+import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
+import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
+import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -25,7 +29,8 @@ public class Robot extends TimedRobot {
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
-    private int resetLoggingCounter = 0;
+    private static int periodicCounter = 0;
+    private Command selectedAuto;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -38,18 +43,23 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robot = new RobotContainer();
+        selectedAuto = robot.getAutonomousCommand();
 
         DataLogManager.start();
         SignalLogger.start();
     }
+    
+    public static int getPeriodicCounter() {
+        return periodicCounter;
+    }
 
     @Override
     public void robotPeriodic() {
-        if (resetLoggingCounter % 50 == 0) {
+        if (periodicCounter % 50 == 0) {
             DataLogManager.getLog().resume();
         }
 
-        resetLoggingCounter++;
+        periodicCounter++;
 
         
         CommandScheduler.getInstance().run();
@@ -58,6 +68,7 @@ public class Robot extends TimedRobot {
         }
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
+        SmartDashboard.putData("Robot/Scheduled Commands", CommandScheduler.getInstance());
         
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
@@ -76,7 +87,23 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        if (periodicCounter % Settings.LOGGING_FREQUENCY == 0) {
+            selectedAuto = robot.getAutonomousCommand();
+
+            switch (selectedAuto.getName()) {
+                case "LeftTwoCycle":
+                    CommandScheduler.getInstance().schedule(new WhitelistRoutineLeftSideAuto());
+                    break;
+                case "RightTwoCycle":
+                    CommandScheduler.getInstance().schedule(new WhitelistRoutineRightSideAuto());
+                    break;
+                default:
+                    CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
+                    break;
+            }
+        }
+    }
 
     /***********************/
     /*** AUTONOMOUS MODE ***/
@@ -86,6 +113,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
+        CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
         auto = robot.getAutonomousCommand();
 
@@ -107,15 +135,13 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        CommandScheduler.getInstance().schedule(new WhitelistAllTags("limelight-left"));
+        CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
-        
         if (auto != null) {
             auto.cancel();
         }
-
     }
-// 
+
     @Override
     public void teleopPeriodic() {}
 

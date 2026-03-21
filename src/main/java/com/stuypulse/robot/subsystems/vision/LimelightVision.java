@@ -5,7 +5,10 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
+import java.util.Arrays;
+
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.commands.vision.BlacklistAllTags;
 import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -80,12 +83,6 @@ public class LimelightVision extends SubsystemBase {
             limelightPoseArray[i] = new Pose2d();
         }
 
-        // camerasEnabled = new SmartBoolean[Cameras.LimelightCameras.length];
-        // for (int i = 0; i < camerasEnabled.length; i++) {
-        //     camerasEnabled[i] = new SmartBoolean("Vision/" + names[i] + " Is Enabled", true);
-        //     LimelightHelpers.SetIMUMode(names[i], Settings.Vision.INTERNAL_EXTERNAL_ASSIST_INDEX);
-        //     SmartDashboard.putBoolean("Vision/" + names[i] + " Has Data", false);
-        // }
         enabled = new SmartBoolean("Vision/Is Enabled", true);
         megaTagMode = MegaTagMode.MEGATAG1;
         setIMUMode(1);
@@ -143,11 +140,26 @@ public class LimelightVision extends SubsystemBase {
      * @param limelight the name of the Limelight camera to configure
      */
     public void setTagBlacklist(int[] tagsToBlacklist, String limelight) {
-        int[] allowedTags = Field.ALL_TAGS;
+        int[] allTags = Field.ALL_TAGS.clone();
+        
         for (int i = 0; i < tagsToBlacklist.length; i++) {
-            allowedTags[tagsToBlacklist[i] - 1] = -1;
+            allTags[tagsToBlacklist[i] - 1] = -1;
         }
-        LimelightHelpers.SetFiducialIDFiltersOverride(limelight, allowedTags);
+
+        int[] validTags = new int[allTags.length - tagsToBlacklist.length];
+        
+        int counter = 0;
+        for (int i = 0; i < allTags.length; i++) {
+            if (allTags[i] != -1) {
+                validTags[counter] = allTags[i];
+                counter++;
+            }
+        }
+
+        System.out.println(Arrays.toString(validTags));
+        SmartDashboard.putString("Allowlisted Tags for " + limelight, Arrays.toString(validTags));
+
+        LimelightHelpers.SetFiducialIDFiltersOverride(limelight, validTags);
     }
 
     /**
