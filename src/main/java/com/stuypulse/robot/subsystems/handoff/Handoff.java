@@ -5,7 +5,10 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.handoff;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +21,11 @@ public abstract class Handoff extends SubsystemBase {
     private HandoffState state;
 
     static {
-        instance = new HandoffImpl();
+        if (Robot.isReal()) {
+            instance = new HandoffImpl();
+        } else {
+            instance = new HandoffSim();
+        }
     }
 
     public static Handoff getInstance() {
@@ -52,22 +59,29 @@ public abstract class Handoff extends SubsystemBase {
     }
 
     public boolean atTolerance() {
-        double diff = Math.abs(getTargetRPM() - getCurrentRPM());
-        return diff < Settings.Handoff.RPM_TOLERANCE;
+        double error = Math.abs(getTargetRPM() - getCurrentRPM());
+        SuperstructureState superstructureState = Superstructure.getInstance().getState();
+        if (superstructureState == SuperstructureState.SOTM || superstructureState == SuperstructureState.FOTM) {
+            return error < Settings.Handoff.RPM_TOLERANCE;
+        }
+        return error < Settings.Handoff.RPM_TOLERANCE;
     }
 
     public abstract double getCurrentRPM();
 
     public abstract SysIdRoutine getSysIdRoutine();
     public abstract void setVoltageOverride(Optional<Double> voltage);
+    public abstract boolean isHandoffStalling();
+
+    public abstract double getCurrentDraw();
 
     @Override
     public void periodic() {
         super.periodic();
         SmartDashboard.putString("Handoff/State", getState().toString());
-        SmartDashboard.putString("States/Handoff", getState().toString());
 
         SmartDashboard.putNumber("Handoff/Target RPM", getTargetRPM());
         SmartDashboard.putNumber("Handoff/Current RPM", getCurrentRPM());
+        SmartDashboard.putBoolean("Handoff/At Tolerance?", atTolerance());
     }
 }

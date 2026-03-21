@@ -5,10 +5,10 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.turret;
 
-import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
+import com.stuypulse.robot.subsystems.superstructure.turret.Turret.TurretState;
 
 public class TurretFerry extends TurretSetState {
     public TurretFerry() {
-        super(TurretState.FERRYING);
+        super(TurretState.FERRY);
     }
 }

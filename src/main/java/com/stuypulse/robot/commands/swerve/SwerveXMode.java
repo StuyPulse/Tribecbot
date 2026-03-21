@@ -12,7 +12,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 public class SwerveXMode extends Command {
+    private CommandSwerveDrivetrain swerve;
+
     public SwerveXMode() {
+        swerve = CommandSwerveDrivetrain.getInstance();
+        addRequirements(swerve);
+    }
+
+    @Override
+    public void initialize() {
         SwerveRequest request = new SwerveRequest.SwerveDriveBrake();
         CommandSwerveDrivetrain.getInstance().setControl(request);
     }

@@ -5,64 +5,87 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import com.stuypulse.stuylib.network.SmartNumber;
+
 import com.pathplanner.lib.config.PIDConstants;
 
 public class Gains {
-    
-    public interface ClimberHopper {
-        double kP = 1.0;
-        double kI = 0.0;
-        double kD = 0.20;
 
-        double kS = 0.0;
-        double kV = 0.123;
-        double kA = 0.0;
-    }
-
-    public interface HoodedShooter {
+    public interface Superstructure {
         public interface Shooter {
-            double kP = 0.45;
-            double kI = 0.0;
-            double kD = 0.0;
+            // VTC PID
+            SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 10.0);
+            SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
 
-            double kS = 0.0;
-            double kV = 0.123;
-            double kA = 0.0;
+            SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 1.86743089);
+            SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.0503);
+            SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
+
+            // VOLTAGE PID
+            // SmartNumber kP = new SmartNumber("Superstructure/Shooter/Gains/kP", 0.45);
+            // SmartNumber kI = new SmartNumber("Superstructure/Shooter/Gains/kI", 0.0);
+            // SmartNumber kD = new SmartNumber("Superstructure/Shooter/Gains/kD", 0.0);
+
+            // SmartNumber kS = new SmartNumber("Superstructure/Shooter/Gains/kS", 0.0);
+            // SmartNumber kV = new SmartNumber("Superstructure/Shooter/Gains/kV", 0.1228);
+            // SmartNumber kA = new SmartNumber("Superstructure/Shooter/Gains/kA", 0.0);
         }
 
         public interface Hood {
-            double kP = 300.0;
+            double kP = 250.0;
             double kI = 0.0;
-            double kD = 0.0;
+            double kD = 2.0;
 
-            double kS = 0.0;
+            double kS = 0.25;
             double kV = 0.0;
             double kA = 0.0;
         }
-        
+
+        public interface Turret {
+            public interface slot0 {
+                double kP = 200.0;
+                double kI = 0.0;
+                double kD = 0.0;
+            
+                double kS = 0.4775;
+                double kV = 0.0;
+                double kA = 0.0;
+            }
+            
+            public interface slot1 {
+                SmartNumber kP = new SmartNumber("Superstructure/Turret/Gains/kP", 20.0);
+                SmartNumber kI = new SmartNumber("Superstructure/Turret/Gains/kI", 0.0);
+                SmartNumber kD = new SmartNumber("Superstructure/Turret/Gains/kD", 0.0);
+
+                SmartNumber kS = new SmartNumber("Superstructure/Turret/Gains/kS", 0.4775);
+                SmartNumber kV = new SmartNumber("Superstructure/Turret/Gains/kV", 0.0);
+                SmartNumber kA = new SmartNumber("Superstructure/Turret/Gains/kA", 0.0);
+            }
+        }
     }
 
     public interface Spindexer {
-        double kP = 1.20;
+        double kP = 1.2;
         double kI = 0.0;
-        double kD = 0.0;
-        
-        double kS = 0.019444;
+        double kD = 10.0;
+
+        double kS = 0.25;
+        double kV = 1.2;
         double kA = 0.010876;
-        double kV = 0.38546;
     }
 
     public interface Intake {
         public interface Pivot {
-            double kP = 1.0;
-            double kI = 0.0;
-            double kD = 0.0;
+            SmartNumber kP = new SmartNumber("Intake/Pivot/Gains/kP", 100.0);
+            SmartNumber kI = new SmartNumber("Intake/Pivot/Gains/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Intake/Pivot/Gains/kD", 10.0);
+            
+            SmartNumber kS = new SmartNumber("Intake/Pivot/Gains/kS", 0.0);
+            SmartNumber kV = new SmartNumber("Intake/Pivot/Gains/kV", 0.12);
+            SmartNumber kA = new SmartNumber("Intake/Pivot/Gains/kA", 0.0);
 
-            double kS = 0.0;
-            double kV = 0.0;
-            double kA = 0.0;
-
-            double kG = 0.0; 
+            double kG = 0.5;
         }
     }
 
@@ -70,31 +93,21 @@ public class Gains {
         double kP = 0.00015508;
         double kI = 0.0;
         double kD = 0.0;
-        
+
         double kS = 0.1728;
-        double kA = 0.0028428;
-        double kV = 0.11725;
-    }
-
-    public interface Turret {
-        double kP = 1300.0;
-        double kI = 0.0;
-        double kD = 140.0;
-
-        double kS = 0.179;
-        double kV = 0.0;
-        double kA = 0.0;
+        double kV = 0.12;
+        double kA = 0.00284;
     }
 
     public interface Swerve {
         public interface Drive {
-            double kP = 0.1;
+            double kP = 0.10224;
             double kI = 0.0;
             double kD = 0.0;
 
-            double kS = 0.0;
-            double kV = 0.124;
-            double kA = 0.0;
+            double kS = 0.19896;
+            double kV = 0.12528;
+            double kA = 0.011662;
         }
 
         public interface Turn {
@@ -108,24 +121,8 @@ public class Gains {
         }
 
         public interface Alignment {
-            public interface Rotation {  
-                double kp = 112.3;
-                double ki = 0.0;
-                double kd = 2.3758;
-                double ks = 0.31395;
-                double kv = 0.10969;
-                double ka = 0.026589;
-            }
-
-            double kP = 0.0;
-            double kI = 0.0;
-            double kD = 0.0;
-            double akP = 0.0;
-            double akI = 0.0;
-            double akD = 0.0;
-
-            PIDConstants XY = new PIDConstants(3.0, 0.0, 0.2);
-            PIDConstants THETA = new PIDConstants(3.0, 0.0, 0.2);
+            PIDConstants XY = new PIDConstants(2.2, 0, 0.0);
+            PIDConstants THETA = new PIDConstants(3, 0, 0.0);
         }
     }
 }

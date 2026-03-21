@@ -1,0 +1,131 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.600510083036774,
+        "y": 7.580154211150653
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.956773428237163,
+        "y": 7.580154211155934
+      },
+      "isLocked": false,
+      "linkedName": "Left Trench Score"
+    },
+    {
+      "anchor": {
+        "x": 5.924495848161329,
+        "y": 6.3858837485172
+      },
+      "prevControl": {
+        "x": 5.981334656466404,
+        "y": 7.488556629635666
+      },
+      "nextControl": {
+        "x": 5.870699881376039,
+        "y": 5.3422419928825615
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.483973902728352,
+        "y": 4.4707473309608545
+      },
+      "prevControl": {
+        "x": 5.84048778435412,
+        "y": 4.1030409776021175
+      },
+      "nextControl": {
+        "x": 7.312431791226488,
+        "y": 4.944151838676692
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.73143534994069,
+        "y": 7.408007117437722
+      },
+      "prevControl": {
+        "x": 7.011174377219542,
+        "y": 7.41876631079478
+      },
+      "nextControl": {
+        "x": 4.795823194932401,
+        "y": 7.333560496090013
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.558078291814947,
+        "y": 7.408007117437722
+      },
+      "prevControl": {
+        "x": 5.354258600237249,
+        "y": 7.472562277580071
+      },
+      "nextControl": {
+        "x": 3.6566879283896982,
+        "y": 7.3349214122951345
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2227283511269282,
+        "y": 4.922633451957295
+      },
+      "prevControl": {
+        "x": 1.7714472123368927,
+        "y": 7.031435349940688
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Tower Left"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.4623824451410663,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.2238010657193716,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 4.440497335701599,
+      "rotationDegrees": 90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "To Tower",
+  "idealStartingState": {
+    "velocity": 0.0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}

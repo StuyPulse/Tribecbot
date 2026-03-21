@@ -5,12 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
 
-import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.SpindexerInterpolation;
 
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -31,7 +27,6 @@ public abstract class Spindexer extends SubsystemBase {
 
     public enum SpindexerState {
         STOP,
-        DYNAMIC, // In case we need for future: interpolates RPM based on distance to hub
         FORWARD,
         REVERSE;
     }
@@ -39,7 +34,6 @@ public abstract class Spindexer extends SubsystemBase {
     public double getTargetRPM() {
         return switch (getState()) {
             case STOP -> 0;
-            case DYNAMIC -> getRPMBasedOnDistance(); 
             case FORWARD -> Settings.Spindexer.FORWARD_SPEED;
             case REVERSE -> Settings.Spindexer.REVERSE_SPEED;
         };
@@ -57,27 +51,20 @@ public abstract class Spindexer extends SubsystemBase {
         this.spindexerState = state;
     }
 
-    /**
-     * @return target RPM interpolated based on distance
-     */
-    public double getRPMBasedOnDistance() {
-        Translation2d hubPos = Field.getHubPose().getTranslation();
-        Translation2d robotPos = CommandSwerveDrivetrain.getInstance().getPose().getTranslation();
-        double distance = hubPos.getDistance(robotPos);
-        return SpindexerInterpolation.getRPM(distance);
-    }
+    public abstract boolean atTolerance();
+    public abstract boolean canStartIntakeRollers();
 
     public abstract SysIdRoutine getSysIdRoutine();
     public abstract void setVoltageOverride(Optional<Double> voltage);
+    
+    public abstract double getCurrentDraw();
 
     @Override
     public void periodic() {
-        if (Settings.DEBUG_MODE) {
-            SmartDashboard.putString("Spindexer/State", getState().name());
-            SmartDashboard.putString("States/Spindexer", getState().name());
+        SmartDashboard.putString("Spindexer/State", getState().name());
+        SmartDashboard.putNumber("Spindexer/Target RPM", getTargetRPM());
+        if (Settings.DEBUG_MODE.get()) {
 
-            SmartDashboard.putNumber("Spindexer/Target RPM", getTargetRPM());
-            SmartDashboard.putNumber("Spindexer/Interpolated RPM Based on Distance", getRPMBasedOnDistance());
         }
     }
 }

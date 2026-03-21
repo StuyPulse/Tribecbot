@@ -5,7 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.turret;
 
-import com.stuypulse.robot.subsystems.turret.Turret.TurretState;
+import com.stuypulse.robot.subsystems.superstructure.turret.Turret.TurretState;
 
 public class TurretLeftCorner extends TurretSetState {
     public TurretLeftCorner() {

@@ -1,0 +1,44 @@
+{
+  "robotWidth": 0.981,
+  "robotLength": 0.762,
+  "holonomicMode": true,
+  "pathFolders": [
+    "Misc",
+    "Tests",
+    "To NZ",
+    "To Score",
+    "To Tower"
+  ],
+  "autoFolders": [
+    "Tests"
+  ],
+  "defaultMaxVel": 2.0,
+  "defaultMaxAccel": 5.0,
+  "defaultMaxAngVel": 300.0,
+  "defaultMaxAngAccel": 900.0,
+  "defaultNominalVoltage": 12.0,
+  "robotMass": 64.86,
+  "robotMOI": 6.883,
+  "robotTrackwidth": 0.546,
+  "driveWheelRadius": 0.051,
+  "driveGearing": 5.35714285714,
+  "maxDriveSpeed": 4.93,
+  "driveMotorType": "krakenX60FOC",
+  "driveCurrentLimit": 120.0,
+  "wheelCOF": 1.542,
+  "flModuleX": 0.229,
+  "flModuleY": 0.33,
+  "frModuleX": 0.229,
+  "frModuleY": -0.33,
+  "blModuleX": -0.229,
+  "blModuleY": 0.33,
+  "brModuleX": -0.229,
+  "brModuleY": -0.33,
+  "bumperOffsetX": 0.0,
+  "bumperOffsetY": 0.0,
+  "robotFeatures": [
+    "{\"name\":\"Intake\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.475,\"y\":0.0},\"size\":{\"width\":0.98,\"length\":0.19},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":true}}",
+    "{\"name\":\"Turret\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.15,\"y\":0.275},\"size\":{\"width\":0.3,\"length\":0.35},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}",
+    "{\"name\":\"Climber\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.1,\"y\":-0.45},\"size\":{\"width\":0.1,\"length\":0.2},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":true}}"
+  ]
+}

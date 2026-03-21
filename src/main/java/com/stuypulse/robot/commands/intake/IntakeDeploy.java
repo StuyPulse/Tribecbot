@@ -10,6 +10,6 @@ import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 
 public class IntakeDeploy extends IntakeSetState {
     public IntakeDeploy() {
-        super(PivotState.DEPLOYED, RollerState.INTAKE);
+        super(PivotState.DEPLOY, RollerState.INTAKE);
     }
 }

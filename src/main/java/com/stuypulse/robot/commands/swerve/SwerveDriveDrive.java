@@ -38,7 +38,7 @@ public class SwerveDriveDrive extends Command {
         .filtered(
             new VDeadZone(Drive.DEADBAND), 
             x -> x.clamp(1),
-            x -> x.pow(Drive.POWER.get()),
+            x -> x.pow(Drive.POWER),
             x -> x.mul(Swerve.Constraints.MAX_VELOCITY_M_PER_S),
             new VRateLimit(Swerve.Constraints.MAX_ACCEL_M_PER_S_SQUARED),
             new VLowPassFilter(Drive.RC)
@@ -46,8 +46,8 @@ public class SwerveDriveDrive extends Command {
 
         turn = IStream.create(driver::getRightX)
         .filtered(
-            x -> SLMath.deadband(x, Turn.DEADBAND.get()),
-            x -> SLMath.spow(x, Turn.POWER.get()),
+            x -> SLMath.deadband(x, Turn.DEADBAND),
+            x -> SLMath.spow(x, Turn.POWER),
             x -> x * Swerve.Constraints.MAX_ANGULAR_VEL_RAD_PER_S,
             new LowPassFilter(Turn.RC)
         );

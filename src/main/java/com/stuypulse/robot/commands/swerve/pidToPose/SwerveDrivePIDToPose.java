@@ -70,10 +70,10 @@ public class SwerveDrivePIDToPose extends Command {
             new PIDController(Alignment.XY.kP, Alignment.XY.kI, Alignment.XY.kD),
             new PIDController(Alignment.XY.kP, Alignment.XY.kI, Alignment.XY.kD),
             new AnglePIDController(Alignment.THETA.kP, Alignment.THETA.kI, Alignment.THETA.kD)
-                .setSetpointFilter(new AMotionProfile(Settings.Swerve.Alignment.Constraints.DEFAULT_MAX_ANGULAR_VELOCITY, Settings.Swerve.Alignment.Constraints.DEFAULT_MAX_ANGULAR_ACCELERATION)));
+                .setSetpointFilter(new AMotionProfile(Settings.Swerve.Constraints.MAX_ANGULAR_VEL_RAD_PER_S, Settings.Swerve.Constraints.MAX_ANGULAR_ACCEL_RAD_PER_S_SQUARED)));
 
-        maxVelocity = Settings.Swerve.Alignment.Constraints.DEFAULT_MAX_VELOCITY;
-        maxAcceleration = Settings.Swerve.Alignment.Constraints.DEFAULT_MAX_ACCELERATION;
+        maxVelocity = Settings.Swerve.Constraints.MAX_VELOCITY_M_PER_S;
+        maxAcceleration = Settings.Swerve.Constraints.MAX_ACCEL_M_PER_S_SQUARED;
 
         isMotionProfiled = true;
         translationSetpoint = getNewTranslationSetpointGenerator();
@@ -142,7 +142,7 @@ public class SwerveDrivePIDToPose extends Command {
     }
 
     private boolean isAlignedTheta() {
-        return Math.abs(targetPose.get().getRotation().minus(swerve.getPose().getRotation()).getRadians()) < thetaTolerance.doubleValue();
+        return Math.abs(targetPose.get().getRotation().minus(swerve.getPose().getRotation()).getDegrees()) < thetaTolerance.doubleValue();
     }
 
     private boolean isAligned() {
@@ -163,6 +163,8 @@ public class SwerveDrivePIDToPose extends Command {
         SmartDashboard.putNumber("Alignment/Target x", targetPose.get().getX());
         SmartDashboard.putNumber("Alignment/Target y", targetPose.get().getY());
         SmartDashboard.putNumber("Alignment/Target angle", targetPose.get().getRotation().getDegrees());
+
+        SmartDashboard.putNumber("Alignment/Error of Angle Controller)", controller.getError().omegaRadiansPerSecond);
 
         SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative X (m per s)", controller.getOutput().vxMetersPerSecond);
         SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative Y (m per s)", controller.getOutput().vyMetersPerSecond);

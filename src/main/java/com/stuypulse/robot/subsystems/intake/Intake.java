@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.intake;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,17 +18,30 @@ import java.util.Optional;
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
 
+    private PivotState pivotState;
+    private RollerState rollerState;
+
     static {
-        instance = new IntakeImpl();
+        if (Robot.isReal()) {
+            instance = new IntakeImpl();
+        } else {
+            instance = new IntakeSim();
+        }
     }
 
     public static Intake getInstance() {
         return instance;
     }
 
+    protected Intake() {
+        this.pivotState = PivotState.STOW;
+        this.rollerState = RollerState.STOP;
+    }
+
     public enum PivotState {
-        DEPLOYED(Settings.Intake.PIVOT_INTAKE_OUTAKE_ANGLE),
-        STOWED(Settings.Intake.PIVOT_STOW_ANGLE);
+        DEPLOY(Settings.Intake.PIVOT_DEPLOY_ANGLE),
+        HOMING(Settings.Intake.PIVOT_DEPLOY_ANGLE),
+        STOW(Settings.Intake.PIVOT_STOW_ANGLE);
 
         private final Rotation2d targetAngle;
 
@@ -56,14 +70,6 @@ public abstract class Intake extends SubsystemBase {
         }
     }
 
-    private PivotState pivotState;
-    private RollerState rollerState;
-
-    protected Intake() {
-        this.pivotState = PivotState.STOWED;
-        this.rollerState = RollerState.STOP;
-    }
-
     public PivotState getPivotState() {
         return pivotState;
     }
@@ -85,6 +91,12 @@ public abstract class Intake extends SubsystemBase {
     public abstract Rotation2d getPivotAngle();
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);
     public abstract SysIdRoutine getPivotSysIdRoutine();
+    public abstract boolean pivotStalling();
+
+    public abstract void zeroPivotDeployed();
+    public abstract void zeroPivotStowed();
+
+    public abstract double getCurrentDraw();
 
     @Override
     public void periodic() {

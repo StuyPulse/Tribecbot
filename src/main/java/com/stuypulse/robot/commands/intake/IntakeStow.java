@@ -10,6 +10,6 @@ import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 
 public class IntakeStow extends IntakeSetState {
     public IntakeStow() {
-        super(PivotState.STOWED, RollerState.STOP);
+        super(PivotState.STOW, RollerState.STOP);
     }
 }
