@@ -116,9 +116,9 @@ public class RobotContainer {
     
     private final CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
     private final LimelightVision vision = LimelightVision.getInstance();
-    private final Turret turret = Turret.getInstance();
 
     private final Superstructure superstructure = Superstructure.getInstance();
+    private final Turret turret = Turret.getInstance();
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 

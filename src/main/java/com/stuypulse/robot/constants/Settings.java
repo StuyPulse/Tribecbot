@@ -107,7 +107,7 @@ public interface Settings {
         public final double SHOOTER_FOTM_TOLERANCE_RPM_LOW = 250.0;
         
         public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
-        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(3.0);
+        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(0.5);
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
@@ -279,7 +279,7 @@ public interface Settings {
 
         public interface SOTM {
             public final int MAX_ITERATIONS = 10;
-            double TIME_TOLERANCE = 1e-5;
+            double TIME_TOLERANCE = 1e-3;
             SmartNumber UPDATE_DELAY = new SmartNumber("Superstructure/SOTM/update delay", 0.12);
         }
     }
