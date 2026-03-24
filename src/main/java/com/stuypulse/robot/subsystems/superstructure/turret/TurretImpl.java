@@ -20,6 +20,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -46,6 +48,7 @@ public class TurretImpl extends Turret {
 
     private double prevActualTargetAngle;
     private boolean isWrapping;
+    private DutyCycleOut noOutput;
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
@@ -59,6 +62,10 @@ public class TurretImpl extends Turret {
             .withPIDConstants(Gains.Superstructure.Turret.slot0.kP, Gains.Superstructure.Turret.slot0.kI, Gains.Superstructure.Turret.slot0.kD, 0)
             .withFFConstants(Gains.Superstructure.Turret.slot0.kS, Gains.Superstructure.Turret.slot0.kV, Gains.Superstructure.Turret.slot0.kA, 0)
             .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 0)
+
+            .withPIDConstants(0, 0, 0, 2)
+            .withFFConstants(Gains.Superstructure.Turret.slot0.kS, Gains.Superstructure.Turret.slot0.kV, Gains.Superstructure.Turret.slot0.kA, 2)
+            .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign, 2)
             
             .withPIDConstants(Gains.Superstructure.Turret.slot1.kP.get(), Gains.Superstructure.Turret.slot1.kI.get(), Gains.Superstructure.Turret.slot1.kD.get(), 1)
             .withFFConstants(Gains.Superstructure.Turret.slot1.kS.get(), Gains.Superstructure.Turret.slot1.kV.get(), Gains.Superstructure.Turret.slot1.kA.get(), 1)
@@ -95,6 +102,7 @@ public class TurretImpl extends Turret {
         prevActualTargetAngle = getTargetAngle().getDegrees();
 
         controller = new PositionVoltage(getTargetAngle().getRotations()).withEnableFOC(true);
+        noOutput = new DutyCycleOut(0);
     }
     
     private Rotation2d getEncoderPos17t() {
@@ -201,6 +209,9 @@ public class TurretImpl extends Turret {
 
         if (isWrapping) {
             slot = 1;
+        } 
+        else if (atTolerance()) {
+            slot = 2;
         }
 
         if (EnabledSubsystems.TURRET.get()) {
