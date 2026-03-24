@@ -240,9 +240,10 @@ public interface Settings {
             
             double RESOLUTION_OF_ABSOLUTE_ENCODER = 0.1;
             double WRAP_DEBOUNCE = 0.5;
+            double SETPOINT_FILTER_THRESHOLD_DEG = 0.5;
+
             Rotation2d MAX_THEORETICAL_ROTATION = Rotation2d.fromDegrees(612);
             Rotation2d MIN_THEORETICAL_ROTATION = Rotation2d.fromDegrees(-612);
-            double MIN_DEGREE_CHANGE_PER_SECOND = 2.0; 
             
             /* CONSTANTS */
             public final double RANGE_LEFT = -360.0;

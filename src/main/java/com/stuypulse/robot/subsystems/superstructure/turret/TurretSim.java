@@ -5,7 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
+import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 
@@ -41,6 +43,8 @@ public class TurretSim extends Turret {
     private double maxAngularAccelRadiansPerSecondSquared;
 
     private boolean isWrapping;
+    private boolean hasInitializedFilter;
+    private double prevActualTargetAngle;
 
     private Optional<Double> voltageOverride;
 
@@ -75,6 +79,7 @@ public class TurretSim extends Turret {
 
         voltageOverride = Optional.empty();
         isWrapping = false;
+        prevActualTargetAngle = getTargetAngle().getDegrees();
     }
 
     @Override
@@ -128,14 +133,26 @@ public class TurretSim extends Turret {
         super.periodic();
 
         double currentAngle = getAngle().getDegrees();
-        double targetAngle = getTargetAngle().getDegrees();
-        double delta = getDelta(targetAngle, currentAngle);
-        double actualTargetDeg = currentAngle + delta;
+        double actualTargetAngle = currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
 
-        isWrapping = Math.abs(actualTargetDeg - currentAngle) > 
+        if (!hasInitializedFilter) {
+            prevActualTargetAngle = actualTargetAngle;
+            hasInitializedFilter = true;
+        }
+        
+        boolean deltaIsSignificant = Math.abs(actualTargetAngle - prevActualTargetAngle) >= Settings.Superstructure.Turret.SETPOINT_FILTER_THRESHOLD_DEG;
+
+        boolean driverIsMoving = Math.abs(RobotContainer.driver.getLeftX()) > DriverConstants.Driver.Drive.DEADBAND || 
+            Math.abs(RobotContainer.driver.getLeftY()) > DriverConstants.Driver.Drive.DEADBAND || 
+            Math.abs(RobotContainer.driver.getRightX()) > DriverConstants.Driver.Drive.DEADBAND;
+
+        if (deltaIsSignificant || driverIsMoving) {
+            prevActualTargetAngle = actualTargetAngle;
+        }
+        isWrapping = Math.abs(actualTargetAngle - currentAngle) > 
                      Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
         
-        goal = new TrapezoidProfile.State(Units.degreesToRadians(actualTargetDeg), 0.0);
+        goal = new TrapezoidProfile.State(Units.degreesToRadians(actualTargetAngle), 0.0);
         setpoint = profile.calculate(Settings.DT, setpoint, goal);
 
         SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
@@ -144,7 +161,8 @@ public class TurretSim extends Turret {
         SmartDashboard.putNumber("Superstructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
         SmartDashboard.putNumber("Superstructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
         SmartDashboard.putNumber("Superstructure/Turret/Current Angle (deg)", Units.radiansToDegrees(sim.getOutput(0)));
-        SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetDeg);
+        SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetAngle);
+        SmartDashboard.putNumber("Superstructure/Turret/Setpoint Filtered Angle (deg)", prevActualTargetAngle);
         SmartDashboard.putBoolean("Superstructure/Turret/Is Wrapping", isWrapping);
 
         controller.setNextR(VecBuilder.fill(setpoint.position, 0.0));

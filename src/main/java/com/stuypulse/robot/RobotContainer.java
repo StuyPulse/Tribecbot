@@ -107,7 +107,7 @@ public class RobotContainer {
     }
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public static final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
 
     // Subsystem
     private final Handoff handoff = Handoff.getInstance();
