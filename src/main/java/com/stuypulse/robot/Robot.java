@@ -11,6 +11,7 @@ import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
+import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTags;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
@@ -80,6 +81,8 @@ public class Robot extends TimedRobot {
         DataLogManager.start();
         SignalLogger.start();
         energyUtil = new EnergyUtil();
+
+        CommandScheduler.getInstance().schedule(new SwerveAutonInit());
     }
     
     public static int getPeriodicCounter() {
@@ -150,7 +153,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         mode = RobotMode.AUTON;
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
-        CommandScheduler.getInstance().schedule(new SwerveAutonInit());
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
         auto = robot.getAutonomousCommand();
@@ -158,13 +160,16 @@ public class Robot extends TimedRobot {
         if (auto != null) {
             auto.schedule();
         }
+
     }
 
     @Override
     public void autonomousPeriodic() {}
 
     @Override
-    public void autonomousExit() {}
+    public void autonomousExit() {
+        CommandScheduler.getInstance().schedule(new SwerveTeleopInit());
+    }
 
     /*******************/
     /*** TELEOP MODE ***/
