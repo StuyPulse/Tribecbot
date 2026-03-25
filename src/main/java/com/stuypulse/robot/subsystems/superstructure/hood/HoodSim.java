@@ -78,6 +78,11 @@ public class HoodSim extends Hood {
     }
 
     @Override
+    public void refreshStatusSignals() {
+        // How's your day been?
+    }
+
+    @Override
     public SysIdRoutine getHoodSysIdRoutine() {
         return SysId.getRoutine(
             0.45,

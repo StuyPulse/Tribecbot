@@ -63,6 +63,7 @@ public abstract class Spindexer extends SubsystemBase {
     public abstract void setVoltageOverride(Optional<Double> voltage);
     
     public abstract double getCurrentDraw();
+    public abstract void refreshStatusSignals();
 
     @Override
     public void periodic() {

@@ -76,6 +76,7 @@ public abstract class Handoff extends SubsystemBase {
     public abstract boolean isHandoffStalling();
 
     public abstract double getCurrentDraw();
+    public abstract void refreshStatusSignals();
 
     @Override
     public void periodic() {

@@ -114,6 +114,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Robot/Scheduled Commands", CommandScheduler.getInstance());
         SmartDashboard.putNumber("Robot/Battery Voltage", batteryVoltage);
 
+        robot.refreshAllStatusSignals();
+    
         robot.periodic();
     }
 

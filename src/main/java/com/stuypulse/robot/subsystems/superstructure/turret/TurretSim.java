@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.DriverConstants;
@@ -126,6 +127,11 @@ public class TurretSim extends Turret {
         if (current + delta > Settings.Superstructure.Turret.RANGE_RIGHT) return delta - 360;
 
         return delta;
+    }
+
+     @Override
+    public void refreshStatusSignals() {
+        // Crickets, crickets, crickets...
     }
 
     @Override

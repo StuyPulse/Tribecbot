@@ -315,6 +315,20 @@ public class RobotContainer {
                 () -> spindexer.getState() == SpindexerState.FORWARD));
     }
 
+    /*********************/
+    /*** UpdateSignals ***/
+    /*********************/
+
+    public void refreshAllStatusSignals() {
+        turret.refreshStatusSignals();
+        shooter.refreshStatusSignals();
+        hood.refreshStatusSignals();
+        spindexer.refreshStatusSignals();
+        intake.refreshStatusSignals();
+        handoff.refreshStatusSignals();
+    }
+
+
     /**************/
     /*** AUTONS ***/
     /**************/

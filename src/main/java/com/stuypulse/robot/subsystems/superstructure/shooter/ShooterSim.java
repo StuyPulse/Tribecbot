@@ -89,6 +89,11 @@ public class ShooterSim extends Shooter {
     }
 
     @Override
+    public void refreshStatusSignals() {
+        //whole lotta nothing
+    }
+
+    @Override
     public SysIdRoutine getShooterSysIdRoutine() {
         return SysId.getRoutine(
                 2,

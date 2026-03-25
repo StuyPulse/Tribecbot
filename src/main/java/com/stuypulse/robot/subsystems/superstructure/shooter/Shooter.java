@@ -102,6 +102,7 @@ public abstract class Shooter extends SubsystemBase {
     public abstract SysIdRoutine getShooterSysIdRoutine();
     
     public abstract double getCurrentDraw();
+    public abstract void refreshStatusSignals();
 
     @Override
     public void periodic() {
