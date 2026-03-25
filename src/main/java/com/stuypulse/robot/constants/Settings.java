@@ -344,6 +344,7 @@ public interface Settings {
         LEDPattern LEFT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
         LEDPattern RIGHT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
 
+        LEDPattern SHOOT_IN_PLACE = LEDPattern.solid(Color.kPurple);
         LEDPattern SOTM_ON = LEDPattern.solid(Color.kCyan);
         LEDPattern FOTM_ON = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 120.0));
 
@@ -352,13 +353,16 @@ public interface Settings {
         LEDPattern KB_DISTANCE = LEDPattern.solid(Color.kPink);
 
         LEDPattern REVERSE = LEDPattern.solid(Color.kWhite);
+        LEDPattern STOP_ROLLERS = LEDPattern.solid(Color.kYellow);
 
         LEDPattern RESET_HEADING = LEDPattern.solid(Color.kYellow);
         LEDPattern X_WHEELS = LEDPattern.solid(Color.kRed);
+
         LEDPattern INTAKE_STOW = LEDPattern.solid(Color.kBrown);        //broken
         LEDPattern INTAKE_DEPLOYED = LEDPattern.solid(Color.kOrange);   //broken
 
         LEDPattern DISABLED_ALIGNED = LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+        LEDPattern IS_BEHIND_HUB = LEDPattern.solid(Color.kBlue);
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
         public final int LED_LENGTH = 20; // TBA

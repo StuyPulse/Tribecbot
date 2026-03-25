@@ -154,6 +154,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Scoring Routine (TR)
         driver.getTopButton()
+            .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
             .whileTrue(new SwerveXMode())
             .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
             .whileTrue(
@@ -182,7 +183,7 @@ public class RobotContainer {
 
         // Intake Deploy
         driver.getRightTriggerButton()
-            // .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
+            .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
             .onTrue(new IntakeDeploy());
             // .onTrue(new SuperstructureStow()                    
             //         .alongWith(new SpindexerStop()) //TODO: test this logic
@@ -192,23 +193,24 @@ public class RobotContainer {
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
-            // .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
+            .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
             .onFalse(new SetIMUMode(0));   
 
         // Stop Rollers
         driver.getLeftBumper()
+            .onTrue(new LEDApplyPattern(Settings.LED.STOP_ROLLERS))
             .onTrue(new IntakeDeploy()
                 .andThen(new IntakeStopRollers()));
 
         // Outtake
         driver.getRightBumper()
-            // .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
+            .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
             .whileTrue(new IntakeOuttake())
             .onFalse(new IntakeRunRollers());
         
         // SOTM (BR)
         driver.getRightMenuButton()
-            // .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
+            .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData())))
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
@@ -228,7 +230,7 @@ public class RobotContainer {
 
         // FOTM
         driver.getLeftMenuButton()
-            // .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
+            .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
@@ -253,7 +255,7 @@ public class RobotContainer {
 
         // Manual Left Corner Scoring
         driver.getLeftButton()
-            // .whileTrue(new LEDApplyPattern(Settings.LED.LEFT_CORNER))
+            .whileTrue(new LEDApplyPattern(Settings.LED.LEFT_CORNER))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
@@ -263,7 +265,7 @@ public class RobotContainer {
 
         // Manual Right Corner Scoring
         driver.getRightButton()
-            // .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
+            .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureRightCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
@@ -273,7 +275,7 @@ public class RobotContainer {
 
         // Manual KB Distance Scoring
         driver.getBottomButton()
-            // .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
+            .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .whileTrue(new SuperstructureKB().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))

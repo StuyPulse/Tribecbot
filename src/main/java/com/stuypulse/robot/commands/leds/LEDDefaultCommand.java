@@ -82,39 +82,9 @@ public class LEDDefaultCommand extends Command{
                 leds.applyPattern(Settings.LED.TURRET_WRAPPING);
                 state = "WRAPPING";
             }
-            else if (superstructure.getState() == SuperstructureState.LEFT_CORNER) {
-                leds.applyPattern(Settings.LED.LEFT_CORNER);
-                state = "LEFT_CORNER";
-            }
-            else if (superstructure.getState() == SuperstructureState.RIGHT_CORNER) {
-                leds.applyPattern(Settings.LED.RIGHT_CORNER);
-                state = "RIGHT_CORNER";
-            } 
-            else if (superstructure.getState() == SuperstructureState.KB) {
-                leds.applyPattern(Settings.LED.KB_DISTANCE);
-                state = "KB_DIST";
-            }
-            else if (superstructure.getState() == SuperstructureState.SOTM) {
-                leds.applyPattern(Settings.LED.SOTM_ON);
-                state = "SOTM_ON";
-            }
-            else if (superstructure.getState() == SuperstructureState.FOTM) {
-                leds.applyPattern(Settings.LED.FOTM_ON);
-                state = "FOTM_ON";
-            }
-            else if (spindexer.getState() == SpindexerState.REVERSE || 
-                     handoff.getState() == HandoffState.REVERSE ||
-                     intake.getRollerState() == RollerState.OUTTAKE) {
-                leds.applyPattern(Settings.LED.REVERSE);
-                state = "REVERSE";
-            } 
-            else if (intake.getPivotState() == PivotState.STOW) {
-                leds.applyPattern(Settings.LED.INTAKE_STOW);
-                state = "INTAKE_STOW";
-            }
-            else if (intake.getPivotState() == PivotState.DEPLOY) {
-                leds.applyPattern(Settings.LED.INTAKE_DEPLOYED);
-                state = "INTAKE_DEPLOYED";
+            else if (swerve.isBehindHub()) {
+                leds.applyPattern(Settings.LED.IS_BEHIND_HUB);
+                state = "BEHIND_HUB";
             }
             else {
                 leds.applyPattern(LEDPattern.solid(Color.kRed));
