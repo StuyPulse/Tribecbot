@@ -53,6 +53,8 @@ public class Gains {
                 SmartNumber kV = new SmartNumber("Superstructure/Turret/Gains/kV", 0.0);
                 SmartNumber kA = new SmartNumber("Superstructure/Turret/Gains/kA", 0.0);
             }
+
+            SmartNumber kOmega = new SmartNumber("Superstructure/Turret/Gains/kOmega", 1.0);
         }
     }
 

@@ -14,6 +14,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 
@@ -264,9 +265,16 @@ public class TurretImpl extends Turret {
         if (EnabledSubsystems.TURRET.get()) {
             if (voltageOverride.isPresent()) {
                 turretMotor.setVoltage(voltageOverride.get());
-            } else {
-                turretMotor.setControl(controller.withPosition(prevActualTargetAngle / 360.0).withSlot(slot).
-                withFeedForward(delta * Settings.Superstructure.Turret.ARBITRARY_kA_TERM.get())); // accounting for this kA term
+            } 
+            else {
+                double omega = CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond;
+                double omegaFF = Gains.Superstructure.Turret.kOmega.get() * -omega;
+
+                turretMotor.setControl(controller
+                    .withPosition(prevActualTargetAngle / 360.0)
+                    .withSlot(slot)
+                    .withFeedForward(omegaFF)
+                );
             }
         } else {
             turretMotor.stopMotor();
