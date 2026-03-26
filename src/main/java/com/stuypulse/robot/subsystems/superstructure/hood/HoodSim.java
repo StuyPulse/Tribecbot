@@ -135,4 +135,9 @@ public class HoodSim extends Hood {
     public double getCurrentDraw() {
         return 0;
     }
+
+    @Override
+    public void seedHoodAtLowerHardStop() {
+        // TODO Auto-generated method stub
+    }
 }

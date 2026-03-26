@@ -131,6 +131,11 @@ public class HoodImpl extends Hood {
         hoodMotor.setPosition(Rotation2d.fromDegrees(40).getRotations());
     }
 
+    @Override
+    public void seedHoodAtLowerHardStop() {
+        hoodMotor.setPosition(Rotation2d.fromDegrees(7.7).getRotations()); //empirically found with our current seed at top, then going down manually
+    }
+
     private double getAbsoluteHoodAngleDeg() {
         return 0.0; // TODO:change back
         // return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
@@ -151,17 +156,24 @@ public class HoodImpl extends Hood {
             hasUsedAbsoluteEncoder = true;
         }
 
-        if (isStalling() && getState() == HoodState.HOMING) {
+        if (isStalling() && getState() == HoodState.HOMINGUPPER) {
             seedHoodAtUpperHardStop();
             setState(HoodState.IDLE);
-            SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED", true);
+            SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
+        }
+        if (isStalling() && getState() == HoodState.HOMINGLOWER) {
+            seedHoodAtLowerHardStop();
+            setState(HoodState.IDLE);
+            SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
         }
 
         if (EnabledSubsystems.HOOD.get()) {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
-            } else if (getState() == HoodState.HOMING && !isStalling()) {
+            } else if (getState() == HoodState.HOMINGUPPER && !isStalling()) {
                 hoodMotor.setVoltage(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
+            } else if (getState() == HoodState.HOMINGLOWER && !isStalling()) {
+                hoodMotor.setVoltage(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
             } else {
                 hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }

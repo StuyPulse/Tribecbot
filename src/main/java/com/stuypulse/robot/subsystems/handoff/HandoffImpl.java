@@ -101,9 +101,24 @@ public class HandoffImpl extends Handoff {
         boolean isTurretWrapping = superstructure.isTurretWrapping();
         boolean isBehindHubWhileFerrying = superstructureState == SuperstructureState.FOTM
                 && CommandSwerveDrivetrain.getInstance().isBehindHub();
+        boolean isOutsideAllianceZone = 
+            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
+            superstructureState != superstructureState.FOTM;
+        boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
+            && superstructureState != SuperstructureState.FOTM;
+        boolean inManualState =       
+            superstructureState == superstructureState.LEFT_CORNER &&
+            superstructureState == superstructureState.RIGHT_CORNER &&
+            superstructureState == superstructureState.KB;
+
         boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
 
-        return isStopState || isTurretWrapping || isBehindHubWhileFerrying || turretLaggingSOTM;
+        return isStopState || 
+        isTurretWrapping || 
+        (isBehindHubWhileFerrying && !inManualState) || 
+        turretLaggingSOTM || 
+        (isOutsideAllianceZone  && !inManualState) || 
+        (isUnderTrench && !inManualState);
     }
 
     @Override

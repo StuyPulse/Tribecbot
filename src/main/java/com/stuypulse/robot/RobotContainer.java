@@ -15,6 +15,8 @@ import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.hood.HomingRoutineLower;
+import com.stuypulse.robot.commands.hood.HomingRoutineUpper;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtUpperHardstop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeOuttake;
@@ -158,7 +160,7 @@ public class RobotContainer {
             .whileTrue(new SwerveXMode())
             .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
             .whileTrue(
-                new SuperstructureInterpolation()
+                new SuperstructureShoot() //TODO: change back to interpolation
                     .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
                     .andThen(
                         Commands.parallel(
@@ -171,10 +173,10 @@ public class RobotContainer {
                         )
                         .repeatedly()
                     )
-            )
-            .onFalse(new SpindexerStop()
-                .alongWith(new SuperstructureStow())
-                .alongWith(new HandoffStop()));
+            ); //TODO: uncomment ??
+            // .onFalse(new SpindexerStop()
+            //     .alongWith(new SuperstructureStow())
+            //     .alongWith(new HandoffStop()));
 
         // Intake Stow
         // driver.getLeftTriggerButton()
@@ -183,6 +185,10 @@ public class RobotContainer {
         // Intake Deploy
         driver.getRightTriggerButton()
             .onTrue(new IntakeDeploy());
+
+        // driver.getDPadLeft() //TODO: remove, button normally not binded
+        //     .whileTrue(new HomingRoutineUpper())
+        //     .onFalse(new HomingRoutineLower());
         
         // Reset Heading
         driver.getDPadUp()

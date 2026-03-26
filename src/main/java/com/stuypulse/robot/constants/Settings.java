@@ -337,7 +337,7 @@ public interface Settings {
 
     public interface LED {
 
-        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kGreen);
+        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kRed);
 
         // LEDPattern CLIMB_ALIGNING = LEDPattern.solid(Color.kYellow);
         // LEDPattern CLIMB_ALIGNED = LEDPattern.solid(Color.kGreen);

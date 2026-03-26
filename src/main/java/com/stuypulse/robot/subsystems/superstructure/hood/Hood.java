@@ -50,7 +50,8 @@ public abstract class Hood extends SubsystemBase{
         SOTM,
         FOTM,
         ANALOG,
-        HOMING,
+        HOMINGUPPER,
+        HOMINGLOWER,
         IDLE;
     }
 
@@ -79,7 +80,8 @@ public abstract class Hood extends SubsystemBase{
             case LEFT_CORNER -> Settings.Superstructure.Hood.Angles.LEFT_CORNER;
             case RIGHT_CORNER -> Settings.Superstructure.Hood.Angles.RIGHT_CORNER;
             case INTERPOLATION -> InterpolationCalculator.interpolateShotInfo().targetHoodAngle();
-            case HOMING -> new Rotation2d(); //should just apply a voltage, not an angle!
+            case HOMINGUPPER -> new Rotation2d(); //should just apply a voltage, not an angle!
+            case HOMINGLOWER -> new Rotation2d();
             case SOTM -> SOTMCalculator.calculateHoodAngleSOTM();
             case FOTM -> SOTMCalculator.calculateHoodAngleFOTM();
             case ANALOG -> hoodAnalogToOutput();
@@ -121,6 +123,7 @@ public abstract class Hood extends SubsystemBase{
     public abstract void seedHood();
 
     public abstract void seedHoodAtUpperHardStop();
+    public abstract void seedHoodAtLowerHardStop();
     public abstract void zeroHoodEncodersAfterSeed();
     
     public abstract double getCurrentDraw();
