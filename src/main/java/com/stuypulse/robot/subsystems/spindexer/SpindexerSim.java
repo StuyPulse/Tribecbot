@@ -116,11 +116,6 @@ public class SpindexerSim extends Spindexer {
     }
 
     @Override
-    public void refreshStatusSignals() {
-        //whole lotta nothing 
-    }
-
-    @Override
     public double getCurrentDraw() {
         return 0;
     }

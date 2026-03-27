@@ -128,7 +128,6 @@ public abstract class Hood extends SubsystemBase{
     
     public abstract double getCurrentDraw();
 
-    public abstract void refreshStatusSignals();
 
     public void periodicAfterScheduler() {
         SmartDashboard.putString("Superstructure/Hood/State", state.name());

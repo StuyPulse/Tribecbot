@@ -335,19 +335,6 @@ public class RobotContainer {
                 () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
     }
 
-    /*****************************/
-    /*** UPDATE STATUS SIGNALS ***/
-    /*****************************/
-
-    public void refreshAllStatusSignals() {
-        turret.refreshStatusSignals();
-        shooter.refreshStatusSignals();
-        hood.refreshStatusSignals();
-        spindexer.refreshStatusSignals();
-        intake.refreshStatusSignals();
-        handoff.refreshStatusSignals();
-    }
-
 
     /**************/
     /*** AUTONS ***/

@@ -63,7 +63,6 @@ public abstract class Spindexer extends SubsystemBase {
     public abstract void setVoltageOverride(Optional<Double> voltage);
     
     public abstract double getCurrentDraw();
-    public abstract void refreshStatusSignals();
 
     public void periodicAfterScheduler() {
         SmartDashboard.putString("Spindexer/State", getState().name());

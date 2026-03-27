@@ -16,6 +16,7 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -57,7 +58,6 @@ public class HoodImpl extends Hood {
     private StatusSignal<Current> hoodMotorSupplyCurrent;
     private StatusSignal<Current> hoodMotorStatorCurrent;
     private StatusSignal<Double> hoodMotorClosedLoopError;
-    private BaseStatusSignal[] signals;
 
     public HoodImpl() {
         hoodConfig = new Motors.TalonFXConfig()
@@ -104,8 +104,8 @@ public class HoodImpl extends Hood {
         hoodMotorSupplyCurrent = hoodMotor.getSupplyCurrent();
         hoodMotorStatorCurrent = hoodMotor.getStatorCurrent();
         hoodMotorClosedLoopError = hoodMotor.getClosedLoopError();
-        signals = new BaseStatusSignal[] { hoodMotorPosition, hoodMotorVoltage, hoodMotorSupplyCurrent,
-                hoodMotorStatorCurrent, hoodMotorClosedLoopError };
+        PhoenixUtil.registerSignals(hoodMotorPosition, hoodMotorVoltage, hoodMotorSupplyCurrent,
+                hoodMotorStatorCurrent, hoodMotorClosedLoopError);
     }
 
     @Override
@@ -142,12 +142,7 @@ public class HoodImpl extends Hood {
         return 0.0; // TODO:change back
         // return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
     }
-
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
-    }
-
+    
     @Override
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();

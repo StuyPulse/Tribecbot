@@ -102,7 +102,6 @@ public abstract class Shooter extends SubsystemBase {
     public abstract SysIdRoutine getShooterSysIdRoutine();
     
     public abstract double getCurrentDraw();
-    public abstract void refreshStatusSignals();
 
     public void periodicAfterScheduler() {
         SmartDashboard.putString("Superstructure/Shooter/State", state.name());

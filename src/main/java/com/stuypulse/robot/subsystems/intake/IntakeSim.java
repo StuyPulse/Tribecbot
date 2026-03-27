@@ -143,11 +143,6 @@ public class IntakeSim extends Intake {
     }
 
     @Override
-    public void refreshStatusSignals() {
-        // Whole lotta stuff going on here for sure 
-    }
-
-    @Override
     public void periodic() {
         super.periodic();
 

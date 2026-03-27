@@ -76,7 +76,6 @@ public abstract class Handoff extends SubsystemBase {
     public abstract boolean isHandoffStalling();
 
     public abstract double getCurrentDraw();
-    public abstract void refreshStatusSignals();
 
     public void periodicAfterScheduler() {
         SmartDashboard.putString("Handoff/State", getState().toString());

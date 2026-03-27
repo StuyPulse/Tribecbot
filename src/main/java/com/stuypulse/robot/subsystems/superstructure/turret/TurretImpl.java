@@ -15,6 +15,7 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 
@@ -66,7 +67,6 @@ public class TurretImpl extends Turret {
     private StatusSignal<Current> turretMotorStatorCurrent;
     private StatusSignal<Double> turretMotorClosedLoopError;
     private StatusSignal<Voltage> turretMotorVoltage;
-    private BaseStatusSignal[] signals;
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
@@ -135,8 +135,8 @@ public class TurretImpl extends Turret {
         turretMotorStatorCurrent = turretMotor.getStatorCurrent();
         turretMotorClosedLoopError = turretMotor.getClosedLoopError();
         turretMotorVoltage = turretMotor.getMotorVoltage();
-        signals = new BaseStatusSignal[] { encoder17tPos, encoder18tPos, turretMotorPos, turretMotorSupplyCurrent,
-                turretMotorStatorCurrent, turretMotorClosedLoopError, turretMotorVoltage };
+        PhoenixUtil.registerSignals(encoder18tPos, encoder17tPos, turretMotorPos, 
+            turretMotorSupplyCurrent, turretMotorStatorCurrent, turretMotorClosedLoopError, turretMotorVoltage);
     }
 
     private Rotation2d getEncoderPos17t() {
@@ -208,10 +208,6 @@ public class TurretImpl extends Turret {
         return currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
     }
 
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
-    }
 
     @Override
     public void periodicAfterScheduler() {

@@ -18,6 +18,7 @@ import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -58,8 +59,6 @@ public class SpindexerImpl extends Spindexer {
     private StatusSignal<AngularVelocity> followerVelocity;
     private StatusSignal<Voltage> leaderMotorVoltage;
     private StatusSignal<Voltage> followerMotorVoltage;
-
-    private BaseStatusSignal[] signals;
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
@@ -107,8 +106,8 @@ public class SpindexerImpl extends Spindexer {
         followerVelocity = followerMotor.getVelocity();
         leaderMotorVoltage = leaderMotor.getMotorVoltage();
         followerMotorVoltage = followerMotor.getMotorVoltage();
-        signals = new BaseStatusSignal[] { leaderSupplyCurrent, leaderStatorCurrent, followerSupplyCurrent,
-                followerStatorCurrent, leaderVelocity, followerVelocity, leaderMotorVoltage, followerMotorVoltage };
+        PhoenixUtil.registerSignals(leaderSupplyCurrent, leaderStatorCurrent, followerSupplyCurrent,
+                followerStatorCurrent, leaderVelocity, followerVelocity, leaderMotorVoltage, followerMotorVoltage);
 
         isStalling = BStream.create( () -> leaderSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
@@ -148,10 +147,6 @@ public class SpindexerImpl extends Spindexer {
         return Math.abs(error) <= Settings.Spindexer.TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE;
     }
 
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
-    }
 
     @Override
     public void periodicAfterScheduler() {

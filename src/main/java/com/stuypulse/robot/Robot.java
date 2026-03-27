@@ -16,6 +16,7 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.util.EnergyUtil;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        robot.refreshAllStatusSignals();
+        PhoenixUtil.refreshAll();
 
         if (periodicCounter % 50 == 0) {
             DataLogManager.getLog().resume();

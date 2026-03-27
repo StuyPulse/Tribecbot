@@ -98,8 +98,6 @@ public abstract class Intake extends SubsystemBase {
 
     public abstract double getCurrentDraw();
 
-    public abstract void refreshStatusSignals();
-
     public void periodicAfterScheduler() {
         SmartDashboard.putString("Intake/Pivot State", getPivotState().toString());
         SmartDashboard.putString("Intake/Roller State", getRollerState().toString());

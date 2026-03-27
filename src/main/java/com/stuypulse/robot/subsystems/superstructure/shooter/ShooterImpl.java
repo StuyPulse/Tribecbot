@@ -12,6 +12,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -29,6 +30,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import java.util.Optional;
 
 public class ShooterImpl extends Shooter {
@@ -50,8 +52,6 @@ public class ShooterImpl extends Shooter {
     private StatusSignal<Voltage> shooterLeaderVoltage;
     private StatusSignal<Voltage> shooterFollowerVoltage;
     private StatusSignal<Double> shooterLeaderClosedLoopError;
-    private BaseStatusSignal[] signals;
-
 
     public ShooterImpl() {
         shooterConfig = new Motors.TalonFXConfig()
@@ -102,9 +102,9 @@ public class ShooterImpl extends Shooter {
         shooterLeaderVoltage = shooterLeader.getMotorVoltage();
         shooterFollowerVoltage = shooterLeader.getMotorVoltage();
         shooterLeaderClosedLoopError = shooterLeader.getClosedLoopError();
-        signals = new BaseStatusSignal[] { shooterLeaderSpeed, shooterFollowerSpeed, shooterFollowSupplyCurrent,
-                shooterFollowStatorCurrent, shooterLeadSupplyCurrent, shooterLeadStatorCurrent, shooterLeaderVoltage,
-                shooterFollowerVoltage, shooterLeaderClosedLoopError };
+        PhoenixUtil.registerSignals(shooterLeaderSpeed, shooterFollowerSpeed, shooterFollowSupplyCurrent, 
+                shooterFollowStatorCurrent, shooterLeadSupplyCurrent, shooterLeadStatorCurrent, 
+                shooterLeaderVoltage, shooterFollowerVoltage, shooterLeaderClosedLoopError);
         voltageOverride = Optional.empty();
     }
 
@@ -125,10 +125,6 @@ public class ShooterImpl extends Shooter {
         return mesurement < setpoint ? 1.0 : -1.0;
     }
 
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
-    }
 
     @Override
     public void periodicAfterScheduler() {

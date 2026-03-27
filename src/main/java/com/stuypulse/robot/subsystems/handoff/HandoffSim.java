@@ -111,9 +111,4 @@ public class HandoffSim extends Handoff {
     public double getCurrentDraw() {
         return 0;
     }
-
-    @Override
-    public void refreshStatusSignals() {
-        // :)
-    }
 }

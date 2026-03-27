@@ -19,6 +19,7 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.FMSUtil;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -51,7 +52,6 @@ public class HandoffImpl extends Handoff {
     private StatusSignal<Current> motorStatorCurrent;
     private StatusSignal<AngularVelocity> motorVelocity;
     private StatusSignal<Voltage> motorVoltage;
-    BaseStatusSignal[] signals;
 
     public HandoffImpl() {
         handoffConfig = new Motors.TalonFXConfig()
@@ -78,7 +78,7 @@ public class HandoffImpl extends Handoff {
         motorStatorCurrent = motor.getStatorCurrent();
         motorVelocity = motor.getVelocity();
         motorVoltage = motor.getMotorVoltage();
-        signals = new BaseStatusSignal[]{motorSupplyCurrent, motorStatorCurrent, motorVelocity, motorVoltage};
+        PhoenixUtil.registerSignals(motorSupplyCurrent, motorStatorCurrent, motorVelocity, motorVoltage);
 
         isStalling = BStream.create(() -> motorSupplyCurrent.getValueAsDouble() > Settings.Handoff.HANDOFF_STALL_CURRENT.getAsDouble())
             .filtered(new BDebounce.Both(0.5));
@@ -119,11 +119,6 @@ public class HandoffImpl extends Handoff {
         turretLaggingSOTM || 
         (isOutsideAllianceZone  && !inManualState) || 
         (isUnderTrench && !inManualState);
-    }
-
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
     }
     
     @Override

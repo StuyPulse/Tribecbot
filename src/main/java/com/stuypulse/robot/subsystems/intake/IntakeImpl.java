@@ -14,6 +14,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SettableNumber;
 import com.stuypulse.robot.util.SysId;
 
@@ -68,7 +69,6 @@ public class IntakeImpl extends Intake {
     StatusSignal<Voltage> pivotMotorVoltage;
     StatusSignal<Voltage> rollerLeaderVoltage;
     StatusSignal<Voltage> rollerFollowerVoltage;
-    BaseStatusSignal[] signals;
 
     public IntakeImpl() {
         pivotConfig = new Motors.TalonFXConfig()
@@ -126,11 +126,10 @@ public class IntakeImpl extends Intake {
         pivotMotorVoltage = pivot.getMotorVoltage();
         rollerLeaderVoltage = rollerLeader.getMotorVoltage();
         rollerFollowerVoltage = rollerFollower.getMotorVoltage();
-        signals = new BaseStatusSignal[] { pivotSupplyCurrent, pivotStatorCurrent, rollerLeaderSupplyCurrent,
+        PhoenixUtil.registerSignals(pivotStatorCurrent, rollerLeaderSupplyCurrent,
                 rollerLeaderStatorCurrent, rollerFollowerSupplyCurrent, rollerFollowerStatorCurrent,
                 rollerLeaderTemperature, rollerFollowerTemperature, pivotTemperature, pivotMotorVoltage,
-                rollerLeaderVoltage, rollerFollowerVoltage, pivotMotorPosition };
-        refreshStatusSignals();
+                rollerLeaderVoltage, rollerFollowerVoltage, pivotMotorPosition );
 
         pivotStalling = BStream.create(
                 () -> Math.abs(pivotSupplyCurrent.getValueAsDouble()) > Settings.Intake.STALL_CURRENT_LIMIT)
@@ -161,11 +160,6 @@ public class IntakeImpl extends Intake {
     @Override
     public void seedPivotDeployed() {
         pivot.setPosition(Settings.Intake.PIVOT_MIN_ANGLE.getRotations());
-    }
-
-    @Override
-    public void refreshStatusSignals() {
-        BaseStatusSignal.refreshAll(signals);
     }
 
     @Override

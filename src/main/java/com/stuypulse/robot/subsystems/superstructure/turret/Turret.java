@@ -121,8 +121,6 @@ public abstract class Turret extends SubsystemBase {
     public abstract boolean isWrapping();
     public abstract double getCurrentDraw();
 
-    public abstract void refreshStatusSignals();
-
     public void setState(TurretState state) {
         this.state = state;
     }

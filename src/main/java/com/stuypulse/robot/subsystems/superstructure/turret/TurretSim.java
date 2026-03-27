@@ -128,12 +128,6 @@ public class TurretSim extends Turret {
 
         return delta;
     }
-
-     @Override
-    public void refreshStatusSignals() {
-        // Crickets, crickets, crickets...
-    }
-
     @Override
     public void periodic() {
         super.periodic();
