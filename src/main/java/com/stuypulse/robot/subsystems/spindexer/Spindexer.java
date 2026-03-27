@@ -5,6 +5,7 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
 
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +19,11 @@ public abstract class Spindexer extends SubsystemBase {
     private SpindexerState spindexerState;
 
     static {
-        instance = new SpindexerImpl();
+        if (Robot.isReal()) {
+            instance = new SpindexerImpl();
+        } else {
+            instance = new SpindexerSim();
+        }
     }
 
     public static Spindexer getInstance() {
@@ -58,13 +63,12 @@ public abstract class Spindexer extends SubsystemBase {
     public abstract void setVoltageOverride(Optional<Double> voltage);
     
     public abstract double getCurrentDraw();
+    public abstract void refreshStatusSignals();
 
     @Override
     public void periodic() {
-        if (Settings.DEBUG_MODE) {
-            SmartDashboard.putString("Spindexer/State", getState().name());
-
-            SmartDashboard.putNumber("Spindexer/Target RPM", getTargetRPM());
-        }
+        SmartDashboard.putString("Spindexer/State", getState().name());
+        SmartDashboard.putNumber("Spindexer/Target RPM", getTargetRPM());
+        SmartDashboard.putBoolean("Spindexer/At Tolerance?", atTolerance());
     }
 }

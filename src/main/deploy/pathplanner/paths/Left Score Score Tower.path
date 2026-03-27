@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.600510083036774,
-        "y": 7.580154211150653
+        "x": 3.6767760342368048,
+        "y": 7.521968616262482
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.956773428237163,
-        "y": 7.580154211155934
+        "x": 6.033039379437194,
+        "y": 7.521968616267763
       },
       "isLocked": false,
       "linkedName": "Left Trench Score"
@@ -110,8 +110,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.9,
+    "maxAcceleration": 7.5,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,

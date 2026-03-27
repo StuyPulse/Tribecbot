@@ -22,6 +22,7 @@ import com.ctre.phoenix6.configs.Slot2Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -91,6 +92,7 @@ public interface Motors {
         private final SoftwareLimitSwitchConfigs softwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
         private final ClosedLoopGeneralConfigs closedLoopGeneralConfigs = new ClosedLoopGeneralConfigs();
         private final VoltageConfigs voltageConfigs = new VoltageConfigs();
+        private final TorqueCurrentConfigs torqueCurrentConfigs = new TorqueCurrentConfigs();
 
         private final double[] lastKP = new double[3];
         private final double[] lastKI = new double[3];
@@ -326,9 +328,9 @@ public interface Motors {
 
         // CURRENT LIMIT CONFIGS
 
-        public TalonFXConfig withLowerLimitSupplyCurrent(double currentLowerLimitAmps) {
+        public TalonFXConfig withLowerLimitSupplyCurrent(double currentLowerLimitAmps, double time) {
             currentLimitsConfigs.SupplyCurrentLowerLimit = currentLowerLimitAmps;
-            currentLimitsConfigs.StatorCurrentLimitEnable = true;
+            currentLimitsConfigs.SupplyCurrentLowerTime = time;
 
             configuration.withCurrentLimits(currentLimitsConfigs);
 
@@ -365,6 +367,16 @@ public interface Motors {
             currentLimitsConfigs.StatorCurrentLimitEnable = enabled;
 
             configuration.withCurrentLimits(currentLimitsConfigs);
+
+            return this;
+        }
+
+        public TalonFXConfig withTorqueCurrentLimits(double peakForwardTorqueCurrent, double peakReverseTorqueCurrent, double neutralTolerance) {
+            torqueCurrentConfigs.PeakForwardTorqueCurrent = peakForwardTorqueCurrent;
+            torqueCurrentConfigs.PeakReverseTorqueCurrent = peakReverseTorqueCurrent;
+            torqueCurrentConfigs.TorqueNeutralDeadband = neutralTolerance;
+
+            configuration.withTorqueCurrent(torqueCurrentConfigs);
 
             return this;
         }

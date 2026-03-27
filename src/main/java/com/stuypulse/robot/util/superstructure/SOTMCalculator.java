@@ -6,6 +6,7 @@
 package com.stuypulse.robot.util.superstructure;
 
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class SOTMCalculator {
-    public static SmartBoolean accountForRotation = new SmartBoolean("Superstructure/SOTM/account for rotation", true);
+    public static SmartBoolean accountForAccel = new SmartBoolean("Superstructure/SOTM/account for accel", false);
 
     public static final double g = 9.81;
 
@@ -242,6 +243,10 @@ public class SOTMCalculator {
             robotRelativeSpeeds, 
             robotPose.getRotation()
         );
+        
+        Pigeon2 pigeon = swerve.getPigeon2();
+        double ax = pigeon.getAccelerationX().getValueAsDouble() * g;
+        double ay = pigeon.getAccelerationY().getValueAsDouble() * g;
 
         Transform2d robotToTurret = turretPose.minus(robotPose);
         double omega = robotRelativeSpeeds.omegaRadiansPerSecond;
@@ -254,32 +259,42 @@ public class SOTMCalculator {
         That way, when we reach tolerance and fire at the future pose and rotation, the parameters will be correct.
         */ 
 
-        double dtheta = 0;
-
-        if (accountForRotation.get()) {
-            dtheta = omega * Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue();
-        }
+        double t = Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue();
 
         Pose2d futureRobotPose = robotPose.exp(
-        new Twist2d (
-            robotRelativeSpeeds.vxMetersPerSecond * Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue(),
-            robotRelativeSpeeds.vyMetersPerSecond * Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue(),
-            dtheta)
+            new Twist2d (
+                robotRelativeSpeeds.vxMetersPerSecond * t,
+                robotRelativeSpeeds.vyMetersPerSecond * t,
+                omega * Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue()
+            )
         );
+
+        if (accountForAccel.get()) {
+            futureRobotPose = robotPose.exp(
+                new Twist2d (
+                    robotRelativeSpeeds.vxMetersPerSecond * t + 0.5 * ax * t*t,
+                    robotRelativeSpeeds.vyMetersPerSecond * t + 0.5 * ay * t*t,
+                    omega * Settings.Superstructure.SOTM.UPDATE_DELAY.doubleValue()
+                )
+            );
+        }
 
         Pose2d futureTurretPose = futureRobotPose.transformBy(robotToTurret);
 
-        
+
+        Translation2d r = turretPose.getTranslation().minus(robotPose.getTranslation());
         // not only does the ball exit with the xy velocity of the turret, but also the tangential velocity from the robot's rotation (r * omega)
-        double vTurretX = fieldRelativeSpeeds.vxMetersPerSecond;
-        double vTurretY = fieldRelativeSpeeds.vyMetersPerSecond;
+        double vTurretX = fieldRelativeSpeeds.vxMetersPerSecond - omega * r.getY();
+        double vTurretY = fieldRelativeSpeeds.vyMetersPerSecond + omega * r.getX();
 
-        if (accountForRotation.get()) {
-            Translation2d r = turretPose.getTranslation().minus(robotPose.getTranslation());
-
-            vTurretX -= omega * r.getY();
-            vTurretY += omega * r.getX();
+        if (accountForAccel.get()) {
+            Translation2d fieldAccel = new Translation2d(ax, ay)
+                .rotateBy(robotPose.getRotation());
+                
+            vTurretX += fieldAccel.getX() * t;
+            vTurretY += fieldAccel.getY() * t;
         }
+
 
         /*
         this part simply shifts where we're aiming from the hub's center to the corresponding rim of the hub

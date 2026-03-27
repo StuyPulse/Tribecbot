@@ -78,6 +78,11 @@ public class HoodSim extends Hood {
     }
 
     @Override
+    public void refreshStatusSignals() {
+        // How's your day been?
+    }
+
+    @Override
     public SysIdRoutine getHoodSysIdRoutine() {
         return SysId.getRoutine(
             0.45,
@@ -111,7 +116,7 @@ public class HoodSim extends Hood {
 
         VisualizerHood.getInstance().update(getAngle(), atTolerance());
 
-        if (Settings.DEBUG_MODE) {
+        if (Settings.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("Superstructure/Hood/Sim Height (m)", sim.getPositionMeters());
         }
     }
@@ -129,5 +134,10 @@ public class HoodSim extends Hood {
     @Override
     public double getCurrentDraw() {
         return 0;
+    }
+
+    @Override
+    public void seedHoodAtLowerHardStop() {
+        // TODO Auto-generated method stub
     }
 }

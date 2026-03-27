@@ -133,13 +133,18 @@ public class IntakeSim extends Intake {
     }
 
     @Override
-    public void zeroPivotStowed() {
+    public void seedPivotStowed() {
         pivotSim.setState(Settings.Intake.PIVOT_MAX_ANGLE.getRadians(), 0.0);
     }
 
     @Override
-    public void zeroPivotDeployed() {
+    public void seedPivotDeployed() {
         pivotSim.setState(Settings.Intake.PIVOT_MIN_ANGLE.getRadians(), 0.0);
+    }
+
+    @Override
+    public void refreshStatusSignals() {
+        // Whole lotta stuff going on here for sure 
     }
 
     @Override
@@ -185,7 +190,7 @@ public class IntakeSim extends Intake {
         rollerLeaderSim.update(Settings.DT);
         rollerFollowerSim.update(Settings.DT);
 
-        if (Settings.DEBUG_MODE) {
+        if (Settings.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("Intake/Sim Pivot Angle (deg)", getPivotAngle().getDegrees());
             SmartDashboard.putNumber("Intake/Sim Pivot Velocity (deg per s)", Units.radiansToDegrees(pivotSim.getVelocityRadPerSec()));
             SmartDashboard.putNumber("Intake/Sim Roller Leader Velocity (RPM)", rollerLeaderSim.getOutput(0) * 60.0 / (2.0 * Math.PI));

@@ -12,6 +12,7 @@ import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter.ShooterState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
@@ -82,11 +83,13 @@ public abstract class Turret extends SubsystemBase {
     public boolean atTolerance() {
         double error = getAngle().minus(getTargetAngle()).getRotations();
 
-        if (state == TurretState.SOTM || state == TurretState.FOTM) {
-            return Math.abs(error) < Settings.Superstructure.Turret.SOTM_TOLERANCE.getRotations();
-        } else {
-            return Math.abs(error) < Settings.Superstructure.Turret.TOLERANCE.getRotations();
-        }
+        double tolerance = switch (state) {
+            case SOTM -> Settings.Superstructure.Turret.SOTM_TOLERANCE.get() / 360.0;
+            case FOTM -> Settings.Superstructure.Turret.FOTM_TOLERANCE.getRotations();
+            default  -> Settings.Superstructure.Turret.TOLERANCE.getRotations();
+        };
+
+        return Math.abs(error) < tolerance;
     }
 
     public Rotation2d getScoringAngle() {
@@ -118,6 +121,8 @@ public abstract class Turret extends SubsystemBase {
     public abstract boolean isWrapping();
     public abstract double getCurrentDraw();
 
+    public abstract void refreshStatusSignals();
+
     public void setState(TurretState state) {
         this.state = state;
     }
@@ -133,7 +138,7 @@ public abstract class Turret extends SubsystemBase {
         SmartDashboard.putNumber("Superstructure/Turret/Target Angle", getTargetAngle().getDegrees());
         SmartDashboard.putNumber("Superstructure/Turret/Current Angle", getAngle().getDegrees());
 
-        if (Settings.DEBUG_MODE) {
+        if (Settings.DEBUG_MODE.get()) {
             if (EnabledSubsystems.TURRET.get()) {
                 VisualizerTurret.getInstance().updateTurretAngle(getAngle().plus((Robot.isBlue() ? Rotation2d.kZero : Rotation2d.k180deg)), atTolerance());
             }

@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure;
 
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood.HoodState;
 import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter;
@@ -13,6 +15,8 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret.TurretState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,11 +40,16 @@ public class Superstructure extends SubsystemBase {
     private final Shooter shooter;
     private final Turret turret;
 
+    private final BStream readyToShoot;
+
     public Superstructure() {
         state = SuperstructureState.INTERPOLATION;
         hood = Hood.getInstance();
         shooter = Shooter.getInstance();
         turret = Turret.getInstance();
+
+        readyToShoot = BStream.create(this::atTolerance)
+            .filtered(new BDebounce.Both(0.05));
     }
     
     public enum SuperstructureState {
@@ -54,6 +63,7 @@ public class Superstructure extends SubsystemBase {
         RIGHT_CORNER(HoodState.RIGHT_CORNER, ShooterState.RIGHT_CORNER, TurretState.RIGHT_CORNER),
         INTERPOLATION(HoodState.INTERPOLATION, ShooterState.INTERPOLATION, TurretState.SHOOT),
         AUTO_INTERPOLATION(HoodState.STOW, ShooterState.INTERPOLATION, TurretState.SHOOT),
+        AUTO_INTERPOLATION_SOTM(HoodState.STOW, ShooterState.SOTM, TurretState.SOTM),
         SOTM(HoodState.SOTM, ShooterState.SOTM, TurretState.SOTM);
 
         private HoodState hoodState;
@@ -88,6 +98,10 @@ public class Superstructure extends SubsystemBase {
 
     public SuperstructureState getState(){
         return state;
+    }
+
+    public boolean isReadyToShoot() {
+        return readyToShoot.get();
     }
 
     public boolean atTolerance() {
@@ -130,17 +144,24 @@ public class Superstructure extends SubsystemBase {
         return turret.getCurrentDraw() + shooter.getCurrentDraw() + hood.getCurrentDraw();
     }
 
+    public boolean superstructureInShootIntoHubMode() {
+        return (state == SuperstructureState.AUTO_INTERPOLATION || 
+                state == SuperstructureState.AUTO_INTERPOLATION_SOTM ||
+                state == SuperstructureState.INTERPOLATION ||
+                state == SuperstructureState.SHOOT ||
+                state == SuperstructureState.SOTM ||
+                state == SuperstructureState.KB ||
+                state == SuperstructureState.LEFT_CORNER ||
+                state == SuperstructureState.RIGHT_CORNER);
+    }
+
     @Override
     public void periodic() {
         SuperstructureState state = getState();
-        if (state == SuperstructureState.SOTM) {
-            SOTMCalculator.updateSOTMSolution();
-        } else if (state == SuperstructureState.FOTM){
-            SOTMCalculator.updateFOTMSolution();
-        }
         
-        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM) {
-            setState(SuperstructureState.FERRY);
+        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
+            Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
+            setState(SuperstructureState.FOTM);
         }
 
         SmartDashboard.putString("Superstructure/State", state.name());

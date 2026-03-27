@@ -1,4 +1,14 @@
 {
+  "HALProvider": {
+    "Addressable LEDs": {
+      "0": {
+        "serpentine": true
+      },
+      "window": {
+        "visible": true
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -14,6 +24,8 @@
       "/SmartDashboard/Robot/Ryan Testing Seed Hood Encoder (NEW)": "Command",
       "/SmartDashboard/Robot/Scheduled Commands": "Scheduler",
       "/SmartDashboard/Robot/Seed Hood Relative Encoder At Upper Hardstop": "Command",
+      "/SmartDashboard/Robot/Seed Pivot Encoder at Lower Limit (Deployed)": "Command",
+      "/SmartDashboard/Robot/Seed Pivot Encoder at Upper Limit (Stowed)": "Command",
       "/SmartDashboard/Robot/Seed Turret": "Command",
       "/SmartDashboard/Robot/Set Back LL PF": "Command",
       "/SmartDashboard/Robot/Set Left LL PF": "Command",
@@ -60,19 +72,13 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
-        "FieldPositions": {
-          "open": true
-        },
-        "Handoff": {
-          "open": true
-        },
-        "Intake": {
-          "open": true
-        },
         "States": {
-          "open": true
+          "open": false
         },
-        "Vision": {
+        "Superstructure": {
+          "Turret": {
+            "open": true
+          },
           "open": true
         },
         "open": true

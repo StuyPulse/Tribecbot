@@ -23,4 +23,9 @@ public class SeedTurret extends InstantCommand {
     public void initialize() {
         turret.seedTurret();
     }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
 }

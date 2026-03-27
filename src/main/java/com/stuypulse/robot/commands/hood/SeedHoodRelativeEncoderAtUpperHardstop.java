@@ -22,4 +22,9 @@ public class SeedHoodRelativeEncoderAtUpperHardstop extends InstantCommand {
     public void initialize() {
         hood.seedHoodAtUpperHardStop();
     }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
 }

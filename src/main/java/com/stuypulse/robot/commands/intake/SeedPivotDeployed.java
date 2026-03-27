@@ -10,16 +10,21 @@ import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class ZeroPivotStowed extends InstantCommand {
+public class SeedPivotDeployed extends InstantCommand {
     private Intake intake;
 
-    public ZeroPivotStowed() {
+    public SeedPivotDeployed() {
         intake = Intake.getInstance();
     }
 
     @Override
     public void initialize() {
-        intake.zeroPivotStowed();
-        intake.setPivotState(PivotState.STOW);
+        intake.seedPivotDeployed();
+        intake.setPivotState(PivotState.DEPLOY);
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }

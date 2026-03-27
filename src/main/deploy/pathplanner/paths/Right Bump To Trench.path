@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.911921708185054,
+        "y": 2.491055753262159
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.567627520759194,
+        "y": 1.2752669039145905
+      },
+      "isLocked": false,
+      "linkedName": "Right Bump Score"
+    },
+    {
+      "anchor": {
+        "x": 4.051997146932953,
+        "y": 0.6256633380884444
+      },
+      "prevControl": {
+        "x": 2.4087874465049923,
+        "y": 0.8973751783166917
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Right Trench (B)"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.49378330373001517,
+      "rotationDegrees": -45.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 75.0,
+    "maxAngularAcceleration": 300.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Right Bump",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

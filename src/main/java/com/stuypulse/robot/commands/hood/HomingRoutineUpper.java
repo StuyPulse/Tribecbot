@@ -9,14 +9,17 @@ import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class HomingRoutine extends InstantCommand {
+public class HomingRoutineUpper extends InstantCommand {
     private Hood hood;
-    public HomingRoutine() {
+
+    public HomingRoutineUpper() {
         hood = Hood.getInstance();
+
+        addRequirements(hood);
     }
 
     @Override
     public void initialize() {
-        hood.setState(Hood.HoodState.HOMING);
+        hood.setState(Hood.HoodState.HOMING_UPPER);
     }
 }

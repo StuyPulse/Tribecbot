@@ -24,7 +24,6 @@ public class SetMegaTagMode extends InstantCommand {
         LimelightVision.getInstance().setMegaTagMode(megaTagMode);
     }
 
-
     @Override
     public boolean runsWhenDisabled() {
         return true;

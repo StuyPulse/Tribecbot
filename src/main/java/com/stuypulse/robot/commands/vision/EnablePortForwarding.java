@@ -16,4 +16,8 @@ public class EnablePortForwarding extends InstantCommand {
         PortForwarder.add(5801, hostname, 5801);
     }
     
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
 }

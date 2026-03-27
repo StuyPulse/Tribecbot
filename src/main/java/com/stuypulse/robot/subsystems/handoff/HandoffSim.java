@@ -64,11 +64,11 @@ public class HandoffSim extends Handoff {
     public void periodic() {
         super.periodic();
 
-        controller.setNextR(VecBuilder.fill(getTargetRPM() * 2.0 * Math.PI / 60.0));
+        controller.setNextR(VecBuilder.fill(getTargetDutyCycle() * 2.0 * Math.PI / 60.0));
         controller.correct(VecBuilder.fill(sim.getOutput(0)));
         controller.predict(Settings.DT);
 
-        if (EnabledSubsystems.SHOOTER.get()) {
+        if (EnabledSubsystems.HANDOFF.get()) {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Handoff/Input Voltage", voltageOverride.get());
@@ -110,5 +110,10 @@ public class HandoffSim extends Handoff {
     @Override
     public double getCurrentDraw() {
         return 0;
+    }
+
+    @Override
+    public void refreshStatusSignals() {
+        // :)
     }
 }

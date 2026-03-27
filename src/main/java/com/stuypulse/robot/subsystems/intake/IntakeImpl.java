@@ -8,6 +8,7 @@ package com.stuypulse.robot.subsystems.intake;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
@@ -17,9 +18,16 @@ import com.stuypulse.robot.util.SettableNumber;
 import com.stuypulse.robot.util.SysId;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Temperature;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -46,6 +54,21 @@ public class IntakeImpl extends Intake {
     private Optional<Double> pivotVoltageOverride;
 
     private BStream pivotStalling;
+
+    StatusSignal<Current> pivotSupplyCurrent;
+    StatusSignal<Current> pivotStatorCurrent;
+    StatusSignal<Current> rollerLeaderSupplyCurrent;
+    StatusSignal<Current> rollerLeaderStatorCurrent;
+    StatusSignal<Current> rollerFollowerSupplyCurrent;
+    StatusSignal<Current> rollerFollowerStatorCurrent;
+    StatusSignal<Temperature> rollerLeaderTemperature;
+    StatusSignal<Temperature> rollerFollowerTemperature;
+    StatusSignal<Temperature> pivotTemperature;
+    StatusSignal<Angle> pivotMotorPosition;
+    StatusSignal<Voltage> pivotMotorVoltage;
+    StatusSignal<Voltage> rollerLeaderVoltage;
+    StatusSignal<Voltage> rollerFollowerVoltage;
+    BaseStatusSignal[] signals;
 
     public IntakeImpl() {
         pivotConfig = new Motors.TalonFXConfig()
@@ -90,8 +113,27 @@ public class IntakeImpl extends Intake {
 
         pivot.setPosition(Settings.Intake.PIVOT_MAX_ANGLE.getRotations());
 
+        pivotSupplyCurrent = pivot.getSupplyCurrent();
+        pivotStatorCurrent = pivot.getStatorCurrent();
+        pivotMotorPosition = pivot.getPosition();
+        rollerLeaderSupplyCurrent = rollerLeader.getSupplyCurrent();
+        rollerLeaderStatorCurrent = rollerLeader.getStatorCurrent();
+        rollerFollowerSupplyCurrent = rollerFollower.getSupplyCurrent();
+        rollerFollowerStatorCurrent = rollerFollower.getStatorCurrent();
+        rollerLeaderTemperature = rollerLeader.getDeviceTemp();
+        rollerFollowerTemperature = rollerFollower.getDeviceTemp();
+        pivotTemperature = pivot.getDeviceTemp();
+        pivotMotorVoltage = pivot.getMotorVoltage();
+        rollerLeaderVoltage = rollerLeader.getMotorVoltage();
+        rollerFollowerVoltage = rollerFollower.getMotorVoltage();
+        signals = new BaseStatusSignal[] { pivotSupplyCurrent, pivotStatorCurrent, rollerLeaderSupplyCurrent,
+                rollerLeaderStatorCurrent, rollerFollowerSupplyCurrent, rollerFollowerStatorCurrent,
+                rollerLeaderTemperature, rollerFollowerTemperature, pivotTemperature, pivotMotorVoltage,
+                rollerLeaderVoltage, rollerFollowerVoltage, pivotMotorPosition };
+        refreshStatusSignals();
+
         pivotStalling = BStream.create(
-                () -> Math.abs(pivot.getSupplyCurrent().getValueAsDouble()) > Settings.Intake.STALL_CURRENT_LIMIT)
+                () -> Math.abs(pivotSupplyCurrent.getValueAsDouble()) > Settings.Intake.STALL_CURRENT_LIMIT)
                 .filtered(new BDebounce.Both(Settings.Intake.STALL_DEBOUNCE));
     }
 
@@ -108,17 +150,22 @@ public class IntakeImpl extends Intake {
 
     @Override
     public Rotation2d getPivotAngle() {
-        return Rotation2d.fromRotations(pivot.getPosition().getValueAsDouble());
+        return Rotation2d.fromRotations(pivotMotorPosition.getValueAsDouble());
     }
 
     @Override
-    public void zeroPivotStowed() {
+    public void seedPivotStowed() {
         pivot.setPosition(Settings.Intake.PIVOT_MAX_ANGLE.getRotations());
     }
 
     @Override
-    public void zeroPivotDeployed() {
+    public void seedPivotDeployed() {
         pivot.setPosition(Settings.Intake.PIVOT_MIN_ANGLE.getRotations());
+    }
+
+    @Override
+    public void refreshStatusSignals() {
+        BaseStatusSignal.refreshAll(signals);
     }
 
     @Override
@@ -164,7 +211,7 @@ public class IntakeImpl extends Intake {
             }
 
             if (pivotState == PivotState.HOMING && pivotStalling()) {
-                zeroPivotDeployed();
+                seedPivotDeployed();
             }
         } else {
             pivot.stopMotor();
@@ -173,52 +220,55 @@ public class IntakeImpl extends Intake {
         }
 
         SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
-                Math.abs(getPivotState().getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
+                Math.abs(pivotState.getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
 
         if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
-            SmartDashboard.putBoolean(
-                    "Robot/CAN/Main/Intake Pivot Motor Connected? (ID " + String.valueOf(pivot.getDeviceID()) + ")",
-                    pivot.isConnected());
-            SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Leader Motor Connected? (ID "
-                    + String.valueOf(rollerLeader.getDeviceID()) + ")", rollerLeader.isConnected());
-            SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
-                    + String.valueOf(rollerFollower.getDeviceID()) + ")", rollerFollower.isConnected());
 
             // PIVOT
             SmartDashboard.putBoolean("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownVoltage);
 
-            SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivot.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Pivot Supply Current (amps)", pivot.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Pivot Stator Current (amps)", pivot.getStatorCurrent().getValueAsDouble());
-
             SmartDashboard.putNumber("Intake/Pivot Closed Loop Error (deg)",
                     pivot.getClosedLoopError().getValueAsDouble() * 360.0);
 
-            // ROLLERS
-            SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)",
-                    rollerLeader.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Roller Leader Current (amps)",
-                    rollerLeader.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Roller Leader Stator Current (amps)",
-                    rollerLeader.getStatorCurrent().getValueAsDouble());
-
-            SmartDashboard.putNumber("Intake/Roller Follower Voltage (volts)",
-                    rollerFollower.getMotorVoltage().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Roller Follower Current (amps)",
-                    rollerFollower.getSupplyCurrent().getValueAsDouble());
-            SmartDashboard.putNumber("Intake/Roller Follower Stator Current (amps)",
-                    rollerFollower.getStatorCurrent().getValueAsDouble());
-
-            if (Settings.DEBUG_MODE) {
+            if (Settings.DEBUG_MODE.get()) {
                 SmartDashboard.putBoolean("Intake/Voltage Override", pivotVoltageOverride.isPresent());
-                SmartDashboard.putNumber("Intake/Pivot Temperature (C)", pivot.getDeviceTemp().getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Pivot Temperature (C)", pivotTemperature.getValueAsDouble());
                 SmartDashboard.putNumber("Intake/Leader Temperature (C)",
-                        rollerLeader.getDeviceTemp().getValueAsDouble());
+                        rollerLeaderTemperature.getValueAsDouble());
                 SmartDashboard.putNumber("Intake/Follower Temperature (C)",
-                        rollerFollower.getDeviceTemp().getValueAsDouble());
+                        rollerFollowerTemperature.getValueAsDouble());
+
+                // Rolers
+                SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)",
+                        rollerLeaderVoltage.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Roller Leader Current (amps)",
+                        rollerLeaderSupplyCurrent.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Roller Leader Stator Current (amps)",
+                        rollerLeaderStatorCurrent.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Roller Follower Voltage (volts)",
+                        rollerFollowerVoltage.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Roller Follower Current (amps)",
+                        rollerFollowerSupplyCurrent.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Roller Follower Stator Current (amps)",
+                        rollerFollowerStatorCurrent.getValueAsDouble());
+
+                // Pivot
+                SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Pivot Supply Current (amps)",
+                        pivotSupplyCurrent.getValueAsDouble());
+                SmartDashboard.putNumber("Intake/Pivot Stator Current (amps)",
+                        pivotStatorCurrent.getValueAsDouble());
+
+                if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
+                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Pivot Motor Connected? (ID "
+                            + String.valueOf(Ports.Intake.PIVOT) + ")", pivot.isConnected());
+                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Leader Motor Connected? (ID "
+                            + String.valueOf(Ports.Intake.ROLLER_LEADER) + ")", rollerLeader.isConnected());
+                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
+                            + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
+                }
             }
         }
-
     }
 
     @Override
@@ -233,7 +283,7 @@ public class IntakeImpl extends Intake {
                 6,
                 "Intake Pivot",
                 voltage -> setPivotVoltageOverride(Optional.of(voltage)),
-                () -> getPivotAngle().getRotations(),
+                () -> pivot.getPosition().getValueAsDouble(),
                 () -> pivot.getVelocity().getValueAsDouble(),
                 () -> pivot.getMotorVoltage().getValueAsDouble(),
                 getInstance());
@@ -241,8 +291,8 @@ public class IntakeImpl extends Intake {
 
     @Override
     public double getCurrentDraw() {
-        return pivot.getSupplyCurrent().getValueAsDouble() +
-                rollerFollower.getSupplyCurrent().getValueAsDouble() +
-                rollerLeader.getSupplyCurrent().getValueAsDouble();
+        return Math.abs(pivotSupplyCurrent.getValueAsDouble()) +
+                Math.abs(rollerFollowerSupplyCurrent.getValueAsDouble()) +
+                Math.abs(rollerLeaderSupplyCurrent.getValueAsDouble());
     }
 }

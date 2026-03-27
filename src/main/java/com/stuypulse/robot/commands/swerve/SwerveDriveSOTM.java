@@ -8,6 +8,8 @@ package com.stuypulse.robot.commands.swerve;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.math.Vector2D;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.VStream;
@@ -15,6 +17,9 @@ import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
 import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
 import com.stuypulse.robot.constants.Settings;
@@ -36,9 +41,10 @@ public class SwerveDriveSOTM extends Command {
     private final VStream speed;
     private final IStream turn;
 
- 
+    private final BStream isIdle;
+
     public SwerveDriveSOTM(Gamepad driver) {
-       swerve = CommandSwerveDrivetrain.getInstance();
+        swerve = CommandSwerveDrivetrain.getInstance();
         superstructure = Superstructure.getInstance();
 
         speed = VStream.create(this::getDriverInputAsVelocity)
@@ -59,6 +65,10 @@ public class SwerveDriveSOTM extends Command {
             new LowPassFilter(Turn.RC)
         );
 
+        isIdle = BStream.create(
+            () -> getDriverInputAsVelocity().magnitude() <= Drive.DEADBAND && Math.abs(driver.getRightX()) <= Turn.DEADBAND)
+                .filtered(new BDebounce.Rising(2.0), new BDebounce.Falling(0.1));
+
         this.driver = driver;
 
         addRequirements(swerve);
@@ -70,14 +80,18 @@ public class SwerveDriveSOTM extends Command {
 
     @Override
     public void execute() {
+        if (isIdle.get()) {
+            swerve.setControl(new SwerveRequest.SwerveDriveBrake());
+        } else {
+            Vector2D velocity = speed.get();
 
-        swerve.setControl(swerve.getFieldCentricSwerveRequest()
-            .withVelocityX(speed.get().x)
-            .withVelocityY(speed.get().y)
-            .withRotationalRate(-turn.get()));
+            swerve.setControl(swerve.getFieldCentricSwerveRequest()
+                .withVelocityX(velocity.x)
+                .withVelocityY(velocity.y)
+                .withRotationalRate(-turn.get()));
+        }
 
-        SmartDashboard.putNumber("Swerve/Speed x", speed.get().x);
-        SmartDashboard.putNumber("Swerve/Speed y", speed.get().y);
+        SmartDashboard.putBoolean("Swerve/SOTM/Idle?", isIdle.get());
     }
 
     @Override 

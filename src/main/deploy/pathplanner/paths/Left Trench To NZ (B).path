@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.31061684460261,
+        "y": 7.408007117437722
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.462455516014234,
+        "y": 7.612431791221827
+      },
+      "isLocked": false,
+      "linkedName": "Left Trench (B)"
+    },
+    {
+      "anchor": {
+        "x": 6.064365361803085,
+        "y": 5.944756820877817
+      },
+      "prevControl": {
+        "x": 6.064365361803085,
+        "y": 7.378315878190629
+      },
+      "nextControl": {
+        "x": 6.064365361803085,
+        "y": 3.9005100830367745
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.064365361803085,
+        "y": 4.793523131672598
+      },
+      "prevControl": {
+        "x": 6.456698309590022,
+        "y": 3.6435817329867413
+      },
+      "nextControl": {
+        "x": 5.7523487544484,
+        "y": 5.708054567022539
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8904033214709375,
+        "y": 5.643499406880189
+      },
+      "prevControl": {
+        "x": 6.2903084223013055,
+        "y": 5.632740213523132
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Left Bump Score"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.9005328596802835,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 1.641207815275316,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.26998223801069,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 7.5,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Left Bump",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

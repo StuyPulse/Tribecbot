@@ -5,6 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import java.sql.Time;
+import java.time.Duration;
+
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -18,6 +21,17 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.*;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 
 /*-
  * File containing constants and tunable settings for every subsystem on the robot.
@@ -30,8 +44,9 @@ public interface Settings {
     public final double DT = 0.020;
     public final int LOGGING_FREQUENCY = 2;
     public final double SECONDS_IN_A_MINUTE = 60.0;
-    public final boolean DEBUG_MODE = true;
+    public final SmartBoolean DEBUG_MODE = new SmartBoolean("Robot/DebugMode", false);
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
+    public final double LOOP_OVERRUN_WARNING_TIME_SEC = 1; 
 
     public interface Handoff {
         public final double GEAR_RATIO = 3.0 / 1.0;
@@ -39,9 +54,12 @@ public interface Settings {
         double HANDOFF_STOP = 0.0;
         double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
-        double RPM_TOLERANCE = 200.0;
+        double RPM_TOLERANCE = 2200.0;
         double RPM_SOTM_TOLERANCE = 700.0;
         SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
+
+        double FORWARD_DUTY_CYCLE = 1.0;
+        double REVERSE_DUTY_CYCLE = -1.0;
 
         SmartNumber HANDOFF_STALL_CURRENT = new SmartNumber("Handoff/Stall Current Limit for Reverse", 30.0);
     }
@@ -77,18 +95,20 @@ public interface Settings {
         double TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE = 1500.0;
         double STALL_CURRENT_LIMIT = 40.0; // random number as of 3/9
 
-
         /* CONSTANTS */
         double GEAR_RATIO = 8.0 / 1.0;
     }
     
     public interface Superstructure {
-        public final double SHOOTER_TOLERANCE_RPM = 100.0;
-        public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.2);
-
-        public final double SHOOTER_SOTM_TOLERANCE_RPM = 350.0;
-        public final double SHOOTER_FOTM_TOLERANCE_RPM = 250.0;
-        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(3.0);
+        public final double SHOOTER_TOLERANCE_RPM_HIGH = 25.0;
+        public final double SHOOTER_TOLERANCE_RPM_LOW = 40.0;        
+        public final double SHOOTER_SOTM_TOLERANCE_RPM_HIGH = 50.0;
+        public final double SHOOTER_SOTM_TOLERANCE_RPM_LOW = 80.0;
+        public final double SHOOTER_FOTM_TOLERANCE_RPM_HIGH = 150.0;
+        public final double SHOOTER_FOTM_TOLERANCE_RPM_LOW = 250.0;
+        
+        public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
+        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(0.5);
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
@@ -102,10 +122,10 @@ public interface Settings {
 
         public interface RPMInterpolation{
             double[][] distanceRPMInterpolationValues = {
-                {1.22, 2670.0},                                         //BLAY-APPROVED, LOCKED IN
+                {1.22, 2800.0},                                         //BLAY-APPROVED, LOCKED IN
                 {2.15, 2880.0},                                         //BLAY-APPROVED
-                {3.38, 3200},                                           //BLAY-APPROVED
-                {4.43, 3500.0},                                         //BLAY-APPROVED
+                {3.38, 3250},                                           //BLAY-APPROVED
+                {4.43, 3725.0},                                         //BLAY-APPROVED
                 {5.66, 3900.0}                                          //KEVIN-APPROVED
             };
         }
@@ -114,8 +134,8 @@ public interface Settings {
             double[][] distanceTOFInterpolationValues = {
                 {1.22, 0.965}, // seconds
                 // {2.15, },
-                {3.38, 1.32},  
-                {4.43, 1.125},
+                {3.38, 1.11},  
+                {4.43, 1.1067},
                 {5.66, 1.29}
             };
         }
@@ -213,7 +233,8 @@ public interface Settings {
             public final Rotation2d MAX_VEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2.0);
-            public final Rotation2d SOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
+            public final SmartNumber SOTM_TOLERANCE = new SmartNumber("Superstructure/Turret/SOTM Tolerance", 5);//Rotation2d.fromDegrees(10.0);
+            public final Rotation2d FOTM_TOLERANCE = Rotation2d.fromDegrees(5.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
             public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(-233.0);
@@ -221,6 +242,8 @@ public interface Settings {
             
             double RESOLUTION_OF_ABSOLUTE_ENCODER = 0.1;
             double WRAP_DEBOUNCE = 0.5;
+            double SETPOINT_FILTER_THRESHOLD_DEG = 0.5;
+
             Rotation2d MAX_THEORETICAL_ROTATION = Rotation2d.fromDegrees(612);
             Rotation2d MIN_THEORETICAL_ROTATION = Rotation2d.fromDegrees(-612);
             
@@ -234,6 +257,8 @@ public interface Settings {
             public final double TURRET_HEIGHT = Units.inchesToMeters(0.0);
         
             public final double GEAR_RATIO_MOTOR_TO_MECH = (60.0 / 9.0) * (95.0 / 12.0); //1425.0 / 36.0;
+
+            // public final SmartNumber ARBITRARY_kA_TERM = new SmartNumber("Superstructure/Turret/Gains/arbitrary kA", 1.5);
         
             public interface BigGear {
                 public final int TEETH = 95;
@@ -257,8 +282,8 @@ public interface Settings {
 
         public interface SOTM {
             public final int MAX_ITERATIONS = 10;
-            double TIME_TOLERANCE = 1e-5;
-            SmartNumber UPDATE_DELAY = new SmartNumber("Superstructure/SOTM/update delay", 0.15);
+            double TIME_TOLERANCE = 1e-3;
+            SmartNumber UPDATE_DELAY = new SmartNumber("Superstructure/SOTM/update delay", 0.05);
         }
     }
     
@@ -308,6 +333,45 @@ public interface Settings {
                 public final double ALIGNMENT_DEBOUNCE = 0.15;
             }
         }
+    }
+
+    public interface LED {
+
+        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kRed);
+        LEDPattern IS_BEHIND_HUB = LEDPattern.solid(Color.kRed);
+
+        // LEDPattern CLIMB_ALIGNING = LEDPattern.solid(Color.kYellow);
+        // LEDPattern CLIMB_ALIGNED = LEDPattern.solid(Color.kGreen);
+        // LEDPattern CLIMBING = LEDPattern.solid(Color.kRed);
+
+        LEDPattern TURRET_WRAPPING = LEDPattern.solid(Color.kRed);
+        LEDPattern LEFT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+        LEDPattern RIGHT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+
+        LEDPattern SHOOT_IN_PLACE = LEDPattern.solid(Color.kPurple);
+
+        LEDPattern SOTM_ON = LEDPattern.solid(Color.kCyan);
+        LEDPattern FOTM_ON = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 120.0));
+
+        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kPurple);
+        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kBlue);
+        LEDPattern KB_DISTANCE = LEDPattern.solid(Color.kPink);
+
+        LEDPattern REVERSE = LEDPattern.solid(Color.kWhite);
+        LEDPattern STOP_ROLLERS = LEDPattern.solid(Color.kYellow);
+
+        LEDPattern RESET_HEADING = LEDPattern.solid(Color.kYellow);
+        LEDPattern X_WHEELS = LEDPattern.solid(Color.kRed);
+
+        LEDPattern INTAKE_STOW = LEDPattern.solid(Color.kBrown);        //broken
+        LEDPattern INTAKE_DEPLOYED = LEDPattern.solid(Color.kOrange);   //broken
+
+        LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kGreen);
+        // LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+
+        public final int DESIRED_TAGS_WHEN_DISABLED = 2;
+        public final int LED_LENGTH = 9; // TBA
+
     }
 
     public interface Vision {

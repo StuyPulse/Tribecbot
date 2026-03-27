@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.7414693295292434,
-        "y": 0.5092154065620549
+        "x": 3.81910128388017,
+        "y": 0.48333808844507875
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6906678254498502,
-        "y": 0.7214360856163227
+        "x": 0.7682997798007776,
+        "y": 0.6955587674993464
       },
       "isLocked": false,
       "linkedName": "Right Trench Score"
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.9,
+    "maxAcceleration": 7.5,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,

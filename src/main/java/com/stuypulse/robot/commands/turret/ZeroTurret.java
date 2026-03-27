@@ -15,7 +15,6 @@ public class ZeroTurret extends InstantCommand {
 
     public ZeroTurret() {
         this.turret = Turret.getInstance();
-
         addRequirements(turret);
     }
 
@@ -23,5 +22,10 @@ public class ZeroTurret extends InstantCommand {
     public void initialize() {
         turret.zeroEncoders();
         turret.seedTurret();
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }
