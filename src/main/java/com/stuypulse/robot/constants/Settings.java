@@ -62,6 +62,7 @@ public interface Settings {
         double REVERSE_DUTY_CYCLE = -1.0;
 
         SmartNumber HANDOFF_STALL_CURRENT = new SmartNumber("Handoff/Stall Current Limit for Reverse", 30.0);
+        double HANDOFF_STALL_DEBOUNCE_SEC = 0.5;
     }
 
     public interface Intake {

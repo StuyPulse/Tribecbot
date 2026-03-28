@@ -69,7 +69,7 @@ public abstract class Handoff extends SubsystemBase {
     //     return error < Settings.Handoff.RPM_TOLERANCE;
     // }
 
-    public abstract double getCurrentRPM();
+    public abstract double getLeaderRPM();
 
     public abstract SysIdRoutine getSysIdRoutine();
     public abstract void setVoltageOverride(Optional<Double> voltage);
@@ -84,7 +84,7 @@ public abstract class Handoff extends SubsystemBase {
         SmartDashboard.putString("Handoff/State", getState().toString());
 
         // SmartDashboard.putNumber("Handoff/Target RPM", getTargetRPM());
-        SmartDashboard.putNumber("Handoff/Current RPM", getCurrentRPM());
+        SmartDashboard.putNumber("Handoff/Current RPM", getLeaderRPM());
         // SmartDashboard.putBoolean("Handoff/At Tolerance?", atTolerance());
     }
 }

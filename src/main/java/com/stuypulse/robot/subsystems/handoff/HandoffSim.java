@@ -89,7 +89,7 @@ public class HandoffSim extends Handoff {
     }
 
     @Override
-    public double getCurrentRPM() {
+    public double getLeaderRPM() {
         return sim.getOutput(0) * 60.0 / (2.0 * Math.PI); // convert to RPM
     }
 
