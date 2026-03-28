@@ -11,14 +11,19 @@ import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
+import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Cameras.Camera;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.util.EnergyUtil;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
+import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobotBase;
@@ -26,6 +31,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -34,10 +40,14 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Timer;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import java.util.TimerTask;
+
+import org.opencv.features2d.FlannBasedMatcher;
 
 public class Robot extends TimedRobot {
 
@@ -48,14 +58,19 @@ public class Robot extends TimedRobot {
         TEST
     }
 
+   private Timer threadTimer;
+
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
     private static RobotMode mode;
     private static EnergyUtil energyUtil;
+    private SendableChooser<Camera> cameras = new SendableChooser<Camera>();
+    private Camera selected;
     private GcStatsCollector gcStatsCollector;
+    private SmartBoolean shouldRunSecondThread;
 
-    private static int periodicCounter = 0;
+    private static int periodicCounter = 0; 
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -83,6 +98,12 @@ public class Robot extends TimedRobot {
         mode = RobotMode.DISABLED;
         energyUtil = new EnergyUtil();
         gcStatsCollector = new GcStatsCollector();
+        for (Camera camera : Cameras.LimelightCameras) {
+            cameras.setDefaultOption(camera.getName(), camera);
+        }
+        selected = cameras.getSelected();
+        PortForwarder.add(5801, selected + ".local:5801", 5801);
+        SmartDashboard.putData("Selected Camera",cameras);
 
         try {
             Field watchdogField = IterativeRobotBase.class.getDeclaredField("m_watchdog");
@@ -102,6 +123,19 @@ public class Robot extends TimedRobot {
         energyUtil = new EnergyUtil();
 
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
+
+        // threadTimer = new Timer();
+        // shouldRunSecondThread = new SmartBoolean("Robot/Run second Thread", true);
+        // threadTimer.scheduleAtFixedRate(new TimerTask() {
+        //     @Override
+        //     public void run() {
+        //         if (shouldRunSecondThread.get()) {
+        //             for (int i = 0; i < 1000; i++) {
+        //                 System.out.println("second thread!" + (Math.cos(edu.wpi.first.wpilibj.Timer.getFPGATimestamp() * i)));
+        //             }
+        //         }
+        //     }
+        // },0,  1);
     }
 
     @Override
@@ -111,7 +145,11 @@ public class Robot extends TimedRobot {
         if (periodicCounter % 50 == 0) {
             DataLogManager.getLog().resume();
         }
-
+        if (cameras.getSelected() != selected) {
+            PortForwarder.remove(5801);
+            selected = cameras.getSelected();
+            PortForwarder.add(5801, selected + ".local:5801", 5801);
+        }
         periodicCounter++;
 
         double batteryVoltage = RobotController.getBatteryVoltage();

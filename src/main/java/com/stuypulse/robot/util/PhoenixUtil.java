@@ -6,7 +6,11 @@ import java.util.Arrays;
 import com.ctre.phoenix6.BaseStatusSignal;
 
 public class PhoenixUtil {
-    public static ArrayList<BaseStatusSignal> rioSignals, canivoreSignals = new ArrayList<BaseStatusSignal>();
+    public static ArrayList<BaseStatusSignal> rioSignals, canivoreSignals;
+    static {
+        rioSignals = new ArrayList<BaseStatusSignal>();
+        canivoreSignals = new ArrayList<BaseStatusSignal>();
+    }
 
     public PhoenixUtil() {}
 
