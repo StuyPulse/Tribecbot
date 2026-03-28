@@ -62,6 +62,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Robot/Scheduled Commands": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Scheduler": {
         "window": {
           "visible": true
@@ -73,6 +78,9 @@
     "transitory": {
       "SmartDashboard": {
         "Handoff": {
+          "open": true
+        },
+        "Spindexer": {
           "open": true
         },
         "States": {

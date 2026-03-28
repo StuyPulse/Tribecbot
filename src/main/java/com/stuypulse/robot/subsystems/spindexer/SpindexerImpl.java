@@ -14,7 +14,7 @@ import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
+import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -24,6 +24,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
@@ -35,6 +36,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import java.lang.annotation.ElementType;
 import java.util.Optional;
 
 public class SpindexerImpl extends Spindexer {
@@ -47,6 +50,8 @@ public class SpindexerImpl extends Spindexer {
     private final VelocityVoltage controller;
     private final Follower follower;
     private final BStream isStalling;
+    private boolean hasStartedStallTimer;
+    private final Timer unjamTimer;
 
     private Optional<Double> voltageOverride;
 
@@ -113,6 +118,10 @@ public class SpindexerImpl extends Spindexer {
         isStalling = BStream.create( () -> leaderSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
         voltageOverride = Optional.empty();
+
+        hasStartedStallTimer = false;
+        unjamTimer = new Timer();
+        unjamTimer.advanceIfElapsed(100);
     }
 
     private double getCurrentLeaderMotorRPM() {
@@ -134,6 +143,21 @@ public class SpindexerImpl extends Spindexer {
         boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
 
         return isStopState || isTurretWrapping || isBehindHubWhileFerrying || turretLaggingSOTM;
+    }
+
+    private boolean spindexerUnjam() {
+        if (!hasStartedStallTimer && Handoff.getInstance().isHandoffStalling()) {
+            unjamTimer.start();
+            hasStartedStallTimer = true;
+            setState(SpindexerState.REVERSE);
+            return true;
+        } else if (unjamTimer.get() < Settings.Spindexer.REVERSE_TIME) {
+            setState(SpindexerState.REVERSE);
+            return true;
+        } else {
+            hasStartedStallTimer = false;
+            return false;
+        }
     }
 
     @Override
@@ -160,14 +184,18 @@ public class SpindexerImpl extends Spindexer {
         boolean shouldNotShootIntoHub = (Superstructure.getInstance().superstructureInShootIntoHubMode()) ? 
             !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
             : false;
+    
+        boolean unJamming = spindexerUnjam();
+        setState(SpindexerState.REVERSE);
 
         if (EnabledSubsystems.SPINDEXER.get()) {
             if (voltageOverride.isPresent()) {
                 leaderMotor.setVoltage(voltageOverride.get());
             } else {
-                if (shouldStop() || shouldNotShootIntoHub) {
+                if ((shouldStop() || shouldNotShootIntoHub) && !unJamming) {
                     leaderMotor.stopMotor();
-                } else {
+                }             
+                else {
                     leaderMotor.setControl(controller.withVelocity(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE));
                 }
             }
@@ -177,6 +205,7 @@ public class SpindexerImpl extends Spindexer {
 
         SmartDashboard.putNumber("Spindexer/Leader Motor RPM", getCurrentLeaderMotorRPM());
         SmartDashboard.putNumber("Spindexer/Follower Motor RPM", getCurrentFollowerMotorRPM());
+        SmartDashboard.putBoolean("Spindexer/Unjamming", unJamming);
 
         SmartDashboard.putBoolean("Spindexer/At Tolerance", atTolerance());
 

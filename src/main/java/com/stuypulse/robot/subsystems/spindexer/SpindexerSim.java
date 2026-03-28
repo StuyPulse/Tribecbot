@@ -7,6 +7,7 @@ package com.stuypulse.robot.subsystems.spindexer;
 
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -21,6 +22,7 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -33,6 +35,8 @@ public class SpindexerSim extends Spindexer {
     private final LinearSystemLoop<N1, N1, N1> controller;
 
     private Optional<Double> voltageOverride;
+    private boolean hasStartedStallTimer;
+    private final Timer unjamTimer;
 
     public SpindexerSim() {
         LinearSystem<N1, N1, N1> flywheel = LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX44(1), 0.01, 1.0);
@@ -56,6 +60,8 @@ public class SpindexerSim extends Spindexer {
         controller = new LinearSystemLoop<>(flywheel, lqr, kalmanFilter, 12.0, Settings.DT);
 
         voltageOverride = Optional.empty();
+        hasStartedStallTimer = false;
+        unjamTimer = new Timer();
     }
 
     public double getCurrentRPM() {
@@ -76,6 +82,21 @@ public class SpindexerSim extends Spindexer {
         return isStopState || isTurretWrapping || isBehindHubWhileFerrying || turretLaggingSOTM;
     }
 
+    private boolean spindexerUnjam() {
+        if (!hasStartedStallTimer && Handoff.getInstance().isHandoffStalling()) {
+            unjamTimer.start();
+            hasStartedStallTimer = true;
+            setState(SpindexerState.REVERSE);
+            return true;
+        } else if (unjamTimer.get() < Settings.Spindexer.REVERSE_TIME && hasStartedStallTimer) {
+            setState(SpindexerState.REVERSE);
+            return true;
+        } else {
+            hasStartedStallTimer = false;
+            return false;
+        }
+    }
+
     @Override
     public void periodic() {
         super.periodic();
@@ -88,11 +109,13 @@ public class SpindexerSim extends Spindexer {
             !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
             : false;
 
+        boolean isUnjamming = spindexerUnjam();
+
         if (EnabledSubsystems.SHOOTER.get()) {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Spindexer/Input Voltage", voltageOverride.get());
-            } else if (shouldStop() || shouldNotShootIntoHub) {
+            } else if ((shouldStop() || shouldNotShootIntoHub) && !isUnjamming) {
                 sim.setInput(0);
             } else {
                 SmartDashboard.putNumber("Spindexer/Input Voltage", controller.getU(0));
@@ -106,6 +129,7 @@ public class SpindexerSim extends Spindexer {
         SmartDashboard.putNumber("Spindexer/Current RPM", getCurrentRPM());
         SmartDashboard.putBoolean("Spindexer/Should Stop", shouldStop());
         SmartDashboard.putBoolean("Spindexer/Should Not Shoot Into Hub", shouldNotShootIntoHub);
+        SmartDashboard.putBoolean("Spindexer/Unjamming", isUnjamming);
         
         sim.update(Settings.DT);
     }

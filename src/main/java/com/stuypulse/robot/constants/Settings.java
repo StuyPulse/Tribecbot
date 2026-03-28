@@ -55,6 +55,7 @@ public interface Settings {
         double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
         double RPM_TOLERANCE = 2200.0;
+        double REVERSE_TIME = 2.0;
         double RPM_SOTM_TOLERANCE = 700.0;
         SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
 
@@ -91,6 +92,7 @@ public interface Settings {
         double FORWARD_SPEED = 4500.0;
         double REVERSE_SPEED = -4500.0;
         double STOP_SPEED = 0.0;
+        double REVERSE_TIME = 2.0;
 
         double RPM_TOLERANCE = 800.0;
         double TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE = 1500.0;
