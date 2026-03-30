@@ -213,7 +213,7 @@ public class RobotContainer {
         // SOTM (BR)
         driver.getRightMenuButton()
             .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
-            .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData())))
+            .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData() && superstructure.getState() == SuperstructureState.SOTM)))
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
@@ -227,8 +227,8 @@ public class RobotContainer {
                         .andThen(new SpindexerRun()),
                     new SwerveDriveSOTM(driver)
                 ),
-                () -> superstructure.getState() == SuperstructureState.SOTM
-            ));
+                () -> superstructure.getState() == SuperstructureState.SOTM && swerve.canShootIntoHub())
+            );
 
         // FOTM
         driver.getLeftMenuButton()

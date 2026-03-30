@@ -216,7 +216,7 @@ public class ShooterImpl extends Shooter {
 
     @Override
     public double getCurrentDraw() {
-        return Math.abs(shooterLeadSupplyCurrent.getValueAsDouble()) +
-                Math.abs(shooterFollowSupplyCurrent.getValueAsDouble());
+        return Double.max(0, shooterLeadSupplyCurrent.getValueAsDouble()) +
+                Double.max(0, shooterFollowSupplyCurrent.getValueAsDouble());
     }
 }

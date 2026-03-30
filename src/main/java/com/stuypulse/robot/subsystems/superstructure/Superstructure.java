@@ -7,6 +7,10 @@ package com.stuypulse.robot.subsystems.superstructure;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.subsystems.handoff.Handoff;
+import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood;
 import com.stuypulse.robot.subsystems.superstructure.hood.Hood.HoodState;
 import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter;
@@ -160,7 +164,9 @@ public class Superstructure extends SubsystemBase {
         
         if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
             Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
-            setState(SuperstructureState.FOTM);
+           setState(SuperstructureState.FOTM);
+           Spindexer.getInstance().setState(SpindexerState.STOP);
+           Handoff.getInstance().setState(HandoffState.STOP);
         }
 
         SmartDashboard.putString("Superstructure/State", state.name());

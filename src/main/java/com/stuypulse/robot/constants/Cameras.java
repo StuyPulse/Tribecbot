@@ -18,9 +18,9 @@ public interface Cameras {
 
     public Camera[] LimelightCameras = {
             new Camera("limelight-right", //.381, .2325, .2069592
-                    new Pose3d(Units.inchesToMeters( -9.164), Units.inchesToMeters(14.962), Units.inchesToMeters(8.118), //TODO: check this offset
-                    // new Pose3d(0.0,0.0,0.0,
-                    new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(31.08), Units.degreesToRadians(-80))),
+                    new Pose3d(Units.inchesToMeters( -9.149), Units.inchesToMeters(15.080), Units.inchesToMeters(8.088), //TODO: check this offset
+                    // new Pose3d(0.0,0.0,0.0, 
+                    new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(28.0), Units.degreesToRadians(-90.203885))),
                     RobotContainer.EnabledSubsystems.RIGHT_LIMELIGHT),
             new Camera("limelight-left", 
                     new Pose3d(Units.inchesToMeters(-2.490), Units.inchesToMeters(-14.8620), Units.inchesToMeters(5.676), 
@@ -28,8 +28,8 @@ public interface Cameras {
                     new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(14.955812), Units.degreesToRadians(71.5))), //289
                     RobotContainer.EnabledSubsystems.LEFT_LIMELIGHT),
             new Camera("limelight-back",   //11.0845u
-                    new Pose3d(Units.inchesToMeters(-10.768823), Units.inchesToMeters(-12.717519), Units.inchesToMeters(8.331714), 
-                    new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(31.0), Units.degreesToRadians(185.0))), 
+                    new Pose3d(Units.inchesToMeters(-11.274), Units.inchesToMeters(-13.218), Units.inchesToMeters(8.452), 
+                    new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(27.875), Units.degreesToRadians(185.155825))), 
                     RobotContainer.EnabledSubsystems.BACK_LIMELIGHT)// 31 // 26.965
                     //THIS ROTATION IS NOT EXACTLY 180 DEGREES...
                     

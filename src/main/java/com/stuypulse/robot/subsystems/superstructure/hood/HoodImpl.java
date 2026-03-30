@@ -40,10 +40,10 @@ import java.util.Optional;
 
 public class HoodImpl extends Hood {
     private final Motors.TalonFXConfig hoodConfig;
-    // private final Motors.CANCoderConfig hoodEncoderConfig;
+    private final Motors.CANCoderConfig hoodEncoderConfig;
 
     private final TalonFX hoodMotor;
-    // private final CANcoder hoodEncoder;
+    private final CANcoder hoodEncoder;
 
     private final PositionVoltage controller;
 
@@ -77,17 +77,16 @@ public class HoodImpl extends Hood {
                         Settings.Superstructure.Hood.FORWARD_SOFT_LIMIT.getRotations(),
                         Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getRotations());
 
-        // hoodEncoderConfig = new Motors.CANCoderConfig()
-        // .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
-        // .withAbsoluteSensorDiscontinuityPoint(1.0)
-        // .withMagnetOffset(Settings.Superstructure.Hood.ENCODER_OFFSET.getRotations());
+        hoodEncoderConfig = new Motors.CANCoderConfig()
+        .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
+        .withAbsoluteSensorDiscontinuityPoint(1.0)
+        .withMagnetOffset(Settings.Superstructure.Hood.ENCODER_OFFSET.getRotations());
 
         hoodMotor = new TalonFX(Ports.Superstructure.Hood.MOTOR, Ports.RIO);
-        // hoodEncoder = new CANcoder(Ports.Superstructure.Hood.THROUGHBORE_ENCODER,
-        // Ports.RIO);
+        hoodEncoder = new CANcoder(Ports.Superstructure.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
         hoodConfig.configure(hoodMotor);
-        // hoodEncoderConfig.configure(hoodEncoder);
+        hoodEncoderConfig.configure(hoodEncoder);
 
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
@@ -125,40 +124,42 @@ public class HoodImpl extends Hood {
      */
     @Override
     public void seedHood() {
-        // hoodMotor.setPosition(getAbsoluteHoodAngleDeg() / 360.0);
+        hoodMotor.setPosition(getAbsoluteHoodAngleDeg() / 360.0);
     }
 
     @Override
     public void seedHoodAtUpperHardStop() {
-        hoodMotor.setPosition(Rotation2d.fromDegrees(40).getRotations());
+        hoodMotor.setPosition(Settings.Superstructure.Hood.MAX_FROM_HORIZON.getRotations());
     }
 
     @Override
     public void seedHoodAtLowerHardStop() {
-        hoodMotor.setPosition(Rotation2d.fromDegrees(7.7).getRotations()); //empirically found with our current seed at top, then going down manually
+        hoodMotor.setPosition(Settings.Superstructure.Hood.MIN_FROM_HORIZON.getRotations()); //empirically found with our current seed at top, then going down manually
     }
 
     private double getAbsoluteHoodAngleDeg() {
-        return 0.0; // TODO:change back
-        // return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
+        // return 0.0; // TODO:change back
+        return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
     }
     
     @Override
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
+        HoodState state = getState();
 
         if (!hasUsedAbsoluteEncoder) {
-            // seedHood();
+            seedHood();
             seedHoodAtUpperHardStop();
             hasUsedAbsoluteEncoder = true;
         }
 
-        if (isStalling() && getState() == HoodState.HOMING_UPPER) {
+        if (isStalling() && state == HoodState.HOMING_UPPER) {
             seedHoodAtUpperHardStop();
             setState(HoodState.IDLE);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
         }
-        if (isStalling() && getState() == HoodState.HOMING_LOWER) {
+
+        if (isStalling() && state == HoodState.HOMING_LOWER) {
             seedHoodAtLowerHardStop();
             setState(HoodState.IDLE);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
@@ -167,9 +168,9 @@ public class HoodImpl extends Hood {
         if (EnabledSubsystems.HOOD.get()) {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
-            } else if (getState() == HoodState.HOMING_UPPER && !isStalling()) {
+            } else if (state == HoodState.HOMING_UPPER && !isStalling()) {
                 hoodMotor.setVoltage(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
-            } else if (getState() == HoodState.HOMING_LOWER && !isStalling()) {
+            } else if (state == HoodState.HOMING_LOWER && !isStalling()) {
                 hoodMotor.setVoltage(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
             } else {
                 hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
@@ -263,6 +264,6 @@ public class HoodImpl extends Hood {
 
     @Override
     public double getCurrentDraw() {
-        return Math.abs(hoodMotorSupplyCurrent.getValueAsDouble());
+        return Double.max(0, hoodMotorSupplyCurrent.getValueAsDouble());
     }
 }

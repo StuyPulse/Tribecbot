@@ -557,7 +557,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		double total = 0.0;
 
 		for (SwerveModule<TalonFX, TalonFX, CANcoder> module : getModules()) {
-			total += Math.abs(module.getDriveMotor().getSupplyCurrent().getValueAsDouble());
+			total += Double.max(0, module.getDriveMotor().getSupplyCurrent().getValueAsDouble());
 		}
 
 		return total;
@@ -567,7 +567,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		double total = 0.0;
 
 		for (SwerveModule<TalonFX, TalonFX, CANcoder> module : getModules()) {
-			total += Math.abs(module.getSteerMotor().getSupplyCurrent().getValueAsDouble());
+			total += Double.max(0, module.getSteerMotor().getSupplyCurrent().getValueAsDouble());
 		}
 
 		return total;

@@ -55,6 +55,7 @@ public interface Settings {
         double HANDOFF_MAX = 4800.0;
         double HANDOFF_REVERSE = -500.0;
         double RPM_TOLERANCE = 2200.0;
+        double REVERSE_TIME = 2.0;
         double RPM_SOTM_TOLERANCE = 700.0;
         SmartNumber HANDOFF_RPM = new SmartNumber("Handoff/Target RPM", HANDOFF_MAX);
 
@@ -62,6 +63,7 @@ public interface Settings {
         double REVERSE_DUTY_CYCLE = -1.0;
 
         SmartNumber HANDOFF_STALL_CURRENT = new SmartNumber("Handoff/Stall Current Limit for Reverse", 30.0);
+        double HANDOFF_STALL_DEBOUNCE_SEC = 0.5;
     }
 
     public interface Intake {
@@ -78,7 +80,7 @@ public interface Settings {
         Rotation2d ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE = Rotation2d.fromDegrees(15.0);
         double HOMING_VOLTAGE = 3.0;
         
-        double PUSHDOWN_VOLTAGE = 3.0;
+        double PUSHDOWN_VOLTAGE = 1.5; // TODO: Verify 
 
         double GEAR_RATIO = 37.93;
         
@@ -90,6 +92,7 @@ public interface Settings {
         double FORWARD_SPEED = 4500.0;
         double REVERSE_SPEED = -4500.0;
         double STOP_SPEED = 0.0;
+        double REVERSE_TIME = 2.0;
 
         double RPM_TOLERANCE = 800.0;
         double TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE = 1500.0;
@@ -187,27 +190,27 @@ public interface Settings {
         public interface Hood {
             /**
              *
-             * The absolute encoder is mounted on a 10.67:1 gear reduction relative to the
+             * The absolute encoder is mounted on a 11:1 gear reduction relative to the
              * hood mechanism. This means:
              *
-             *  - The encoder rotates 10.67 times for every 1 full rotation of the hood.
+             *  - The encoder rotates 11 times for every 1 full rotation of the hood.
              *  - The hood's physical range of motion is only 33 degrees.
              *
-             * Because 33° * 10.67 = ~352°, the encoder will never exceed 360° over the
+             * Because 33° * 11 = ~363°, the encoder will never exceed 360° over the
              * entire hood travel. Therefore, the absolute encoder reading (0–360°)
              * uniquely maps to the hood’s 0–33° mechanical range without any ambiguity.
              *
              */
-            public final double GEAR_RATIO = 1064.0 / 9.0;
-            public final double ENCODER_TO_MECH = 32.0 / 3.0;
+            public final double GEAR_RATIO = 125.4;
+            public final double ENCODER_TO_MECH = 11.0;
             public final double HOOD_HOMING_VOLTAGE = 2.0;
 
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.795);
 
-            public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(40.0);
-            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(20.0);
-            public final Rotation2d MIN_FROM_HORIZON = Rotation2d.fromDegrees(7.0);
-            public final Rotation2d MAX_FROM_HORIZON = Rotation2d.fromDegrees(40.0);
+            public final Rotation2d FORWARD_SOFT_LIMIT = Rotation2d.fromDegrees(43.5);
+            public final Rotation2d REVERSE_SOFT_LIMIT = Rotation2d.fromDegrees(18.0);
+            public final Rotation2d MIN_FROM_HORIZON = Rotation2d.fromDegrees(15.0);
+            public final Rotation2d MAX_FROM_HORIZON = Rotation2d.fromDegrees(45.0);
 
             public final double STALL_CURRENT_LIMIT = 20.0;
             public final double STALL_DEBOUNCE = 0.5;

@@ -328,6 +328,6 @@ public class TurretImpl extends Turret {
 
     @Override
     public double getCurrentDraw() {
-        return Math.abs(turretMotorSupplyCurrent.getValueAsDouble());
+        return Double.max(0, turretMotorSupplyCurrent.getValueAsDouble());
     }
 }
