@@ -121,7 +121,6 @@ public class SpindexerImpl extends Spindexer {
 
         hasStartedStallTimer = false;
         unjamTimer = new Timer();
-        unjamTimer.advanceIfElapsed(100);
     }
 
     private double getCurrentLeaderMotorRPM() {

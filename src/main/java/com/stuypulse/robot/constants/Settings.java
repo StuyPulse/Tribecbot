@@ -80,7 +80,7 @@ public interface Settings {
         Rotation2d ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE = Rotation2d.fromDegrees(15.0);
         double HOMING_VOLTAGE = 3.0;
         
-        double PUSHDOWN_VOLTAGE = 3.0;
+        double PUSHDOWN_VOLTAGE = 1.5; // TODO: Verify 
 
         double GEAR_RATIO = 37.93;
         

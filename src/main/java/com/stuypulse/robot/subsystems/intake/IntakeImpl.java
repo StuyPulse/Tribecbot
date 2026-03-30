@@ -173,6 +173,7 @@ public class IntakeImpl extends Intake {
         super.periodic();
 
         PivotState pivotState = getPivotState();
+        RollerState rollerState = getRollerState();
 
         pivotConfig.updateGainsConfig(
                 pivot,
@@ -190,10 +191,11 @@ public class IntakeImpl extends Intake {
                 pivot.setVoltage(pivotVoltageOverride.get());
             } else {
                 // PIVOT
-                if (pivotState == PivotState.DEPLOY && getPivotAngle()
-                        .getDegrees() <= Settings.Intake.ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE.getDegrees()) {
-                    pivot.setControl(new VoltageOut(-Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
-                    applyingPushdownVoltage = true;
+                if (pivotState == PivotState.DEPLOY && 
+                    getPivotAngle().getDegrees() <= Settings.Intake.ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE.getDegrees()
+                    && rollerState != RollerState.STOP) {
+                        pivot.setControl(new VoltageOut(-Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
+                        applyingPushdownVoltage = true;
                 } else if (pivotState == PivotState.HOMING) {
                     pivot.setControl(new VoltageOut(-Settings.Intake.HOMING_VOLTAGE));
                 } else {
