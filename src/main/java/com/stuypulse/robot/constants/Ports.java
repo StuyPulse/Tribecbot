@@ -26,7 +26,7 @@ public interface Ports {
 
     public interface Handoff {
         int MOTOR_LEAD = 43;
-        int MOTOR_FOLLOW = 0; //TODO: GET FOLLOW PORT
+        int MOTOR_FOLLOW = 44;
     }
 
     public interface Superstructure {
