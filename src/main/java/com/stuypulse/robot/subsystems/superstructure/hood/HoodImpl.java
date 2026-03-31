@@ -40,10 +40,10 @@ import java.util.Optional;
 
 public class HoodImpl extends Hood {
     private final Motors.TalonFXConfig hoodConfig;
-    private final Motors.CANCoderConfig hoodEncoderConfig;
+    // private final Motors.CANCoderConfig hoodEncoderConfig;
 
     private final TalonFX hoodMotor;
-    private final CANcoder hoodEncoder;
+    // private final CANcoder hoodEncoder;
 
     private final PositionVoltage controller;
 
@@ -77,16 +77,16 @@ public class HoodImpl extends Hood {
                         Settings.Superstructure.Hood.FORWARD_SOFT_LIMIT.getRotations(),
                         Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getRotations());
 
-        hoodEncoderConfig = new Motors.CANCoderConfig()
-        .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
-        .withAbsoluteSensorDiscontinuityPoint(1.0)
-        .withMagnetOffset(Settings.Superstructure.Hood.ENCODER_OFFSET.getRotations());
+        // hoodEncoderConfig = new Motors.CANCoderConfig()
+        // .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
+        // .withAbsoluteSensorDiscontinuityPoint(1.0)
+        // .withMagnetOffset(Settings.Superstructure.Hood.ENCODER_OFFSET.getRotations());
 
         hoodMotor = new TalonFX(Ports.Superstructure.Hood.MOTOR, Ports.RIO);
-        hoodEncoder = new CANcoder(Ports.Superstructure.Hood.THROUGHBORE_ENCODER, Ports.RIO);
+        // hoodEncoder = new CANcoder(Ports.Superstructure.Hood.THROUGHBORE_ENCODER, Ports.RIO);
 
         hoodConfig.configure(hoodMotor);
-        hoodEncoderConfig.configure(hoodEncoder);
+        // hoodEncoderConfig.configure(hoodEncoder);
 
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
@@ -138,8 +138,8 @@ public class HoodImpl extends Hood {
     }
 
     private double getAbsoluteHoodAngleDeg() {
-        // return 0.0; // TODO:change back
-        return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
+        return 0.0; // TODO:change back
+        // return Settings.Superstructure.Hood.MIN_FROM_HORIZON.getDegrees() + hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360.0 / Settings.Superstructure.Hood.ENCODER_TO_MECH;
     }
     
     @Override
@@ -148,7 +148,7 @@ public class HoodImpl extends Hood {
         HoodState state = getState();
 
         if (!hasUsedAbsoluteEncoder) {
-            seedHood();
+            // seedHood();
             seedHoodAtUpperHardStop();
             hasUsedAbsoluteEncoder = true;
         }

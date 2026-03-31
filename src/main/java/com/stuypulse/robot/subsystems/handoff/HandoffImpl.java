@@ -99,6 +99,7 @@ public class HandoffImpl extends Handoff {
         motorFollowVelocity = motorFollow.getVelocity();
         motorFollowVoltage = motorFollow.getMotorVoltage();
         signals = new BaseStatusSignal[]{motorLeadSupplyCurrent, motorLeadStatorCurrent, motorLeadVelocity, motorLeadVoltage, motorFollowSupplyCurrent, motorFollowStatorCurrent, motorFollowVelocity, motorFollowVoltage};
+        PhoenixUtil.registerToRio(signals);
 
         isStalling = BStream.create(() -> motorLeadSupplyCurrent.getValueAsDouble() > Settings.Handoff.HANDOFF_STALL_CURRENT.getAsDouble())
             .filtered(new BDebounce.Both(Settings.Handoff.HANDOFF_STALL_DEBOUNCE_SEC));
