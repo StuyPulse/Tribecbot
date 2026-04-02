@@ -99,17 +99,17 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 public class RobotContainer {
     public interface EnabledSubsystems {
         SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
-        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", false);
-        SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", false);
-        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", false);
-        SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", false);
-        SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", false);
-        SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", false);
-        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", false);
+        SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", true);
+        SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
+        SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
+        SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
+        SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
+        SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", true);
 
-        SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", false);
-        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", false);
-        SmartBoolean RIGHT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Right Limelight Is Enabled", false);
+        SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
+        SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
+        SmartBoolean RIGHT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Right Limelight Is Enabled", true);
     }
 
     // Gamepads
@@ -161,31 +161,30 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Scoring Routine (TR)
         driver.getTopButton()
-            .whileTrue(new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d(Math.PI))))
-            .onFalse( new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d())));
-        
-            // .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
-            // .whileTrue(new SwerveXMode())
-            // .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
-            // .whileTrue(
-            //     new SuperstructureInterpolation() 
-            //         .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
-            //         .andThen(
-            //             Commands.parallel(
-            //                 new RunCommand(
-            //                     () -> handoff.setState(HandoffState.FORWARD),
-            //                     handoff),
-            //                 new RunCommand(
-            //                     () -> spindexer.setState(SpindexerState.FORWARD),
-            //                     spindexer)
-            //             )
-            //             .repeatedly()
-            //         )
-            // ); 
+            // .whileTrue(new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d(Math.PI))))
+            // .onFalse( new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d())));
+            .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
+            .whileTrue(new SwerveXMode())
+            .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
+            .whileTrue(
+                new SuperstructureInterpolation() 
+                    .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
+                    .andThen(
+                        Commands.parallel(
+                            new RunCommand(
+                                () -> handoff.setState(HandoffState.FORWARD),
+                                handoff),
+                            new RunCommand(
+                                () -> spindexer.setState(SpindexerState.FORWARD),
+                                spindexer)
+                        )
+                        .repeatedly()
+                    )
+            ); 
 
         // Intake Stow
-        // driver.getLeftTriggerButton()
-        //     .onTrue(new IntakeStow());
+        driver.getLeftTriggerButton()
+            .onTrue(new IntakeStow());
 
         // Intake Deploy
         driver.getRightTriggerButton()

@@ -57,7 +57,7 @@ public class SpindexerImpl extends Spindexer {
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
-                .withInvertedValue(InvertedValue.Clockwise_Positive)
+                .withInvertedValue(InvertedValue.CounterClockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Brake)
 
                 .withSupplyCurrentLimitAmps(45)

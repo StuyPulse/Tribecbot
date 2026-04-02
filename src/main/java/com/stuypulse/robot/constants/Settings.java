@@ -58,13 +58,12 @@ public interface Settings {
     }
 
     public interface Intake {
-        Rotation2d PIVOT_ZERO_STOW_ANGLE = Rotation2d.fromDegrees(90.0);
-        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(80.0); 
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(-10.0);
 
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(5.0); 
 
-        Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(88.0);
+        Rotation2d PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(76.4);
         Rotation2d PIVOT_MIN_ANGLE = Rotation2d.fromDegrees(-10.0);
 
         Rotation2d THRESHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(10.0);
@@ -281,9 +280,9 @@ public interface Settings {
         public final double ROTATIONAL_DEADBAND_RAD_PER_S = 0.1;
 
         public interface Constraints {
-            public final double MAX_VELOCITY_M_PER_S = 4.93; 
+            public final double MAX_VELOCITY_M_PER_S = 4.16; 
             public final double MAX_VELOCITY_SOTM_M_PER_S = 2.5;
-            public final double MAX_VELOCITY_FOTM_M_PER_S = 4.93;
+            public final double MAX_VELOCITY_FOTM_M_PER_S = 4.16;
 
             public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(300.0);
             public final double MAX_ANGULAR_VEL_SOTM_RAD_PER_S = Units.degreesToRadians(75.0);
