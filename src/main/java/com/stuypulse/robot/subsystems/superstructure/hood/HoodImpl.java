@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -41,6 +42,8 @@ public class HoodImpl extends Hood {
     // private final CANcoder hoodEncoder;
 
     private final PositionVoltage controller;
+    private final VoltageOut homingUpperController;
+    private final VoltageOut homingLowerController;
 
     private Optional<Double> voltageOverride;
 
@@ -85,6 +88,9 @@ public class HoodImpl extends Hood {
 
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
+
+        homingLowerController = new VoltageOut(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
+        homingUpperController = new VoltageOut(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
 
         voltageOverride = Optional.empty();
 
@@ -164,9 +170,9 @@ public class HoodImpl extends Hood {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else if (state == HoodState.HOMING_UPPER && !isStalling()) {
-                hoodMotor.setVoltage(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
+                hoodMotor.setControl(homingUpperController);
             } else if (state == HoodState.HOMING_LOWER && !isStalling()) {
-                hoodMotor.setVoltage(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
+                hoodMotor.setControl(homingLowerController);
             } else {
                 hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }
@@ -185,13 +191,14 @@ public class HoodImpl extends Hood {
             SmartDashboard.putNumber("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
+            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
+
 
             if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
                 SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
                 // SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
             }
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
     private void setVoltageOverride(Optional<Double> voltageOverride) {

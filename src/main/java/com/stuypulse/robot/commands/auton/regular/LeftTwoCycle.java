@@ -50,23 +50,26 @@ public class LeftTwoCycle extends SequentialCommandGroup {
                 new HandoffStop(),
                 new SpindexerStop()
             ),
-            new SuperstructureSOTM(),
 
-            new ParallelCommandGroup(
-                new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance())
-                // new SwerveClimbAlign()
-            ),
+            new SuperstructureSOTM(),
+            new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
+            ).andThen(new WaitCommand(4.5)),
+            new SuperstructureAutoInterpolation(),
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
+
+            new ParallelCommandGroup(
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
+                new HandoffStop(),
+                new SpindexerStop()
             ),
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3])
-            // .until(() -> DriverStation.getMatchTime() < 2).andThen(
-            //     new ParallelCommandGroup(
-            //         new HandoffStop(),
-            //         new SpindexerStop(),
-            //         new ClimberDown()
-            //     )
-            // )
+
+            new SuperstructureSOTM(),
+            new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
+            new HandoffRun().andThen(
+                new SpindexerRun()
+            ).andThen(new WaitCommand(4.5))
         
         );
 

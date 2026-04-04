@@ -261,9 +261,10 @@ public class IntakeImpl extends Intake {
                     SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
                 }
+                Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
+
             }
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
     @Override

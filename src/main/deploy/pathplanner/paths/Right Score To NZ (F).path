@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.051997146932953,
+        "x": 3.6250213980028523,
         "y": 0.5868473609129818
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.623067047075606,
+        "x": 7.196091298145506,
         "y": 0.5739087018544944
       },
       "isLocked": false,
@@ -50,7 +50,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "To NZ",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

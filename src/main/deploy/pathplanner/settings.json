@@ -3,13 +3,12 @@
   "robotLength": 0.762,
   "holonomicMode": true,
   "pathFolders": [
-    "Misc",
     "Left Bump",
+    "Misc",
     "Right Bump",
     "Tests",
     "To NZ",
-    "To Score",
-    "To Tower"
+    "To Score"
   ],
   "autoFolders": [
     "Tests"

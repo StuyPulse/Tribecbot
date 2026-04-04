@@ -262,8 +262,11 @@ public class TurretImpl extends Turret {
             else {
                 double omega = CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond;
                 double omegaFF = Gains.Superstructure.Turret.kOmega.get() * omega;
-                // double setpointVelocityRPS = delta / (360 * Settings.DT);
-                // double translationFF = Gains.Superstructure.Turret.slot0.kV * setpointVelocityRPS;
+                double setpointVelocityRPS = delta / (360 * Settings.DT);
+
+                // the component of the turret's setpoint velocity that comes from robot translation
+                double translationalVelocityRPS = setpointVelocityRPS - omega / (2 * Math.PI);
+                double translationFF = Gains.Superstructure.Turret.slot0.kV * translationalVelocityRPS;
 
                 turretMotor.setControl(controller
                     .withPosition(prevActualTargetAngle / 360.0)
@@ -305,8 +308,9 @@ public class TurretImpl extends Turret {
                 SmartDashboard.putBoolean("Robot/CAN/Main/Turret 18t Encoder Connected? (ID "
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER18T) + ")", encoder18t.isConnected());
             }
+            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
+
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
     private void setVoltageOverride(Optional<Double> volts) {

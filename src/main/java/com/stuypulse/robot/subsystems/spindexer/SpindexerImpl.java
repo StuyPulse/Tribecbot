@@ -165,8 +165,8 @@ public class SpindexerImpl extends Spindexer {
                                 + String.valueOf(Ports.Spindexer.MOTOR) + ")",
                         leaderMotor.isConnected());
             }
+            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
     public boolean isStalling() {

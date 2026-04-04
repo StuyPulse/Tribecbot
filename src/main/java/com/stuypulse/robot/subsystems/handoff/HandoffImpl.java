@@ -187,8 +187,8 @@ public class HandoffImpl extends Handoff {
                 SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Lead Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_LEAD) + ")", motorLead.isConnected());
                 SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Follow Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_FOLLOW) + ")", motorFollow.isConnected());
             }
+            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
     
     @Override

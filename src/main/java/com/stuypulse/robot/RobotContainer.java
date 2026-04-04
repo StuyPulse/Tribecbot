@@ -8,9 +8,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
-import com.stuypulse.robot.commands.auton.regular.LeftBumpTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
-import com.stuypulse.robot.commands.auton.regular.RightBumpTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -161,8 +159,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Scoring Routine (TR)
         driver.getTopButton()
-            // .whileTrue(new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d(Math.PI))))
-            // .onFalse( new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d())));
             .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
             .whileTrue(new SwerveXMode())
             .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
@@ -259,8 +255,6 @@ public class RobotContainer {
                         .alongWith(new HandoffStop())
                         .alongWith(new SpindexerStop()));
 
-//--------------------------------------------------------------------------------------------------------------------------\\
-
         // Manual Left Corner Scoring
         driver.getLeftButton()
             .onTrue(
@@ -293,6 +287,7 @@ public class RobotContainer {
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+
     }
 
     /***************/
@@ -300,9 +295,12 @@ public class RobotContainer {
     /***************/
 
     private void configureElasticButtons() {
+
         // Seeding and Zeroing
         SmartDashboard.putData("Robot/Seed Pivot Encoder at Lower Limit (Deployed)", new SeedPivotDeployed());
         SmartDashboard.putData("Robot/Seed Pivot Encoder at Upper Limit (Stowed)", new SeedPivotStowed());
+        SmartDashboard.putData("Robot/Homing Routine Upper", new HomingRoutineUpper());
+        SmartDashboard.putData("Robot/Homing Routine Lower", new HomingRoutineLower());
         SmartDashboard.putData("Robot/Seed Turret", new SeedTurret());
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop());
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Lower Hardstop", new SeedHoodRelativeEncoderAtLowerHardstop());
@@ -334,6 +332,7 @@ public class RobotContainer {
                 new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
                 new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
                 () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+
     }
 
 
@@ -352,7 +351,7 @@ public class RobotContainer {
 
         // TWO CYCLES (TRENCH)
         AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new,  
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To NZ (F)");
+        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To NZ (F)", "Left NZ To Score");
         LEFT_TWO_CYCLE.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new,  
