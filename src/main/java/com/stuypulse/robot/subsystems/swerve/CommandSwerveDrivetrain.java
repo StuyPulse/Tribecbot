@@ -5,6 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -507,15 +510,39 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		return withinTowerX && withinTowerY;
 	}
 
-	// Stop ferrying when in rectangle behind hub (in neutral zone)
+	/**
+	 * Checks whether the robot turret pose is behind the hub or not in the neutral zone.
+	 * For stopping ferrying to prevent fuel hitting the hub.
+	 * 
+	 * @return true if robot turret pose is behind the hub.
+	 */
 	public boolean isBehindHub() {
+		// ^^^ TRIANGLE ^^^:
 		Translation2d turretTranslation = getTurretPose().getTranslation();
-		boolean behindHubX = Field.hubFarLeftCorner.getX() < turretTranslation.getX()
-				&& turretTranslation.getX() < Field.hubFarLeftCorner.getX() + Field.hubToleranceX;
-		boolean withinHubY = Field.hubFarRightCorner.getY() + Field.hubToleranceY < getTurretPose().getY()
-				&& getTurretPose().getY() < Field.hubFarLeftCorner.getY() - Field.hubToleranceY;
+		boolean behindHubX = Field.hubFarLeftCorner.getX() < turretTranslation.getX();
+				// && turretTranslation.getX() < Field.hubFarLeftCorner.getX() + Field.hubToleranceX; // With this line the triangle will be cut to more like a trapezoid.
+			
+		// Find point on triangle using the point-slope formula (of the line constructed by the hub corner pose and ferry pose)
+		// y = (slope)(robotX - hubCornerX) + (hubCornerY)
+		// where the slope = (hubCornerY - ferryY)/(hubCornerX - ferryX)
+		double leftY = ((Field.hubFarLeftCorner.getY() - Field.leftFerryZone.getY())/(Field.hubFarLeftCorner.getX() - Field.leftFerryZone.getX())) // (Slope)
+						* (turretTranslation.getX() - Field.hubFarLeftCorner.getX()) + Field.hubFarLeftCorner.getY(); // *(robotX - hubCornerX) + (hubCornerY)
+		double rightY = ((Field.hubFarRightCorner.getY() - Field.rightFerryZone.getY())/(Field.hubFarRightCorner.getX() - Field.rightFerryZone.getX())) // (Slope)
+						* (turretTranslation.getX() - Field.hubFarRightCorner.getX()) + Field.hubFarRightCorner.getY(); // *(robotX - hubCornerX) + (hubCornerY)
 
+		boolean withinHubY = rightY + Field.hubToleranceY < getTurretPose().getY() 
+							&& getTurretPose().getY() < leftY - Field.hubToleranceY;
+			
 		return behindHubX && withinHubY;
+		
+		// === RECTANGLE ===:
+		// Translation2d turretTranslation = getTurretPose().getTranslation();
+		// boolean behindHubX = Field.hubFarLeftCorner.getX() < turretTranslation.getX()
+		// 		&& turretTranslation.getX() < Field.hubFarLeftCorner.getX() + Field.hubToleranceX;
+		// boolean withinHubY = Field.hubFarRightCorner.getY() + Field.hubToleranceY < getTurretPose().getY()
+		// 		&& getTurretPose().getY() < Field.hubFarLeftCorner.getY() - Field.hubToleranceY;
+
+		// return behindHubX && withinHubY;
 	}
 
 	public boolean isOutsideAllianceZone() {

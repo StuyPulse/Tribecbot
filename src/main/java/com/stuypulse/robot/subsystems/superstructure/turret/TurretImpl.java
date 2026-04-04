@@ -263,12 +263,13 @@ public class TurretImpl extends Turret {
             else {
                 double omega = CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond;
                 double omegaFF = Gains.Superstructure.Turret.kOmega.get() * omega;
-                // double translationFF = Gains.Superstructure.Turret.slot0.kV * (delta / (360 * Settings.DT));
+                // double setpointVelocityRPS = delta / (360 * Settings.DT);
+                // double translationFF = Gains.Superstructure.Turret.slot0.kV * setpointVelocityRPS;
 
                 turretMotor.setControl(controller
                     .withPosition(prevActualTargetAngle / 360.0)
                     .withSlot(slot)
-                    .withFeedForward(omegaFF)
+                    .withFeedForward(omegaFF /* + translationFF */)
                 );
             }
         } else {

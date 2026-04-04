@@ -128,7 +128,7 @@ public interface Settings {
             double[][] distanceTOFInterpolationValues = {
                 {1.22, 0.965}, // seconds
                 {2.15, 1.01},
-                {3.38, 1.00},  
+                {3.38, 1.02},  
                 {4.43, 1.165},
                 {5.50, 1.21}
             };
@@ -156,6 +156,13 @@ public interface Settings {
                 {6.94, 1.37},
                 {7.87, 1.57},
                 {9.77, 1.64},
+                {10.694, 1.765},  // extrapolated
+                {11.516, 1.838},  // extrapolated
+                {12.416, 1.914},  // extrapolated
+                {13.316, 1.988},  // extrapolated
+                {14.216, 2.060},  // extrapolated
+                {15.148, 2.131},  // extrapolated
+                {16.54, 2.234},  // extrapolated (field length)
             };
         }
 
