@@ -66,6 +66,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
 	private FieldObject2d turret2d = Field.FIELD2D.getObject("Turret 2D");
 	private Pose2d turretPose = new Pose2d();
+	private StructPublisher<Pose2d> leftBehindHubYPlublisher;
+	private StructPublisher<Pose2d> rightBehindHubYPlublisher;
 
 	private StructPublisher<Pose2d> robotPose = NetworkTableInstance.getDefault()
 			.getStructTopic("Robot Pose", Pose2d.struct).publish();
@@ -216,6 +218,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		if (Utils.isSimulation()) {
 			startSimThread();
 		}
+
+		leftBehindHubYPlublisher = NetworkTableInstance.getDefault().getStructTopic("FieldPositions/LeftBehindHubY", Pose2d.struct).publish();
+		rightBehindHubYPlublisher = NetworkTableInstance.getDefault().getStructTopic("FieldPositions/RightBehindHubY", Pose2d.struct).publish();
 	}
 
 	/**
@@ -528,7 +533,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		double rightY = ((Field.hubFarRightCorner.getY() - Field.rightFerryZone.getY())/(Field.hubFarRightCorner.getX() - Field.rightFerryZone.getX())) // (Slope)
 						* (turretTranslation.getX() - Field.hubFarRightCorner.getX()) + Field.hubFarRightCorner.getY(); // *(robotX - hubCornerX) + (hubCornerY)
 
-		boolean withinHubY = rightY + Field.hubToleranceY < getTurretPose().getY() 
+		boolean withinHubY = rightY + Field.hubToleranceY < getTurretPose().getY()
 							&& getTurretPose().getY() < leftY - Field.hubToleranceY;
 			
 		return behindHubX && withinHubY;
