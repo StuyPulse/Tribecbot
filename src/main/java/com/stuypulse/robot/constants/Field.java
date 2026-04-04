@@ -43,10 +43,10 @@ public interface Field {
 
     public static final double OPPONENT_ZONE_X = LENGTH - Units.inchesToMeters(158.6);
 
-    public static final double HUB_TOLERANCE_X = Units.inchesToMeters(100);
-    public static final double HUB_TOLERANCE_Y = Units.inchesToMeters(3);
+    public static final double BEHIND_HUB_TOLERANCE_X = Units.inchesToMeters(144); // To extend the triangle vertex
+    public static final double BEHIND_HUB_TOLERANCE_Y = Units.inchesToMeters(12); // To extend base of triangle (colinear with back hub)
 
-    public static final Pose2d BEHIND_HUB_TRIANGLE_VERTEX = new Pose2d(Units.inchesToMeters(205.6), WIDTH / 2.0 + Units.inchesToMeters(47 / 2.0), Rotation2d.kZero);
+    public static final Pose2d BEHIND_HUB_TRIANGLE_VERTEX = new Pose2d(Units.inchesToMeters(182.11) + Field.BEHIND_HUB_TOLERANCE_X, WIDTH / 2.0, new Rotation2d());
 
     public static Pose2d getHubPose() {
         return HUB_CENTER;
