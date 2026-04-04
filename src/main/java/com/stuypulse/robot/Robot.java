@@ -1,39 +1,9 @@
-/************************ PROJECT TRIBECBOT *************************/
+/** ********************** PROJECT TRIBECBOT ************************ */
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
-/* Use of this source code is governed by an MIT-style license */
-/* that can be found in the repository LICENSE file.           */
-/***************************************************************/
+ /* Use of this source code is governed by an MIT-style license */
+ /* that can be found in the repository LICENSE file.           */
+/** ************************************************************ */
 package com.stuypulse.robot;
-
-import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
-import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
-import com.stuypulse.robot.commands.vision.SetMegaTagMode;
-import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
-import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
-import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
-import com.stuypulse.robot.constants.Cameras;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Cameras.Camera;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.vision.LimelightVision;
-import com.stuypulse.robot.util.EnergyUtil;
-import com.stuypulse.robot.util.PhoenixUtil;
-import com.stuypulse.robot.util.superstructure.SOTMCalculator;
-import com.stuypulse.stuylib.network.SmartBoolean;
-
-import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobotBase;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Watchdog;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
@@ -44,6 +14,47 @@ import java.util.Timer;
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
+import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
+import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
+import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
+import com.stuypulse.robot.commands.vision.SetMegaTagMode;
+import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
+import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
+import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
+import com.stuypulse.robot.constants.Cameras;
+import com.stuypulse.robot.constants.Cameras.Camera;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.handoff.HandoffImpl;
+import com.stuypulse.robot.subsystems.spindexer.Spindexer;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.subsystems.vision.LimelightVision;
+import com.stuypulse.robot.util.EnergyUtil;
+import com.stuypulse.robot.util.PhoenixUtil;
+import com.stuypulse.robot.util.superstructure.SOTMCalculator;
+import com.stuypulse.stuylib.network.SmartBoolean;
+
+import dev.doglog.DogLogOptions;
+import dev.doglog.DogLog;
+
+import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.IterativeRobotBase;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
@@ -66,7 +77,7 @@ public class Robot extends TimedRobot {
     private GcStatsCollector gcStatsCollector;
     private SmartBoolean shouldRunSecondThread;
 
-    private static int periodicCounter = 0; 
+    private static int periodicCounter = 0;
 
     public static boolean isBlue() {
         return alliance == Alliance.Blue;
@@ -84,10 +95,15 @@ public class Robot extends TimedRobot {
         return periodicCounter;
     }
 
-    /*************************/
-    /*** ROBOT SCHEDULEING ***/
-    /*************************/
-
+    /**
+     * **********************
+     */
+    /**
+     * * ROBOT SCHEDULEING **
+     */
+    /**
+     * **********************
+     */
     @Override
     public void robotInit() {
         robot = new RobotContainer();
@@ -109,7 +125,6 @@ public class Robot extends TimedRobot {
         } catch (Exception e) {
             DriverStation.reportError("Failed to disable loop overrun warnings.", e.getStackTrace());
         }
-        // this doesnt seem to work? 3/25 11:46AM
 
         DataLogManager.start();
         SignalLogger.start();
@@ -119,21 +134,9 @@ public class Robot extends TimedRobot {
         energyUtil = new EnergyUtil();
 
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
-
-        // threadTimer = new Timer();
-        // shouldRunSecondThread = new SmartBoolean("Robot/Run second Thread", true);
-        // threadTimer.scheduleAtFixedRate(new TimerTask() {
-        //     @Override
-        //     public void run() {
-        //         if (shouldRunSecondThread.get()) {
-        //             for (int i = 0; i < 1000; i++) {
-        //                 System.out.println("second thread!" + (Math.cos(edu.wpi.first.wpilibj.Timer.getFPGATimestamp() * i)));
-        //             }
-        //         }
-        //     }
-        // },0,  1);
+        
+        DogLog.setOptions(new DogLogOptions().withNtPublish(false)); //should only be in logs
     }
-
     @Override
     public void robotPeriodic() {
         PhoenixUtil.refreshAll();
@@ -163,24 +166,49 @@ public class Robot extends TimedRobot {
         if (!Robot.isReal()) {
             SmartDashboard.putData(CommandScheduler.getInstance());
         }
-        
+
         if (DriverStation.getAlliance().isPresent()) {
             alliance = DriverStation.getAlliance().get();
         }
+
+        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM && Robot.getMode() != RobotMode.AUTON) { //added robot mode logic
+            CommandScheduler.getInstance().schedule(
+                    new SuperstructureFOTM(),
+                    new SpindexerStop(),
+                    new HandoffStop()
+            );
+        } //uncomment for FOTM -> SOTM automation
+        //else if (CommandSwerveDrivetrain.getInstance().isInsideAllianceZone() && state == SuperstructureState.FOTM && Robot.getMode() != RobotMode.AUTON) {
+        //     CommandScheduler.getInstance().schedule(
+        //             new SuperstructureSOTM(),
+        //             new SpindexerStop(),
+        //             new HandoffStop());
+        // }
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
         SmartDashboard.putData("Robot/Scheduled Commands", CommandScheduler.getInstance());
         SmartDashboard.putNumber("Robot/Battery Voltage", batteryVoltage);
         SmartDashboard.putNumber("Robot/CPU Temperature (C)", RobotController.getCPUTemp());
-    
+
         robot.periodicAfterScheduler();
+
+        //DO NOT wrap this inside of if(Settings.DebugMode) -> this is now being accounted for inside of EnergyUtil
+        //theoretically we would need to overlay both the SmartDashboard supplyCurrent graph with the DogLog supplyCurrent graph to see the full picture
+        //(was thinking instead of this we should make a seperate method inside of energyUtil that runs all the time with DogLog stuff and keep this "periodic" method inside of DebugMode seperately)
+        //such so we always log to doglog but can always turn debug mode off and visualize, and then not have to deal with overlapping the graphs.
         energyUtil.periodic();
+        //read above comments
     }
 
-    /*********************/
-    /*** DISABLED MODE ***/
-    /*********************/
-
+    /**
+     * ******************
+     */
+    /**
+     * * DISABLED MODE **
+     */
+    /**
+     * ******************
+     */
     @Override
     public void disabledInit() {
         mode = RobotMode.DISABLED;
@@ -206,10 +234,15 @@ public class Robot extends TimedRobot {
         }
     }
 
-    /***********************/
-    /*** AUTONOMOUS MODE ***/
-    /***********************/
-
+    /**
+     * ********************
+     */
+    /**
+     * * AUTONOMOUS MODE **
+     */
+    /**
+     * ********************
+     */
     @Override
     public void autonomousInit() {
         mode = RobotMode.AUTON;
@@ -234,10 +267,15 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new SwerveTeleopInit());
     }
 
-    /*******************/
-    /*** TELEOP MODE ***/
-    /*******************/
-
+    /**
+     * ****************
+     */
+    /**
+     * * TELEOP MODE **
+     */
+    /**
+     * ****************
+     */
     @Override
     public void teleopInit() {
         mode = RobotMode.TELEOP;
@@ -258,10 +296,15 @@ public class Robot extends TimedRobot {
     public void teleopExit() {
     }
 
-    /*****************/
-    /*** TEST MODE ***/
-    /*****************/
-
+    /**
+     * **************
+     */
+    /**
+     * * TEST MODE **
+     */
+    /**
+     * **************
+     */
     @Override
     public void testInit() {
         mode = RobotMode.TEST;
@@ -277,6 +320,7 @@ public class Robot extends TimedRobot {
     }
 
     private static final class GcStatsCollector {
+
         private List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
         private final long[] lastTimes = new long[gcBeans.size()];
         private final long[] lastCounts = new long[gcBeans.size()];

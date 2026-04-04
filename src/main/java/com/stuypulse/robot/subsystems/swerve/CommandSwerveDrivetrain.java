@@ -5,43 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
-import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.math.Vector2D;
-
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.Robot.RobotMode;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Field;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
-import com.stuypulse.robot.subsystems.swerve.TunerConstants.TunerSwerveDrivetrain;
-
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -58,6 +21,40 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.Gains;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
+import com.stuypulse.robot.subsystems.swerve.TunerConstants.TunerSwerveDrivetrain;
+import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.math.Vector2D;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -524,6 +521,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	public boolean isOutsideAllianceZone() {
 		return getPose().getX() > Field.AllianceRightTrench.rightEdge.getX() + Field.TRENCH_HOOD_TOLERANCE;
 	}
+
+	// public boolean isInsideAllianceZone() { 
+	// uncomment for FOTM -> SOTM automation
+	// 	return getPose().getX() < Field.AllianceRightTrench.rightEdge.getX() - Field.TRENCH_HOOD_TOLERANCE;
+	// }
 
 	public void teleopInit() {
 		for (SwerveModule<TalonFX, TalonFX, CANcoder> module : getModules()) {

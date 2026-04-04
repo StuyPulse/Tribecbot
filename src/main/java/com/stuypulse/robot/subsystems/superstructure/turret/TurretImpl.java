@@ -20,6 +20,7 @@ import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
@@ -288,6 +289,11 @@ public class TurretImpl extends Turret {
                 turretMotorVoltage.getValueAsDouble());
 
         SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", prevActualTargetAngle);
+
+        DogLog.log("Superstructure/Turret/Stator Current (amps)",
+                    turretMotorStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Turret/Supply Curren (amps)",
+                    turretMotorSupplyCurrent.getValueAsDouble());
 
         if (Settings.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("Superstructure/Turret/Stator Current (amps)",

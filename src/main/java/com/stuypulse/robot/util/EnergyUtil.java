@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.stuypulse.robot.constants.Settings;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * </p>
  */
 public class EnergyUtil {
+
     private double totalCurrent = 0.0;
     private double totalPowerWatts = 0.0;
     private double totalCurrentCurrent = 0.0;
@@ -56,29 +58,53 @@ public class EnergyUtil {
     }
 
     public void periodic() {
+        if (Settings.DEBUG_MODE.get()) {
+            // energy used over the total time the robot has been on
+            SmartDashboard.putNumber("EnergyUtil/Total used Supply Current draw Amps", totalCurrent);
+            SmartDashboard.putNumber("EnergyUtil/total used Power Watts", totalPowerWatts);
+            SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", joulesToWattHours(totalEnergyWattHours));
 
-        // energy used over the total time the robot has been on
-        SmartDashboard.putNumber("EnergyUtil/Total used Supply Current draw Amps", totalCurrent);
-        SmartDashboard.putNumber("EnergyUtil/total used Power Watts", totalPowerWatts);
-        SmartDashboard.putNumber("EnergyUtil/Total Used Energy Watt Hours", joulesToWattHours(totalEnergyWattHours));
+            // energy used over the current command schedule loop 
+            totalCurrentCurrent = totalCurrent - totalCurrentCurrent;
+            totalCurrentPowerWatts = totalPowerWatts - totalCurrentPowerWatts;
+            SmartDashboard.putNumber("EnergyUtil/Total current Current", totalCurrentCurrent);
+            SmartDashboard.putNumber("EnergyUtil/Total current Power Watts", totalCurrentCurrent);
 
-
-        // energy used over the current command schedule loop 
-        totalCurrentCurrent = totalCurrent - totalCurrentCurrent;
-        totalCurrentPowerWatts = totalPowerWatts - totalCurrentPowerWatts;
-        SmartDashboard.putNumber("EnergyUtil/Total current Current", totalCurrentCurrent);
-        SmartDashboard.putNumber("EnergyUtil/Total current Power Watts", totalCurrentCurrent);
-
-        for (var entry : subsytemCurrents.entrySet()) {
-            SmartDashboard.putNumber("EnergyUtil/Supply Current Amps/" + entry.getKey(), entry.getValue());
-            subsytemCurrents.put(entry.getKey(), 0.0);
+            for (var entry : subsytemCurrents.entrySet()) {
+                SmartDashboard.putNumber("EnergyUtil/Supply Current Amps/" + entry.getKey(), entry.getValue());
+                subsytemCurrents.put(entry.getKey(), 0.0);
+            }
+            for (var entry : subsytemPowers.entrySet()) {
+                SmartDashboard.putNumber("EnergyUtil/Power Watts/" + entry.getKey(), entry.getValue());
+                subsytemPowers.put(entry.getKey(), 0.0);
+            }
+            for (var entry : subsytemEnergies.entrySet()) {
+                SmartDashboard.putNumber("EnergyUtil/Energy Watt Hours/" + entry.getKey(), joulesToWattHours(entry.getValue()));
+            }
         }
-        for (var entry : subsytemPowers.entrySet()) {
-            SmartDashboard.putNumber("EnergyUtil/Power Watts/" + entry.getKey(), entry.getValue());
-            subsytemPowers.put(entry.getKey(), 0.0);
-        }
-        for (var entry : subsytemEnergies.entrySet()) {
-            SmartDashboard.putNumber("EnergyUtil/Energy Watt Hours/" + entry.getKey(), joulesToWattHours(entry.getValue()));
+        else {
+            // energy used over the total time the robot has been on
+            DogLog.log("EnergyUtil/Total used Supply Current draw Amps", totalCurrent);
+            DogLog.log("EnergyUtil/total used Power Watts", totalPowerWatts);
+            DogLog.log("EnergyUtil/Total Used Energy Watt Hours", joulesToWattHours(totalEnergyWattHours));
+
+            // energy used over the current command schedule loop 
+            totalCurrentCurrent = totalCurrent - totalCurrentCurrent;
+            totalCurrentPowerWatts = totalPowerWatts - totalCurrentPowerWatts;
+            DogLog.log("EnergyUtil/Total current Current", totalCurrentCurrent);
+            DogLog.log("EnergyUtil/Total current Power Watts", totalCurrentCurrent);
+
+            for (var entry : subsytemCurrents.entrySet()) {
+                DogLog.log("EnergyUtil/Supply Current Amps/" + entry.getKey(), entry.getValue());
+                subsytemCurrents.put(entry.getKey(), 0.0);
+            }
+            for (var entry : subsytemPowers.entrySet()) {
+                DogLog.log("EnergyUtil/Power Watts/" + entry.getKey(), entry.getValue());
+                subsytemPowers.put(entry.getKey(), 0.0);
+            }
+            for (var entry : subsytemEnergies.entrySet()) {
+                DogLog.log("EnergyUtil/Energy Watt Hours/" + entry.getKey(), joulesToWattHours(entry.getValue()));
+            }
         }
     }
 

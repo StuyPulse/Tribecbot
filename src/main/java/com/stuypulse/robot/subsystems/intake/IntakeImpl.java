@@ -7,6 +7,9 @@ package com.stuypulse.robot.subsystems.intake;
 
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+
+import dev.doglog.DogLog;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
@@ -223,6 +226,21 @@ public class IntakeImpl extends Intake {
 
             SmartDashboard.putNumber("Intake/Pivot Closed Loop Error (deg)",
                     pivot.getClosedLoopError().getValueAsDouble() * 360.0);
+        
+
+                DogLog.log("Intake/Voltage Override", pivotVoltageOverride.isPresent());
+                DogLog.log("Intake/Pivot Temperature (C)", pivotTemperature.getValueAsDouble());
+                DogLog.log("Intake/Leader Temperature (C)", rollerLeaderTemperature.getValueAsDouble());
+                DogLog.log("Intake/Follower Temperature (C)", rollerFollowerTemperature.getValueAsDouble());
+                DogLog.log("Intake/Roller Leader Voltage (volts)", rollerLeaderVoltage.getValueAsDouble());
+                DogLog.log("Intake/Roller Leader Current (amps)", rollerLeaderSupplyCurrent.getValueAsDouble());
+                DogLog.log("Intake/Roller Leader Stator Current (amps)", rollerLeaderStatorCurrent.getValueAsDouble());
+                DogLog.log("Intake/Roller Follower Voltage (volts)", rollerFollowerVoltage.getValueAsDouble());
+                DogLog.log("Intake/Roller Follower Current (amps)", rollerFollowerSupplyCurrent.getValueAsDouble());
+                DogLog.log("Intake/Roller Follower Stator Current (amps)", rollerFollowerStatorCurrent.getValueAsDouble());
+                DogLog.log("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
+                DogLog.log("Intake/Pivot Supply Current (amps)", pivotSupplyCurrent.getValueAsDouble());
+                DogLog.log("Intake/Pivot Stator Current (amps)", pivotStatorCurrent.getValueAsDouble());
 
             if (Settings.DEBUG_MODE.get()) {
                 SmartDashboard.putBoolean("Intake/Voltage Override", pivotVoltageOverride.isPresent());

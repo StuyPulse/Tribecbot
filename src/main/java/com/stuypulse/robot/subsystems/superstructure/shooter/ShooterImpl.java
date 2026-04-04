@@ -15,6 +15,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -161,6 +162,14 @@ public class ShooterImpl extends Shooter {
 
         SmartDashboard.putNumber("Superstructure/Shooter/Leader RPM", getLeaderRPM());
         SmartDashboard.putNumber("Superstructure/Shooter/Follower RPM", getFollowerRPM());
+
+        DogLog.log("InterpolationTesting/Shooter Applied Voltage", shooterLeaderVoltage.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Leader Voltage (volts)", shooterLeaderVoltage.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Leader Supply Current (amps)", shooterLeadSupplyCurrent.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Leader Stator Current (amps)", shooterLeadStatorCurrent.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Follower Voltage (volts)", shooterFollowerVoltage.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Follower Supply Current (amps)", shooterFollowSupplyCurrent.getValueAsDouble());
+        DogLog.log("Superstructure/Shooter/Follower Stator Current (amps)", shooterFollowStatorCurrent.getValueAsDouble());
 
         if (Settings.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("InterpolationTesting/Shooter Applied Voltage",

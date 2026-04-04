@@ -7,6 +7,9 @@ package com.stuypulse.robot.subsystems.superstructure.hood;
 
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+
+import dev.doglog.DogLog;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
@@ -27,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -41,6 +45,10 @@ public class HoodImpl extends Hood {
     // private final CANcoder hoodEncoder;
 
     private final PositionVoltage controller;
+
+    private final VoltageOut homingUpController;
+    private final VoltageOut homingDownController;
+
 
     private Optional<Double> voltageOverride;
 
@@ -86,6 +94,11 @@ public class HoodImpl extends Hood {
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
 
+        homingUpController = new VoltageOut(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
+        homingDownController = new VoltageOut(- Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
+        //NEEDED TO MAKE THEM SEPERATE BECAUSE YOU INITIALIZE WITH VOLTAGE AND SWITCHING IT LATER IS INEFFICIENT
+        //TODO: verify directions again.
+                
         voltageOverride = Optional.empty();
 
         isStalling = BStream
@@ -164,9 +177,9 @@ public class HoodImpl extends Hood {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else if (state == HoodState.HOMING_UPPER && !isStalling()) {
-                hoodMotor.setVoltage(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
+                hoodMotor.setControl(homingUpController);
             } else if (state == HoodState.HOMING_LOWER && !isStalling()) {
-                hoodMotor.setVoltage(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE);
+                hoodMotor.setControl(homingDownController);
             } else {
                 hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }
@@ -179,6 +192,11 @@ public class HoodImpl extends Hood {
         SmartDashboard.putBoolean("Prematch Checks/Hood at Top?", getAngle().getDegrees() > 39.0);
         SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
         SmartDashboard.putNumber("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
+
+        DogLog.log("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
+        DogLog.log("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
+        DogLog.log("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
+        DogLog.log("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
 
         if (Settings.DEBUG_MODE.get()) {
             SmartDashboard.putNumber("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());

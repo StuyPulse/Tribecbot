@@ -159,15 +159,54 @@ public class Superstructure extends SubsystemBase {
                 state == SuperstructureState.STOW);
     }
 
+    public boolean shouldStop() {
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+
+        boolean isHandOffStateStop = Handoff.getInstance().getState() == HandoffState.STOP;
+        boolean isSpindexerStateStop = Spindexer.getInstance().getState() == SpindexerState.STOP;
+        
+        boolean isTurretWrapping = isTurretWrapping();
+        boolean isBehindHubWhileFerrying = getState() == SuperstructureState.FOTM
+                && swerve.isBehindHub();
+        boolean isOutsideAllianceZone = 
+            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
+            getState() != SuperstructureState.FOTM;
+        boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
+            && getState() != SuperstructureState.FOTM;
+        boolean inManualState =       
+            getState() == SuperstructureState.LEFT_CORNER &&
+            getState() == SuperstructureState.RIGHT_CORNER &&
+            getState() == SuperstructureState.KB;
+        boolean isBehindTower = swerve.isBehindTower() && getState() == SuperstructureState.SOTM;
+
+        boolean turretLaggingSOTM = !isTurretAtTolerance() && getState() == SuperstructureState.SOTM;
+
+        return isHandOffStateStop ||  //merged the two
+        isSpindexerStateStop || 
+        isTurretWrapping || 
+        (isBehindHubWhileFerrying && !inManualState) || 
+        turretLaggingSOTM || 
+        (isOutsideAllianceZone  && !inManualState) || 
+        (isUnderTrench && !inManualState) ||
+        isBehindTower;
+    }
+
     public void periodicAfterScheduler() {
         SuperstructureState state = getState();
         
         if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
             Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
-            setState(SuperstructureState.FOTM);
-            Spindexer.getInstance().setState(SpindexerState.STOP);
-            Handoff.getInstance().setState(HandoffState.STOP);
+             setState(SuperstructureState.FOTM);
+             Spindexer.getInstance().setState(SpindexerState.STOP);
+             Handoff.getInstance().setState(HandoffState.STOP);
         }
+        // uncomment for FOTM -> SOTM automation
+        // else if (CommandSwerveDrivetrain.getInstance().isInsideAllianceZone() && state == SuperstructureState.FOTM &&
+        //     Robot.getMode() != RobotMode.AUTON) {
+        //      setState(SuperstructureState.SOTM);
+        //      Spindexer.getInstance().setState(SpindexerState.STOP);
+        //      Handoff.getInstance().setState(HandoffState.STOP);
+        // }
 
         SmartDashboard.putString("Superstructure/State", state.name());
 

@@ -103,15 +103,13 @@ public class HandoffSim extends Handoff {
         controller.correct(VecBuilder.fill(sim.getOutput(0)));
         controller.predict(Settings.DT);
 
-        boolean shouldNotShootIntoHub = (Superstructure.getInstance().superstructureInShootIntoHubMode()) ? 
-            !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
-            : false;
+        // removed shouldNotShootIntoHub logic (no longer used)
 
         if (EnabledSubsystems.HANDOFF.get()) {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Handoff/Input Voltage", voltageOverride.get());
-            } else if (shouldStop() || shouldNotShootIntoHub) {
+            } else if (Superstructure.getInstance().shouldStop()) {
                 sim.setInput(0.0);
                 SmartDashboard.putNumber("Handoff/Input Voltage", 0.0);
             } else {
@@ -125,8 +123,7 @@ public class HandoffSim extends Handoff {
 
         sim.update(Settings.DT);
         
-        SmartDashboard.putBoolean("Handoff/Should Stop", shouldStop());
-        SmartDashboard.putBoolean("Handoff/Should Not Shoot Into Hub", shouldNotShootIntoHub);
+    SmartDashboard.putBoolean("Handoff/Should Stop", shouldStop());
         SmartDashboard.putNumber("Handoff/Target Duty Cycle", getTargetDutyCycle());
     }
 
