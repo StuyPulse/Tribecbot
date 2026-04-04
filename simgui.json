@@ -79,20 +79,11 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
-        "Handoff": {
-          "open": true
-        },
-        "Spindexer": {
+        "FieldPositions": {
           "open": true
         },
         "States": {
           "open": false
-        },
-        "Superstructure": {
-          "Turret": {
-            "open": true
-          },
-          "open": true
         },
         "open": true
       }
