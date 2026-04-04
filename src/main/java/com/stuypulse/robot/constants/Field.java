@@ -35,40 +35,42 @@ public interface Field {
     public static final double TRENCH_HOOD_TOLERANCE = Units.inchesToMeters(20);
 
     // Alliance relative hub center coordinates
-    public static final Pose2d hubCenter = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
-    public static final Pose2d hubFarRightCorner = new Pose2d(Units.inchesToMeters(205.6), WIDTH / 2.0 - Units.inchesToMeters(47 / 2.0), Rotation2d.kZero);
-    public static final Pose2d hubFarLeftCorner = new Pose2d(Units.inchesToMeters(205.6), WIDTH / 2.0 + Units.inchesToMeters(47 / 2.0), Rotation2d.kZero);
+    public static final Pose2d HUB_CENTER = new Pose2d(Units.inchesToMeters(182.11), WIDTH / 2.0, new Rotation2d());
+    public static final Pose2d HUB_FAR_RIGHT_CORNER = new Pose2d(Units.inchesToMeters(205.6), WIDTH / 2.0 - Units.inchesToMeters(47 / 2.0), Rotation2d.kZero);
+    public static final Pose2d HUB_FAR_LEFT_CORNER = new Pose2d(Units.inchesToMeters(205.6), WIDTH / 2.0 + Units.inchesToMeters(47 / 2.0), Rotation2d.kZero);
 
     public static final double HUB_RADIUS = Units.inchesToMeters(41.7 / 2);
 
     public static final double OPPONENT_ZONE_X = LENGTH - Units.inchesToMeters(158.6);
 
-    public static final double hubToleranceX = Units.inchesToMeters(100);
-    public static final double hubToleranceY = Units.inchesToMeters(3);
+    public static final double BEHIND_HUB_TOLERANCE_X = Units.inchesToMeters(144); // To extend the triangle vertex
+    public static final double BEHIND_HUB_TOLERANCE_Y = Units.inchesToMeters(12); // To extend base of triangle (colinear with back hub)
+
+    public static final Pose2d BEHIND_HUB_TRIANGLE_VERTEX = new Pose2d(Units.inchesToMeters(182.11) + Field.BEHIND_HUB_TOLERANCE_X, WIDTH / 2.0, new Rotation2d());
 
     public static Pose2d getHubPose() {
-        return hubCenter;
+        return HUB_CENTER;
     }
 
     // Alliance relative tower center coordinates
-    public final Pose2d towerFarCenter = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47), new Rotation2d());
-    public final Pose2d towerFarRight = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47 - 23.5 - 10), new Rotation2d());
-    public final Pose2d towerFarLeft = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47 + 23.5 - 5 + 3.5), new Rotation2d());
-    public final double barDisplacement = Units.inchesToMeters(11.38);
+    public final Pose2d TOWER_FAR_CENTER = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47), new Rotation2d());
+    public final Pose2d TOWER_FAR_RIGHT = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47 - 23.5 - 10), new Rotation2d());
+    public final Pose2d TOWER_FAR_LEFT = new Pose2d(Units.inchesToMeters(42.0), Units.inchesToMeters(147.47 + 23.5 - 5 + 3.5), new Rotation2d());
+    public final double TOWER_BAR_DISPLACEMENT = Units.inchesToMeters(11.38);
 
     public final double DISTANCE_TO_RUNGS = Units.inchesToMeters(20); // placeholder value, how far away in terms of y-cord from the rung
 
     public static boolean closerToTop() {
-        return CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.towerFarCenter.getY();
+        return CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.TOWER_FAR_CENTER.getY();
     }
 
-    public final Pose2d leftFerryZone = new Pose2d(
+    public final Pose2d LEFT_FERRY_ZONE = new Pose2d(
             Units.inchesToMeters(31.5),
             WIDTH - Units.inchesToMeters(34.5),
             new Rotation2d()
     );
 
-    public final Pose2d rightFerryZone = new Pose2d(
+    public final Pose2d RIGHT_FERRY_ZONE = new Pose2d(
             Units.inchesToMeters(20.75),
             Units.inchesToMeters(76),
             new Rotation2d()
@@ -78,9 +80,9 @@ public interface Field {
         double fieldMidY = WIDTH / 2.0;
 
         if (robot.getY() > fieldMidY) {
-            return leftFerryZone;
+            return LEFT_FERRY_ZONE;
         } else {
-            return rightFerryZone;
+            return RIGHT_FERRY_ZONE;
         }
     }
 
