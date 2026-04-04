@@ -39,7 +39,7 @@ public abstract class Spindexer extends SubsystemBase {
     public double getTargetDutyCycle() {
         return switch (getState()) {
             case STOP -> 0;
-            case FORWARD -> Settings.Spindexer.FORWARD_DUTY_CYCLE;
+            case FORWARD -> Settings.Spindexer.FORWARD_DUTY_CYCLE;//((Robot.getPeriodicCounter() % Settings.Spindexer.ANTI_POPCORN_FREQ <= Settings.Spindexer.ANTI_POPCORN_LENGTH) ? Settings.Spindexer.ANTI_POPCORN_DUTY_CYCLE : Settings.Spindexer.FORWARD_DUTY_CYCLE);
             case REVERSE -> Settings.Spindexer.REVERSE_DUTY_CYCLE;
         };
     }

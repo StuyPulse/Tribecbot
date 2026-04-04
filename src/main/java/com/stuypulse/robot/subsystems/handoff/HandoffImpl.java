@@ -134,6 +134,14 @@ public class HandoffImpl extends Handoff {
 
         boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
 
+        SmartDashboard.putBoolean("Handoff/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Turret Wrapping?", isTurretWrapping);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Outside Alliance zone?", isOutsideAllianceZone);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Under Trenche?", isUnderTrench);
+        SmartDashboard.putBoolean("Handoff/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Handoff/Should Stop/inManualState", inManualState);
+
         return isStopState || 
         isTurretWrapping || 
         (isBehindHubWhileFerrying && !inManualState) || 

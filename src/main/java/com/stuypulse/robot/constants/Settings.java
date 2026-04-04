@@ -60,6 +60,7 @@ public interface Settings {
     public interface Intake {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(-10.0);
+        Rotation2d PIVOT_DIGEST_ANGLE = Rotation2d.fromDegrees(30);
 
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(5.0); 
 
@@ -80,10 +81,13 @@ public interface Settings {
     }
 
     public interface Spindexer {
-        double FORWARD_DUTY_CYCLE = -0.8; //TODO: GET
-        double REVERSE_DUTY_CYCLE = 0.8;
+        double FORWARD_DUTY_CYCLE = 1.0; //TODO: GET
+        double ANTI_POPCORN_DUTY_CYCLE = 0.2;
+        double REVERSE_DUTY_CYCLE = -1.0;
         double STOP_SPEED = 0.0;
         double REVERSE_TIME = 2.0;
+        double ANTI_POPCORN_FREQ = 100;
+        double ANTI_POPCORN_LENGTH = 10;
 
         double RPM_TOLERANCE = 800.0;
         double TOLERANCE_TO_START_INTAKE_ROLLERS_DURING_SCORING_ROUTINE = 1500.0;
@@ -175,9 +179,9 @@ public interface Settings {
                 public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target RPM", 3500.0);
 
                 public final double REVERSE = 0.0;
-                public final double KB = 2720.0;
-                public final double LEFT_CORNER = 3850.0;
-                public final double RIGHT_CORNER = 3850.0;
+                public final double KB = 2600.0;
+                public final double LEFT_CORNER = 3650.0;
+                public final double RIGHT_CORNER = 3650.0;
             }
         }
 
@@ -197,7 +201,7 @@ public interface Settings {
              */
             public final double GEAR_RATIO = 125.4;
             public final double ENCODER_TO_MECH = 11.0;
-            public final double HOOD_HOMING_VOLTAGE = 2.0;
+            public final double HOOD_HOMING_VOLTAGE = 0.5;
 
             public final Rotation2d ENCODER_OFFSET = Rotation2d.fromRotations(0.795);
 
@@ -207,7 +211,7 @@ public interface Settings {
             public final Rotation2d FORWARD_SOFT_LIMIT = MAX_FROM_HORIZON.minus(SOFT_LIMIT);
             public final Rotation2d REVERSE_SOFT_LIMIT = MIN_FROM_HORIZON.plus(SOFT_LIMIT);
 
-            public final double STALL_CURRENT_LIMIT = 20.0;
+            public final double STALL_CURRENT_LIMIT = 0.55;
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
@@ -217,9 +221,9 @@ public interface Settings {
                 public final Rotation2d MIN = REVERSE_SOFT_LIMIT;
 
                 public final Rotation2d STOW = Rotation2d.fromDegrees(21.0);
-                public final Rotation2d KB = Rotation2d.fromDegrees(22.0);
-                public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(38.0);
-                public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(38.0);
+                public final Rotation2d KB = Rotation2d.fromDegrees(20.0);
+                public final Rotation2d LEFT_CORNER = Rotation2d.fromDegrees(39.0);
+                public final Rotation2d RIGHT_CORNER = Rotation2d.fromDegrees(39.0);
             }
         }
 
@@ -288,12 +292,12 @@ public interface Settings {
 
         public interface Constraints {
             public final double MAX_VELOCITY_M_PER_S = 4.16; 
-            public final double MAX_VELOCITY_SOTM_M_PER_S = 2.5;
+            public final double MAX_VELOCITY_SOTM_M_PER_S = 2.0;
             public final double MAX_VELOCITY_FOTM_M_PER_S = 4.16;
 
             public final double MAX_ANGULAR_VEL_RAD_PER_S = Units.degreesToRadians(300.0);
             public final double MAX_ANGULAR_VEL_SOTM_RAD_PER_S = Units.degreesToRadians(75.0);
-            public final double MAX_ANGULAR_VEL_FOTM_RAD_PER_S = Units.degreesToRadians(300.0);
+            public final double MAX_ANGULAR_VEL_FOTM_RAD_PER_S = Units.degreesToRadians(150.0);
 
             public final double MAX_ACCEL_M_PER_S_SQUARED = 15.0;
             public final double MAX_ACCEL_M_PER_S_SQUARED_SOTM = 4.0;

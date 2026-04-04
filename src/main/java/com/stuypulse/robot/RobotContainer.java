@@ -160,6 +160,8 @@ public class RobotContainer {
         // Scoring Routine (TR)
         driver.getTopButton()
             .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
+            .whileTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
+                .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
             .whileTrue(new SwerveXMode())
             .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
             .whileTrue(
@@ -209,8 +211,9 @@ public class RobotContainer {
         // SOTM (BR)
         driver.getRightMenuButton()
             .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
+            .onTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
+                .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData() && superstructure.getState() == SuperstructureState.SOTM)))
-            .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
                     new SuperstructureStow(), 

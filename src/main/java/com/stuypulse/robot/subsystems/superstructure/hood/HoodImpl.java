@@ -156,13 +156,13 @@ public class HoodImpl extends Hood {
 
         if (isStalling() && state == HoodState.HOMING_UPPER) {
             seedHoodAtUpperHardStop();
-            setState(HoodState.IDLE);
+            setState(HoodState.STOW);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
         }
 
         if (isStalling() && state == HoodState.HOMING_LOWER) {
             seedHoodAtLowerHardStop();
-            setState(HoodState.IDLE);
+            setState(HoodState.STOW);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
         }
 
@@ -191,6 +191,7 @@ public class HoodImpl extends Hood {
             SmartDashboard.putNumber("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
             SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
+            SmartDashboard.putBoolean("Superstructure/Hood/is stalling", isStalling());
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 
 

@@ -84,6 +84,12 @@
         "FieldPositions": {
           "open": true
         },
+        "Intake": {
+          "open": true
+        },
+        "Spindexer": {
+          "open": true
+        },
         "States": {
           "open": false
         },

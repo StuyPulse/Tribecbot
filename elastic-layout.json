@@ -1034,7 +1034,7 @@
             }
           },
           {
-            "title": "Seed Intake At Lower Limit",
+            "title": "Seed Intake At Upper Limit",
             "x": 630.0,
             "y": 700.0,
             "width": 280.0,
@@ -1048,7 +1048,7 @@
             }
           },
           {
-            "title": "Seed Intake At Upper Limit",
+            "title": "Seed Intake At Lower Limit",
             "x": 1120.0,
             "y": 700.0,
             "width": 280.0,

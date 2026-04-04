@@ -7,7 +7,9 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.intake.IntakeDigest;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
@@ -41,7 +43,8 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
-            ).andThen(new WaitCommand(4.5)),
+            ).andThen(new WaitCommand(2.5)
+                .andThen(new IntakeAutoDigest()).withTimeout(2.0)),
             new SuperstructureAutoInterpolation(),
 
             // NZ Trip 2
@@ -55,7 +58,8 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
-            ).andThen(new WaitCommand(4.5)),
+            ).andThen(new WaitCommand(2.5)
+                .andThen(new IntakeAutoDigest()).withTimeout(2.0)),
             new SuperstructureAutoInterpolation(),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
 
@@ -69,7 +73,9 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
-            ).andThen(new WaitCommand(4.5))
+            ).andThen(new WaitCommand(2.5)
+                .andThen(new IntakeAutoDigest()).withTimeout(2.0)),
+            new SuperstructureAutoInterpolation()
         
         );
 
