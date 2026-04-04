@@ -5,8 +5,16 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.handoff;
 
-import com.stuypulse.stuylib.streams.booleans.BStream;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+import java.util.Optional;
+
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
@@ -19,6 +27,8 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure.Superstructu
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -26,16 +36,6 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import java.util.Optional;
 
 public class HandoffImpl extends Handoff {
     private final Motors.TalonFXConfig handoffConfig;
@@ -147,14 +147,12 @@ public class HandoffImpl extends Handoff {
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
 
-        boolean shouldNotShootIntoHub = (Superstructure.getInstance().superstructureInShootIntoHubMode()) ? 
-            !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
-            : false;
+        // removed shouldNotShootIntoHub logic (no longer used)
         
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motorLead.setVoltage(voltageOverride.get());
-            } else if (shouldStop() || shouldNotShootIntoHub) {
+            } else if (shouldStop()) {
                 motorLead.stopMotor();
                 motorFollow.stopMotor();
             } else {
@@ -169,10 +167,8 @@ public class HandoffImpl extends Handoff {
         SmartDashboard.putBoolean("Handoff/ShouldStop?", shouldStop());
         SmartDashboard.putNumber("Handoff/Lead Velocity", getLeaderRPM());
         SmartDashboard.putNumber("Handoff/Follow Velocity", getLeaderRPM());
-        SmartDashboard.putBoolean("Handoff/Should Not Shoot Into Hub", shouldNotShootIntoHub);
-        
         SmartDashboard.putBoolean("Spindexer/Should Stop", shouldStop());
-        SmartDashboard.putBoolean("Spindexer/Should Not Shoot Into Hub", shouldNotShootIntoHub);
+        
 
         if (Settings.DEBUG_MODE.get()) {     
             SmartDashboard.putNumber("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());

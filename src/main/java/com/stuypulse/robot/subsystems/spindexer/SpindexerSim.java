@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
@@ -26,8 +28,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class SpindexerSim extends Spindexer {
 
@@ -107,9 +107,7 @@ public class SpindexerSim extends Spindexer {
         controller.correct(VecBuilder.fill(sim.getOutput(0)));
         controller.predict(Settings.DT);
 
-        boolean shouldNotShootIntoHub = (Superstructure.getInstance().superstructureInShootIntoHubMode()) ? 
-            !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
-            : false;
+        // removed shouldNotShootIntoHub logic (no longer used)
 
         boolean isUnjamming = spindexerUnjam();
 
@@ -117,7 +115,7 @@ public class SpindexerSim extends Spindexer {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Spindexer/Input Voltage", voltageOverride.get());
-            } else if ((shouldStop() || shouldNotShootIntoHub) && !isUnjamming) {
+            } else if (shouldStop() && !isUnjamming) {
                 sim.setInput(0);
             } else {
                 SmartDashboard.putNumber("Spindexer/Input Voltage", controller.getU(0));
@@ -130,7 +128,6 @@ public class SpindexerSim extends Spindexer {
 
         SmartDashboard.putNumber("Spindexer/Current RPM", getCurrentRPM());
         SmartDashboard.putBoolean("Spindexer/Should Stop", shouldStop());
-        SmartDashboard.putBoolean("Spindexer/Should Not Shoot Into Hub", shouldNotShootIntoHub);
         SmartDashboard.putBoolean("Spindexer/Unjamming", isUnjamming);
         
         sim.update(Settings.DT);

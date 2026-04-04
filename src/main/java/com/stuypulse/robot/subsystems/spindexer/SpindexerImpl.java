@@ -5,8 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
 
-import com.stuypulse.stuylib.streams.booleans.BStream;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+import java.util.Optional;
+
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
@@ -20,6 +25,8 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure.Superstructu
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -28,6 +35,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -127,9 +135,7 @@ public class SpindexerImpl extends Spindexer {
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
 
-        boolean shouldNotShootIntoHub = (Superstructure.getInstance().superstructureInShootIntoHubMode()) ? 
-            !CommandSwerveDrivetrain.getInstance().canShootIntoHub() 
-            : false;
+        // removed shouldNotShootIntoHub logic (no longer used)
     
         // boolean unJamming = spindexerUnjam();
 
@@ -137,7 +143,7 @@ public class SpindexerImpl extends Spindexer {
             if (voltageOverride.isPresent()) {
                 leaderMotor.setVoltage(voltageOverride.get());
             } else {
-                if ((shouldStop() || shouldNotShootIntoHub)) {
+                if (shouldStop()) {
                     leaderMotor.stopMotor();
                 }             
                 else {
@@ -155,8 +161,7 @@ public class SpindexerImpl extends Spindexer {
         SmartDashboard.putNumber("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
         SmartDashboard.putNumber("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
 
-        SmartDashboard.putBoolean("Spindexer/Should Stop?", shouldStop());
-        SmartDashboard.putBoolean("Spindexer/shouldNotShootIntoHub", shouldNotShootIntoHub);
+    SmartDashboard.putBoolean("Spindexer/Should Stop?", shouldStop());
 
         if (Settings.DEBUG_MODE.get()) {
             if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
