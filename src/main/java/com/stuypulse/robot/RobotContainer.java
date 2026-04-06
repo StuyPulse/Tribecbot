@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.hood.HomingRoutineLower;
 import com.stuypulse.robot.commands.hood.HomingRoutineUpper;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtLowerHardstop;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtUpperHardstop;
+import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeOuttake;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
@@ -179,6 +180,10 @@ public class RobotContainer {
                         .repeatedly()
                     )
             ); 
+
+        // driver.getTopButton()
+        //     .whileTrue(new IntakeAutoDigest())
+        //     .onFalse(new IntakeDeploy());
 
         // Intake Stow
         driver.getLeftTriggerButton()
