@@ -100,21 +100,6 @@ public class Robot extends TimedRobot {
         energyUtil = new EnergyUtil();
         fmsUtil = new FMSUtil(true);
         gcStatsCollector = new GcStatsCollector();
-        for (Camera camera : Cameras.LimelightCameras) {
-            cameras.setDefaultOption(camera.getName(), camera);
-        }
-        selected = cameras.getSelected();
-        PortForwarder.add(5801, selected + ".local:5801", 5801);
-        SmartDashboard.putData("Selected Camera",cameras);
-
-        try {
-            Field watchdogField = IterativeRobotBase.class.getDeclaredField("m_watchdog");
-            watchdogField.setAccessible(true);
-            Watchdog watchdog = (Watchdog) watchdogField.get(this);
-            watchdog.setTimeout(Settings.LOOP_OVERRUN_WARNING_TIME_SEC);
-        } catch (Exception e) {
-            DriverStation.reportError("Failed to disable loop overrun warnings.", e.getStackTrace());
-        }
 
         DataLogManager.start();
         SignalLogger.start();
