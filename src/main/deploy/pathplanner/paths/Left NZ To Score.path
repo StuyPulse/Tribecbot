@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.20530670470756,
-        "y": 5.011868758915835
+        "x": 8.27,
+        "y": 4.61077032810271
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.312539229671896,
-        "y": 7.5996005706134095
+        "x": 7.791269614835947,
+        "y": 8.026576319543508
       },
       "isLocked": false,
       "linkedName": "NZ Left Center"
     },
     {
       "anchor": {
-        "x": 3.6767760342368048,
-        "y": 7.521968616262482
+        "x": 3.6120827389443653,
+        "y": 7.509029957203994
       },
       "prevControl": {
-        "x": 6.963195435092723,
-        "y": 7.573723252496434
+        "x": 7.428987161198288,
+        "y": 7.5996005706134095
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.16,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 3.75,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.5,

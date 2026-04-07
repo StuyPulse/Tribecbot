@@ -151,7 +151,7 @@ public class ShooterImpl extends Shooter {
         SmartDashboard.putNumber("InterpolationTesting/Shooter Closed Loop Error (RPM)",
                 shooterLogger.getMotorSignalMap(shooterLeaderLogger).get(ValueKey.Closed_Loop_Error.toString()).getValueAsDouble() * 60.0);
 
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
+        SmartDashboard.putNumber("Superstructure/Shooter/Implemented Error (RPM)", getTargetRPM() - getLeaderRPM());
     }
 
     private void setVoltageOverride(Optional<Double> voltageOverride) {

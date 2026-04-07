@@ -40,6 +40,8 @@ public class HoodImpl extends Hood {
     // private final CANcoder hoodEncoder;
 
     private final PositionVoltage controller;
+    private final VoltageOut homingUpperController;
+    private final VoltageOut homingLowerController;
 
     private final VoltageOut homingUpController;
     private final VoltageOut homingDownController;
@@ -89,11 +91,9 @@ public class HoodImpl extends Hood {
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
 
-        homingUpController = new VoltageOut(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
-        homingDownController = new VoltageOut(- Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
-        //NEEDED TO MAKE THEM SEPERATE BECAUSE YOU INITIALIZE WITH VOLTAGE AND SWITCHING IT LATER IS INEFFICIENT
-        //TODO: verify directions again.
-                
+        homingLowerController = new VoltageOut(-Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
+        homingUpperController = new VoltageOut(Settings.Superstructure.Hood.HOOD_HOMING_VOLTAGE).withIgnoreSoftwareLimits(true);
+
         voltageOverride = Optional.empty();
 
         isStalling = BStream
@@ -152,13 +152,13 @@ public class HoodImpl extends Hood {
 
         if (isStalling() && state == HoodState.HOMING_UPPER) {
             seedHoodAtUpperHardStop();
-            setState(HoodState.IDLE);
+            setState(HoodState.STOW);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
         }
 
         if (isStalling() && state == HoodState.HOMING_LOWER) {
             seedHoodAtLowerHardStop();
-            setState(HoodState.IDLE);
+            setState(HoodState.STOW);
             SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
         }
 
@@ -166,9 +166,9 @@ public class HoodImpl extends Hood {
             if (voltageOverride.isPresent()) {
                 hoodMotor.setVoltage(voltageOverride.get());
             } else if (state == HoodState.HOMING_UPPER && !isStalling()) {
-                hoodMotor.setControl(homingUpController);
+                hoodMotor.setControl(homingUpperController);
             } else if (state == HoodState.HOMING_LOWER && !isStalling()) {
-                hoodMotor.setControl(homingDownController);
+                hoodMotor.setControl(homingLowerController);
             } else {
                 hoodMotor.setControl(controller.withPosition(getTargetAngle().getRotations()));
             }

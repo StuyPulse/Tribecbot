@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.334693295292439,
-        "y": 3.472168330955778
+        "x": 8.56758915834522,
+        "y": 3.5498002853067057
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.118459343794578,
-        "y": 0.3539514978602005
+        "x": 7.480741797432238,
+        "y": 0.3410128388017126
       },
       "isLocked": false,
       "linkedName": "Right Center NZ"
     },
     {
       "anchor": {
-        "x": 3.4826961483594863,
-        "y": 0.4703994293865924
+        "x": 3.5473894436519258,
+        "y": 0.5350927246790309
       },
       "prevControl": {
-        "x": 6.8208701854493565,
-        "y": 0.4315834522111288
+        "x": 8.03710413694722,
+        "y": 0.5739087018544944
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.16,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 3.75,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.5,

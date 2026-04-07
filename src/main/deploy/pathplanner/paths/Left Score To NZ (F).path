@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": 7.496091298145506
+        "x": 3.6250213980028523,
+        "y": 7.483152639087019
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.778125030671316,
-        "y": 7.4289115701514365
+        "x": 6.833808844507845,
+        "y": 7.483152639087019
       },
       "isLocked": false,
       "linkedName": "Left Score (F)"
     },
     {
       "anchor": {
-        "x": 8.20530670470756,
-        "y": 5.011868758915835
+        "x": 8.27,
+        "y": 4.61077032810271
       },
       "prevControl": {
-        "x": 7.817146932952923,
-        "y": 7.586661911554922
+        "x": 7.881840228245363,
+        "y": 7.185563480741797
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.16,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 3.75,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.5,
@@ -50,7 +50,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "To NZ",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

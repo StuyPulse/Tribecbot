@@ -25,6 +25,7 @@ import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineLeftSideAuto;
 import com.stuypulse.robot.commands.vision.WhitelistRoutineRightSideAuto;
 import com.stuypulse.robot.constants.Cameras;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Cameras.Camera;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.HandoffImpl;
@@ -36,6 +37,7 @@ import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.util.EnergyUtil;
 import com.stuypulse.robot.util.MasterLogger;
 import com.stuypulse.robot.util.MotorLogger.SubsystemName;
+import com.stuypulse.robot.util.FMSUtil;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -52,12 +54,25 @@ import edu.wpi.first.wpilibj.IterativeRobotBase;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.List;
+import java.util.Timer;
+
+import com.ctre.phoenix6.SignalLogger;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
+import com.stuypulse.robot.commands.vision.BlackListAllTagsForAllCameras;
+import com.stuypulse.robot.commands.vision.BlacklistAllTags;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 public class Robot extends TimedRobot {
 
     public enum RobotMode {
@@ -74,6 +89,7 @@ public class Robot extends TimedRobot {
     private static Alliance alliance;
     private static RobotMode mode;
     private static EnergyUtil energyUtil;
+    private FMSUtil fmsUtil;
     private SendableChooser<Camera> cameras = new SendableChooser<Camera>();
     private Camera selected;
     private GcStatsCollector gcStatsCollector;
@@ -111,28 +127,14 @@ public class Robot extends TimedRobot {
         robot = new RobotContainer();
         mode = RobotMode.DISABLED;
         energyUtil = new EnergyUtil();
+        fmsUtil = new FMSUtil(true);
         gcStatsCollector = new GcStatsCollector();
-        for (Camera camera : Cameras.LimelightCameras) {
-            cameras.setDefaultOption(camera.getName(), camera);
-        }
-        selected = cameras.getSelected();
-        PortForwarder.add(5801, selected + ".local:5801", 5801);
-        SmartDashboard.putData("Selected Camera",cameras);
-
-        try {
-            Field watchdogField = IterativeRobotBase.class.getDeclaredField("m_watchdog");
-            watchdogField.setAccessible(true);
-            Watchdog watchdog = (Watchdog) watchdogField.get(this);
-            watchdog.setTimeout(Settings.LOOP_OVERRUN_WARNING_TIME_SEC);
-        } catch (Exception e) {
-            DriverStation.reportError("Failed to disable loop overrun warnings.", e.getStackTrace());
-        }
 
         DataLogManager.start();
         SignalLogger.start();
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
-        FollowPathCommand.warmupCommand().schedule();
-        PathfindingCommand.warmupCommand().schedule();
+        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+        CommandScheduler.getInstance().schedule(PathfindingCommand.warmupCommand());
         energyUtil = new EnergyUtil();
 
         CommandScheduler.getInstance().schedule(new SwerveAutonInit());
@@ -173,19 +175,13 @@ public class Robot extends TimedRobot {
             alliance = DriverStation.getAlliance().get();
         }
 
-        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM && Robot.getMode() != RobotMode.AUTON) { //added robot mode logic
+        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM) {
             CommandScheduler.getInstance().schedule(
                     new SuperstructureFOTM(),
                     new SpindexerStop(),
                     new HandoffStop()
             );
-        } //uncomment for FOTM -> SOTM automation
-        //else if (CommandSwerveDrivetrain.getInstance().isInsideAllianceZone() && state == SuperstructureState.FOTM && Robot.getMode() != RobotMode.AUTON) {
-        //     CommandScheduler.getInstance().schedule(
-        //             new SuperstructureSOTM(),
-        //             new SpindexerStop(),
-        //             new HandoffStop());
-        // }
+        }
 
         SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
         SmartDashboard.putData("Robot/Scheduled Commands", CommandScheduler.getInstance());
@@ -215,24 +211,16 @@ public class Robot extends TimedRobot {
     public void disabledInit() {
         mode = RobotMode.DISABLED;
 
-        CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
+        CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
+
+        CommandScheduler.getInstance().schedule(new BlackListAllTagsForAllCameras());
+
     }
 
     @Override
     public void disabledPeriodic() {
         if (periodicCounter % Settings.LOGGING_FREQUENCY == 0) {
             auto = robot.getAutonomousCommand();
-            switch (auto.getName()) {
-                case "LeftTwoCycle":
-                    CommandScheduler.getInstance().schedule(new WhitelistRoutineLeftSideAuto());
-                    break;
-                case "RightTwoCycle":
-                    CommandScheduler.getInstance().schedule(new WhitelistRoutineRightSideAuto());
-                    break;
-                default:
-                    CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
-                    break;
-            }
         }
     }
 
@@ -248,14 +236,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         mode = RobotMode.AUTON;
-
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
         auto = robot.getAutonomousCommand();
 
         if (auto != null) {
-            auto.schedule();
+            CommandScheduler.getInstance().schedule(auto);
         }
 
     }
@@ -281,7 +268,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         mode = RobotMode.TELEOP;
-
+        fmsUtil.restartTimer(false);
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
 
@@ -292,7 +279,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        //SmartDashboard.putNumber("TEST VALUE FOR IF IT WORKS!!", MasterLogger.fullSignalMap.get(SubsystemName.Turret).get("Encoder 17t/Absolute Encoder Position").getValueAsDouble());
+        SmartDashboard.putNumber("FMSUtil/time left in shift", fmsUtil.getTimeLeftInShift());
+        SmartDashboard.putBoolean("FMSUtil/is active shift", fmsUtil.isActiveShift());
+        SmartDashboard.putBoolean("FMSUtil/won auto?", fmsUtil.didWinAuto());
     }
 
     @Override

@@ -109,7 +109,7 @@ public class HandoffSim extends Handoff {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Handoff/Input Voltage", voltageOverride.get());
-            } else if (Superstructure.getInstance().shouldStop()) {
+            } else if (shouldStop()) {
                 sim.setInput(0.0);
                 SmartDashboard.putNumber("Handoff/Input Voltage", 0.0);
             } else {

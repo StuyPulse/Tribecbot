@@ -93,6 +93,45 @@ public class HandoffImpl extends Handoff {
         //now already logged
     }
 
+    public boolean shouldStop() {
+        Superstructure superstructure = Superstructure.getInstance();
+        SuperstructureState superstructureState = superstructure.getState();
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+
+        boolean isStopState = getState() == HandoffState.STOP;
+        boolean isTurretWrapping = superstructure.isTurretWrapping();
+        boolean isBehindHubWhileFerrying = superstructureState == SuperstructureState.FOTM
+                && swerve.isBehindHub();
+        boolean isOutsideAllianceZone = 
+            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
+            superstructureState != SuperstructureState.FOTM;
+        boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
+            && superstructureState != SuperstructureState.FOTM;
+        boolean inManualState =       
+            superstructureState == SuperstructureState.LEFT_CORNER &&
+            superstructureState == SuperstructureState.RIGHT_CORNER &&
+            superstructureState == SuperstructureState.KB;
+        boolean isBehindTower = swerve.isBehindTower() && superstructureState == SuperstructureState.SOTM;
+
+        boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
+
+        SmartDashboard.putBoolean("Handoff/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Turret Wrapping?", isTurretWrapping);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Outside Alliance zone?", isOutsideAllianceZone);
+        SmartDashboard.putBoolean("Handoff/Should Stop/is Under Trenche?", isUnderTrench);
+        SmartDashboard.putBoolean("Handoff/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Handoff/Should Stop/inManualState", inManualState);
+
+        return isStopState || 
+        isTurretWrapping || 
+        (isBehindHubWhileFerrying && !inManualState) || 
+        turretLaggingSOTM || 
+        (isOutsideAllianceZone  && !inManualState) || 
+        (isUnderTrench && !inManualState) ||
+        isBehindTower;
+    }
+    
     @Override
     public void periodicAfterScheduler() {
         handOffLogger.logEverything();
@@ -104,7 +143,7 @@ public class HandoffImpl extends Handoff {
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motorLead.setVoltage(voltageOverride.get());
-            } else if (Superstructure.getInstance().shouldStop()) {
+            } else if (shouldStop()) {
                 motorLead.stopMotor();
                 motorFollow.stopMotor();
             } else {

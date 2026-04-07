@@ -115,7 +115,7 @@ public class SpindexerSim extends Spindexer {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
                 SmartDashboard.putNumber("Spindexer/Input Voltage", voltageOverride.get());
-            } else if (Superstructure.getInstance().shouldStop() && !isUnjamming) {
+            } else if (shouldStop() && !isUnjamming) {
                 sim.setInput(0);
             } else {
                 SmartDashboard.putNumber("Spindexer/Input Voltage", controller.getU(0));

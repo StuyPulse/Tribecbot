@@ -80,7 +80,7 @@ public abstract class Shooter extends SubsystemBase {
     }
 
     public boolean atTolerance() {
-        double error = getTargetRPM() - getRPM();
+        double error = getRPM() - getTargetRPM();
 
         double toleranceHigh = switch (state) {
             case SOTM -> Settings.Superstructure.SHOOTER_SOTM_TOLERANCE_RPM_HIGH;

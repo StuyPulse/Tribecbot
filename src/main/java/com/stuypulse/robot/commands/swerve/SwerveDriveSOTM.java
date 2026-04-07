@@ -65,7 +65,7 @@ public class SwerveDriveSOTM extends Command {
 
         isIdle = BStream.create(
             () -> getDriverInputAsVelocity().magnitude() <= Drive.DEADBAND && Math.abs(driver.getRightX()) <= Turn.DEADBAND)
-                .filtered(new BDebounce.Rising(2.0), new BDebounce.Falling(0.1));
+                .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
 
         this.driver = driver;
 

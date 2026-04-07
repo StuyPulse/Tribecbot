@@ -21,6 +21,18 @@
           "data": {
             "pathName": "Left Score To Score"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To NZ (F)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left NZ To Score"
+          }
         }
       ]
     }

@@ -25,8 +25,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 public class SOTMCalculator {
     public static SmartBoolean accountForAccel = new SmartBoolean("Superstructure/SOTM/account for accel", false);

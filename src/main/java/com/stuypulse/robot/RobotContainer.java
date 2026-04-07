@@ -8,9 +8,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.regular.DepotAuton;
-import com.stuypulse.robot.commands.auton.regular.LeftBumpTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
-import com.stuypulse.robot.commands.auton.regular.RightBumpTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
 import com.stuypulse.robot.commands.handoff.HandoffReverse;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -19,6 +17,7 @@ import com.stuypulse.robot.commands.hood.HomingRoutineLower;
 import com.stuypulse.robot.commands.hood.HomingRoutineUpper;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtLowerHardstop;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtUpperHardstop;
+import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeOuttake;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
@@ -105,7 +104,7 @@ public class RobotContainer {
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
-        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", true);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", false);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
         SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
@@ -128,7 +127,7 @@ public class RobotContainer {
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 
-    private final LEDController leds = LEDController.getInstance();
+    // private final LEDController leds = LEDController.getInstance();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -151,7 +150,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        leds.setDefaultCommand(new LEDDefaultCommand());
+        // leds.setDefaultCommand(new LEDDefaultCommand());
     }
 
     /***************/
@@ -160,27 +159,32 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         // Scoring Routine (TR)
+        // driver.getTopButton()
+        //     .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
+        //     .whileTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
+        //         .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
+        //     .whileTrue(new SwerveXMode())
+        //     .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
+        //     .whileTrue(
+        //         new SuperstructureInterpolation() 
+        //             .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
+        //             .andThen(
+        //                 Commands.parallel(
+        //                     new RunCommand(
+        //                         () -> handoff.setState(HandoffState.FORWARD),
+        //                         handoff),
+        //                     new RunCommand(
+        //                         () -> spindexer.setState(SpindexerState.FORWARD),
+        //                         spindexer)
+        //                 )
+        //                 .repeatedly()
+        //             )
+        //     ); 
+
+        // Digest (TR)
         driver.getTopButton()
-            // .whileTrue(new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d(Math.PI))))
-            // .onFalse( new SwerveDrivePIDToPose(new Pose2d(0.0, 0, new Rotation2d())));
-            .whileTrue(new LEDApplyPattern(Settings.LED.SHOOT_IN_PLACE))
-            .whileTrue(new SwerveXMode())
-            .whileTrue(new BuzzController(driver).onlyWhile(() -> !vision.hasData()).repeatedly())
-            .whileTrue(
-                new SuperstructureInterpolation() 
-                    .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
-                    .andThen(
-                        Commands.parallel(
-                            new RunCommand(
-                                () -> handoff.setState(HandoffState.FORWARD),
-                                handoff),
-                            new RunCommand(
-                                () -> spindexer.setState(SpindexerState.FORWARD),
-                                spindexer)
-                        )
-                        .repeatedly()
-                    )
-            ); 
+            .whileTrue(new IntakeAutoDigest().repeatedly())
+            .onFalse(new IntakeDeploy());
 
         // Intake Stow
         driver.getLeftTriggerButton()
@@ -213,8 +217,9 @@ public class RobotContainer {
         // SOTM (BR)
         driver.getRightMenuButton()
             .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
+            .onTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
+                .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData() && superstructure.getState() == SuperstructureState.SOTM)))
-            .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
                     new SuperstructureStow(), 
@@ -259,8 +264,6 @@ public class RobotContainer {
                         .alongWith(new HandoffStop())
                         .alongWith(new SpindexerStop()));
 
-//--------------------------------------------------------------------------------------------------------------------------\\
-
         // Manual Left Corner Scoring
         driver.getLeftButton()
             .onTrue(
@@ -293,6 +296,7 @@ public class RobotContainer {
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
                 .andThen(new SpindexerRun())))
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+
     }
 
     /***************/
@@ -300,9 +304,12 @@ public class RobotContainer {
     /***************/
 
     private void configureElasticButtons() {
+
         // Seeding and Zeroing
         SmartDashboard.putData("Robot/Seed Pivot Encoder at Lower Limit (Deployed)", new SeedPivotDeployed());
         SmartDashboard.putData("Robot/Seed Pivot Encoder at Upper Limit (Stowed)", new SeedPivotStowed());
+        SmartDashboard.putData("Robot/Homing Routine Upper", new HomingRoutineUpper());
+        SmartDashboard.putData("Robot/Homing Routine Lower", new HomingRoutineLower());
         SmartDashboard.putData("Robot/Seed Turret", new SeedTurret());
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Upper Hardstop", new SeedHoodRelativeEncoderAtUpperHardstop());
         SmartDashboard.putData("Robot/Seed Hood Relative Encoder At Lower Hardstop", new SeedHoodRelativeEncoderAtLowerHardstop());
@@ -334,6 +341,7 @@ public class RobotContainer {
                 new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
                 new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
                 () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+
     }
 
 
@@ -352,7 +360,7 @@ public class RobotContainer {
 
         // TWO CYCLES (TRENCH)
         AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new,  
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To NZ (F)");
+        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To NZ (F)", "Left NZ To Score");
         LEFT_TWO_CYCLE.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new,  
@@ -439,7 +447,7 @@ public class RobotContainer {
 
         handoff.periodicAfterScheduler();
         intake.periodicAfterScheduler();
-        leds.periodicAfterScheduler();
+        // leds.periodicAfterScheduler(); TODO: ADD THESE BACK TY
         spindexer.periodicAfterScheduler();
         hood.periodicAfterScheduler();
         shooter.periodicAfterScheduler();

@@ -147,50 +147,6 @@ public class Superstructure extends SubsystemBase {
         return turret.getCurrentDraw() + shooter.getCurrentDraw() + hood.getCurrentDraw();
     }
 
-    public boolean superstructureInShootIntoHubMode() {
-        return (state == SuperstructureState.AUTO_INTERPOLATION || 
-                state == SuperstructureState.AUTO_INTERPOLATION_SOTM ||
-                state == SuperstructureState.INTERPOLATION ||
-                state == SuperstructureState.MANUAL_OVERRIDE ||
-                state == SuperstructureState.SOTM ||
-                state == SuperstructureState.KB ||
-                state == SuperstructureState.LEFT_CORNER ||
-                state == SuperstructureState.RIGHT_CORNER ||
-                state == SuperstructureState.STOW);
-    }
-
-    public boolean shouldStop() {
-        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
-
-        boolean isHandOffStateStop = Handoff.getInstance().getState() == HandoffState.STOP;
-        boolean isSpindexerStateStop = Spindexer.getInstance().getState() == SpindexerState.STOP;
-        
-        boolean isTurretWrapping = isTurretWrapping();
-        boolean isBehindHubWhileFerrying = getState() == SuperstructureState.FOTM
-                && swerve.isBehindHub();
-        boolean isOutsideAllianceZone = 
-            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
-            getState() != SuperstructureState.FOTM;
-        boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
-            && getState() != SuperstructureState.FOTM;
-        boolean inManualState =       
-            getState() == SuperstructureState.LEFT_CORNER &&
-            getState() == SuperstructureState.RIGHT_CORNER &&
-            getState() == SuperstructureState.KB;
-        boolean isBehindTower = swerve.isBehindTower() && getState() == SuperstructureState.SOTM;
-
-        boolean turretLaggingSOTM = !isTurretAtTolerance() && getState() == SuperstructureState.SOTM;
-
-        return isHandOffStateStop ||  //merged the two
-        isSpindexerStateStop || 
-        isTurretWrapping || 
-        (isBehindHubWhileFerrying && !inManualState) || 
-        turretLaggingSOTM || 
-        (isOutsideAllianceZone  && !inManualState) || 
-        (isUnderTrench && !inManualState) ||
-        isBehindTower;
-    }
-
     public void periodicAfterScheduler() {
         SuperstructureState state = getState();
         

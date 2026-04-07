@@ -18,6 +18,7 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
+import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.util.MasterLogger;
 import com.stuypulse.robot.util.MotorLogger;
@@ -48,7 +49,7 @@ public class SpindexerImpl extends Spindexer {
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
-                .withInvertedValue(InvertedValue.CounterClockwise_Positive)
+                .withInvertedValue(InvertedValue.Clockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Brake)
 
                 .withSupplyCurrentLimitAmps(45)
@@ -81,6 +82,45 @@ public class SpindexerImpl extends Spindexer {
         return spindexerMaster.getMotorSignalMap(spindexerLogger).get(ValueKey.VelocityRPS).getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
 
+    public boolean shouldStop() {
+        Superstructure superstructure = Superstructure.getInstance();
+        SuperstructureState superstructureState = superstructure.getState();
+        CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
+
+        boolean isStopState = getState() == SpindexerState.STOP;
+        boolean isTurretWrapping = superstructure.isTurretWrapping();
+        boolean isBehindHubWhileFerrying = superstructureState == SuperstructureState.FOTM
+                && swerve.isBehindHub();
+        boolean isOutsideAllianceZone = 
+            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
+            superstructureState != SuperstructureState.FOTM;
+        boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
+            && superstructureState != SuperstructureState.FOTM;
+        boolean inManualState =       
+            superstructureState == SuperstructureState.LEFT_CORNER &&
+            superstructureState == SuperstructureState.RIGHT_CORNER &&
+            superstructureState == SuperstructureState.KB;
+        boolean isBehindTower = swerve.isBehindTower() && superstructureState == SuperstructureState.SOTM;
+
+        boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
+
+
+        SmartDashboard.putBoolean("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/is Turret Wrapping?", isTurretWrapping);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/is Outside Alliance zone?", isOutsideAllianceZone);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/is Under Trenche?", isUnderTrench);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        SmartDashboard.putBoolean("Spindexer/Should Stop/inManualState", inManualState);
+        return isStopState || 
+        isTurretWrapping || 
+        (isBehindHubWhileFerrying && !inManualState) || 
+        turretLaggingSOTM || 
+        (isOutsideAllianceZone  && !inManualState) || 
+        (isUnderTrench && !inManualState) ||
+        isBehindTower;
+    }
+
     private boolean spindexerUnjam() {
         if (!hasStartedStallTimer && Handoff.getInstance().isHandoffStalling()) {
             unjamTimer.start();
@@ -110,7 +150,7 @@ public class SpindexerImpl extends Spindexer {
             if (voltageOverride.isPresent()) {
                 leaderMotor.setVoltage(voltageOverride.get());
             } else {
-                if (Superstructure.getInstance().shouldStop()) {
+                if (shouldStop()) {
                     leaderMotor.stopMotor();
                 }             
                 else {

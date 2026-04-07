@@ -9,6 +9,7 @@ import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
+import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -22,7 +23,8 @@ public class DepotAuton extends SequentialCommandGroup {
     public DepotAuton(PathPlannerPath... paths) {
 
         addCommands(
-
+            new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
+            
             // To Depot
             new IntakeDeploy().alongWith(
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0])

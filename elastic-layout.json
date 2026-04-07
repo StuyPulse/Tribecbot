@@ -8,7 +8,7 @@
         "layouts": [
           {
             "title": "Enabled Subsystems",
-            "x": 1120.0,
+            "x": 1190.0,
             "y": 0.0,
             "width": 280.0,
             "height": 420.0,
@@ -187,7 +187,7 @@
           },
           {
             "title": "Handoff At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 0.0,
             "width": 140.0,
             "height": 70.0,
@@ -206,7 +206,7 @@
             "title": "Handoff State",
             "x": 840.0,
             "y": 0.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -218,7 +218,7 @@
           },
           {
             "title": "Pivot At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 70.0,
             "width": 140.0,
             "height": 70.0,
@@ -237,7 +237,7 @@
             "title": "Pivot State",
             "x": 840.0,
             "y": 70.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -251,7 +251,7 @@
             "title": "Hood State",
             "x": 840.0,
             "y": 140.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -265,7 +265,7 @@
             "title": "Shooter State",
             "x": 840.0,
             "y": 210.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -279,7 +279,7 @@
             "title": "Turret State",
             "x": 840.0,
             "y": 280.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -291,7 +291,7 @@
           },
           {
             "title": "Hood At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 140.0,
             "width": 140.0,
             "height": 70.0,
@@ -308,7 +308,7 @@
           },
           {
             "title": "Shooter At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 210.0,
             "width": 140.0,
             "height": 70.0,
@@ -325,7 +325,7 @@
           },
           {
             "title": "Turret At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 280.0,
             "width": 140.0,
             "height": 70.0,
@@ -429,7 +429,7 @@
           },
           {
             "title": "Spin At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 350.0,
             "width": 140.0,
             "height": 70.0,
@@ -448,7 +448,7 @@
             "title": "Spin State",
             "x": 840.0,
             "y": 350.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -476,7 +476,7 @@
           },
           {
             "title": "limelight-back Has Data",
-            "x": 560.0,
+            "x": 420.0,
             "y": 560.0,
             "width": 140.0,
             "height": 140.0,
@@ -493,7 +493,7 @@
           },
           {
             "title": "limelight-left Has Data",
-            "x": 700.0,
+            "x": 560.0,
             "y": 560.0,
             "width": 140.0,
             "height": 140.0,
@@ -510,7 +510,7 @@
           },
           {
             "title": "limelight-right Has Data",
-            "x": 840.0,
+            "x": 700.0,
             "y": 560.0,
             "width": 140.0,
             "height": 140.0,
@@ -534,7 +534,7 @@
         "layouts": [
           {
             "title": "Enabled Subsystems",
-            "x": 1120.0,
+            "x": 1190.0,
             "y": 0.0,
             "width": 280.0,
             "height": 420.0,
@@ -700,7 +700,7 @@
           },
           {
             "title": "Handoff At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 0.0,
             "width": 140.0,
             "height": 70.0,
@@ -719,7 +719,7 @@
             "title": "Handoff State",
             "x": 840.0,
             "y": 0.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -731,7 +731,7 @@
           },
           {
             "title": "Pivot At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 70.0,
             "width": 140.0,
             "height": 70.0,
@@ -750,7 +750,7 @@
             "title": "Pivot State",
             "x": 840.0,
             "y": 70.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -764,7 +764,7 @@
             "title": "Hood State",
             "x": 840.0,
             "y": 140.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -775,24 +775,10 @@
             }
           },
           {
-            "title": "Shooter State",
-            "x": 840.0,
-            "y": 210.0,
-            "width": 140.0,
-            "height": 70.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Superstructure/Shooter/State",
-              "period": 0.06,
-              "data_type": "string",
-              "show_submit_button": false
-            }
-          },
-          {
             "title": "Turret State",
             "x": 840.0,
             "y": 280.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -804,7 +790,7 @@
           },
           {
             "title": "Hood At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 140.0,
             "width": 140.0,
             "height": 70.0,
@@ -821,7 +807,7 @@
           },
           {
             "title": "Shooter At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 210.0,
             "width": 140.0,
             "height": 70.0,
@@ -838,7 +824,7 @@
           },
           {
             "title": "Turret At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 280.0,
             "width": 140.0,
             "height": 70.0,
@@ -960,7 +946,7 @@
           },
           {
             "title": "Spin At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 350.0,
             "width": 140.0,
             "height": 70.0,
@@ -979,7 +965,7 @@
             "title": "Spin State",
             "x": 840.0,
             "y": 350.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -990,22 +976,8 @@
             }
           },
           {
-            "title": "Zero Pivot Encoder at Upper Limit (Stowed)",
-            "x": 490.0,
-            "y": 700.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Zero Pivot Encoder at Upper Limit (Stowed)",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
             "title": "Current Intake Angle (deg)",
-            "x": 770.0,
+            "x": 910.0,
             "y": 700.0,
             "width": 210.0,
             "height": 140.0,
@@ -1015,20 +987,6 @@
               "period": 0.5,
               "data_type": "double",
               "show_submit_button": false
-            }
-          },
-          {
-            "title": "Zero Pivot Encoder at Lower Limit (Deployed)",
-            "x": 980.0,
-            "y": 700.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Zero Pivot Encoder at Lower Limit (Deployed)",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
             }
           },
           {
@@ -1062,17 +1020,59 @@
             }
           },
           {
-            "title": "Seed Hood Relative Encoder At Lower Hardstop",
+            "title": "Hood Homing Routine Lower",
             "x": 0.0,
             "y": 700.0,
             "width": 280.0,
             "height": 140.0,
             "type": "Command",
             "properties": {
-              "topic": "/SmartDashboard/Robot/Seed Hood Relative Encoder At Lower Hardstop",
+              "topic": "/SmartDashboard/Robot/Homing Routine Lower",
               "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Seed Intake At Upper Limit",
+            "x": 630.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Seed Pivot Encoder at Upper Limit (Stowed)",
+              "period": 0.5,
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Seed Intake At Lower Limit",
+            "x": 1120.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Seed Pivot Encoder at Lower Limit (Deployed)",
+              "period": 0.5,
+              "show_type": false,
+              "maximize_button_space": true
+            }
+          },
+          {
+            "title": "Shooter State",
+            "x": 840.0,
+            "y": 210.0,
+            "width": 210.0,
+            "height": 70.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Superstructure/Shooter/State",
+              "period": 0.5,
+              "data_type": "string",
+              "show_submit_button": false
             }
           }
         ]
@@ -1084,7 +1084,7 @@
         "layouts": [
           {
             "title": "Enabled Subsystems",
-            "x": 1120.0,
+            "x": 1190.0,
             "y": 0.0,
             "width": 280.0,
             "height": 420.0,
@@ -1250,7 +1250,7 @@
           },
           {
             "title": "Handoff At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 0.0,
             "width": 140.0,
             "height": 70.0,
@@ -1269,7 +1269,7 @@
             "title": "Handoff State",
             "x": 840.0,
             "y": 0.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1281,7 +1281,7 @@
           },
           {
             "title": "Pivot At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 70.0,
             "width": 140.0,
             "height": 70.0,
@@ -1300,7 +1300,7 @@
             "title": "Pivot State",
             "x": 840.0,
             "y": 70.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1314,7 +1314,7 @@
             "title": "Hood State",
             "x": 840.0,
             "y": 140.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1328,7 +1328,7 @@
             "title": "Shooter State",
             "x": 840.0,
             "y": 210.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1342,7 +1342,7 @@
             "title": "Turret State",
             "x": 840.0,
             "y": 280.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1354,7 +1354,7 @@
           },
           {
             "title": "Hood At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 140.0,
             "width": 140.0,
             "height": 70.0,
@@ -1371,7 +1371,7 @@
           },
           {
             "title": "Shooter At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 210.0,
             "width": 140.0,
             "height": 70.0,
@@ -1388,7 +1388,7 @@
           },
           {
             "title": "Turret At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 280.0,
             "width": 140.0,
             "height": 70.0,
@@ -1405,7 +1405,7 @@
           },
           {
             "title": "Spin At Tol?",
-            "x": 980.0,
+            "x": 1050.0,
             "y": 350.0,
             "width": 140.0,
             "height": 70.0,
@@ -1424,7 +1424,7 @@
             "title": "Spin State",
             "x": 840.0,
             "y": 350.0,
-            "width": 140.0,
+            "width": 210.0,
             "height": 70.0,
             "type": "Text Display",
             "properties": {
@@ -1491,7 +1491,7 @@
             }
           },
           {
-            "title": "Seed Pivot Encoder at Lower Limit (Deployed)",
+            "title": "Seed Intake At Lower Limit",
             "x": 700.0,
             "y": 420.0,
             "width": 280.0,
@@ -1505,7 +1505,7 @@
             }
           },
           {
-            "title": "Seed Pivot Encoder at Upper Limit (Stowed)",
+            "title": "Seed Intake At Upper Limit",
             "x": 420.0,
             "y": 420.0,
             "width": 280.0,

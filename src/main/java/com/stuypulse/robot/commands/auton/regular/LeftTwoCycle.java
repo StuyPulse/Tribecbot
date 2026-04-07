@@ -7,11 +7,15 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.intake.IntakeDigest;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
+import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
+import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -28,6 +32,8 @@ public class LeftTwoCycle extends SequentialCommandGroup {
 
         addCommands(
 
+            new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
+
             // NZ Trip 1
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
                 new WaitCommand(0.5).andThen(new IntakeDeploy())
@@ -41,8 +47,9 @@ public class LeftTwoCycle extends SequentialCommandGroup {
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
-            ).andThen(new WaitCommand(4.5)),
-            new SuperstructureAutoInterpolation(),
+            ).andThen(new WaitCommand(1.75)
+                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(3.5),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             // NZ Trip 2
             new ParallelCommandGroup(
@@ -50,23 +57,28 @@ public class LeftTwoCycle extends SequentialCommandGroup {
                 new HandoffStop(),
                 new SpindexerStop()
             ),
-            new SuperstructureSOTM(),
 
-            new ParallelCommandGroup(
-                new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance())
-                // new SwerveClimbAlign()
-            ),
+            new SuperstructureSOTM(),
+            new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().andThen(
                 new SpindexerRun()
-            ),
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3])
-            // .until(() -> DriverStation.getMatchTime() < 2).andThen(
-            //     new ParallelCommandGroup(
-            //         new HandoffStop(),
-            //         new SpindexerStop(),
-            //         new ClimberDown()
-            //     )
-            // )
+            ).andThen(new WaitCommand(1.75)
+                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(5.0),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
+
+            new ParallelCommandGroup(
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
+                new HandoffStop(),
+                new SpindexerStop()
+            )
+
+            // new SuperstructureSOTM(),
+            // new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
+            // new HandoffRun().andThen(
+            //     new SpindexerRun()
+            // ).andThen(new WaitCommand(2.5)
+            //     .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(4.5),
+            // new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy())
         
         );
 

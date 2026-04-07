@@ -18,6 +18,8 @@
       "/SmartDashboard/Intake Reverse": "Command",
       "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Robot/Handoff Reverse": "Command",
+      "/SmartDashboard/Robot/Homing Routine Lower": "Command",
+      "/SmartDashboard/Robot/Homing Routine Upper": "Command",
       "/SmartDashboard/Robot/Intake Reverse": "Command",
       "/SmartDashboard/Robot/Reset WL Left-Camera": "Command",
       "/SmartDashboard/Robot/Reset WL Right-Camera": "Command",
@@ -94,6 +96,12 @@
         "open": true
       },
       "SmartDashboard": {
+        "Spindexer": {
+          "open": true
+        },
+        "Intake": {
+          "open": true
+        },
         "Spindexer": {
           "open": true
         },

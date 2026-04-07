@@ -198,7 +198,6 @@ public class IntakeImpl extends Intake {
             // PIVOT
             SmartDashboard.putBoolean("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownVoltage);
         }
-        Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
     @Override
