@@ -34,6 +34,8 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure.Superstructu
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.util.EnergyUtil;
+import com.stuypulse.robot.util.MasterLogger;
+import com.stuypulse.robot.util.MotorLogger.SubsystemName;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -290,6 +292,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        //SmartDashboard.putNumber("TEST VALUE FOR IF IT WORKS!!", MasterLogger.fullSignalMap.get(SubsystemName.Turret).get("Encoder 17t/Absolute Encoder Position").getValueAsDouble());
     }
 
     @Override

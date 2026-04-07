@@ -7,13 +7,11 @@ package com.stuypulse.robot.subsystems.spindexer;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
@@ -21,29 +19,17 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.MasterLogger;
+import com.stuypulse.robot.util.MotorLogger;
+import com.stuypulse.robot.util.MotorLogger.ValueKey;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import java.util.Optional;
 
 public class SpindexerImpl extends Spindexer {
     private final Motors.TalonFXConfig spindexerLeadConfig;
@@ -57,10 +43,8 @@ public class SpindexerImpl extends Spindexer {
 
     private Optional<Double> voltageOverride;
 
-    private StatusSignal<Current> leaderSupplyCurrent;
-    private StatusSignal<Current> leaderStatorCurrent;
-    private StatusSignal<AngularVelocity> leaderVelocity;
-    private StatusSignal<Voltage> leaderMotorVoltage;
+    private final MotorLogger spindexerLogger;
+    private final MasterLogger spindexerMaster;
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
@@ -80,15 +64,12 @@ public class SpindexerImpl extends Spindexer {
 
         spindexerLeadConfig.configure(leaderMotor);
 
+        spindexerLogger = new MotorLogger(MotorLogger.SubsystemName.Spindexer, "Lead Motor", leaderMotor, Ports.Spindexer.MOTOR, PhoenixUtil.PublishingDestination.CANIVORE);
+        spindexerMaster = new MasterLogger(spindexerLogger);
+
         controller = new DutyCycleOut(getTargetDutyCycle()).withEnableFOC(true);
 
-        leaderSupplyCurrent = leaderMotor.getSupplyCurrent();
-        leaderStatorCurrent = leaderMotor.getStatorCurrent();
-        leaderVelocity = leaderMotor.getVelocity();
-        leaderMotorVoltage = leaderMotor.getMotorVoltage();
-        PhoenixUtil.registerToCanivore(leaderSupplyCurrent, leaderStatorCurrent, leaderVelocity, leaderMotorVoltage);
-
-        isStalling = BStream.create( () -> leaderSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
+        isStalling = BStream.create( () -> spindexerMaster.getMotorSignalMap(spindexerLogger).get(ValueKey.Supply_Current).getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
         voltageOverride = Optional.empty();
 
@@ -97,7 +78,7 @@ public class SpindexerImpl extends Spindexer {
     }
 
     private double getMotorRPM() {
-        return leaderVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
+        return spindexerMaster.getMotorSignalMap(spindexerLogger).get(ValueKey.VelocityRPS).getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
 
     private boolean spindexerUnjam() {
@@ -117,6 +98,8 @@ public class SpindexerImpl extends Spindexer {
 
     @Override
     public void periodicAfterScheduler() {
+        spindexerMaster.logEverything();
+
         super.periodicAfterScheduler();
 
         // removed shouldNotShootIntoHub logic (no longer used)
@@ -138,25 +121,9 @@ public class SpindexerImpl extends Spindexer {
             leaderMotor.stopMotor();
         }
 
-        SmartDashboard.putNumber("Spindexer/Leader Motor RPM", getMotorRPM());
         // SmartDashboard.putBoolean("Spindexer/Unjamming", unJamming);
-
-        SmartDashboard.putNumber("Spindexer/Leader Voltage (volts)", leaderMotorVoltage.getValueAsDouble());
-        SmartDashboard.putNumber("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
-        SmartDashboard.putNumber("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
-
         SmartDashboard.putBoolean("Spindexer/Should Stop?", Superstructure.getInstance().shouldStop());
 
-        
-
-        if (Settings.DEBUG_MODE.get()) {
-            if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
-                SmartDashboard.putBoolean(
-                        "Robot/CAN/Canivore/Spindexer Leader Motor Connected? (ID "
-                                + String.valueOf(Ports.Spindexer.MOTOR) + ")",
-                        leaderMotor.isConnected());
-            }
-        }
         Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
@@ -184,6 +151,6 @@ public class SpindexerImpl extends Spindexer {
 
     @Override
     public double getCurrentDraw() {
-        return Double.max(0, leaderSupplyCurrent.getValueAsDouble());
+        return Double.max(0, spindexerMaster.getMotorSignalMap(spindexerLogger).get(ValueKey.Supply_Current).getValueAsDouble());
     }
 }

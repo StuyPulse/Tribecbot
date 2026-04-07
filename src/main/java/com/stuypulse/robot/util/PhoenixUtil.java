@@ -22,6 +22,18 @@ public class PhoenixUtil {
         canivoreSignals.addAll(Arrays.asList(signals));
     }
 
+    public enum PublishingDestination {
+        RIO,
+        CANIVORE
+    }
+
+    public static void publishUsingPhoenixUtil(PublishingDestination destination, BaseStatusSignal[] publishingSignals) {
+        switch (destination) {
+            case RIO -> PhoenixUtil.registerToRio(publishingSignals);
+            case CANIVORE -> PhoenixUtil.registerToCanivore(publishingSignals);
+        }
+    }
+
 
     public static void refreshAll() {
         BaseStatusSignal.refreshAll(rioSignals);

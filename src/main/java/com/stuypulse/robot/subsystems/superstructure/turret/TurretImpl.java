@@ -5,31 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.RobotContainer;
-import com.stuypulse.robot.Robot.RobotMode;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.DriverConstants;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Motors;
-import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.EnergyUtil;
-import com.stuypulse.robot.util.PhoenixUtil;
-import com.stuypulse.robot.util.SysId;
-import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
+import java.util.Optional;
 
-import dev.doglog.DogLog;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -37,8 +14,28 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.DriverConstants;
+import com.stuypulse.robot.constants.Gains;
+import com.stuypulse.robot.constants.Motors;
+import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.MasterLogger;
+import com.stuypulse.robot.util.MotorLogger;
+import com.stuypulse.robot.util.MotorLogger.SubsystemName;
+import com.stuypulse.robot.util.MotorLogger.ValueKey;
+import com.stuypulse.robot.util.PhoenixUtil.PublishingDestination;
+import com.stuypulse.robot.util.SysId;
+import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 
-import java.util.Optional;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class TurretImpl extends Turret {
     private final Motors.TalonFXConfig turretConfig;
@@ -57,14 +54,9 @@ public class TurretImpl extends Turret {
 
     private double prevActualTargetAngle;
     private boolean isWrapping;
-
-    private StatusSignal<Angle> encoder18tPos;
-    private StatusSignal<Angle> encoder17tPos;
-    private StatusSignal<Angle> turretMotorPos;
-    private StatusSignal<Current> turretMotorSupplyCurrent;
-    private StatusSignal<Current> turretMotorStatorCurrent;
-    private StatusSignal<Double> turretMotorClosedLoopError;
-    private StatusSignal<Voltage> turretMotorVoltage;
+    
+    private final MotorLogger turretLogger;
+    private final MasterLogger turretMaster;
 
     public TurretImpl() {
         turretConfig = new Motors.TalonFXConfig()
@@ -126,23 +118,19 @@ public class TurretImpl extends Turret {
 
         turretMotor.getClosedLoopError().setUpdateFrequency(1000.0);
 
-        encoder18tPos = encoder18t.getAbsolutePosition();
-        encoder17tPos = encoder17t.getAbsolutePosition();
-        turretMotorPos = turretMotor.getPosition();
-        turretMotorSupplyCurrent = turretMotor.getSupplyCurrent();
-        turretMotorStatorCurrent = turretMotor.getStatorCurrent();
-        turretMotorClosedLoopError = turretMotor.getClosedLoopError();
-        turretMotorVoltage = turretMotor.getMotorVoltage();
-        PhoenixUtil.registerToRio(encoder18tPos, encoder17tPos, turretMotorPos, 
-            turretMotorSupplyCurrent, turretMotorStatorCurrent, turretMotorClosedLoopError, turretMotorVoltage);
+        turretLogger = new MotorLogger(SubsystemName.Turret, "Motor", turretMotor, Ports.Superstructure.Turret.MOTOR, PublishingDestination.RIO);
+
+        turretMaster = new MasterLogger(turretLogger);
+        turretMaster.addEncoder(encoder17t, "Encoder 17t");
+        turretMaster.addEncoder(encoder18t, "Encoder 18t");
     }
 
     private Rotation2d getEncoderPos17t() {
-        return Rotation2d.fromRotations(this.encoder17tPos.getValueAsDouble());
+        return Rotation2d.fromRotations(turretMaster.encoderValues.get("Encoder 17t").getValueAsDouble());
     }
 
     private Rotation2d getEncoderPos18t() {
-        return Rotation2d.fromRotations(this.encoder18tPos.getValueAsDouble());
+        return Rotation2d.fromRotations(turretMaster.encoderValues.get("Encoder 18t").getValueAsDouble());
     }
 
     public Rotation2d getVectorSpaceAngle() {
@@ -150,8 +138,8 @@ public class TurretImpl extends Turret {
     }
 
     public void zeroEncoders() {
-        double encoderPos17T = encoder17tPos.getValueAsDouble();
-        double encoderPos18T = encoder18tPos.getValueAsDouble();
+        double encoderPos17T = turretMaster.encoderValues.get("Encoder 17t").getValueAsDouble();
+        double encoderPos18T = turretMaster.encoderValues.get("Encoder 18t").getValueAsDouble();
 
         encoder17t.getConfigurator().refresh(encoder17tConfig.getConfiguration().MagnetSensor);
         encoder18t.getConfigurator().refresh(encoder18tConfig.getConfiguration().MagnetSensor);
@@ -179,7 +167,7 @@ public class TurretImpl extends Turret {
 
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRotations(turretMotorPos.getValueAsDouble());
+        return Rotation2d.fromRotations(turretMaster.getMotorSignalMap(turretLogger).get(ValueKey.Position.toString()).getValueAsDouble());
     }
 
     private double getDelta(double target, double current) {
@@ -209,6 +197,8 @@ public class TurretImpl extends Turret {
 
     @Override
     public void periodicAfterScheduler() {
+        turretMaster.logEverything();
+
         super.periodicAfterScheduler();
         
         turretConfig.updateGainsConfig(
@@ -275,43 +265,16 @@ public class TurretImpl extends Turret {
         } else {
             turretMotor.stopMotor();
         }
-
-        SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (deg)",
-                turretMotorPos.getValueAsDouble() * 360.0);
-        SmartDashboard.putNumber("Superstructure/Turret/Closed Loop Error (deg)",
-                turretMotorClosedLoopError.getValueAsDouble() * 360.0);
-
-        SmartDashboard.putNumber("Superstructure/Turret/Encoder18t Abs Position (Rot)",
-                encoder18tPos.getValueAsDouble());
-        SmartDashboard.putNumber("Superstructure/Turret/Encoder17t Abs Position (Rot)",
-                encoder17tPos.getValueAsDouble());
-
-        SmartDashboard.putNumber("Superstructure/Turret/Voltage (volts)",
-                turretMotorVoltage.getValueAsDouble());
-
+        
         SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", prevActualTargetAngle);
 
-        DogLog.log("Superstructure/Turret/Stator Current (amps)",
-                    turretMotorStatorCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Turret/Supply Curren (amps)",
-                    turretMotorSupplyCurrent.getValueAsDouble());
-
-        if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Superstructure/Turret/Stator Current (amps)",
-                    turretMotorStatorCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Turret/Supply Curren (amps)",
-                    turretMotorSupplyCurrent.getValueAsDouble());
-
             if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
-                SmartDashboard.putBoolean(
-                        "Robot/CAN/Main/Turret Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Turret.MOTOR) + ")",
-                        turretMotor.isConnected());
                 SmartDashboard.putBoolean("Robot/CAN/Main/Turret 17t Encoder Connected? (ID "
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER17T) + ")", encoder17t.isConnected());
                 SmartDashboard.putBoolean("Robot/CAN/Main/Turret 18t Encoder Connected? (ID "
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER18T) + ")", encoder18t.isConnected());
             }
-        }
+        
         Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
@@ -334,6 +297,6 @@ public class TurretImpl extends Turret {
 
     @Override
     public double getCurrentDraw() {
-        return Double.max(0, turretMotorSupplyCurrent.getValueAsDouble());
+        return Double.max(0, turretMaster.getMotorSignalMap(turretLogger).get(ValueKey.Supply_Current.toString()).getValueAsDouble());
     }
 }

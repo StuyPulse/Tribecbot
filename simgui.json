@@ -78,8 +78,23 @@
   },
   "NetworkTables": {
     "transitory": {
+      "Robot": {
+        "Turret": {
+          "Encoder 17t": {
+            "open": true
+          },
+          "Encoder 18t": {
+            "open": true
+          },
+          "Motor": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      },
       "SmartDashboard": {
-        "FieldPositions": {
+        "Spindexer": {
           "open": true
         },
         "States": {

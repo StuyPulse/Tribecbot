@@ -5,9 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.math.Vector2D;
-
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Field;
@@ -16,6 +13,8 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 import com.stuypulse.robot.util.superstructure.VisualizerTurret;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.math.Vector2D;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,7 +29,9 @@ public abstract class Turret extends SubsystemBase {
     private Vector2D driverInput;
 
     static {
-        instance = Robot.isReal() ? new TurretImpl() : new TurretSim();
+        instance = //Robot.isReal() ? 
+        new TurretImpl();
+        //: new TurretSim();
     }
 
     public static Turret getInstance() {

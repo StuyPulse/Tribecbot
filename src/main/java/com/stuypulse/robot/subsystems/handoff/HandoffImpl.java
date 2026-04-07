@@ -7,8 +7,6 @@ package com.stuypulse.robot.subsystems.handoff;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -16,23 +14,21 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Gains;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.util.PhoenixUtil;
+import com.stuypulse.robot.util.MasterLogger;
+import com.stuypulse.robot.util.MotorLogger;
+import com.stuypulse.robot.util.MotorLogger.SubsystemName;
+import com.stuypulse.robot.util.MotorLogger.ValueKey;
+import com.stuypulse.robot.util.PhoenixUtil.PublishingDestination;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
-import dev.doglog.DogLog;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
@@ -48,16 +44,9 @@ public class HandoffImpl extends Handoff {
     private BStream isStalling;
     private final Follower follower;
 
-    private StatusSignal<Current> motorLeadSupplyCurrent;
-    private StatusSignal<Current> motorLeadStatorCurrent;
-    private StatusSignal<AngularVelocity> motorLeadVelocity;
-    private StatusSignal<Voltage> motorLeadVoltage;
-
-    private StatusSignal<Current> motorFollowSupplyCurrent;
-    private StatusSignal<Current> motorFollowStatorCurrent;
-    private StatusSignal<AngularVelocity> motorFollowVelocity;
-    private StatusSignal<Voltage> motorFollowVoltage;
-    BaseStatusSignal[] signals;
+    private final MotorLogger leadLogger;
+    private final MotorLogger followLogger;
+    private final MasterLogger handOffLogger;
 
     public HandoffImpl() {
         handoffConfig = new Motors.TalonFXConfig()
@@ -78,23 +67,15 @@ public class HandoffImpl extends Handoff {
         handoffConfig.configure(motorLead);
         handoffConfig.configure(motorFollow);
 
+        leadLogger  = new MotorLogger(SubsystemName.Handoff, "Lead Motor", motorLead, Ports.Handoff.MOTOR_LEAD, PublishingDestination.RIO);
+        followLogger  = new MotorLogger(SubsystemName.Handoff, "Follower Motor", motorFollow, Ports.Handoff.MOTOR_FOLLOW, PublishingDestination.RIO);
+        handOffLogger = new MasterLogger(leadLogger, followLogger);
+
         // controller = new VelocityVoltage(getTargetRPM() / Settings.SECONDS_IN_A_MINUTE).withEnableFOC(true);
         controller = new DutyCycleOut(getTargetDutyCycle());
         follower = new Follower(Ports.Handoff.MOTOR_LEAD, MotorAlignmentValue.Opposed);
         voltageOverride = Optional.empty();
-
-        motorLeadSupplyCurrent = motorLead.getSupplyCurrent();
-        motorLeadStatorCurrent = motorLead.getStatorCurrent();
-        motorLeadVelocity = motorLead.getVelocity();
-        motorLeadVoltage = motorLead.getMotorVoltage();
-        motorFollowSupplyCurrent = motorFollow.getSupplyCurrent();
-        motorFollowStatorCurrent = motorFollow.getStatorCurrent();
-        motorFollowVelocity = motorFollow.getVelocity();
-        motorFollowVoltage = motorFollow.getMotorVoltage();
-        signals = new BaseStatusSignal[]{motorLeadSupplyCurrent, motorLeadStatorCurrent, motorLeadVelocity, motorLeadVoltage, motorFollowSupplyCurrent, motorFollowStatorCurrent, motorFollowVelocity, motorFollowVoltage};
-        PhoenixUtil.registerToRio(signals);
-
-        isStalling = BStream.create(() -> motorLeadSupplyCurrent.getValueAsDouble() > Settings.Handoff.HANDOFF_STALL_CURRENT.getAsDouble())
+        isStalling = BStream.create(() -> handOffLogger.getMotorSignalMap(leadLogger).get(ValueKey.Supply_Current.toString()).getValueAsDouble() > Settings.Handoff.HANDOFF_STALL_CURRENT.getAsDouble())
             .filtered(new BDebounce.Both(Settings.Handoff.HANDOFF_STALL_DEBOUNCE_SEC));
     }
 
@@ -104,17 +85,18 @@ public class HandoffImpl extends Handoff {
     }
 
     public double getLeaderRPM() {
-        return motorLeadVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        return handOffLogger.getMotorSignalMap(leadLogger).get(ValueKey.VelocityRPS.toString()).getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
     }
 
     public double getFollowerRPM() {
-        return motorFollowVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        return handOffLogger.getMotorSignalMap(followLogger).get(ValueKey.VelocityRPS.toString()).getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE;
+        //now already logged
     }
 
-    
-    
     @Override
     public void periodicAfterScheduler() {
+        handOffLogger.logEverything();
+
         super.periodicAfterScheduler();
 
         // removed shouldNotShootIntoHub logic (no longer used)
@@ -135,33 +117,7 @@ public class HandoffImpl extends Handoff {
         }
         
         SmartDashboard.putBoolean("Handoff/Should Stop?", Superstructure.getInstance().shouldStop());
-        SmartDashboard.putNumber("Handoff/Lead Velocity", getLeaderRPM());
-        SmartDashboard.putNumber("Handoff/Follow Velocity", getLeaderRPM());
-        // SmartDashboard.putBoolean("Spindexer/Should Stop", shouldStop()); logged twice
         
-        DogLog.log("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());
-        DogLog.log("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-        DogLog.log("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble());
-        DogLog.log("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble());
-        DogLog.log("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-        DogLog.log("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble());
-
-
-        if (Settings.DEBUG_MODE.get()) {     
-            SmartDashboard.putNumber("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble());
-
-            SmartDashboard.putNumber("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble());
-            
-            if(Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
-                SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Lead Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_LEAD) + ")", motorLead.isConnected());
-                SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Follow Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_FOLLOW) + ")", motorFollow.isConnected());
-            }
-        }
-
         Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
     
@@ -185,7 +141,7 @@ public class HandoffImpl extends Handoff {
     
     @Override
     public double getCurrentDraw(){
-        return  Double.max(0, motorLeadSupplyCurrent.getValueAsDouble()) + 
-                Double.max(0, motorFollowSupplyCurrent.getValueAsDouble());
+        return  Double.max(0, handOffLogger.getMotorSignalMap(leadLogger).get(ValueKey.Supply_Current.toString()).getValueAsDouble()) + 
+                Double.max(0, handOffLogger.getMotorSignalMap(followLogger).get(ValueKey.Supply_Current.toString()).getValueAsDouble());
     }
 }

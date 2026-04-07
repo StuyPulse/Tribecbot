@@ -5,37 +5,32 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.hood;
 
-import com.stuypulse.stuylib.streams.booleans.BStream;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+import java.util.Optional;
 
-import dev.doglog.DogLog;
-
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.Robot.RobotMode;
-import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
-import com.stuypulse.robot.constants.Gains;
-import com.stuypulse.robot.constants.Motors;
-import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.util.PhoenixUtil;
-import com.stuypulse.robot.util.SysId;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
-import java.util.Optional;
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
+import com.stuypulse.robot.constants.Gains;
+import com.stuypulse.robot.constants.Motors;
+import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.util.MasterLogger;
+import com.stuypulse.robot.util.MotorLogger;
+import com.stuypulse.robot.util.MotorLogger.SubsystemName;
+import com.stuypulse.robot.util.MotorLogger.ValueKey;
+import com.stuypulse.robot.util.PhoenixUtil;
+import com.stuypulse.robot.util.SysId;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class HoodImpl extends Hood {
     private final Motors.TalonFXConfig hoodConfig;
@@ -56,11 +51,8 @@ public class HoodImpl extends Hood {
 
     private final BStream isStalling;
 
-    private StatusSignal<Angle> hoodMotorPosition;
-    private StatusSignal<Voltage> hoodMotorVoltage;
-    private StatusSignal<Current> hoodMotorSupplyCurrent;
-    private StatusSignal<Current> hoodMotorStatorCurrent;
-    private StatusSignal<Double> hoodMotorClosedLoopError;
+    private final MotorLogger hoodLogger;
+    private final MasterLogger hoodMaster;
 
     public HoodImpl() {
         hoodConfig = new Motors.TalonFXConfig()
@@ -91,6 +83,9 @@ public class HoodImpl extends Hood {
         hoodConfig.configure(hoodMotor);
         // hoodEncoderConfig.configure(hoodEncoder);
 
+        hoodLogger = new MotorLogger(SubsystemName.Hood, "Motor", hoodMotor, Ports.Superstructure.Hood.MOTOR, PhoenixUtil.PublishingDestination.RIO);
+        hoodMaster = new MasterLogger(hoodLogger);
+
         controller = new PositionVoltage(getTargetAngle().getRotations())
                 .withEnableFOC(true);
 
@@ -102,22 +97,14 @@ public class HoodImpl extends Hood {
         voltageOverride = Optional.empty();
 
         isStalling = BStream
-                .create(() -> hoodMotor.getSupplyCurrent()
+                .create(() -> hoodMaster.getMotorSignalMap(hoodLogger).get(ValueKey.Supply_Current.toString())
                         .getValueAsDouble() > Settings.Superstructure.Hood.STALL_CURRENT_LIMIT) // TODO: update value in Settings after testing
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
-
-        hoodMotorPosition = hoodMotor.getPosition();
-        hoodMotorVoltage = hoodMotor.getMotorVoltage();
-        hoodMotorSupplyCurrent = hoodMotor.getSupplyCurrent();
-        hoodMotorStatorCurrent = hoodMotor.getStatorCurrent();
-        hoodMotorClosedLoopError = hoodMotor.getClosedLoopError();
-        PhoenixUtil.registerToRio(hoodMotorPosition, hoodMotorVoltage, hoodMotorSupplyCurrent,
-                hoodMotorStatorCurrent, hoodMotorClosedLoopError);
     }
 
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRotations(hoodMotorPosition.getValueAsDouble());
+        return Rotation2d.fromRotations(hoodMaster.getMotorSignalMap(hoodLogger).get(ValueKey.Position.toString()).getValueAsDouble());
     }
 
     @Override
@@ -152,6 +139,8 @@ public class HoodImpl extends Hood {
     
     @Override
     public void periodicAfterScheduler() {
+        hoodMaster.logEverything();
+
         super.periodicAfterScheduler();
         HoodState state = getState();
 
@@ -188,27 +177,9 @@ public class HoodImpl extends Hood {
         }
 
         SmartDashboard.putBoolean("Superstructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
-
         SmartDashboard.putBoolean("Prematch Checks/Hood at Top?", getAngle().getDegrees() > 39.0);
         SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
-        SmartDashboard.putNumber("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
-
-        DogLog.log("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
-        DogLog.log("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
-        DogLog.log("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
-        DogLog.log("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
-
-        if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
-
-            if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
-                SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
-                // SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
-            }
-        }
+        
         Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
     }
 
@@ -273,6 +244,6 @@ public class HoodImpl extends Hood {
 
     @Override
     public double getCurrentDraw() {
-        return Double.max(0, hoodMotorSupplyCurrent.getValueAsDouble());
+        return Double.max(0, hoodMaster.getMotorSignalMap(hoodLogger).get(ValueKey.Supply_Current.toString()).getValueAsDouble());
     }
 }
