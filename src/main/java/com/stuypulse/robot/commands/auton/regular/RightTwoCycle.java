@@ -30,6 +30,7 @@ public class RightTwoCycle extends SequentialCommandGroup {
     public RightTwoCycle(PathPlannerPath... paths) {
 
         addCommands(
+
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
             
             // NZ Trip 1
@@ -61,7 +62,7 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new HandoffRun().andThen(
                 new SpindexerRun()
             ).andThen(new WaitCommand(1.75)
-                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(4.5),
+                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(5.0),
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             new ParallelCommandGroup(

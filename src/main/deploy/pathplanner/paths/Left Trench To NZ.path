@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.998600237247925,
-        "y": 7.526358244365362
+        "x": 4.439727164887308,
+        "y": 7.655468564650059
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.99456490727532,
-        "y": 7.509029957203994
+        "x": 9.033902728351128,
+        "y": 7.687746144721235
       },
       "isLocked": false,
       "linkedName": "Left Trench Start"
@@ -67,7 +67,7 @@
   "folder": "To NZ",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -76.49029381374567
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
