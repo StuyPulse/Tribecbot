@@ -48,6 +48,8 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
+import com.stuypulse.robot.commands.vision.BlackListAllTagsForAllCameras;
+import com.stuypulse.robot.commands.vision.BlacklistAllTags;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 public class Robot extends TimedRobot {
 
@@ -171,23 +173,15 @@ public class Robot extends TimedRobot {
         mode = RobotMode.DISABLED;
 
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG1));
+
+        CommandScheduler.getInstance().schedule(new BlackListAllTagsForAllCameras());
+
     }
 
     @Override
     public void disabledPeriodic() {
         if (periodicCounter % Settings.LOGGING_FREQUENCY == 0) {
             auto = robot.getAutonomousCommand();
-            switch (auto.getName()) {
-                case "LeftTwoCycle":
-                    CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
-                    break;
-                case "RightTwoCycle":
-                    CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
-                    break;
-                default:
-                    CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
-                    break;
-            }
         }
     }
 

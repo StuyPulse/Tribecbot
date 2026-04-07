@@ -15,7 +15,7 @@ public class SwerveResetPose extends InstantCommand{
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         swerve.resetPose(poseToReset);
     }
 }
