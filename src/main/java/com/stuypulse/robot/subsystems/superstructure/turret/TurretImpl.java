@@ -205,18 +205,6 @@ public class TurretImpl extends Turret {
         return currentAngle + getDelta(getTargetAngle().getDegrees(), currentAngle);
     }
 
-    @Override
-    public boolean atTolerance() {
-        double error = turretMotor.getClosedLoopError().getValueAsDouble();
-
-        double tolerance = switch (getState()) {
-            case SOTM -> Settings.Superstructure.Turret.SOTM_TOLERANCE.get() / 360.0;
-            case FOTM -> Settings.Superstructure.Turret.FOTM_TOLERANCE.getRotations();
-            default  -> Settings.Superstructure.Turret.TOLERANCE.getRotations();
-        };
-
-        return Math.abs(error) < tolerance;
-    }
 
     @Override
     public void periodicAfterScheduler() {

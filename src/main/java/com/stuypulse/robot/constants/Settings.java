@@ -100,13 +100,13 @@ public interface Settings {
     public interface Superstructure {
         public final double SHOOTER_TOLERANCE_RPM_HIGH = 50.0;
         public final double SHOOTER_TOLERANCE_RPM_LOW = 80.0;        
-        public final double SHOOTER_SOTM_TOLERANCE_RPM_HIGH = 50.0;
-        public final double SHOOTER_SOTM_TOLERANCE_RPM_LOW = 80.0;
+        public final double SHOOTER_SOTM_TOLERANCE_RPM_HIGH = 100.0;
+        public final double SHOOTER_SOTM_TOLERANCE_RPM_LOW = 100.0;
         public final double SHOOTER_FOTM_TOLERANCE_RPM_HIGH = 150.0;
         public final double SHOOTER_FOTM_TOLERANCE_RPM_LOW = 250.0;
         
         public final Rotation2d HOOD_TOLERANCE = Rotation2d.fromDegrees(0.5);
-        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(0.5);
+        public final Rotation2d HOOD_SOTM_TOLERANCE = Rotation2d.fromDegrees(2);
 
         public interface AngleInterpolation {
             double[][] distanceAngleInterpolationValues = {
@@ -231,7 +231,7 @@ public interface Settings {
             public final Rotation2d MAX_VEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d MAX_ACCEL = new Rotation2d(Units.degreesToRadians(600.0));
             public final Rotation2d TOLERANCE = Rotation2d.fromDegrees(2.0);
-            public final SmartNumber SOTM_TOLERANCE = new SmartNumber("Superstructure/Turret/SOTM Tolerance", 7.5);//Rotation2d.fromDegrees(10.0);
+            public final SmartNumber SOTM_TOLERANCE = new SmartNumber("Superstructure/Turret/SOTM Tolerance", 6);//Rotation2d.fromDegrees(10.0);
             public final Rotation2d FOTM_TOLERANCE = Rotation2d.fromDegrees(10.0);
             
             public final Rotation2d KB = Rotation2d.fromDegrees(0.0);
