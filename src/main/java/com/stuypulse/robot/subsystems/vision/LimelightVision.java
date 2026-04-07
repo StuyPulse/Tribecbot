@@ -54,40 +54,9 @@ public class LimelightVision extends SubsystemBase {
     private boolean hasData;
     private BStream debouncedHasData;
 
-    private Pipeline currentPipeline;
-
     public enum MegaTagMode {
         MEGATAG1,
         MEGATAG2
-    }
-
-    public enum Pipeline {
-        NO_SUN,
-        LOW_SUN,
-        MED_SUN,
-        HIGH_SUN
-    }
-
-    private int getCurrentPipelineID() {
-        return switch(this.currentPipeline) {
-            case NO_SUN -> 0;
-            case LOW_SUN -> 1;
-            case MED_SUN -> 2;
-            case HIGH_SUN -> 3;
-        };
-    }
-
-    private void iteratePipelineValue() {
-        this.currentPipeline = switch(this.currentPipeline) {
-            case NO_SUN -> Pipeline.LOW_SUN;
-            case LOW_SUN -> Pipeline.MED_SUN;
-            case MED_SUN -> Pipeline.HIGH_SUN;
-            case HIGH_SUN -> Pipeline.NO_SUN;
-        };
-    }
-
-    public void setPipeline(String cameraName, Pipeline pipeline) {
-        this.currentPipeline = pipeline;
     }
 
     public LimelightVision() {
@@ -332,11 +301,6 @@ public class LimelightVision extends SubsystemBase {
             }
 
             SmartDashboard.putBoolean("Vision/Has Data", hasData);
-            
-            for(String cameraName: names) {
-                iteratePipelineValue();
-                LimelightHelpers.setPipelineIndex(cameraName, getCurrentPipelineID());
-            }
         }
     }
 }
