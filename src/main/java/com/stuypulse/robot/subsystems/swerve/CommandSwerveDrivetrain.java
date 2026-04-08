@@ -41,6 +41,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -75,6 +76,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
 	static {
 		instance = TunerConstants.createDrivetrain();
+		instance.registerTelemetry(instance::telemeterize);
+	}
+
+	public void telemeterize(SwerveDriveState state) {
+		/* Write drive state to the log file */
+		SignalLogger.writeStruct("DriveState/Pose", Pose2d.struct, state.Pose);
+		SignalLogger.writeStruct("DriveState/Speeds", ChassisSpeeds.struct, state.Speeds);
+		SignalLogger.writeStructArray("DriveState/ModuleStates", SwerveModuleState.struct, state.ModuleStates);
+		SignalLogger.writeStructArray("DriveState/ModuleTargets", SwerveModuleState.struct, state.ModuleTargets);
+		SignalLogger.writeStructArray("DriveState/ModulePositions", SwerveModulePosition.struct, state.ModulePositions);
+		SignalLogger.writeStruct("DriveState/RawHeading", Rotation2d.struct, state.RawHeading);
+		SignalLogger.writeDouble("DriveState/Timestamp", state.Timestamp, "seconds");
+		SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
+		SignalLogger.writeInteger("DriveState/FailedDaqs", state.FailedDaqs);
 	}
 
 	public static CommandSwerveDrivetrain getInstance() {
@@ -358,6 +373,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	 */
 	@Override
 	public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
+		SignalLogger.writeStruct("Vision/Pose", Pose2d.struct, visionRobotPoseMeters);
+		SignalLogger.writeDouble("Vision/Timestamp", timestampSeconds);
 		super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
 	}
 
@@ -380,10 +397,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	 *                                 meters and radians.
 	 */
 	@Override
-	public void addVisionMeasurement(
-			Pose2d visionRobotPoseMeters,
-			double timestampSeconds,
-			Matrix<N3, N1> visionMeasurementStdDevs) {
+	public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
+		SignalLogger.writeStruct("Vision/Pose", Pose2d.struct, visionRobotPoseMeters);
+		SignalLogger.writeDouble("Vision/Timestamp", timestampSeconds);
 		super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds),
 				visionMeasurementStdDevs);
 	}
