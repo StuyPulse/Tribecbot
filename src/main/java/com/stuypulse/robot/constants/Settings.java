@@ -288,6 +288,7 @@ public interface Settings {
     public interface Swerve {
         public final double MODULE_VELOCITY_DEADBAND_M_PER_S = 0.1;
         public final double ROTATIONAL_DEADBAND_RAD_PER_S = 0.1;
+        double ACCEPTABLE_POSE_DELTA_METERS = Math.sqrt(Field.LENGTH * Field.LENGTH + Field.WIDTH * Field.WIDTH); //TODO: Might wanna make this smaller.
 
         public interface Constraints {
             public final double MAX_VELOCITY_M_PER_S = 4.16; 

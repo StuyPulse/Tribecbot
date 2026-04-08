@@ -88,6 +88,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	private Notifier m_simNotifier = null;
 	private double m_lastSimTime;
 
+	private Pose2d lastGoodPose = Pose2d.kZero;
+
 	/* Swerve requests to apply during SysId characterization */
 	private final SwerveRequest.SysIdSwerveTranslation m_moduleTranslationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
 	private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
@@ -390,7 +392,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 
 	public Pose2d getPose() {
-		return getState().Pose;
+		double proposedX = getState().Pose.getX();
+		double proposedY = getState().Pose.getY();
+		double poseDelta = lastGoodPose.getTranslation().getDistance(getState().Pose.getTranslation());
+		if(!(proposedX > Field.LENGTH || proposedX < 0 || proposedY > Field.WIDTH || proposedY < 0) &&
+			poseDelta < Settings.Swerve.ACCEPTABLE_POSE_DELTA_METERS) {
+			lastGoodPose = getState().Pose;
+		}
+		return lastGoodPose;
 	}
 
 	public void configureAutoBuilder() {
