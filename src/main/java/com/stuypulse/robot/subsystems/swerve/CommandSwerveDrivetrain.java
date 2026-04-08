@@ -439,15 +439,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 
 	public SwerveModuleState[] getModuleStates() {
-		SwerveModuleState[] moduleStates = new SwerveModuleState[4];
-		for (int i = 0; i < 4; i++) {
-			moduleStates[i] = getModule(i).getCurrentState();
-		}
-		return moduleStates;
+    	return getState().ModuleStates;
 	}
 
 	public ChassisSpeeds getChassisSpeeds() {
-		return getKinematics().toChassisSpeeds(getModuleStates());
+    	return getState().Speeds;
 	}
 
 	public Vector2D getFieldRelativeSpeeds() {
