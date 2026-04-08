@@ -123,7 +123,7 @@ public class TurretImpl extends Turret {
 
         controller = new PositionVoltage(getTargetAngle().getRotations()).withEnableFOC(true);
 
-        turretMotor.getClosedLoopError().setUpdateFrequency(1000.0);
+        turretMotor.getClosedLoopError().setUpdateFrequency(50.0);
 
         encoder18tPos = encoder18t.getAbsolutePosition();
         encoder17tPos = encoder17t.getAbsolutePosition();
@@ -210,14 +210,14 @@ public class TurretImpl extends Turret {
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
         
-        turretConfig.updateGainsConfig(
-                turretMotor, 1,
-                Gains.Superstructure.Turret.slot1.kP,
-                Gains.Superstructure.Turret.slot1.kI,
-                Gains.Superstructure.Turret.slot1.kD,
-                Gains.Superstructure.Turret.slot1.kS,
-                Gains.Superstructure.Turret.slot1.kV,
-                Gains.Superstructure.Turret.slot1.kA);
+        // turretConfig.updateGainsConfig(
+        //         turretMotor, 1,
+        //         Gains.Superstructure.Turret.slot1.kP,
+        //         Gains.Superstructure.Turret.slot1.kI,
+        //         Gains.Superstructure.Turret.slot1.kD,
+        //         Gains.Superstructure.Turret.slot1.kS,
+        //         Gains.Superstructure.Turret.slot1.kV,
+        //         Gains.Superstructure.Turret.slot1.kA);
 
         if (!hasUsedAbsoluteEncoder) {
             seedTurret();

@@ -167,15 +167,15 @@ public class IntakeImpl extends Intake {
         PivotState pivotState = getPivotState();
         RollerState rollerState = getRollerState();
 
-        pivotConfig.updateGainsConfig(
-                pivot,
-                0,
-                Gains.Intake.Pivot.kP,
-                Gains.Intake.Pivot.kI,
-                Gains.Intake.Pivot.kD,
-                Gains.Intake.Pivot.kS,
-                Gains.Intake.Pivot.kV,
-                Gains.Intake.Pivot.kA);
+        // pivotConfig.updateGainsConfig(
+        //         pivot,
+        //         0,
+        //         Gains.Intake.Pivot.kP,
+        //         Gains.Intake.Pivot.kI,
+        //         Gains.Intake.Pivot.kD,
+        //         Gains.Intake.Pivot.kS,
+        //         Gains.Intake.Pivot.kV,
+        //         Gains.Intake.Pivot.kA);
 
         boolean applyingPushdownVoltage = false;
         if (EnabledSubsystems.INTAKE.get()) {

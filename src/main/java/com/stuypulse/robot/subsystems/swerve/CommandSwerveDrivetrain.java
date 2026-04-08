@@ -5,11 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.swerve;
 
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
-import java.sql.Struct;
-
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -48,9 +43,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -669,6 +665,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
 
 		if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
+			SmartDashboard.putNumber("Swerve/Failed DAQ Count", this.getState().FailedDaqs);
+			// will confirm whether we are even getting data
+
 			SmartDashboard.putBoolean("FieldPositions/isBehindTower", isBehindTower());
 			SmartDashboard.putBoolean("FieldPositions/isUnderTrench", isUnderTrench());
 			SmartDashboard.putBoolean("FieldPositions/isBehindHub", isBehindHub());

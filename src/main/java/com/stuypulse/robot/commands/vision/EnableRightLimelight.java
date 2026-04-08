@@ -1,7 +1,7 @@
-package com.stuypulse.robot.commands.vision;
+// package com.stuypulse.robot.commands.vision;
 
-public class EnableRightLimelight extends EnablePortForwarding {
-    public EnableRightLimelight() {
-        super("limelight-right.local");
-    }
-}
+// public class EnableRightLimelight extends EnablePortForwarding {
+//     public EnableRightLimelight() {
+//         super("limelight-right.local");
+//     }
+// }

@@ -114,11 +114,11 @@ public class Robot extends TimedRobot {
         if (periodicCounter % 50 == 0) {
             DataLogManager.getLog().resume();
         }
-        if (cameras.getSelected() != selected) {
-            PortForwarder.remove(5801);
-            selected = cameras.getSelected();
-            PortForwarder.add(5801, selected + ".local:5801", 5801);
-        }
+        // if (cameras.getSelected() != selected) {
+        //     PortForwarder.remove(5801);
+        //     selected = cameras.getSelected();
+        //     PortForwarder.add(5801, selected + ".local:5801", 5801);
+        // }
         periodicCounter++;
 
         double batteryVoltage = RobotController.getBatteryVoltage();

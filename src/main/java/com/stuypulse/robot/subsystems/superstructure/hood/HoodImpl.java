@@ -182,7 +182,7 @@ public class HoodImpl extends Hood {
 
         // SmartDashboard.putBoolean("Superstructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
 
-        SmartDashboard.putBoolean("Prematch Checks/Hood at Top?", getAngle().getDegrees() > 39.0);
+        SmartDashboard.putBoolean("Prematch Checks/Hood at Bottom?", getAngle().getDegrees() < Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getDegrees());
         SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
         SmartDashboard.putNumber("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
         SmartDashboard.putNumber("Superstructure/Hood/Implemented Error (Degrees)", getTargetAngle().getDegrees() - getAngle().getDegrees());
@@ -195,10 +195,9 @@ public class HoodImpl extends Hood {
             SmartDashboard.putBoolean("Superstructure/Hood/is stalling", isStalling());
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 
-
             if (Robot.getMode() == RobotMode.DISABLED && !DriverStation.isFMSAttached()) {
-                SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
-                // SmartDashboard.putBoolean("Robot/CAN/Canivore/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
+                SmartDashboard.putBoolean("Robot/CAN/Rio/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
+                // SmartDashboard.putBoolean("Robot/CAN/Rio/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
             }
         }
     }
