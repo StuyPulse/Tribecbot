@@ -123,7 +123,7 @@ public class TurretImpl extends Turret {
 
         controller = new PositionVoltage(getTargetAngle().getRotations()).withEnableFOC(true);
 
-        turretMotor.getClosedLoopError().setUpdateFrequency(500.0); //TODO: Go lower
+        turretMotor.getClosedLoopError().setUpdateFrequency(200.0); //TODO: Go lower
 
         encoder18tPos = encoder18t.getAbsolutePosition();
         encoder17tPos = encoder17t.getAbsolutePosition();

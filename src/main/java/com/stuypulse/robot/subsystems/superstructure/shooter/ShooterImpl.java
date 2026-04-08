@@ -73,14 +73,14 @@ public class ShooterImpl extends Shooter {
 
         // RIO CANBUS UTILIZATION AT 100 PERCENT, DROPPED UPDATE HZ FOR VELOCITY AND TORQUECURRENT TO 500 FROM 1000
         shooterLeader = new TalonFX(Ports.Superstructure.Shooter.MOTOR_LEAD, Ports.RIO);
-        shooterLeader.getVelocity().setUpdateFrequency(500.0); //TODO: Go lower
-        shooterLeader.getTorqueCurrent().setUpdateFrequency(500.0);
+        shooterLeader.getVelocity().setUpdateFrequency(200.0); //TODO: Go lower
+        shooterLeader.getTorqueCurrent().setUpdateFrequency(50.0);
         shooterLeader.getStatorCurrent().setUpdateFrequency(50.0);
         shooterLeader.getSupplyCurrent().setUpdateFrequency(50.0);
 
         shooterFollower = new TalonFX(Ports.Superstructure.Shooter.MOTOR_FOLLOW, Ports.RIO);
-        shooterFollower.getVelocity().setUpdateFrequency(500.0); //TODO: Go lower
-        shooterFollower.getTorqueCurrent().setUpdateFrequency(500.0);
+        shooterFollower.getVelocity().setUpdateFrequency(200.0); //TODO: Go lower
+        shooterFollower.getTorqueCurrent().setUpdateFrequency(50.0);
         shooterFollower.getStatorCurrent().setUpdateFrequency(50.0);
         shooterFollower.getSupplyCurrent().setUpdateFrequency(50.0);
 
