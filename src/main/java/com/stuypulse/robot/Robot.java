@@ -24,6 +24,7 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;

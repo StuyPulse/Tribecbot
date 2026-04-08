@@ -361,6 +361,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		m_simNotifier.startPeriodic(kSimLoopPeriod);
 	}
 
+	private boolean checkIfVisionMeasurementValid(Pose2d visionPose) {
+		return visionPose.getTranslation().getDistance(getState().Pose.getTranslation()) < Settings.Swerve.MAX_ACCEPTABLE_VISION_DEVIATION_METERS;
+	} 
+
 	/**
 	 * Adds a vision measurement to the Kalman Filter. This will correct the
 	 * odometry pose estimate
@@ -375,7 +379,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
 		SignalLogger.writeStruct("Vision/Pose", Pose2d.struct, visionRobotPoseMeters);
 		SignalLogger.writeDouble("Vision/Timestamp", timestampSeconds);
-		super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+
+		if(checkIfVisionMeasurementValid(visionRobotPoseMeters)) { 
+			super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+		}
 	}
 
 	/**
@@ -400,8 +407,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs) {
 		SignalLogger.writeStruct("Vision/Pose", Pose2d.struct, visionRobotPoseMeters);
 		SignalLogger.writeDouble("Vision/Timestamp", timestampSeconds);
-		super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds),
-				visionMeasurementStdDevs);
+
+		if(checkIfVisionMeasurementValid(visionRobotPoseMeters)) { 
+			super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds),
+					visionMeasurementStdDevs);
+		}
 	}
 
 	public Pose2d getPose() {

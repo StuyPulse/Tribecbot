@@ -40,6 +40,9 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveFOTM;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
+import com.stuypulse.robot.commands.swerve.SwerveResetPose;
+import com.stuypulse.robot.commands.swerve.SwerveResetPoseLeftCorner;
+import com.stuypulse.robot.commands.swerve.SwerveResetPoseRightCorner;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
@@ -73,6 +76,7 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -306,6 +310,9 @@ public class RobotContainer {
         // Vision
         SmartDashboard.putData("Robot/Set Megatag 1", new SetMegaTagMode(MegaTagMode.MEGATAG1));
         SmartDashboard.putData("Robot/Set Megatag 2", new SetMegaTagMode(MegaTagMode.MEGATAG2));
+
+        SmartDashboard.putData("Robot/Set Robot Pose Left Corner", new SwerveResetPoseLeftCorner());
+        SmartDashboard.putData("Robot/Set Robot Pose Right Corner", new SwerveResetPoseRightCorner());
 
         // SmartDashboard.putData("Robot/Set Left LL PF", new EnableLeftLimelight());
         // SmartDashboard.putData("Robot/Set Right LL PF", new EnableRightLimelight());
