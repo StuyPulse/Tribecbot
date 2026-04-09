@@ -70,19 +70,6 @@
                 }
               },
               {
-                "title": "Swerve",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 166.0,
-                "height": 166.0,
-                "type": "Toggle Switch",
-                "properties": {
-                  "topic": "SmartDashboard/Enabled Subsystems/Swerve Is Enabled",
-                  "period": 0.06,
-                  "data_type": "boolean"
-                }
-              },
-              {
                 "title": "Shooter",
                 "x": 0.0,
                 "y": 0.0,
@@ -122,19 +109,6 @@
                 }
               },
               {
-                "title": "Left Limelight",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 166.0,
-                "height": 166.0,
-                "type": "Toggle Switch",
-                "properties": {
-                  "topic": "SmartDashboard/Enabled Subsystems/Left Limelight Is Enabled",
-                  "period": 0.06,
-                  "data_type": "boolean"
-                }
-              },
-              {
                 "title": "Right Limelight",
                 "x": 0.0,
                 "y": 0.0,
@@ -157,6 +131,32 @@
                 "properties": {
                   "topic": "SmartDashboard/Enabled Subsystems/LEDs Is Enabled",
                   "period": 0.5,
+                  "data_type": "boolean"
+                }
+              },
+              {
+                "title": "Swerve",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 166.0,
+                "height": 166.0,
+                "type": "Toggle Switch",
+                "properties": {
+                  "topic": "SmartDashboard/Enabled Subsystems/Swerve Is Enabled",
+                  "period": 0.06,
+                  "data_type": "boolean"
+                }
+              },
+              {
+                "title": "Left Limelight",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 166.0,
+                "height": 166.0,
+                "type": "Toggle Switch",
+                "properties": {
+                  "topic": "SmartDashboard/Enabled Subsystems/Left Limelight Is Enabled",
+                  "period": 0.06,
                   "data_type": "boolean"
                 }
               }
@@ -903,10 +903,10 @@
           },
           {
             "title": "Handoff Reverse",
-            "x": 1120.0,
+            "x": 560.0,
             "y": 420.0,
             "width": 280.0,
-            "height": 280.0,
+            "height": 140.0,
             "type": "Command",
             "properties": {
               "topic": "/SmartDashboard/Robot/Handoff Reverse",
@@ -917,10 +917,10 @@
           },
           {
             "title": "Intake Reverse",
-            "x": 560.0,
+            "x": 840.0,
             "y": 420.0,
             "width": 280.0,
-            "height": 280.0,
+            "height": 140.0,
             "type": "Command",
             "properties": {
               "topic": "/SmartDashboard/Robot/Intake Reverse",
@@ -931,10 +931,10 @@
           },
           {
             "title": "Spindexer Reverse",
-            "x": 840.0,
+            "x": 1120.0,
             "y": 420.0,
             "width": 280.0,
-            "height": 280.0,
+            "height": 140.0,
             "type": "Command",
             "properties": {
               "topic": "/SmartDashboard/Robot/Spindexer Reverse",
@@ -976,7 +976,7 @@
           },
           {
             "title": "Current Intake Angle",
-            "x": 910.0,
+            "x": 560.0,
             "y": 700.0,
             "width": 210.0,
             "height": 140.0,
@@ -1006,7 +1006,7 @@
           },
           {
             "title": "Current Hood Angle",
-            "x": 280.0,
+            "x": 1050.0,
             "y": 700.0,
             "width": 210.0,
             "height": 140.0,
@@ -1020,7 +1020,7 @@
           },
           {
             "title": "Hood Homing Routine Lower",
-            "x": 0.0,
+            "x": 770.0,
             "y": 700.0,
             "width": 280.0,
             "height": 140.0,
@@ -1034,7 +1034,7 @@
           },
           {
             "title": "Seed Intake At Upper Limit",
-            "x": 630.0,
+            "x": 280.0,
             "y": 700.0,
             "width": 280.0,
             "height": 140.0,
@@ -1048,7 +1048,7 @@
           },
           {
             "title": "Seed Intake At Lower Limit",
-            "x": 1120.0,
+            "x": 0.0,
             "y": 700.0,
             "width": 280.0,
             "height": 140.0,
@@ -1072,6 +1072,47 @@
               "period": 0.5,
               "data_type": "string",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "Enable Distance Check?",
+            "x": 560.0,
+            "y": 560.0,
+            "width": 140.0,
+            "height": 140.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "SmartDashboard/Robot/Enable Distance Check?",
+              "period": 0.5,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Set Robot Pose Right Corner",
+            "x": 1120.0,
+            "y": 560.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Robot Pose Right Corner",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Set Robot Pose Left Corner",
+            "x": 840.0,
+            "y": 560.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Robot Pose Left Corner",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
             }
           }
         ]
@@ -1451,7 +1492,7 @@
             "title": "Current Turret Angle",
             "x": 980.0,
             "y": 560.0,
-            "width": 210.0,
+            "width": 280.0,
             "height": 140.0,
             "type": "Text Display",
             "properties": {
@@ -1490,64 +1531,8 @@
             }
           },
           {
-            "title": "Set Back LL PF",
-            "x": 0.0,
-            "y": 700.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Set Back LL PF",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
-            "title": "Set Left LL PF",
-            "x": 280.0,
-            "y": 700.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Set Left LL PF",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
-            "title": "Set Right LL PF",
-            "x": 560.0,
-            "y": 700.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Set Right LL PF",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
-            "title": "Seed Hood Relative Encoder At Lower Hardstop",
-            "x": 0.0,
-            "y": 420.0,
-            "width": 280.0,
-            "height": 140.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Robot/Seed Hood Relative Encoder At Lower Hardstop",
-              "period": 0.5,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
             "title": "Current Intake Angle",
-            "x": 420.0,
+            "x": 770.0,
             "y": 560.0,
             "width": 210.0,
             "height": 140.0,
@@ -1568,6 +1553,118 @@
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/Superstructure/Hood/Current Angle (deg)",
+              "period": 0.5,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Seed Hood Relative Encoder At Lower Hardstop",
+            "x": 0.0,
+            "y": 420.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Seed Hood Relative Encoder At Lower Hardstop",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Set Exposure 25",
+            "x": 0.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Exposure 25",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Set Exposure 80",
+            "x": 280.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Exposure 80",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Set Exposure 100",
+            "x": 560.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Exposure 100",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Set Exposure 130",
+            "x": 840.0,
+            "y": 700.0,
+            "width": 280.0,
+            "height": 140.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Set Exposure 130",
+              "period": 0.5,
+              "show_type": true,
+              "maximize_button_space": false
+            }
+          },
+          {
+            "title": "Pipeline back",
+            "x": 1260.0,
+            "y": 560.0,
+            "width": 140.0,
+            "height": 70.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/limelight-back/getpipe",
+              "period": 0.5,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Pipeline right",
+            "x": 1260.0,
+            "y": 490.0,
+            "width": 140.0,
+            "height": 70.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/limelight-right/getpipe",
+              "period": 0.5,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Pipeline Left",
+            "x": 1260.0,
+            "y": 420.0,
+            "width": 140.0,
+            "height": 70.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/limelight-left/getpipe",
               "period": 0.5,
               "data_type": "double",
               "show_submit_button": false

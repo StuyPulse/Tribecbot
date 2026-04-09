@@ -323,10 +323,10 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/WL Tower Tags Right-Camera", new WhitelistTowerTags("limelight-right"));
         SmartDashboard.putData("Robot/Whitelist All Cameras", new WhitelistAllTagsForAllCameras());
 
-        SmartDashboard.putData("Robot/Set Exposure 25", new SetPipeline(Pipeline.NO_SUN));
-        SmartDashboard.putData("Robot/Set Exposure 80", new SetPipeline(Pipeline.LOW_SUN));
-        SmartDashboard.putData("Robot/Set Exposure 100", new SetPipeline(Pipeline.MED_SUN));
-        SmartDashboard.putData("Robot/Set Exposure 130", new SetPipeline(Pipeline.HIGH_SUN));
+        SmartDashboard.putData("Robot/Set Pipeline No Sun", new SetPipeline(Pipeline.NO_SUN));
+        SmartDashboard.putData("Robot/Set Pipeline Low Sun", new SetPipeline(Pipeline.LOW_SUN));
+        SmartDashboard.putData("Robot/Set Pipeline Med Sun", new SetPipeline(Pipeline.MED_SUN));
+        SmartDashboard.putData("Robot/Set Pipeline High Sun", new SetPipeline(Pipeline.HIGH_SUN));
 
         // Unjamming
         SmartDashboard.putData("Robot/Handoff Reverse", 

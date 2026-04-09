@@ -362,7 +362,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 
 	private boolean checkIfVisionMeasurementValid(Pose2d visionPose) {
-		return visionPose.getTranslation().getDistance(getState().Pose.getTranslation()) < Settings.Swerve.MAX_ACCEPTABLE_VISION_DEVIATION_METERS;
+		return !Settings.ENABLE_DISTANCE_CHECK.get() || visionPose.getTranslation().getDistance(getState().Pose.getTranslation()) < Settings.Swerve.MAX_ACCEPTABLE_VISION_DEVIATION_METERS;
 	} 
 
 	/**
@@ -419,11 +419,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		double proposedX = proposedPose.getX();
 		double proposedY = proposedPose.getY();
 		double poseDelta = lastGoodPose.getTranslation().getDistance(proposedPose.getTranslation());
-		
-		if(!(proposedX > Field.LENGTH || proposedX < 0 || proposedY > Field.WIDTH || proposedY < 0) &&
-			poseDelta <= Settings.Swerve.MAX_ACCEPTABLE_POSE_DELTA_METERS) {
+	
+		 if (!(proposedX > Field.LENGTH || proposedX < 0 || proposedY > Field.WIDTH || proposedY < 0) &&
+		 	poseDelta <= Settings.Swerve.MAX_ACCEPTABLE_POSE_DELTA_METERS) {
 			lastGoodPose = proposedPose;
-		}
+		 }
 
 		return lastGoodPose;
 	}

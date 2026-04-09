@@ -37,6 +37,8 @@ public interface Settings {
     public final SmartBoolean DEBUG_MODE = new SmartBoolean("Robot/DebugMode", true);
     public final CANBus CANIVORE = new CANBus("canivore", "./logs/example.hoot");
     public final double LOOP_OVERRUN_WARNING_TIME_SEC = 1; 
+    SmartBoolean ENABLE_DISTANCE_CHECK = new SmartBoolean("Robot/Enable Distance Check?", false);
+    SmartBoolean ENABLE_OUT_OF_FIELD_CHECK = new SmartBoolean("Robot/Enable out of field check", true);
 
     public interface Handoff {
         public final double GEAR_RATIO = 3.0 / 1.0;
