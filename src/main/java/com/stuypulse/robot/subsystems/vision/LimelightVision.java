@@ -25,6 +25,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.util.Units;
@@ -56,7 +57,7 @@ public class LimelightVision extends SubsystemBase {
     private BStream debouncedHasData;
 
     private Pipeline currentPipeline;
-    private final Pipeline[] HDRPipelines = {Pipeline.NO_SUN, Pipeline.HIGH_SUN};
+    private Timer hdrTimer = new Timer();
 
     public enum MegaTagMode {
         MEGATAG1,
@@ -115,6 +116,8 @@ public class LimelightVision extends SubsystemBase {
         enabled = new SmartBoolean("Vision/Is Enabled", true);
         megaTagMode = MegaTagMode.MEGATAG1;
         setIMUMode(1);
+
+        hdrTimer.reset();
 
         debouncedHasData = BStream.create(
                 () -> hasData)
@@ -339,6 +342,19 @@ public class LimelightVision extends SubsystemBase {
                     // this is just the yaw of the internal imu 
                     SmartDashboard.putNumber("Vision/Limelight Yaw " + limelightName, LimelightHelpers.getIMUData(limelightName).Yaw);
                     SmartDashboard.putNumber("Vision/Limelight Robot Yaw Passed in", (CommandSwerveDrivetrain.getInstance().getPose().getRotation().getDegrees() + (Robot.isBlue() ? 0 : 180)) % 360);
+                }
+            }
+
+            if (Settings.Vision.HDR_ENABLED.get()) {
+                Pipeline nextHdrPipeline = Pipeline.NO_SUN;
+                if (!hdrTimer.hasElapsed(Settings.Vision.HDR_TIMEOUT_SEC)) {
+
+                    if (currentPipeline == Pipeline.NO_SUN) {
+                        nextHdrPipeline = Pipeline.HIGH_SUN;
+                    }
+
+                    setPipeline(nextHdrPipeline);
+                    hdrTimer.reset();
                 }
             }
 

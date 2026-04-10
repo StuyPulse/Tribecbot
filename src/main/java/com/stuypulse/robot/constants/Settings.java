@@ -386,6 +386,9 @@ public interface Settings {
         public final double MAX_ANGULAR_VELOCITY_RAD_SEC = 2 * Math.PI;
         double MIN_TAG_AREA = 5; //TODO: MAKE SURE THIS IS A GOOD VALUE!!!
 
+        SmartBoolean HDR_ENABLED = new SmartBoolean("Vision/HDR Enabled?", true);
+        double HDR_TIMEOUT_SEC = 0.25;
+
         public final double BUZZ_DEBOUNCE = 0.25;
     }
 }
