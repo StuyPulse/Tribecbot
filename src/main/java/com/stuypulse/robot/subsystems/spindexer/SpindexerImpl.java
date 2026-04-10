@@ -29,6 +29,7 @@ import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -125,13 +126,13 @@ public class SpindexerImpl extends Spindexer {
         boolean turretLaggingSOTM = !superstructure.isTurretAtTolerance() && superstructureState == SuperstructureState.SOTM;
 
 
-        SmartDashboard.putBoolean("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/is Turret Wrapping?", isTurretWrapping);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/is Outside Alliance zone?", isOutsideAllianceZone);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/is Under Trenche?", isUnderTrench);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/inManualState", inManualState);
+        DogLog.log("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        DogLog.log("Spindexer/Should Stop/is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        DogLog.log("Spindexer/Should Stop/is Turret Wrapping?", isTurretWrapping);
+        DogLog.log("Spindexer/Should Stop/is Outside Alliance zone?", isOutsideAllianceZone);
+        DogLog.log("Spindexer/Should Stop/is Under Trenche?", isUnderTrench);
+        DogLog.log("Spindexer/Should Stop/turret lagging sotm", turretLaggingSOTM);
+        DogLog.log("Spindexer/Should Stop/inManualState", inManualState);
         return isStopState || 
         isTurretWrapping || 
         (isBehindHubWhileFerrying && !inManualState) || 
@@ -179,12 +180,12 @@ public class SpindexerImpl extends Spindexer {
             leaderMotor.stopMotor();
         }
 
-        SmartDashboard.putNumber("Spindexer/Leader Motor RPM", getMotorRPM());
+        DogLog.log("Spindexer/Leader Motor RPM", getMotorRPM());
         // SmartDashboard.putBoolean("Spindexer/Unjamming", unJamming);
 
-        SmartDashboard.putNumber("Spindexer/Leader Voltage (volts)", leaderMotorVoltage.getValueAsDouble());
-        SmartDashboard.putNumber("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
-        SmartDashboard.putNumber("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
+        DogLog.log("Spindexer/Leader Voltage (volts)", leaderMotorVoltage.getValueAsDouble());
+        DogLog.log("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
+        DogLog.log("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
 
     SmartDashboard.putBoolean("Spindexer/Should Stop?", shouldStop());
 
