@@ -184,7 +184,7 @@ public class IntakeImpl extends Intake {
         //         Gains.Intake.Pivot.kV,
         //         Gains.Intake.Pivot.kA);
 
-        boolean applyingPushdownVoltage = false;
+        boolean applyingPushdownCurrent = false;
         if (EnabledSubsystems.INTAKE.get()) {
             if (pivotVoltageOverride.isPresent()) {
                 pivot.setVoltage(pivotVoltageOverride.get());
@@ -194,11 +194,11 @@ public class IntakeImpl extends Intake {
                     getPivotAngle().getDegrees() <= Settings.Intake.ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE.getDegrees()
                     && rollerState != RollerState.STOP) {
                         // pivot.setControl(new VoltageOut(Settings.Intake.PUSHDOWN_VOLTAGE)); // applying 3 volts
-                        // double pushdownCurrent = 
-                        //     Robot.getMode() == RobotMode.AUTON ? 
-                        //     Settings.Intake.PUSHDOWN_CURRENT_AUTON : Settings.Intake.PUSHDOWN_CURRENT_TELEOP;
-                        pivot.setControl(torqueCurrentFOC.withOutput(Settings.Intake.PUSHDOWN_CURRENT_TELEOP));
-                        applyingPushdownVoltage = true;
+                        double pushdownCurrent = 
+                            Robot.getMode() == RobotMode.AUTON ? 
+                            Settings.Intake.PUSHDOWN_CURRENT_AUTON : Settings.Intake.PUSHDOWN_CURRENT_TELEOP;
+                        pivot.setControl(torqueCurrentFOC.withOutput(pushdownCurrent));
+                        applyingPushdownCurrent = true;
                 } else if (pivotState == PivotState.HOMING) {
                     pivot.setControl(voltageOut.withOutput(-Settings.Intake.HOMING_VOLTAGE));
                 } else {
@@ -230,7 +230,7 @@ public class IntakeImpl extends Intake {
         if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
 
             // PIVOT
-            SmartDashboard.putBoolean("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownVoltage);
+            SmartDashboard.putBoolean("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownCurrent);
 
             SmartDashboard.putNumber("Intake/Pivot Closed Loop Error (deg)",
                     pivot.getClosedLoopError().getValueAsDouble() * 360.0);
