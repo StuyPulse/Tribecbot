@@ -714,8 +714,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
 
 		if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
-			SmartDashboard.putNumber("Swerve/Robot Accel X", robotAccelerationX.getValueAsDouble());
-			SmartDashboard.putNumber("Swerve/Robot Accel Y", robotAccelerationY.getValueAsDouble());
+			SmartDashboard.putNumber("Swerve/Robot Accel X", robotAccelerationX.getValueAsDouble() * 9.81);
+			SmartDashboard.putNumber("Swerve/Robot Accel Y", robotAccelerationY.getValueAsDouble() * 9.81);
 
 			SmartDashboard.putNumber("Swerve/Failed DAQ Count", this.getState().FailedDaqs);
 			SmartDashboard.putNumber("Swerve/CANBus Utiliaztion", Ports.CANIVORE.getStatus().BusUtilization);
