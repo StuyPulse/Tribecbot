@@ -131,10 +131,10 @@ public class IntakeImpl extends Intake {
         pivotMotorVoltage = pivot.getMotorVoltage();
         rollerLeaderVoltage = rollerLeader.getMotorVoltage();
         rollerFollowerVoltage = rollerFollower.getMotorVoltage();
-        PhoenixUtil.registerToRio(pivotStatorCurrent, rollerLeaderSupplyCurrent,
+        PhoenixUtil.registerToRio(pivotSupplyCurrent, pivotStatorCurrent, pivotMotorPosition, rollerLeaderSupplyCurrent,
                 rollerLeaderStatorCurrent, rollerFollowerSupplyCurrent, rollerFollowerStatorCurrent,
                 rollerLeaderTemperature, rollerFollowerTemperature, pivotTemperature, pivotMotorVoltage,
-                rollerLeaderVoltage, rollerFollowerVoltage, pivotMotorPosition );
+                rollerLeaderVoltage, rollerFollowerVoltage);
 
         pivotStalling = BStream.create(
                 () -> Math.abs(pivotSupplyCurrent.getValueAsDouble()) > Settings.Intake.STALL_CURRENT_LIMIT)
