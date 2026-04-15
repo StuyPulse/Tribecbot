@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.144475190839694,
-        "y": 4.026631679389314
+        "x": 3.689714693295292,
+        "y": 2.9220133587786257
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.997986641221376,
-        "y": 5.876030534351146
+        "x": 3.297321789223996,
+        "y": 2.918542121498757
       },
       "isLocked": false,
-      "linkedName": "Middy"
+      "linkedName": "Right Bump Start"
     },
     {
       "anchor": {
-        "x": 3.4749522900763368,
-        "y": 5.507824427480916
+        "x": 3.1592296718972896,
+        "y": 2.9220133587786257
       },
       "prevControl": {
-        "x": 5.516822519083972,
-        "y": 5.616612595419848
+        "x": 3.517516983361412,
+        "y": 2.8905025227689913
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Bump Score"
+      "linkedName": "Right Bump Pre"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.19,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.75,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.7,
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "To Score",
+  "folder": "Bump Stuff",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

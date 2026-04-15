@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.7207369258195486,
-        "y": 6.064140721945863
+        "x": 1.0114122681883022,
+        "y": 6.176348074179743
       },
       "isLocked": false,
       "linkedName": "Left Bump Score"
@@ -40,11 +40,11 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 0.5016872890888694,
       "constraints": {
-        "maxVelocity": 0.5,
-        "maxAcceleration": 0.75,
+        "maxVelocity": 0.75,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 50.0,
         "maxAngularAcceleration": 100.0,
-        "nominalVoltage": 12.5,
+        "nominalVoltage": 12.7,
         "unlimited": false
       }
     }
@@ -52,7 +52,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.19,
+    "maxVelocity": 1.5,
     "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
@@ -67,7 +67,7 @@
   "folder": "To Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

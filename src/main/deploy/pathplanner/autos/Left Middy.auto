@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Bump To NZ"
+            "pathName": "Left Bump To Score (Start)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Middy To Bump Score"
+            "pathName": "Left Bump To Score"
           }
         },
         {

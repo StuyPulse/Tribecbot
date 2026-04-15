@@ -10,6 +10,7 @@ import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
+import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -26,35 +27,42 @@ public class RightMiddy extends SequentialCommandGroup {
             
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
-            // NZ Trip 1
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
-                new WaitCommand(0.75).andThen(new IntakeDeploy())
+            new SuperstructureSOTM(),
+            new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
+            new ParallelCommandGroup(
+                new HandoffRun(),
+                new SpindexerRun(),
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]),
+                new WaitCommand(2.0)
             ),
 
-            // Trip 1 To Score
+            // NZ Trip 1
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]).alongWith(
-                new SuperstructureAutoInterpolation()
+                new ParallelCommandGroup(
+                    new IntakeDeploy(),
+                    new HandoffStop(),
+                    new SpindexerStop()
+                )
             ),
+
+            new WaitCommand(0.5),
 
             // SOTM To Depot
-            new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new HandoffRun().alongWith(new SpindexerRun()),
             new ParallelCommandGroup(
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
-                new WaitCommand(3.0).andThen(
-                    new IntakeAutoDigest().repeatedly().withTimeout(3.0).andThen(new IntakeDeploy())
-                ),
                 new WaitCommand(6.0).andThen(
                     new HandoffStop().alongWith(new SpindexerStop())
                 )
             ),
+            
+            new WaitCommand(0.5),
 
             // Off Depot
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
-                new WaitCommand(1.0).andThen(new HandoffRun().alongWith(new SpindexerRun())),
-                new WaitCommand(3.0).andThen(new IntakeAutoDigest().repeatedly())
+                new HandoffRun().alongWith(new SpindexerRun()),
+                new WaitCommand(5.0).andThen(new IntakeAutoDigest().repeatedly())
             )
 
         );
