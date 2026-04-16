@@ -64,25 +64,49 @@ public interface Field {
         return CommandSwerveDrivetrain.getInstance().getPose().getY() >= Field.TOWER_FAR_CENTER.getY();
     }
 
-    public final Pose2d LEFT_FERRY_ZONE = new Pose2d(
+    public final Pose2d INNER_LEFT_FERRY_ZONE = new Pose2d(
             Units.inchesToMeters(31.5),
-            WIDTH - Units.inchesToMeters(34.5) - Units.inchesToMeters(12),
+            WIDTH - Units.inchesToMeters(34.5) - Units.inchesToMeters(18),
             new Rotation2d()
     );
 
-    public final Pose2d RIGHT_FERRY_ZONE = new Pose2d(
+    public final Pose2d INNER_RIGHT_FERRY_ZONE = new Pose2d(
             Units.inchesToMeters(20.75),
-            Units.inchesToMeters(76) + Units.inchesToMeters(12),
+            Units.inchesToMeters(76) + Units.inchesToMeters(18),
             new Rotation2d()
     );
+
+    public final Pose2d OUTER_LEFT_FERRY_ZONE = new Pose2d(
+            Units.inchesToMeters(31.5),
+            WIDTH - Units.inchesToMeters(34.5),
+            new Rotation2d()
+    );
+
+    public final Pose2d OUTER_RIGHT_FERRY_ZONE = new Pose2d(
+            Units.inchesToMeters(20.75),
+            Units.inchesToMeters(76),
+            new Rotation2d()
+    );
+
+    public final double FERRY_SWITCH_TRIGGER_METERS_FROM_EDGE = Units.inchesToMeters(50);
 
     public static Pose2d getFerryZonePose(Translation2d robot) {
         double fieldMidY = WIDTH / 2.0;
 
         if (robot.getY() > fieldMidY) {
-            return LEFT_FERRY_ZONE;
+            if(robot.getY() > WIDTH - FERRY_SWITCH_TRIGGER_METERS_FROM_EDGE) { 
+                return INNER_LEFT_FERRY_ZONE;
+            }
+            else {
+                return OUTER_LEFT_FERRY_ZONE;
+            }
         } else {
-            return RIGHT_FERRY_ZONE;
+            if(robot.getY() < FERRY_SWITCH_TRIGGER_METERS_FROM_EDGE) { 
+                return INNER_RIGHT_FERRY_ZONE;
+            }
+            else {
+                return OUTER_RIGHT_FERRY_ZONE;
+            }
         }
     }
 
