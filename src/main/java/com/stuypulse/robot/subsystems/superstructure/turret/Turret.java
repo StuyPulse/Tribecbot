@@ -5,9 +5,6 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
-import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.math.Vector2D;
-
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Field;
@@ -16,11 +13,13 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 import com.stuypulse.robot.util.superstructure.VisualizerTurret;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.math.Vector2D;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
@@ -75,7 +74,7 @@ public abstract class Turret extends SubsystemBase {
     }
 
     public Rotation2d driverInputToAngle() {
-        SmartDashboard.putNumber("Superstructure/Turret/Driver Input", driverInput.x);
+        DogLog.log("Superstructure/Turret/Driver Input", driverInput.x);
         return Rotation2d.fromDegrees(driverInput.x * 180); 
     }
  
@@ -134,10 +133,10 @@ public abstract class Turret extends SubsystemBase {
     }
 
     public void periodicAfterScheduler() {
-        SmartDashboard.putString("Superstructure/Turret/State", state.name());
+        DogLog.log("Superstructure/Turret/State", state.name());
         
-        SmartDashboard.putNumber("Superstructure/Turret/Target Angle", getTargetAngle().getDegrees());
-        SmartDashboard.putNumber("Superstructure/Turret/Current Angle", getAngle().getDegrees());
+        DogLog.log("Superstructure/Turret/Target Angle", getTargetAngle().getDegrees());
+        DogLog.log("Superstructure/Turret/Current Angle", getAngle().getDegrees());
 
         if (Settings.DEBUG_MODE.get()) {
             if (EnabledSubsystems.TURRET.get()) {

@@ -16,6 +16,7 @@ import com.stuypulse.robot.constants.Settings.Superstructure.RPMInterpolation;
 import com.stuypulse.robot.constants.Settings.Superstructure.TOFInterpolation;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -152,9 +153,9 @@ public class InterpolationCalculator {
         double targetRPM = ferryingDistanceRPMInterpolator.get(distanceMeters);
         double flightTime = ferryingDistanceTOFInterpolator.get(distanceMeters);
         
-        SmartDashboard.putNumber("Superstructure/Interpolated Ferry Target Angle", targetAngle.getDegrees());
-        SmartDashboard.putNumber("Superstructure/Interpolated Ferry RPM", targetRPM);
-        SmartDashboard.putNumber("Superstructure/Interpolated Ferry TOF", flightTime);
+        DogLog.log("Superstructure/Interpolated Ferry Target Angle", targetAngle.getDegrees());
+        DogLog.log("Superstructure/Interpolated Ferry RPM", targetRPM);
+        DogLog.log("Superstructure/Interpolated Ferry TOF", flightTime);
 
         return new InterpolatedFerryInfo(
             targetAngle, 

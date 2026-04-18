@@ -23,17 +23,15 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class HandoffImpl extends Handoff {
@@ -134,22 +132,22 @@ public class HandoffImpl extends Handoff {
             motorFollow.stopMotor();
         }
         
-        SmartDashboard.putNumber("Handoff/Lead Velocity", getLeaderRPM());
-        SmartDashboard.putNumber("Handoff/Follow Velocity", getLeaderRPM());
+        DogLog.log("Handoff/Lead Velocity", getLeaderRPM());
+        DogLog.log("Handoff/Follow Velocity", getLeaderRPM());
         
 
         if (Settings.DEBUG_MODE.get()) {     
-            SmartDashboard.putNumber("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());
+            DogLog.log("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble());
 
-            SmartDashboard.putNumber("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble());
+            DogLog.log("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble());
             
             if(Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Lead Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_LEAD) + ")", motorLead.isConnected());
-                SmartDashboard.putBoolean("Robot/CAN/Main/Handoff Follow Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_FOLLOW) + ")", motorFollow.isConnected());
+                DogLog.log("Robot/CAN/Main/Handoff Lead Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_LEAD) + ")", motorLead.isConnected());
+                DogLog.log("Robot/CAN/Main/Handoff Follow Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_FOLLOW) + ")", motorFollow.isConnected());
             }
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }

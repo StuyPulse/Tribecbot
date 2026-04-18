@@ -5,10 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.intake;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -23,10 +26,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class IntakeSim extends Intake {
 
@@ -186,10 +186,10 @@ public class IntakeSim extends Intake {
         rollerFollowerSim.update(Settings.DT);
 
         if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Intake/Sim Pivot Angle (deg)", getPivotAngle().getDegrees());
-            SmartDashboard.putNumber("Intake/Sim Pivot Velocity (deg per s)", Units.radiansToDegrees(pivotSim.getVelocityRadPerSec()));
-            SmartDashboard.putNumber("Intake/Sim Roller Leader Velocity (RPM)", rollerLeaderSim.getOutput(0) * 60.0 / (2.0 * Math.PI));
-            SmartDashboard.putNumber("Intake/Sim Roller Follower Velocity (RPM)", rollerFollowerSim.getOutput(0) * 60.0 / (2.0 * Math.PI));
+            DogLog.log("Intake/Sim Pivot Angle (deg)", getPivotAngle().getDegrees());
+            DogLog.log("Intake/Sim Pivot Velocity (deg per s)", Units.radiansToDegrees(pivotSim.getVelocityRadPerSec()));
+            DogLog.log("Intake/Sim Roller Leader Velocity (RPM)", rollerLeaderSim.getOutput(0) * 60.0 / (2.0 * Math.PI));
+            DogLog.log("Intake/Sim Roller Follower Velocity (RPM)", rollerFollowerSim.getOutput(0) * 60.0 / (2.0 * Math.PI));
         }
     }
 

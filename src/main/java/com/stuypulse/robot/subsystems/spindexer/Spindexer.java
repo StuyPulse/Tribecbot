@@ -5,14 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.spindexer;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public abstract class Spindexer extends SubsystemBase {
     private static final Spindexer instance;
@@ -65,7 +65,7 @@ public abstract class Spindexer extends SubsystemBase {
     public abstract double getCurrentDraw();
 
     public void periodicAfterScheduler() {
-        SmartDashboard.putString("Spindexer/State", getState().name());
-        SmartDashboard.putNumber("Spindexer/Target Duty Cycle", getTargetDutyCycle());
+        DogLog.log("Spindexer/State", getState().name());
+        DogLog.log("Spindexer/Target Duty Cycle", getTargetDutyCycle());
     }
 }

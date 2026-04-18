@@ -5,13 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.handoff;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -22,10 +23,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class HandoffSim extends Handoff {
 
@@ -76,22 +74,22 @@ public class HandoffSim extends Handoff {
         if (EnabledSubsystems.HANDOFF.get()) {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
-                SmartDashboard.putNumber("Handoff/Input Voltage", voltageOverride.get());
+                DogLog.log("Handoff/Input Voltage", voltageOverride.get());
             } else if (Superstructure.getInstance().shouldStop()) {
                 sim.setInput(0.0);
-                SmartDashboard.putNumber("Handoff/Input Voltage", 0.0);
+                DogLog.log("Handoff/Input Voltage", 0.0);
             } else {
-                SmartDashboard.putNumber("Handoff/Input Voltage", controller.getU(0));
+                DogLog.log("Handoff/Input Voltage", controller.getU(0));
                 sim.setInput(getTargetDutyCycle() * 12);
             }
         } else {
             sim.setInput(0);
-            SmartDashboard.putNumber("Handoff/Input Voltage", 0.0);
+            DogLog.log("Handoff/Input Voltage", 0.0);
         }
 
         sim.update(Settings.DT);
         
-        SmartDashboard.putNumber("Handoff/Target Duty Cycle", getTargetDutyCycle());
+        DogLog.log("Handoff/Target Duty Cycle", getTargetDutyCycle());
     }
 
     @Override

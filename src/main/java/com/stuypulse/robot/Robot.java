@@ -33,6 +33,8 @@ import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 
+import dev.doglog.DogLog;
+import dev.doglog.DogLogOptions;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -91,6 +93,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        DogLog.setOptions(new DogLogOptions().withCaptureDs(true));
         robot = new RobotContainer();
         mode = RobotMode.DISABLED;
         energyUtil = new EnergyUtil();
@@ -160,10 +163,10 @@ public class Robot extends TimedRobot {
             SmartDashboard.putData(CommandScheduler.getInstance());
         }
 
-        SmartDashboard.putNumber("Robot/Match Time", DriverStation.getMatchTime());
+        DogLog.log("Robot/Match Time", DriverStation.getMatchTime());
         SmartDashboard.putData("Robot/Scheduled Commands", CommandScheduler.getInstance());
-        SmartDashboard.putNumber("Robot/Battery Voltage", batteryVoltage);
-        SmartDashboard.putNumber("Robot/CPU Temperature (C)", RobotController.getCPUTemp());
+        DogLog.log("Robot/Battery Voltage", batteryVoltage);
+        DogLog.log("Robot/CPU Temperature (C)", RobotController.getCPUTemp());
 
         robot.periodicAfterScheduler();
 
@@ -263,9 +266,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("FMSUtil/time left in shift", fmsUtil.getTimeLeftInShift());
-        SmartDashboard.putBoolean("FMSUtil/is active shift", fmsUtil.isActiveShift());
-        SmartDashboard.putBoolean("FMSUtil/won auto?", fmsUtil.didWinAuto());
+        DogLog.log("FMSUtil/time left in shift", fmsUtil.getTimeLeftInShift());
+        DogLog.log("FMSUtil/is active shift", fmsUtil.isActiveShift());
+        DogLog.log("FMSUtil/won auto?", fmsUtil.didWinAuto());
 
         if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM) {
             CommandScheduler.getInstance().schedule(
@@ -327,10 +330,10 @@ public class Robot extends TimedRobot {
             totalTime += (int) accumTime;
             totalCount += (int) accumCounts;
 
-            SmartDashboard.putNumber("Robot/GC Time MS", (double) accumTime);
-            SmartDashboard.putNumber("Robot/GC Counts", (double) accumCounts);
-            SmartDashboard.putNumber("Robot/Sum of GC Time MS", totalTime);
-            SmartDashboard.putNumber("Robot/Sum of GC Counts", totalCount);
+            DogLog.log("Robot/GC Time MS", (double) accumTime);
+            DogLog.log("Robot/GC Counts", (double) accumCounts);
+            DogLog.log("Robot/Sum of GC Time MS", totalTime);
+            DogLog.log("Robot/Sum of GC Counts", totalCount);
 
             // Logger.recordOutput("LoggedRobot/GCTimeMS", (double) accumTime);
             // Logger.recordOutput("LoggedRobot/GCCounts", (double) accumCounts);

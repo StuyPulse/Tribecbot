@@ -5,6 +5,11 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.swerve;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.Optional;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.Utils;
@@ -37,30 +42,22 @@ import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.LinearAcceleration;
-
-import static edu.wpi.first.units.Units.Second;
-import static edu.wpi.first.units.Units.Volts;
-
-import java.util.Optional;
-
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -713,31 +710,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         ChassisSpeeds chassisSpeeds = getChassisSpeeds();
         Vector2D fieldRelativeSpeeds = getFieldRelativeSpeeds();
-        SmartDashboard.putNumber("Swerve/Velocity Robot Relative X (m per s)", chassisSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Swerve/Velocity Robot Relative Y (m per s)", chassisSpeeds.vyMetersPerSecond);
+        DogLog.log("Swerve/Velocity Robot Relative X (m per s)", chassisSpeeds.vxMetersPerSecond);
+        DogLog.log("Swerve/Velocity Robot Relative Y (m per s)", chassisSpeeds.vyMetersPerSecond);
 
-        SmartDashboard.putNumber("Swerve/Velocity Field Relative X (m per s)", fieldRelativeSpeeds.x);
-        SmartDashboard.putNumber("Swerve/Field Relative Rotation", pose.getRotation().getDegrees());
-        SmartDashboard.putNumber("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
+        DogLog.log("Swerve/Velocity Field Relative X (m per s)", fieldRelativeSpeeds.x);
+        DogLog.log("Swerve/Field Relative Rotation", pose.getRotation().getDegrees());
+        DogLog.log("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
 
-        SmartDashboard.putNumber("Swerve/Angular Velocity (rad per s)", chassisSpeeds.omegaRadiansPerSecond);
-        SmartDashboard.putNumber("Swerve/Distance From Hub (meters)", Field.HUB_CENTER.getTranslation().getDistance(pose.getTranslation()));
+        DogLog.log("Swerve/Angular Velocity (rad per s)", chassisSpeeds.omegaRadiansPerSecond);
+        DogLog.log("Swerve/Distance From Hub (meters)", Field.HUB_CENTER.getTranslation().getDistance(pose.getTranslation()));
 
         Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
 
         if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
-            SmartDashboard.putNumber("Swerve/Robot Accel X", robotAccelerationX.getValueAsDouble() * 9.81);
-            SmartDashboard.putNumber("Swerve/Robot Accel Y", robotAccelerationY.getValueAsDouble() * 9.81);
+            DogLog.log("Swerve/Robot Accel X", robotAccelerationX.getValueAsDouble() * 9.81);
+            DogLog.log("Swerve/Robot Accel Y", robotAccelerationY.getValueAsDouble() * 9.81);
 
-            SmartDashboard.putNumber("Swerve/Failed DAQ Count", this.getState().FailedDaqs);
-            SmartDashboard.putNumber("Swerve/CANBus Utiliaztion", Ports.CANIVORE.getStatus().BusUtilization);
+            DogLog.log("Swerve/Failed DAQ Count", this.getState().FailedDaqs);
+            DogLog.log("Swerve/CANBus Utiliaztion", Ports.CANIVORE.getStatus().BusUtilization);
             // will confirm whether we are even getting data
 
-            SmartDashboard.putNumber("Superstructure/Turret/Dist From Hub",
+            DogLog.log("Superstructure/Turret/Dist From Hub",
                     turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()));
-            SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Hub",
+            DogLog.log("InterpolationTesting/Turret Dist From Hub",
                     turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()));
-            SmartDashboard.putNumber("InterpolationTesting/Turret Dist From Ferry Zone", turretPose.getTranslation()
+            DogLog.log("InterpolationTesting/Turret Dist From Ferry Zone", turretPose.getTranslation()
                     .getDistance(Field.getFerryZonePose(pose.getTranslation()).getTranslation()));
 
             for (int i = 0; i < 4; i++) {
@@ -745,15 +742,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 SwerveModuleState current = getModule(i).getCurrentState();
                 SwerveModuleState target = getModule(i).getTargetState();
 
-                SmartDashboard.putNumber(prefix + "/Speed (m per s)", current.speedMetersPerSecond);
-                SmartDashboard.putNumber(prefix + "/Target Speed (m per s)", target.speedMetersPerSecond);
-                SmartDashboard.putNumber(prefix + "/Angle (deg)", current.angle.getDegrees() % 360);
-                SmartDashboard.putNumber(prefix + "/Target Angle (deg)", target.angle.getDegrees() % 360);
+                DogLog.log(prefix + "/Speed (m per s)", current.speedMetersPerSecond);
+                DogLog.log(prefix + "/Target Speed (m per s)", target.speedMetersPerSecond);
+                DogLog.log(prefix + "/Angle (deg)", current.angle.getDegrees() % 360);
+                DogLog.log(prefix + "/Target Angle (deg)", target.angle.getDegrees() % 360);
 
                 if (Settings.DEBUG_MODE.get()) {
-                    SmartDashboard.putNumber(prefix + "/Stator Current",
+                    DogLog.log(prefix + "/Stator Current",
                             getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
-                    SmartDashboard.putNumber(prefix + "/Supply Current",
+                    DogLog.log(prefix + "/Supply Current",
                             getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
                 }
             }
@@ -762,54 +759,54 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
             // CAN SIGNAL LOGGING
             if (Settings.DEBUG_MODE.get() && Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Left Drive Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontLeftDriveMotorId) + ")",
                         getModule(0).getDriveMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Left Steer Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontLeftSteerMotorId) + ")",
                         getModule(0).getSteerMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Left CANcoder Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontLeftEncoderId) + ")",
                         getModule(0).getEncoder().isConnected());
 
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Right Drive Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontRightDriveMotorId) + ")",
                         getModule(1).getDriveMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Right Steer Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontRightSteerMotorId) + ")",
                         getModule(1).getSteerMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Front Right CANcoder Connected? (ID "
                         + String.valueOf(TunerConstants.kFrontRightEncoderId) + ")",
                         getModule(1).getEncoder().isConnected());
 
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Left Drive Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kBackLeftDriveMotorId) + ")",
                         getModule(2).getDriveMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Left Steer Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kBackLeftSteerMotorId) + ")",
                         getModule(2).getSteerMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Left CANcoder Connected? (ID "
                         + String.valueOf(TunerConstants.kBackLeftEncoderId) + ")",
                         getModule(2).getEncoder().isConnected());
 
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Right Drive Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kBackRightDriveMotorId) + ")",
                         getModule(3).getDriveMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Right Steer Motor Connected? (ID "
                         + String.valueOf(TunerConstants.kBackRightSteerMotorId) + ")",
                         getModule(3).getSteerMotor().isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Canivore/Back Right CANcoder Connected? (ID "
                         + String.valueOf(TunerConstants.kBackRightEncoderId) + ")",
                         getModule(3).getEncoder().isConnected());

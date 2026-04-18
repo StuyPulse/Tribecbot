@@ -24,10 +24,10 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class ShooterImpl extends Shooter {
@@ -138,33 +138,33 @@ public class ShooterImpl extends Shooter {
             shooterLeader.stopMotor();
         }
 
-        SmartDashboard.putNumber("Superstructure/Shooter/Leader RPM", getLeaderRPM());
-        SmartDashboard.putNumber("Superstructure/Shooter/Follower RPM", getFollowerRPM());
+        DogLog.log("Superstructure/Shooter/Leader RPM", getLeaderRPM());
+        DogLog.log("Superstructure/Shooter/Follower RPM", getFollowerRPM());
 
         if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("InterpolationTesting/Shooter Applied Voltage",
+            DogLog.log("InterpolationTesting/Shooter Applied Voltage",
                     shooterLeaderVoltage.getValueAsDouble());
 
-            SmartDashboard.putNumber("Superstructure/Shooter/Leader Voltage (volts)",
+            DogLog.log("Superstructure/Shooter/Leader Voltage (volts)",
                     shooterLeaderVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Leader Supply Current (amps)",
+            DogLog.log("Superstructure/Shooter/Leader Supply Current (amps)",
                     shooterLeadSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Leader Stator Current (amps)",
+            DogLog.log("Superstructure/Shooter/Leader Stator Current (amps)",
                     shooterLeadStatorCurrent.getValueAsDouble());
 
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Voltage (volts)",
+            DogLog.log("Superstructure/Shooter/Follower Voltage (volts)",
                     shooterFollowerVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Supply Current (amps)",
+            DogLog.log("Superstructure/Shooter/Follower Supply Current (amps)",
                     shooterFollowSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Shooter/Follower Stator Current (amps)",
+            DogLog.log("Superstructure/Shooter/Follower Stator Current (amps)",
                     shooterFollowStatorCurrent.getValueAsDouble());
 
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Main/Shooter Leader Motor Connected? (ID "
                                 + String.valueOf(Ports.Superstructure.Shooter.MOTOR_LEAD) + ")",
                         shooterLeader.isConnected());
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Main/Shooter Follower Motor Connected? (ID "
                                 + String.valueOf(Ports.Superstructure.Shooter.MOTOR_FOLLOW) + ")",
                         shooterFollower.isConnected());
@@ -172,10 +172,10 @@ public class ShooterImpl extends Shooter {
            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }
 
-        SmartDashboard.putNumber("InterpolationTesting/Shooter Closed Loop Error (RPM)",
+        DogLog.log("InterpolationTesting/Shooter Closed Loop Error (RPM)",
                 shooterLeaderClosedLoopError.getValueAsDouble() * 60.0);
 
-        SmartDashboard.putNumber("Superstructure/Shooter/Implemented Error (RPM)", getTargetRPM() - getLeaderRPM());
+        DogLog.log("Superstructure/Shooter/Implemented Error (RPM)", getTargetRPM() - getLeaderRPM());
     }
 
     private void setVoltageOverride(Optional<Double> voltageOverride) {

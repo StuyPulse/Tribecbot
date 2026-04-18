@@ -81,6 +81,7 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -457,7 +458,7 @@ public class RobotContainer {
                                   superstructure.getCurrentDraw() +
                                   swerve.getTotalDriveSupplyCurrent() +
                                   swerve.getTotalSteerSupplyCurrent();      
-        SmartDashboard.putNumber("Robot/Total Current Draw", totalCurrentDraw);
+        DogLog.log("Robot/Total Current Draw", totalCurrentDraw);
 
         handoff.periodicAfterScheduler();
         intake.periodicAfterScheduler();

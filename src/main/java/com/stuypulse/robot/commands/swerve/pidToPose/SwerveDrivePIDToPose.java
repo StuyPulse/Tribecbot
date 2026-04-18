@@ -5,6 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.swerve.pidToPose;
 
+import java.util.function.Supplier;
+
+import com.stuypulse.robot.Robot;
+import com.stuypulse.robot.constants.Field;
+import com.stuypulse.robot.constants.Gains.Swerve.Alignment;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.HolonomicController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.math.Vector2D;
@@ -17,21 +25,12 @@ import com.stuypulse.stuylib.streams.numbers.filters.MotionProfile;
 import com.stuypulse.stuylib.streams.vectors.VStream;
 import com.stuypulse.stuylib.streams.vectors.filters.VFilter;
 
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.constants.Field;
-import com.stuypulse.robot.constants.Gains.Swerve.Alignment;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.HolonomicController;
-
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
-import java.util.function.Supplier;
 
 public class SwerveDrivePIDToPose extends Command {
 
@@ -160,20 +159,20 @@ public class SwerveDrivePIDToPose extends Command {
             .withVelocityY(controller.getOutput().vyMetersPerSecond)
             .withRotationalRate(controller.getOutput().omegaRadiansPerSecond));
         
-        SmartDashboard.putNumber("Alignment/Target x", targetPose.get().getX());
-        SmartDashboard.putNumber("Alignment/Target y", targetPose.get().getY());
-        SmartDashboard.putNumber("Alignment/Target angle", targetPose.get().getRotation().getDegrees());
+        DogLog.log("Alignment/Target x", targetPose.get().getX());
+        DogLog.log("Alignment/Target y", targetPose.get().getY());
+        DogLog.log("Alignment/Target angle", targetPose.get().getRotation().getDegrees());
 
-        SmartDashboard.putNumber("Alignment/Error of Angle Controller)", controller.getError().omegaRadiansPerSecond);
+        DogLog.log("Alignment/Error of Angle Controller)", controller.getError().omegaRadiansPerSecond);
 
-        SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative X (m per s)", controller.getOutput().vxMetersPerSecond);
-        SmartDashboard.putNumber("Alignment/Target Velocity Robot Relative Y (m per s)", controller.getOutput().vyMetersPerSecond);
-        SmartDashboard.putNumber("Alignment/Target Angular Velocity (rad per s)", controller.getOutput().omegaRadiansPerSecond);
+        DogLog.log("Alignment/Target Velocity Robot Relative X (m per s)", controller.getOutput().vxMetersPerSecond);
+        DogLog.log("Alignment/Target Velocity Robot Relative Y (m per s)", controller.getOutput().vyMetersPerSecond);
+        DogLog.log("Alignment/Target Angular Velocity (rad per s)", controller.getOutput().omegaRadiansPerSecond);
 
-        SmartDashboard.putBoolean("Alignment/Is Aligned", isAligned());
-        SmartDashboard.putBoolean("Alignment/Is Aligned X", isAlignedX());
-        SmartDashboard.putBoolean("Alignment/Is Aligned Y", isAlignedY());
-        SmartDashboard.putBoolean("Alignment/Is Aligned Theta", isAlignedTheta());
+        DogLog.log("Alignment/Is Aligned", isAligned());
+        DogLog.log("Alignment/Is Aligned X", isAlignedX());
+        DogLog.log("Alignment/Is Aligned Y", isAlignedY());
+        DogLog.log("Alignment/Is Aligned Theta", isAlignedTheta());
     }
 
     @Override

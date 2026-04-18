@@ -22,13 +22,13 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightVision extends SubsystemBase {
@@ -180,7 +180,7 @@ public class LimelightVision extends SubsystemBase {
         }
 
         System.out.println(Arrays.toString(validTags));
-        SmartDashboard.putString("Allowlisted Tags for " + limelight, Arrays.toString(validTags));
+        DogLog.log("Allowlisted Tags for " + limelight, Arrays.toString(validTags));
 
         LimelightHelpers.SetFiducialIDFiltersOverride(limelight, validTags);
     }
@@ -284,16 +284,16 @@ public class LimelightVision extends SubsystemBase {
                             hasData = true;
                         }
 
-                        SmartDashboard.putBoolean("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
-                        SmartDashboard.putBoolean("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
-                        SmartDashboard.putBoolean("Vision/Not Null", notNull);
+                        DogLog.log("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
+                        DogLog.log("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
+                        DogLog.log("Vision/Not Null", notNull);
 
-                        SmartDashboard.putNumber("Vision/Pose X Component", robotPose.getX());
-                        SmartDashboard.putNumber("Vision/Pose Y Component", robotPose.getY());
-                        SmartDashboard.putNumber("Vision/Pose Theta (Degrees)", robotPose.getRotation().getDegrees());
-                        SmartDashboard.putNumber("Vision/Pose Estimate X " + limelightName, poseEstimate.pose.getX());
-                        SmartDashboard.putNumber("Vision/Pose Estimate Y " + limelightName, poseEstimate.pose.getY());
-                        SmartDashboard.putNumber("Vision/Pose Estimate Theta " + limelightName, poseEstimate.pose.getRotation().getDegrees());
+                        DogLog.log("Vision/Pose X Component", robotPose.getX());
+                        DogLog.log("Vision/Pose Y Component", robotPose.getY());
+                        DogLog.log("Vision/Pose Theta (Degrees)", robotPose.getRotation().getDegrees());
+                        DogLog.log("Vision/Pose Estimate X " + limelightName, poseEstimate.pose.getX());
+                        DogLog.log("Vision/Pose Estimate Y " + limelightName, poseEstimate.pose.getY());
+                        DogLog.log("Vision/Pose Estimate Theta " + limelightName, poseEstimate.pose.getRotation().getDegrees());
 
                         switch (limelightName) {
                             case "limelight-right" ->
@@ -304,18 +304,18 @@ public class LimelightVision extends SubsystemBase {
                                 backLimelightPosePublisher.set(robotPose);
                         }
 
-                        SmartDashboard.putBoolean("Vision/" + names[i] + " Has Data", true);
+                        DogLog.log("Vision/" + names[i] + " Has Data", true);
                         
                     } else {
-                        SmartDashboard.putBoolean("Vision/" + names[i] + " Has Data", false);
+                        DogLog.log("Vision/" + names[i] + " Has Data", false);
                         Cameras.LimelightCameras[i].incrementRejection(RejectionValue.NOT_NULL);
                     }
 
-                    SmartDashboard.putString("Vision/MegaTag Mode", megaTagMode.toString());
+                    DogLog.log("Vision/MegaTag Mode", megaTagMode.toString());
                     // this yaw is seems to be the robot yaw passed into the LL
-                    SmartDashboard.putNumber("Vision/Limelight Robot Yaw", LimelightHelpers.getIMUData(limelightName).robotYaw);
+                    DogLog.log("Vision/Limelight Robot Yaw", LimelightHelpers.getIMUData(limelightName).robotYaw);
                     // this is just the yaw of the internal imu 
-                    SmartDashboard.putNumber("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
+                    DogLog.log("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
 
                     //Rejection counters
                     Cameras.LimelightCameras[i].logRejections();
@@ -341,7 +341,7 @@ public class LimelightVision extends SubsystemBase {
                 }
             }
 
-            SmartDashboard.putBoolean("Vision/Has Data", hasData);
+            DogLog.log("Vision/Has Data", hasData);
         }
     }
 }

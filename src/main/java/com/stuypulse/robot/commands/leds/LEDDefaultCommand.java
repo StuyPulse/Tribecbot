@@ -26,8 +26,8 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -121,7 +121,7 @@ public class LEDDefaultCommand extends Command{
             }
         }
 
-        SmartDashboard.putString("Leds/State", state);
+        DogLog.log("Leds/State", state);
     }
 
     @Override
