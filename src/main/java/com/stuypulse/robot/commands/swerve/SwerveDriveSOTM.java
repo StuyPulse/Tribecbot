@@ -5,6 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.swerve;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
+import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Swerve;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.math.Vector2D;
@@ -17,16 +25,7 @@ import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
-import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.Swerve;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveDriveSOTM extends Command {
@@ -89,7 +88,7 @@ public class SwerveDriveSOTM extends Command {
                 .withRotationalRate(-turn.get()));
         }
 
-        SmartDashboard.putBoolean("Swerve/SOTM/Idle?", isIdle.get());
+        DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
     }
 
     @Override 

@@ -21,10 +21,10 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Superstructure extends SubsystemBase {
@@ -61,9 +61,12 @@ public class Superstructure extends SubsystemBase {
 
         sotmStoppedTimer = new Timer();
         sotmStoppedTimer.restart();
+        sotmStoppedTimer.stop();
+            
 
         fotmStoppedTimer = new Timer();
         fotmStoppedTimer.restart();
+        fotmStoppedTimer.stop();
     }
     
     public enum SuperstructureState {
@@ -180,13 +183,12 @@ public class Superstructure extends SubsystemBase {
 
         boolean turretLaggingSOTM = !isTurretAtTolerance() && getState() == SuperstructureState.SOTM;
 
-
-        SmartDashboard.putBoolean("Spindexer/Should Stop/Is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/Is Outside Alliance Zone?", isOutsideAllianceZone);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/Is Under Trench?", isUnderTrench);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/Turret Lagging SOTM", turretLaggingSOTM);
-        SmartDashboard.putBoolean("Spindexer/Should Stop/In Manual State", inManualState);
+        DogLog.log("Spindexer/Should Stop/Is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        DogLog.log("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
+        DogLog.log("Spindexer/Should Stop/Is Outside Alliance Zone?", isOutsideAllianceZone);
+        DogLog.log("Spindexer/Should Stop/Is Under Trench?", isUnderTrench);
+        DogLog.log("Spindexer/Should Stop/Turret Lagging SOTM", turretLaggingSOTM);
+        DogLog.log("Spindexer/Should Stop/In Manual State", inManualState);
         
         return isSpindexerStopState || 
         isHandOffStopState ||
@@ -223,15 +225,15 @@ public class Superstructure extends SubsystemBase {
             Handoff.getInstance().setState(HandoffState.STOP);
         }
 
-        SmartDashboard.putString("Superstructure/State", state.name());
+        DogLog.log("Superstructure/State", state.name());
 
-        SmartDashboard.putNumber("Superstructure/SOTM Stopped Timer", sotmStoppedTimer.get());
-        SmartDashboard.putNumber("Superstructure/FOTM Stopped Timer", fotmStoppedTimer.get());
+        DogLog.log("Superstructure/SOTM Stopped Timer", sotmStoppedTimer.get());
+        DogLog.log("Superstructure/FOTM Stopped Timer", fotmStoppedTimer.get());
 
-        SmartDashboard.putBoolean("Superstructure/Shooter At Tolerance?", isShooterAtTolerance());
-        SmartDashboard.putBoolean("Superstructure/Hood At Tolerance?", isHoodAtTolerance());
-        SmartDashboard.putBoolean("Superstructure/Turret At Tolerance?", isTurretAtTolerance());
+        DogLog.log("Superstructure/Shooter At Tolerance?", isShooterAtTolerance());
+        DogLog.log("Superstructure/Hood At Tolerance?", isHoodAtTolerance());
+        DogLog.log("Superstructure/Turret At Tolerance?", isTurretAtTolerance());
 
-        SmartDashboard.putBoolean("Superstructure/Should Stop?", shouldStop());
+        DogLog.log("Superstructure/Should Stop?", shouldStop());
     }
 }

@@ -45,9 +45,9 @@ public class Gains {
             }
             
             public interface slot1 {
-                SmartNumber kP = new SmartNumber("Superstructure/Turret/Gains/kP", 100.0);
+                SmartNumber kP = new SmartNumber("Superstructure/Turret/Gains/kP", 150.0); // 80
                 SmartNumber kI = new SmartNumber("Superstructure/Turret/Gains/kI", 0.0);
-                SmartNumber kD = new SmartNumber("Superstructure/Turret/Gains/kD", 10.0);
+                SmartNumber kD = new SmartNumber("Superstructure/Turret/Gains/kD", 3.0); // 10
 
                 SmartNumber kS = new SmartNumber("Superstructure/Turret/Gains/kS", 0.4775);
                 SmartNumber kV = new SmartNumber("Superstructure/Turret/Gains/kV", 0.0);

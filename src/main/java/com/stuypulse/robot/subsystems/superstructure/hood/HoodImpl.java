@@ -26,11 +26,11 @@ import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class HoodImpl extends Hood {
@@ -156,13 +156,13 @@ public class HoodImpl extends Hood {
         if (isStalling() && state == HoodState.HOMING_UPPER) {
             seedHoodAtUpperHardStop();
             setState(HoodState.STOW);
-            SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
+            DogLog.log("Superstructure/Hood/SUCCESFULLY HOMED UPPER", true);
         }
 
         if (isStalling() && state == HoodState.HOMING_LOWER) {
             seedHoodAtLowerHardStop();
             setState(HoodState.STOW);
-            SmartDashboard.putBoolean("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
+            DogLog.log("Superstructure/Hood/SUCCESFULLY HOMED LOWER", true);
         }
 
         if (EnabledSubsystems.HOOD.get()) {
@@ -181,21 +181,21 @@ public class HoodImpl extends Hood {
 
         // SmartDashboard.putBoolean("Superstructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
 
-        SmartDashboard.putBoolean("Prematch Checks/Hood at Bottom?", getAngle().getDegrees() < Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getDegrees());
-        SmartDashboard.putNumber("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
-        SmartDashboard.putNumber("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
-        SmartDashboard.putNumber("Superstructure/Hood/Implemented Error (Degrees)", getTargetAngle().getDegrees() - getAngle().getDegrees());
+        DogLog.log("Prematch Checks/Hood at Bottom?", getAngle().getDegrees() < Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getDegrees());
+        DogLog.log("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
+        DogLog.log("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
+        DogLog.log("Superstructure/Hood/Implemented Error (Degrees)", getTargetAngle().getDegrees() - getAngle().getDegrees());
 
         if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
-            SmartDashboard.putBoolean("Superstructure/Hood/is stalling", isStalling());
+            DogLog.log("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
+            DogLog.log("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Hood/is stalling", isStalling());
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                SmartDashboard.putBoolean("Robot/CAN/Rio/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
+                DogLog.log("Robot/CAN/Rio/Hood Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Hood.MOTOR) + ")", hoodMotor.isConnected());
                 // SmartDashboard.putBoolean("Robot/CAN/Rio/Hood Encoder Connected? (ID " + String.valueOf(hoodEncoder.getDeviceID()) + ")", hoodEncoder.isConnected());
             }
         }

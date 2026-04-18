@@ -31,12 +31,12 @@ import com.stuypulse.robot.util.SysId;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class IntakeImpl extends Intake {
@@ -233,52 +233,52 @@ public class IntakeImpl extends Intake {
             rollerFollower.stopMotor();
         }
 
-        SmartDashboard.putNumber("Intake/Pivot Angle Error (deg)",
+        DogLog.log("Intake/Pivot Angle Error (deg)",
                 Math.abs(pivotState.getTargetAngle().getDegrees() - getPivotAngle().getDegrees()));
 
         if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
 
             // PIVOT
-            SmartDashboard.putBoolean("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownCurrent);
+            DogLog.log("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownCurrent);
 
-            SmartDashboard.putNumber("Intake/Pivot Closed Loop Error (deg)",
+            DogLog.log("Intake/Pivot Closed Loop Error (deg)",
                     pivot.getClosedLoopError().getValueAsDouble() * 360.0);
 
             if (Settings.DEBUG_MODE.get()) {
-                SmartDashboard.putBoolean("Intake/Voltage Override", pivotVoltageOverride.isPresent());
-                SmartDashboard.putNumber("Intake/Pivot Temperature (C)", pivotTemperature.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Leader Temperature (C)",
+                DogLog.log("Intake/Voltage Override", pivotVoltageOverride.isPresent());
+                DogLog.log("Intake/Pivot Temperature (C)", pivotTemperature.getValueAsDouble());
+                DogLog.log("Intake/Leader Temperature (C)",
                         rollerLeaderTemperature.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Follower Temperature (C)",
+                DogLog.log("Intake/Follower Temperature (C)",
                         rollerFollowerTemperature.getValueAsDouble());
 
                 // Rolers
-                SmartDashboard.putNumber("Intake/Roller Leader Voltage (volts)",
+                DogLog.log("Intake/Roller Leader Voltage (volts)",
                         rollerLeaderVoltage.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Roller Leader Current (amps)",
+                DogLog.log("Intake/Roller Leader Current (amps)",
                         rollerLeaderSupplyCurrent.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Roller Leader Stator Current (amps)",
+                DogLog.log("Intake/Roller Leader Stator Current (amps)",
                         rollerLeaderStatorCurrent.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Roller Follower Voltage (volts)",
+                DogLog.log("Intake/Roller Follower Voltage (volts)",
                         rollerFollowerVoltage.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Roller Follower Current (amps)",
+                DogLog.log("Intake/Roller Follower Current (amps)",
                         rollerFollowerSupplyCurrent.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Roller Follower Stator Current (amps)",
+                DogLog.log("Intake/Roller Follower Stator Current (amps)",
                         rollerFollowerStatorCurrent.getValueAsDouble());
 
                 // Pivot
-                SmartDashboard.putNumber("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Pivot Supply Current (amps)",
+                DogLog.log("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
+                DogLog.log("Intake/Pivot Supply Current (amps)",
                         pivotSupplyCurrent.getValueAsDouble());
-                SmartDashboard.putNumber("Intake/Pivot Stator Current (amps)",
+                DogLog.log("Intake/Pivot Stator Current (amps)",
                         pivotStatorCurrent.getValueAsDouble());
 
                 if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Pivot Motor Connected? (ID "
+                    DogLog.log("Robot/CAN/Main/Intake Pivot Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.PIVOT) + ")", pivot.isConnected());
-                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Leader Motor Connected? (ID "
+                    DogLog.log("Robot/CAN/Main/Intake Roller Leader Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_LEADER) + ")", rollerLeader.isConnected());
-                    SmartDashboard.putBoolean("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
+                    DogLog.log("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
                 }
                 Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());

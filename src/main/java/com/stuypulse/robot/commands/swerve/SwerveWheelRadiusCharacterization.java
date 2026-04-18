@@ -7,10 +7,10 @@ package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveWheelRadiusCharacterization extends Command {
@@ -91,10 +91,10 @@ public class SwerveWheelRadiusCharacterization extends Command {
 
             double wheelRadius = (gyroDeltaRad * DRIVE_RADIUS_METERS) / wheelDeltaRad; 
 
-            SmartDashboard.putNumber("Radius Characterization/Radius (m)", wheelRadius);
-            SmartDashboard.putNumber("Radius Characterization/Radius (in.)", Units.metersToInches(wheelRadius));
-            SmartDashboard.putNumber("Radius Characterization/Gyro Delta (rad)", gyroDeltaRad);
-            SmartDashboard.putNumber("Radius Characterization/Wheel Delta (rad)", wheelDeltaRad);
+            DogLog.log("Radius Characterization/Radius (m)", wheelRadius);
+            DogLog.log("Radius Characterization/Radius (in.)", Units.metersToInches(wheelRadius));
+            DogLog.log("Radius Characterization/Gyro Delta (rad)", gyroDeltaRad);
+            DogLog.log("Radius Characterization/Wheel Delta (rad)", wheelDeltaRad);
         }
     }
 

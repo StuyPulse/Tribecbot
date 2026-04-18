@@ -29,11 +29,11 @@ import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.robot.util.superstructure.TurretAngleCalculator;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class TurretImpl extends Turret {
@@ -69,7 +69,7 @@ public class TurretImpl extends Turret {
 
                 .withSupplyCurrentLimitAmps(80)
                 .withStatorCurrentLimitEnabled(false)
-                .withRampRate(0.25)
+                .withRampRate(0.0)
 
                 .withPIDConstants(Gains.Superstructure.Turret.slot0.kP, Gains.Superstructure.Turret.slot0.kI,
                         Gains.Superstructure.Turret.slot0.kD, 0)
@@ -207,14 +207,14 @@ public class TurretImpl extends Turret {
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
         
-        // turretConfig.updateGainsConfig(
-        //         turretMotor, 1,
-        //         Gains.Superstructure.Turret.slot1.kP,
-        //         Gains.Superstructure.Turret.slot1.kI,
-        //         Gains.Superstructure.Turret.slot1.kD,
-        //         Gains.Superstructure.Turret.slot1.kS,
-        //         Gains.Superstructure.Turret.slot1.kV,
-        //         Gains.Superstructure.Turret.slot1.kA);
+        turretConfig.updateGainsConfig(
+                turretMotor, 1,
+                Gains.Superstructure.Turret.slot1.kP,
+                Gains.Superstructure.Turret.slot1.kI,
+                Gains.Superstructure.Turret.slot1.kD,
+                Gains.Superstructure.Turret.slot1.kS,
+                Gains.Superstructure.Turret.slot1.kV,
+                Gains.Superstructure.Turret.slot1.kA);
 
         if (!hasUsedAbsoluteEncoder) {
             seedTurret();
@@ -241,8 +241,14 @@ public class TurretImpl extends Turret {
             prevActualTargetAngle = actualTargetAngle;
         }
 
-        isWrapping = Math.abs(getWrappedTargetAngle()
-                - currentAngle) > Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
+        if(isWrapping) {
+            isWrapping = Math.abs(getWrappedTargetAngle()
+                    - currentAngle) > Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD_END.getDegrees();
+        } else {
+            isWrapping = Math.abs(getWrappedTargetAngle()
+                    - currentAngle) > Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD_START.getDegrees();
+        }
+        
         int slot = 0;
 
         if (isWrapping) {
@@ -275,34 +281,34 @@ public class TurretImpl extends Turret {
             turretMotor.stopMotor();
         }
 
-        SmartDashboard.putNumber("Superstructure/Turret/Relative Encoder Position (deg)",
+        DogLog.log("Superstructure/Turret/Relative Encoder Position (deg)",
                 turretMotorPos.getValueAsDouble() * 360.0);
-        SmartDashboard.putNumber("Superstructure/Turret/Closed Loop Error (deg)",
+        DogLog.log("Superstructure/Turret/Closed Loop Error (deg)",
                 turretMotorClosedLoopError.getValueAsDouble() * 360.0);
 
-        SmartDashboard.putNumber("Superstructure/Turret/Encoder18t Abs Position (Rot)",
+        DogLog.log("Superstructure/Turret/Encoder18t Abs Position (Rot)",
                 encoder18tPos.getValueAsDouble());
-        SmartDashboard.putNumber("Superstructure/Turret/Encoder17t Abs Position (Rot)",
+        DogLog.log("Superstructure/Turret/Encoder17t Abs Position (Rot)",
                 encoder17tPos.getValueAsDouble());
 
-        SmartDashboard.putNumber("Superstructure/Turret/Voltage (volts)",
+        DogLog.log("Superstructure/Turret/Voltage (volts)",
                 turretMotorVoltage.getValueAsDouble());
 
-        SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", prevActualTargetAngle);
+        DogLog.log("Superstructure/Turret/Wrapped Target Angle (deg)", prevActualTargetAngle);
 
         if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Superstructure/Turret/Stator Current (amps)",
+            DogLog.log("Superstructure/Turret/Stator Current (amps)",
                     turretMotorStatorCurrent.getValueAsDouble());
-            SmartDashboard.putNumber("Superstructure/Turret/Supply Current (amps)",
+            DogLog.log("Superstructure/Turret/Supply Current (amps)",
                     turretMotorSupplyCurrent.getValueAsDouble());
 
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
-                SmartDashboard.putBoolean(
+                DogLog.log(
                         "Robot/CAN/Main/Turret Motor Connected? (ID " + String.valueOf(Ports.Superstructure.Turret.MOTOR) + ")",
                         turretMotor.isConnected());
-                SmartDashboard.putBoolean("Robot/CAN/Main/Turret 17t Encoder Connected? (ID "
+                DogLog.log("Robot/CAN/Main/Turret 17t Encoder Connected? (ID "
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER17T) + ")", encoder17t.isConnected());
-                SmartDashboard.putBoolean("Robot/CAN/Main/Turret 18t Encoder Connected? (ID "
+                DogLog.log("Robot/CAN/Main/Turret 18t Encoder Connected? (ID "
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER18T) + ")", encoder18t.isConnected());
             }
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());

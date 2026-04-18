@@ -5,6 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.swerve;
 
+import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
+import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Swerve;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure;
+import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.math.Vector2D;
@@ -15,15 +22,7 @@ import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
 
-import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
-import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
-import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.Swerve;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure;
-import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveDriveFOTM extends Command{
@@ -76,8 +75,8 @@ public class SwerveDriveFOTM extends Command{
             .withVelocityY(speed.get().y)
             .withRotationalRate(-turn.get()));
 
-        SmartDashboard.putNumber("Swerve/Speed x", speed.get().x);
-        SmartDashboard.putNumber("Swerve/Speed y", speed.get().y);
+        DogLog.log("Swerve/Speed x", speed.get().x);
+        DogLog.log("Swerve/Speed y", speed.get().y);
     }
 
     @Override 

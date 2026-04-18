@@ -5,14 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.handoff;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public abstract class Handoff extends SubsystemBase {
     private static final Handoff instance;
@@ -76,10 +76,10 @@ public abstract class Handoff extends SubsystemBase {
     public abstract double getCurrentDraw();
 
     public void periodicAfterScheduler() {
-        SmartDashboard.putString("Handoff/State", getState().toString());
+        DogLog.log("Handoff/State", getState().toString());
 
         // SmartDashboard.putNumber("Handoff/Target RPM", getTargetRPM());
-        SmartDashboard.putNumber("Handoff/Current RPM", getLeaderRPM());
+        DogLog.log("Handoff/Current RPM", getLeaderRPM());
         // SmartDashboard.putBoolean("Handoff/At Tolerance?", atTolerance());
     }
 }

@@ -5,15 +5,15 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.intake;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public abstract class Intake extends SubsystemBase {
     private static final Intake instance;
@@ -100,15 +100,15 @@ public abstract class Intake extends SubsystemBase {
     public abstract double getCurrentDraw();
 
     public void periodicAfterScheduler() {
-        SmartDashboard.putString("Intake/Pivot State", getPivotState().toString());
-        SmartDashboard.putString("Intake/Roller State", getRollerState().toString());
+        DogLog.log("Intake/Pivot State", getPivotState().toString());
+        DogLog.log("Intake/Roller State", getRollerState().toString());
 
-        SmartDashboard.putNumber("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
-        SmartDashboard.putNumber("Intake/Target Angle (deg)", getPivotState().getTargetAngle().getDegrees());
+        DogLog.log("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
+        DogLog.log("Intake/Target Angle (deg)", getPivotState().getTargetAngle().getDegrees());
 
-        SmartDashboard.putNumber("Intake/Target Duty Cycle", getRollerState().getTargetDutyCycle());
+        DogLog.log("Intake/Target Duty Cycle", getRollerState().getTargetDutyCycle());
 
-        SmartDashboard.putBoolean("Intake/Pivot At Tolerance?", pivotAtTolerance());
+        DogLog.log("Intake/Pivot At Tolerance?", pivotAtTolerance());
     }
     
 }

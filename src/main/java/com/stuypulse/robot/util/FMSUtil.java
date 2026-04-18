@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.Optional;
 
+import dev.doglog.DogLog;
+
 public class FMSUtil {
 
     private final Timer timer = new Timer();
@@ -111,7 +113,7 @@ public class FMSUtil {
 
         if (winner == null || winner.isEmpty() || allianceOpt.isEmpty()) {
             DriverStation.reportWarning("No FMS auto winner data available", false);
-            SmartDashboard.putBoolean("FMSUtil/No Auto Winner Data", true);
+            DogLog.log("FMSUtil/No Auto Winner Data", true);
             return autoOverride;
         }
 

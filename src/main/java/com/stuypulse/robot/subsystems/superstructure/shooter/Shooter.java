@@ -10,7 +10,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
@@ -104,9 +104,9 @@ public abstract class Shooter extends SubsystemBase {
     public abstract double getCurrentDraw();
 
     public void periodicAfterScheduler() {
-        SmartDashboard.putString("Superstructure/Shooter/State", state.name());
+        DogLog.log("Superstructure/Shooter/State", state.name());
 
-        SmartDashboard.putNumber("Superstructure/Shooter/Current RPM (Leader)", getRPM());
-        SmartDashboard.putNumber("Superstructure/Shooter/Target RPM", getTargetRPM());
+        DogLog.log("Superstructure/Shooter/Current RPM (Leader)", getRPM());
+        DogLog.log("Superstructure/Shooter/Target RPM", getTargetRPM());
     }
 }

@@ -5,14 +5,20 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import org.jspecify.annotations.Nullable;
+
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.subsystems.vision.LimelightVision;
+import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.util.struct.StructSerializable;
 
 /** This interface stores information about each camera. */
 public interface Cameras {
@@ -40,6 +46,7 @@ public interface Cameras {
         private String name;
         private Pose3d location;
         private SmartBoolean isEnabled;
+        private String keyName;
 
         private int rejectedCounterNotNull;
         private int rejectedCounterAngularVelocity;
@@ -47,6 +54,13 @@ public interface Cameras {
         private int rejectedCounterTargetArea;
 
         private Pipeline currentPipeline;
+
+        public Camera(String name, Pose3d location, SmartBoolean isEnabled) {
+            this.name = name;
+            this.location = location;
+            this.isEnabled = isEnabled;
+            this.keyName = "Vision/" + name + "/";
+        }
 
         public enum Pipeline {
             NO_SUN,
@@ -103,17 +117,20 @@ public interface Cameras {
             }
         }
 
-        public void logRejections() {
-            SmartDashboard.putNumber("Vision/" + name + "/# Rejected Not Null", rejectedCounterNotNull);
-            SmartDashboard.putNumber("Vision/" + name + "/# Rejected Target Area", rejectedCounterTargetArea);
-            SmartDashboard.putNumber("Vision/" + name + "/# Rejected Angular Velocity", rejectedCounterAngularVelocity);
-            SmartDashboard.putNumber("Vision/" + name + "/# Rejected Invalid Position", rejectedCounterInvalidPosition);
-        }
+        public void log() {
+            DogLog.log(keyName + "# Rejected Not Null", rejectedCounterNotNull);
+            DogLog.log(keyName + "# Rejected Target Area", rejectedCounterTargetArea);
+            DogLog.log(keyName + "# Rejected Angular Velocity", rejectedCounterAngularVelocity);
+            DogLog.log(keyName + "# Rejected Invalid Position", rejectedCounterInvalidPosition);
 
-        public Camera(String name, Pose3d location, SmartBoolean isEnabled) {
-            this.name = name;
-            this.location = location;
-            this.isEnabled = isEnabled;
+            DogLog.log(keyName + "Heartbeat", LimelightHelpers.getHeartbeat(name));
+            DogLog.log(keyName + "Temp (C)", LimelightHelpers.getLimelightNTString(name, "hw"));
+            DogLog.log(keyName + "Pose MT1", (Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(name).pose
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed(name).pose));
+            DogLog.log(keyName + "Pose MT2", (Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name).pose
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(name).pose));
         }
 
         public String getName() {

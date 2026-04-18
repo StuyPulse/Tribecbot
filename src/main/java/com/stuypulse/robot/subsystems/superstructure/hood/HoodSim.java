@@ -5,18 +5,18 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.hood;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 import com.stuypulse.robot.util.superstructure.VisualizerHood;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class HoodSim extends Hood {
 
@@ -112,7 +112,7 @@ public class HoodSim extends Hood {
         VisualizerHood.getInstance().update(getAngle(), atTolerance());
 
         if (Settings.DEBUG_MODE.get()) {
-            SmartDashboard.putNumber("Superstructure/Hood/Sim Height (m)", sim.getPositionMeters());
+            DogLog.log("Superstructure/Hood/Sim Height (m)", sim.getPositionMeters());
         }
     }
 

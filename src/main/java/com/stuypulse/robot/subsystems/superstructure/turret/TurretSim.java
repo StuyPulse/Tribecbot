@@ -5,12 +5,15 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.turret;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.DriverConstants;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -25,10 +28,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class TurretSim extends Turret {
 
@@ -156,20 +156,20 @@ public class TurretSim extends Turret {
             prevActualTargetAngle = actualTargetAngle;
         }
         isWrapping = Math.abs(actualTargetAngle - currentAngle) > 
-                     Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD.getDegrees();
+                     Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD_START.getDegrees();
         
         goal = new TrapezoidProfile.State(Units.degreesToRadians(actualTargetAngle), 0.0);
         setpoint = profile.calculate(Settings.DT, setpoint, goal);
 
-        SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
-        SmartDashboard.putNumber("Superstructure/Turret/Constraints/Max Accel (deg per s per s)", Units.radiansToDegrees(maxAngularAccelRadiansPerSecondSquared));
+        DogLog.log("Superstructure/Turret/Constraints/Max Vel (deg per s)", Units.radiansToDegrees(maxAngularVelRadiansPerSecond));
+        DogLog.log("Superstructure/Turret/Constraints/Max Accel (deg per s per s)", Units.radiansToDegrees(maxAngularAccelRadiansPerSecondSquared));
 
-        SmartDashboard.putNumber("Superstructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
-        SmartDashboard.putNumber("Superstructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
-        SmartDashboard.putNumber("Superstructure/Turret/Current Angle (deg)", Units.radiansToDegrees(sim.getOutput(0)));
-        SmartDashboard.putNumber("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetAngle);
-        SmartDashboard.putNumber("Superstructure/Turret/Setpoint Filtered Angle (deg)", prevActualTargetAngle);
-        SmartDashboard.putBoolean("Superstructure/Turret/Is Wrapping", isWrapping);
+        DogLog.log("Superstructure/Turret/Motion Profile Setpoint (deg)", Units.radiansToDegrees(setpoint.position));
+        DogLog.log("Superstructure/Turret/Error: abs(turret - target) (deg)", Math.abs(getAngle().minus(getTargetAngle()).getDegrees()));
+        DogLog.log("Superstructure/Turret/Current Angle (deg)", Units.radiansToDegrees(sim.getOutput(0)));
+        DogLog.log("Superstructure/Turret/Wrapped Target Angle (deg)", actualTargetAngle);
+        DogLog.log("Superstructure/Turret/Setpoint Filtered Angle (deg)", prevActualTargetAngle);
+        DogLog.log("Superstructure/Turret/Is Wrapping", isWrapping);
 
         controller.setNextR(VecBuilder.fill(setpoint.position, 0.0));
         controller.correct(VecBuilder.fill(sim.getOutput(0), sim.getOutput(1)));

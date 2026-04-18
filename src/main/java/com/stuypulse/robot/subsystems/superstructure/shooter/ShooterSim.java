@@ -5,10 +5,13 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure.shooter;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.RobotContainer.EnabledSubsystems;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.util.SysId;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -19,10 +22,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
-import java.util.Optional;
 
 public class ShooterSim extends Shooter {
 
@@ -75,14 +75,14 @@ public class ShooterSim extends Shooter {
         if (EnabledSubsystems.SHOOTER.get()) {
             if (voltageOverride.isPresent()) {
                 sim.setInput(voltageOverride.get());
-                SmartDashboard.putNumber("Superstructure/Shooter/Input Voltage", voltageOverride.get());
+                DogLog.log("Superstructure/Shooter/Input Voltage", voltageOverride.get());
             } else {
-                SmartDashboard.putNumber("Superstructure/Shooter/Input Voltage", controller.getU(0));
+                DogLog.log("Superstructure/Shooter/Input Voltage", controller.getU(0));
                 sim.setInput(controller.getU(0));
             }
         } else {
             sim.setInput(0);
-            SmartDashboard.putNumber("Superstructure/Shooter/Input Voltage", 0.0);
+            DogLog.log("Superstructure/Shooter/Input Voltage", 0.0);
         }
 
         sim.update(Settings.DT);
