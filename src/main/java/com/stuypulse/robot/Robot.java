@@ -167,6 +167,7 @@ public class Robot extends TimedRobot {
         //clearing memoized values
         InterpolationCalculator.clearMemoized(); 
         CommandSwerveDrivetrain.getInstance().clearMemoized();
+        Superstructure.getInstance().clearMemoized();
         energyUtil.periodic();
     }
 

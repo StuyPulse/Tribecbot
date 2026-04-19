@@ -54,6 +54,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -77,6 +78,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     // private StructPublisher<Pose2d> vertexBehindHubPublisher;
     private StatusSignal<LinearAcceleration> robotAccelerationX;
     private StatusSignal<LinearAcceleration> robotAccelerationY;
+
+    private StatusSignal<Current>[] driveMotorSupplyCurrents;
+    private StatusSignal<Current>[] steerMotorSupplyCurrents;
 
     //TODO: might wanna change some of these initialized values like isBehindTower indicates that we are in the alliance zone 
     private Optional<Boolean> isBehindHub = Optional.empty();
@@ -255,10 +259,21 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         robotAccelerationX = this.getPigeon2().getAccelerationX();
         robotAccelerationY = this.getPigeon2().getAccelerationY();
 
+        driveMotorSupplyCurrents = new StatusSignal[4];
+        steerMotorSupplyCurrents = new StatusSignal[4];
+
+        for (int i = 0; i < 4; i++) {
+            driveMotorSupplyCurrents[i] = getModule(i).getDriveMotor().getSupplyCurrent();
+            steerMotorSupplyCurrents[i] = getModule(i).getSteerMotor().getSupplyCurrent();
+        }
+
         PhoenixUtil.registerToCanivore(
                 robotAccelerationX,
                 robotAccelerationY
         );
+
+        PhoenixUtil.registerToCanivore(driveMotorSupplyCurrents);
+        PhoenixUtil.registerToCanivore(steerMotorSupplyCurrents);
     }
 
     /**
@@ -674,8 +689,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public double getTotalDriveSupplyCurrent() {
         double total = 0.0;
 
-        for (SwerveModule<TalonFX, TalonFX, CANcoder> module : getModules()) {
-            total += Double.max(0, module.getDriveMotor().getSupplyCurrent().getValueAsDouble());
+        for (StatusSignal<Current> s : driveMotorSupplyCurrents) {
+            total += Double.max(0, s.getValueAsDouble());
         }
 
         return total;
@@ -684,8 +699,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public double getTotalSteerSupplyCurrent() {
         double total = 0.0;
 
-        for (SwerveModule<TalonFX, TalonFX, CANcoder> module : getModules()) {
-            total += Double.max(0, module.getSteerMotor().getSupplyCurrent().getValueAsDouble());
+        for (StatusSignal<Current> s : steerMotorSupplyCurrents) {
+            total += Double.max(0, s.getValueAsDouble());
         }
 
         return total;

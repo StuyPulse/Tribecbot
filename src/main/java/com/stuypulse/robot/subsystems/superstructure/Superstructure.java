@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.subsystems.superstructure;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
@@ -44,6 +46,8 @@ public class Superstructure extends SubsystemBase {
 
     private SuperstructureState state;
 
+    private Optional<Boolean> shouldStop;
+
     private final Hood hood;
     private final Shooter shooter;
     private final Turret turret;
@@ -67,6 +71,8 @@ public class Superstructure extends SubsystemBase {
         fotmStoppedTimer = new Timer();
         fotmStoppedTimer.restart();
         fotmStoppedTimer.stop();
+
+        this.shouldStop = Optional.empty();
     }
     
     public enum SuperstructureState {
@@ -162,6 +168,9 @@ public class Superstructure extends SubsystemBase {
     }
     
     public boolean shouldStop() {
+        if (!shouldStop.isEmpty()) {
+            return shouldStop.get();
+        }
         CommandSwerveDrivetrain swerve = CommandSwerveDrivetrain.getInstance();
 
         boolean isSpindexerStopState = Spindexer.getInstance().getState() == SpindexerState.STOP;
@@ -190,14 +199,22 @@ public class Superstructure extends SubsystemBase {
         DogLog.log("Spindexer/Should Stop/Turret Lagging SOTM", turretLaggingSOTM);
         DogLog.log("Spindexer/Should Stop/In Manual State", inManualState);
         
-        return isSpindexerStopState || 
-        isHandOffStopState ||
-        isTurretWrapping || 
-        (isBehindHubWhileFerrying && !inManualState) || 
-        turretLaggingSOTM || 
-        (isOutsideAllianceZone  && !inManualState) || 
-        (isUnderTrench && !inManualState) ||
-        isBehindTower;
+        boolean shouldStop = isSpindexerStopState || 
+            isHandOffStopState ||
+            isTurretWrapping || 
+            (isBehindHubWhileFerrying && !inManualState) || 
+            turretLaggingSOTM || 
+            (isOutsideAllianceZone  && !inManualState) || 
+            (isUnderTrench && !inManualState) ||
+            isBehindTower;
+
+        this.shouldStop = Optional.of(shouldStop);
+
+        return shouldStop;
+    }
+
+    public void clearMemoized() {
+        this.shouldStop = Optional.empty();
     }
 
     public void periodicAfterScheduler() {
