@@ -35,15 +35,15 @@ public class RightFollow extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new HandoffRun(),
                 new SpindexerRun(),
-                new WaitCommand(RobotContainer.getWaitTimeOne() + 1.0)
+                new WaitCommand(RobotContainer.getWaitTimeOne() + 1.0),
+                new WaitCommand(1.0).andThen(new IntakeDeploy())
             ),
 
             // To NZ
             new ParallelCommandGroup(
                 new HandoffStop(),
                 new SpindexerStop(),
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]),
-                new WaitCommand(0.5).andThen(new IntakeDeploy())
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0])
             ),
 
             new WaitCommand(RobotContainer.getWaitTimeTwo()),
