@@ -41,7 +41,7 @@ public class RightTwoCycle extends SequentialCommandGroup {
             
             // NZ Trip 1
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
-                new WaitCommand(0.5).andThen(new IntakeDeploy())
+                new WaitCommand(0.2).andThen(new IntakeDeploy())
             ),
 
             // Trip 1 To Score

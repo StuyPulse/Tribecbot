@@ -43,8 +43,7 @@ public class RightTwoCorner extends SequentialCommandGroup {
 
             // NZ Trip 1
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
-                new WaitCommand(0.5).andThen(new IntakeDeploy())
-            ),
+                (new WaitCommand(0.2)).andThen(new IntakeDeploy())),
 
             // Trip 1 To Score
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]).alongWith(
@@ -77,6 +76,14 @@ public class RightTwoCorner extends SequentialCommandGroup {
                 new HandoffStop(),
                 new SpindexerStop()
             )
+
+            // new SuperstructureSOTM(),
+            // new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
+            // new HandoffRun().andThen(
+            //     new SpindexerRun()
+            // ).andThen(new WaitCommand(2.5)
+            //     .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(4.5),
+            // new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy())
         
         );
 
