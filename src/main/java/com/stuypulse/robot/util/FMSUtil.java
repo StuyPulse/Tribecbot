@@ -42,7 +42,11 @@ public class FMSUtil {
         }
 
         public double timeLeft(double time) {
-            return Math.max(0.0, endTime - time);
+            if (this == FieldState.SHIFT_4) {
+                return Math.max(0.0, 140.0 - time);
+            } else {
+                return Math.max(0.0, endTime - time);
+            }
         }
 
         public double timeElapsed(double time) {

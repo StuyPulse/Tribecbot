@@ -15,6 +15,7 @@ import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
+import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -38,7 +39,7 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
-            
+
             // NZ Trip 1
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]).alongWith(
                 new WaitCommand(0.2).andThen(new IntakeDeploy())
@@ -53,7 +54,8 @@ public class RightTwoCycle extends SequentialCommandGroup {
             new HandoffRun().andThen(
                 new SpindexerRun()
             ).andThen(new WaitCommand(0.5)
-                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(4.0),
+                .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(3.0),
+                // .andThen(new IntakeAutoDigest()).repeatedly()).alongWith(new WaitUntilCommand(() -> !Superstructure.getInstance().isShooting()).withTimeout(4.0)),
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             // NZ Trip 2
@@ -69,6 +71,7 @@ public class RightTwoCycle extends SequentialCommandGroup {
                 new SpindexerRun()
             ).andThen(new WaitCommand(0.5)
                 .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(15.0),
+                // .andThen(new IntakeAutoDigest()).repeatedly()).alongWith(new WaitUntilCommand(() -> !Superstructure.getInstance().isShooting()).withTimeout(4.0)),
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             new ParallelCommandGroup(
