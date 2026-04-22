@@ -737,6 +737,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         Field.FIELD2D.getRobotObject().setPose(Robot.isBlue() ? pose : Field.transformToOppositeAlliance(pose));
 
+        Robot.getEnergyUtil().logEnergyUsage(getName() + " Drive", getTotalDriveSupplyCurrent());
+        Robot.getEnergyUtil().logEnergyUsage(getName() + " Turn", getTotalSteerSupplyCurrent());
+
         if (Robot.getPeriodicCounter() % Settings.LOGGING_FREQUENCY == 0) {
             DogLog.log("Swerve/Robot Accel X", robotAccelerationX.getValueAsDouble() * 9.81);
             DogLog.log("Swerve/Robot Accel Y", robotAccelerationY.getValueAsDouble() * 9.81);
@@ -769,8 +772,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                             getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
                 }
             }
-            Robot.getEnergyUtil().logEnergyUsage(getName() + " Drive", getTotalDriveSupplyCurrent());
-            Robot.getEnergyUtil().logEnergyUsage(getName() + " Turn", getTotalSteerSupplyCurrent());
 
             // CAN SIGNAL LOGGING
             if (Settings.DEBUG_MODE.get() && Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {

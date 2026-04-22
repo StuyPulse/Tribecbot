@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class EnergyUtil {
     private double totalCurrent = 0.0;
     private double totalPowerWatts = 0.0;
-    private double totalCurrentCurrent = 0.0;
-    private double totalCurrentPowerWatts = 0.0;
-    private double totalEnergyWattHours = 0.0;
+    private double totalEnergyJoules = 0.0;
     private double batteryVoltage = 12.6;
 
     private Map<String, Double> subsytemCurrents = new HashMap<>();
@@ -33,7 +31,7 @@ public class EnergyUtil {
 
         totalCurrent += amps;
         totalPowerWatts += powerWatts;
-        totalEnergyWattHours += energyWattHours;
+        totalEnergyJoules += energyWattHours;
 
         subsytemCurrents.put(subsystem, amps);
         subsytemPowers.put(subsystem, powerWatts);
@@ -57,18 +55,12 @@ public class EnergyUtil {
     }
 
     public void periodic() {
-
         // energy used over the total time the robot has been on
-        DogLog.log("EnergyUtil/Total used Supply Current draw Amps", totalCurrent);
-        DogLog.log("EnergyUtil/total used Power Watts", totalPowerWatts);
-        DogLog.log("EnergyUtil/Total Used Energy Watt Hours", joulesToWattHours(totalEnergyWattHours));
-
+        DogLog.log("EnergyUtil/Total Used Energy", joulesToWattHours(totalEnergyJoules), "Watt Hours");
 
         // energy used over the current command schedule loop 
-        totalCurrentCurrent = totalCurrent - totalCurrentCurrent;
-        totalCurrentPowerWatts = totalPowerWatts - totalCurrentPowerWatts;
-        DogLog.log("EnergyUtil/Total current Current", totalCurrentCurrent);
-        DogLog.log("EnergyUtil/Total current Power Watts", totalCurrentCurrent);
+        DogLog.log("EnergyUtil/Total Current", totalCurrent, "Amps");
+        DogLog.log("EnergyUtil/Total Power", totalPowerWatts, "Watts");
 
         for (var entry : subsytemCurrents.entrySet()) {
             DogLog.log("EnergyUtil/Supply Current Amps/" + entry.getKey(), entry.getValue());
@@ -94,5 +86,4 @@ public class EnergyUtil {
     public void setBatteryVoltage(double voltage) {
         this.batteryVoltage = voltage;
     }
-
 }
