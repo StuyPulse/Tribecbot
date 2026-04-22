@@ -85,12 +85,12 @@ public class IntakeImpl extends Intake {
                 .withPIDConstants(Gains.Intake.Pivot.slot0.kP.get(), Gains.Intake.Pivot.slot0.kI.get(), Gains.Intake.Pivot.slot0.kD.get(),
                         0)
                 .withFFConstants(Gains.Intake.Pivot.slot0.kS.get(), Gains.Intake.Pivot.slot0.kV.get(), Gains.Intake.Pivot.slot0.kA.get(),
-                        Gains.Intake.Pivot.kG, 0)
+                        Gains.Intake.Pivot.slot0.kG, 0)
                 .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 0)
                 .withPIDConstants(Gains.Intake.Pivot.slot1.kP.get(), Gains.Intake.Pivot.slot1.kI.get(), Gains.Intake.Pivot.slot1.kD.get(),
                         1)
                 .withFFConstants(Gains.Intake.Pivot.slot1.kS.get(), Gains.Intake.Pivot.slot1.kV.get(), Gains.Intake.Pivot.slot1.kA.get(),
-                        Gains.Intake.Pivot.kG, 1)
+                        Gains.Intake.Pivot.slot1.kG, 1)
                 .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseVelocitySign, 1)
                 .withGravityType(GravityTypeValue.Arm_Cosine)
 
@@ -190,15 +190,24 @@ public class IntakeImpl extends Intake {
         PivotState pivotState = getPivotState();
         RollerState rollerState = getRollerState();
 
-        // pivotConfig.updateGainsConfig(
-        //         pivot,
-        //         0,
-        //         Gains.Intake.Pivot.kP,
-        //         Gains.Intake.Pivot.kI,
-        //         Gains.Intake.Pivot.kD,
-        //         Gains.Intake.Pivot.kS,
-        //         Gains.Intake.Pivot.kV,
-        //         Gains.Intake.Pivot.kA);
+        pivotConfig.updateGainsConfig(
+                pivot,
+                0,
+                Gains.Intake.Pivot.slot0.kP,
+                Gains.Intake.Pivot.slot0.kI,
+                Gains.Intake.Pivot.slot0.kD,
+                Gains.Intake.Pivot.slot0.kS,
+                Gains.Intake.Pivot.slot0.kV,
+                Gains.Intake.Pivot.slot0.kA);
+        pivotConfig.updateGainsConfig(
+                pivot,
+                1,
+                Gains.Intake.Pivot.slot1.kP,
+                Gains.Intake.Pivot.slot1.kI,
+                Gains.Intake.Pivot.slot1.kD,
+                Gains.Intake.Pivot.slot1.kS,
+                Gains.Intake.Pivot.slot1.kV,
+                Gains.Intake.Pivot.slot1.kA);
 
         int slot = (isDigesting) ? 1 : 0;
 
