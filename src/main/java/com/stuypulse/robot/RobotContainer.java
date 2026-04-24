@@ -392,7 +392,7 @@ public class RobotContainer {
 
         // TWO CYCLES (TRENCH)
         AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Trench Score To Corner");
+        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Trench Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CYCLE.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
@@ -401,11 +401,11 @@ public class RobotContainer {
 
         // TWO CYCLES (CORNER)
         AutonConfig LEFT_TWO_CORNER = new AutonConfig("Left Two Corner", LeftTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Trench Score To Corner");
+        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Trench Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CORNER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER = new AutonConfig("Right Two Corner", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Trench Score To Corner");
+        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Trench Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER.register(autonChooser);
 
         // FOLLOWS

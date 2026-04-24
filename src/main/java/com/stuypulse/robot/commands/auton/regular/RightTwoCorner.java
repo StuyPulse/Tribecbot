@@ -20,6 +20,7 @@ import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -55,8 +56,7 @@ public class RightTwoCorner extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().repeatedly().withTimeout(4.0))
-                        .until(() -> Superstructure.getInstance().isHopperEmpty()),
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(15.0)),
                 new WaitCommand(1.0).andThen(
                     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(3.5))
             ),
@@ -72,12 +72,15 @@ public class RightTwoCorner extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
-                new HandoffRun().alongWith(
-                    new SpindexerRun()
-                        ).andThen(new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest()).repeatedly()).withTimeout(15.0)
-            )
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]).until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(15.0),
+                new HandoffRun(),
+                new SpindexerRun(),
+                new WaitCommand(0.5)
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(15.0)),
+                new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(15.0)
+            ),
+
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4])
         
         );
 
