@@ -111,7 +111,7 @@ public class ShooterImpl extends Shooter {
         shooterFollowerTemperature = shooterFollower.getDeviceTemp();
 
         currentlyShooting = BStream.create(() -> (shooterLeadStatorCurrent.getValueAsDouble() > Settings.Superstructure.Shooter.IS_SHOOTING_CURRENT))
-                .filtered(new BDebounce.Falling(0.75));
+                .filtered(new BDebounce.Falling(1.0));
 
         PhoenixUtil.registerToRio(shooterLeaderSpeed, shooterFollowerSpeed, shooterFollowSupplyCurrent, 
                 shooterFollowStatorCurrent, shooterLeadSupplyCurrent, shooterLeadStatorCurrent, 

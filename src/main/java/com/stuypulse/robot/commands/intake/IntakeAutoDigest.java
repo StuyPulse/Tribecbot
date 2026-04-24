@@ -9,9 +9,10 @@ public class IntakeAutoDigest extends SequentialCommandGroup {
 
         addCommands(
 
-            new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy()).andThen(new WaitCommand(0.5)).andThen(
-            new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy()).andThen(new WaitCommand(0.5))).andThen(
-            new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy()).andThen(new WaitCommand(0.5)))
+        new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy()).andThen(new WaitCommand(0.5)).andThen(
+            new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy())).andThen(new WaitCommand(0.5)).andThen(
+                new IntakeDigest().andThen(new WaitCommand(0.5)).andThen(new IntakeDeploy())
+            )
 
         );
 

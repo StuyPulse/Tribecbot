@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6120827389443653,
-        "y": 0.5868473609129818
+        "x": 3.63796005706134,
+        "y": 7.440906488549619
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2537189925345644,
-        "y": 0.5992999515606565
+        "x": 3.2245896483318734,
+        "y": 7.343909351042221
       },
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": "Left Trench Score"
     },
     {
       "anchor": {
-        "x": 1.140798858773181,
-        "y": 0.6256633380884444
+        "x": 3.2808444444444445,
+        "y": 7.440906488549619
       },
       "prevControl": {
-        "x": 1.9885243443856553,
-        "y": 0.6007951416921778
+        "x": 3.524888980928413,
+        "y": 7.49514913056054
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Corner"
+      "linkedName": "Left Corner"
     }
   ],
   "rotationTargets": [],
@@ -37,7 +37,7 @@
     "maxAcceleration": 4.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.7,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {

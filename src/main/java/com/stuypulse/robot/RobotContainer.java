@@ -32,6 +32,7 @@ import com.stuypulse.robot.commands.intake.IntakeRunRollers;
 import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
+import com.stuypulse.robot.commands.intake.IntakeTeleopDigest;
 import com.stuypulse.robot.commands.intake.SeedPivotDeployed;
 import com.stuypulse.robot.commands.intake.SeedPivotStowed;
 import com.stuypulse.robot.commands.leds.LEDApplyPattern;
@@ -195,7 +196,7 @@ public class RobotContainer {
 
         // Digest (TR)
         driver.getTopButton()
-            .whileTrue(new IntakeAutoDigest().repeatedly())
+            .whileTrue(new IntakeTeleopDigest().repeatedly())
             .onFalse(new IntakeDeploy());
 
         // Intake Stow
@@ -392,20 +393,20 @@ public class RobotContainer {
 
         // TWO CYCLES (TRENCH)
         AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Trench Score To Corner", "Left Score To NZ (F)");
+        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CYCLE.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Trench Score To Corner", "Right Score To NZ (F)");
+        "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CYCLE.register(autonChooser);
 
         // TWO CYCLES (CORNER)
         AutonConfig LEFT_TWO_CORNER = new AutonConfig("Left Two Corner", LeftTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Trench Score To Corner", "Left Score To NZ (F)");
+        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CORNER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER = new AutonConfig("Right Two Corner", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Trench Score To Corner", "Right Score To NZ (F)");
+        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER.register(autonChooser);
 
         // FOLLOWS

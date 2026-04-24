@@ -64,7 +64,7 @@ public interface Settings {
     public interface Intake {
         Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0); 
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(-10.0);
-        Rotation2d PIVOT_DIGEST_ANGLE = Rotation2d.fromDegrees(50);
+        Rotation2d PIVOT_DIGEST_ANGLE = Rotation2d.fromDegrees(30);
 
         Rotation2d PIVOT_ANGLE_TOLERANCE = Rotation2d.fromDegrees(5.0); 
 
@@ -163,16 +163,14 @@ public interface Settings {
                 //Lab
                 {1, 2000},
                 {5.16, 3300.0},
-                {6.94, 3400},
-                {9.77, 3600}, //TODO: USE THE BELOW THREE LINES INTEAD OF THESE
-                // {6.94, 3600.0},
-                // {7.87, 3800.0},
-                // {9.77, 4300.0},
-                // {10.694, 4700.0},       //STARTING FROM HERE THE DATA IS UNRELIABLE!!!
-                // {11.516, 4900.0},
-                // {12.416, 5200.0},
-                // {13.316, 5500.0},
-                // {14.216, 5600.0}
+                {6.94, 3600.0},
+                {7.87, 3800.0},
+                {9.77, 4300.0},
+                {10.694, 4700.0},       //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                {11.516, 4900.0},
+                {12.416, 5200.0},
+                {13.316, 5500.0},
+                {14.216, 5600.0}
             };
         }
 

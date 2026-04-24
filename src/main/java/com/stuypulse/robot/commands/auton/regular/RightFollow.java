@@ -54,13 +54,12 @@ public class RightFollow extends SequentialCommandGroup {
             // SOTM To Corner
             new ParallelCommandGroup(
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]),
-                new WaitCommand(2.0).andThen(
+                new WaitCommand(3.0).andThen(
                     new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance())
                         .andThen(
                             new ParallelCommandGroup(
                                 new HandoffRun(),
-                                new SpindexerRun())
-                                )
+                                new SpindexerRun()))
                 )
             ),
 
