@@ -412,11 +412,11 @@ public class RobotContainer {
         RIGHT_TWO_CORNER.register(autonChooser);
 
         AutonConfig LEFT_TWO_CORNER_SHALLOW = new AutonConfig("Left Two Corner Shallow", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Trench Score To Corner", "Left Score To NZ (F)");
+        "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CORNER_SHALLOW.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER_SHALLOW = new AutonConfig("Right Two Corner Shallow", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Trench Score To Corner", "Right Score To NZ (F)");
+        "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER_SHALLOW.register(autonChooser);
 
         // FOLLOWS
@@ -428,9 +428,9 @@ public class RobotContainer {
         "Right Follow To Bump", "Right Follow To Score");
         RIGHT_FOLLOW.register(autonChooser);
 
-        AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
-            "Right Trench Score To Corner");
-        EMPTY_TEST.register(autonChooser);
+        // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
+        //     "Right Trench Score To Corner");
+        // EMPTY_TEST.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
 
@@ -450,10 +450,10 @@ public class RobotContainer {
     }
 
     public void configureSysids() {
-        autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
-        autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
-        autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
-        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
+        // autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
 
         // autonChooser.addOption("SysID Rotation Translation Dynamic Forwards", swerve.sysidRotationDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Rotation Translation Dynamic Backwards", swerve.sysidRotationDynamic(Direction.kReverse));
