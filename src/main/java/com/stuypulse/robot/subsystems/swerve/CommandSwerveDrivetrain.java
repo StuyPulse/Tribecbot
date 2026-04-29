@@ -86,6 +86,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private Optional<Boolean> isInOpponentZone = Optional.empty();
     private Optional<Boolean> isUnderTrench = Optional.empty();
     private Optional<Boolean> isBehindTower = Optional.empty();
+    private Optional<Boolean> isBtwnOppHubAndWall = Optional.empty();
 
     // private StructPublisher<Pose2d> robotPose = NetworkTableInstance.getDefault()
     //         .getStructTopic("Robot Pose", Pose2d.struct).publish();
@@ -650,12 +651,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return isOutsideAllianceZone.get();
     }
 
+    public boolean isBtwnOppHubAndWall() {
+        if (!isBtwnOppHubAndWall.isEmpty()) {
+            return isBtwnOppHubAndWall.get();
+        }
+
+        Translation2d turretTranslation = getTurretPose().getTranslation();
+
+        boolean btwnOppHubAndWallX = turretTranslation.getX() < Field.LENGTH && turretTranslation.getX() > Field.OPPONENT_HUB_DS_X;
+        boolean btwnOppHubAndWallY = turretTranslation.getY() < Field.HUB_FAR_LEFT_CORNER.getY() && turretTranslation.getY() > Field.HUB_FAR_RIGHT_CORNER.getY();
+
+        isBtwnOppHubAndWall = Optional.of(btwnOppHubAndWallX && btwnOppHubAndWallY);
+
+        return isBtwnOppHubAndWall.get();
+    }
+
     public void clearMemoized() {
         isBehindHub = Optional.empty();
         isOutsideAllianceZone = Optional.empty();
         isInOpponentZone = Optional.empty();
         isUnderTrench = Optional.empty();
         isBehindTower = Optional.empty();
+        isBtwnOppHubAndWall = Optional.empty();
     }
 
     public void teleopInit() {
