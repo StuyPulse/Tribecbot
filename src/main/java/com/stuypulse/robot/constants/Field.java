@@ -43,8 +43,6 @@ public interface Field {
 
     public static final double OPPONENT_ZONE_X = LENGTH - Units.inchesToMeters(158.6);
 
-    public static final double OPPONENT_HUB_DS_X = LENGTH - HUB_FAR_LEFT_CORNER.getX() + 2.0 * HUB_RADIUS;
-
     public static final double BEHIND_HUB_TOLERANCE_X = Units.inchesToMeters(144); // To extend the triangle vertex
     public static final double BEHIND_HUB_TOLERANCE_Y = Units.inchesToMeters(12) + Units.inchesToMeters(2); // To extend base of triangle (colinear with back hub)
 
