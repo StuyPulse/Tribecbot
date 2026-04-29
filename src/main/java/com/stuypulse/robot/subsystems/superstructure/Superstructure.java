@@ -189,10 +189,12 @@ public class Superstructure extends SubsystemBase {
             getState() == SuperstructureState.RIGHT_CORNER &&
             getState() == SuperstructureState.KB;
         boolean isBehindTower = swerve.isBehindTower() && getState() == SuperstructureState.SOTM;
+        boolean isBtwnOppHubAndWall = swerve.isBtwnOppHubAndWall() && getState() == SuperstructureState.FOTM;
 
         boolean turretLaggingSOTM = !isTurretAtTolerance() && getState() == SuperstructureState.SOTM;
 
         DogLog.log("Spindexer/Should Stop/Is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        DogLog.log("Spindexer/Should Stop/Is behind Opponent's Hub While Ferrying?", isBtwnOppHubAndWall);
         DogLog.log("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
         DogLog.log("Spindexer/Should Stop/Is Outside Alliance Zone?", isOutsideAllianceZone);
         DogLog.log("Spindexer/Should Stop/Is Under Trench?", isUnderTrench);
@@ -203,6 +205,7 @@ public class Superstructure extends SubsystemBase {
             isHandOffStopState ||
             isTurretWrapping || 
             (isBehindHubWhileFerrying && !inManualState) || 
+            isBtwnOppHubAndWall ||
             turretLaggingSOTM || 
             (isOutsideAllianceZone  && !inManualState) || 
             (isUnderTrench && !inManualState) ||
