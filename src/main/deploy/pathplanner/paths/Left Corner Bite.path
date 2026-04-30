@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.295104961832061,
-        "y": 4.65425572519084
+        "x": 8.248481613285884,
+        "y": 4.621376037959667
       },
       "prevControl": {
-        "x": 7.226358244365363,
-        "y": 7.3219335705812565
+        "x": 7.179734895819186,
+        "y": 7.289053883350084
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left NZ Corner"
+      "linkedName": "Left NZ"
     }
   ],
   "rotationTargets": [
