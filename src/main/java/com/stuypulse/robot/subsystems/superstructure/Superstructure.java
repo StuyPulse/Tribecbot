@@ -182,7 +182,7 @@ public class Superstructure extends SubsystemBase {
         boolean isSpindexerStopState = Spindexer.getInstance().getState() == SpindexerState.STOP;
         boolean isHandOffStopState = Handoff.getInstance().getState() == HandoffState.STOP;
 
-        // boolean isTurretWrapping = isTurretWrapping();
+        boolean isTurretWrapping = isTurretWrapping();
         boolean isBehindHubWhileFerrying = getState() == SuperstructureState.FOTM
                 && swerve.isBehindHub();
         boolean isOutsideAllianceZone = 
@@ -201,7 +201,7 @@ public class Superstructure extends SubsystemBase {
 
         DogLog.log("Spindexer/Should Stop/Is Behind Tower?", isBehindTower);
         DogLog.log("Spindexer/Should Stop/Is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
-        // DogLog.log("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
+        DogLog.log("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
         DogLog.log("Spindexer/Should Stop/Is Outside Alliance Zone?", isOutsideAllianceZone);
         DogLog.log("Spindexer/Should Stop/Is Under Trench?", isUnderTrench);
         DogLog.log("Spindexer/Should Stop/Turret Lagging SOTM", turretLaggingSOTM);
