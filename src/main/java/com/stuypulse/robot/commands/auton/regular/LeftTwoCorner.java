@@ -53,6 +53,7 @@ public class LeftTwoCorner extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)

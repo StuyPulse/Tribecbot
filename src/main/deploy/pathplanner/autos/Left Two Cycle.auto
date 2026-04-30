@@ -19,6 +19,12 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Left Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Left Score To Score"
           }
         },

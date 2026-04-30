@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6506870229007635,
+        "x": 3.3075858778625955,
         "y": 7.440906488549619
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.907505853143271,
+        "x": 7.564404708105102,
         "y": 7.509029957203994
       },
       "isLocked": false,
-      "linkedName": "Left Trench Score"
+      "linkedName": "Left Corner"
     },
     {
       "anchor": {
