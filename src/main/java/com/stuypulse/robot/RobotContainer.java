@@ -439,7 +439,6 @@ public class RobotContainer {
     public boolean hasWaitTimeOneChanged() {
         hasWaitTimeOneChanged = prevWaitTimeOne != getWaitTimeOne();
         prevWaitTimeOne = getWaitTimeOne();
-        prevWaitTimeTwo = getWaitTimeTwo();
         return hasWaitTimeOneChanged;
     }
 
