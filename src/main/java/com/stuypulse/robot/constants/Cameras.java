@@ -8,6 +8,7 @@ package com.stuypulse.robot.constants;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.RawFiducial;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
@@ -48,6 +49,7 @@ public interface Cameras {
         private int rejectedCounterAngularVelocity;
         private int rejectedCounterInvalidPosition;
         private int rejectedCounterTargetArea;
+        private LimelightResults result;
 
         private Pipeline currentPipeline;
 
@@ -56,6 +58,7 @@ public interface Cameras {
             this.location = location;
             this.isEnabled = isEnabled;
             this.keyName = "Vision/" + name + "/";
+            this.result = LimelightHelpers.getLatestResults(name);
         }
 
         public enum Pipeline {
@@ -128,6 +131,9 @@ public interface Cameras {
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(name).pose));
             DogLog.log(keyName + "Pipeline", LimelightHelpers.getCurrentPipelineIndex(name));
+    
+            result = LimelightHelpers.getLatestResults(name);
+            DogLog.log(keyName + "Time since last boot", result.timestamp_LIMELIGHT_publish / 1000.0, "Seconds");
             
             RawFiducial[] rawFiducials = LimelightHelpers.getRawFiducials(name);
             for(Integer i = 0; i < rawFiducials.length; i++) {

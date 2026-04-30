@@ -5,6 +5,7 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
+import java.sql.ResultSet;
 import java.util.Arrays;
 
 import com.stuypulse.robot.Robot;
@@ -17,6 +18,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -263,11 +265,6 @@ public class LimelightVision extends SubsystemBase {
                             Cameras.LimelightCameras[i].incrementRejection(RejectionValue.ANGULAR_VELOCITY);
                         }
 
-                        // if (poseEstimate.avgTagArea >= Settings.Vision.MIN_TAG_AREA) {
-                        //     withinTargetAreaTolerance = true;
-                        // } else {
-                        //     Cameras.LimelightCameras[i].incrementRejection(RejectionValue.TARGET_AREA);
-                        // }
 
                         Pose2d robotPose = poseEstimate.pose;
                         double timestamp = poseEstimate.timestampSeconds;
