@@ -449,19 +449,6 @@ public class RobotContainer {
         return hasWaitTimeTwoChanged;
     }
 
-    public boolean hasWaitTimeOneChanged() {
-        hasWaitTimeOneChanged = prevWaitTimeOne != getWaitTimeOne();
-        prevWaitTimeOne = getWaitTimeOne();
-        prevWaitTimeTwo = getWaitTimeTwo();
-        return hasWaitTimeOneChanged;
-    }
-
-    public boolean hasWaitTimeTwoChanged() {
-        hasWaitTimeTwoChanged = prevWaitTimeTwo != getWaitTimeTwo();
-        prevWaitTimeTwo = getWaitTimeTwo();
-        return hasWaitTimeTwoChanged;
-    }
-
     public void configureSysids() {
         // autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
