@@ -53,10 +53,11 @@ public class LeftTwoCornerShallow extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),                new HandoffRun(),
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),                
+                new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(15.0)),
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5)),
                 new WaitCommand(1.0).andThen(
                     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(3.5))
             ),
