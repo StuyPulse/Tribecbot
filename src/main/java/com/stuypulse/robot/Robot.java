@@ -8,8 +8,15 @@ package com.stuypulse.robot;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -22,6 +29,7 @@ import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
 import com.stuypulse.robot.commands.vision.BlackListAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
+import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
@@ -55,6 +63,8 @@ public class Robot extends TimedRobot {
         TEST
     }
 
+    private HttpClient httpClient;
+    private HttpRequest httpRequest;
     private RobotContainer robot;
     private Command auto;
     private static Alliance alliance;
@@ -280,6 +290,35 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopExit() {
+        httpClient = HttpClient.newHttpClient();
+        
+        List<CompletableFuture<HttpResponse<String>>> completeableFutures = 
+            Cameras.URLS_TO_FLUSH_LIMELIGHTS.stream() 
+            .map(URI::create) //String turns into a URI
+            .map(HttpRequest::newBuilder) // URI request turns into a httpRequest through newBuilder
+            .map(builder -> builder.POST(
+                HttpRequest.BodyPublishers.noBody())) // the builder now creates a postRequest with a body of nothing
+            .map(HttpRequest.Builder::build) //the request is finally built into an imutable object
+            .map(request -> httpClient.sendAsync(request,
+            HttpResponse.BodyHandlers.ofString())).collect(Collectors.toList()); // the http client is fed the request and then collected back into a list
+        
+            CompletableFuture<List<HttpResponse<String>>> combinedFutures = CompletableFuture.allOf( 
+                completeableFutures.toArray(new CompletableFuture[completeableFutures.size()])) // turn a bunch of futures into one
+                .thenApply( // turn the list into an array, and then 
+                    future -> completeableFutures.stream()
+                    .map(CompletableFuture::join)
+                    .collect(Collectors.toList())
+                );
+
+            try {
+                List<HttpResponse<String>> responses = combinedFutures.get();
+                responses.forEach((response -> {
+                    System.out.println("Response body for " + response.headers().toString() + " responded with " + response.body());
+                }));
+            } catch (InterruptedException | ExecutionException e) {
+                System.out.println("Failed to asyncrounously acquire HTTP response, exiting HTTP request");
+                e.printStackTrace();
+            }
     }
 
     /**

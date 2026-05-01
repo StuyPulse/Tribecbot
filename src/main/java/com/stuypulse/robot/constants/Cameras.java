@@ -5,6 +5,9 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
@@ -19,6 +22,11 @@ import edu.wpi.first.math.util.Units;
 
 /** This interface stores information about each camera. */
 public interface Cameras {
+    public static List<String> URLS_TO_FLUSH_LIMELIGHTS = List.of(
+        "10.6.94.11:5807/recording-flush?duration=300",
+        "10.6.94.12:5807/recording-flush?duration=300",
+        "10.6.94.13:5807/recording-flush?duration=300"
+    );
 
     public Camera[] LimelightCameras = {
             new Camera("limelight-right", //.381, .2325, .2069592 // this ll bugging 
