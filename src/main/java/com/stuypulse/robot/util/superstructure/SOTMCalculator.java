@@ -18,6 +18,7 @@ import com.stuypulse.robot.util.superstructure.InterpolationCalculator.Interpola
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator.InterpolatedShotInfo;
 import com.stuypulse.stuylib.network.SmartBoolean;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -338,7 +339,7 @@ public class SOTMCalculator {
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated turret angle", hubSol.targetTurretAngle().getDegrees());
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated hood angle", hubSol.targetHoodAngle().getDegrees());
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated flight time", hubSol.flightTime());
-        // SmartDashboard.putNumber("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(hubSol.virtualPose().getTranslation()));
+        DogLog.log("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(hubSol.virtualPose().getTranslation()));
     }
 
     public static void updateFOTMSolution() {
