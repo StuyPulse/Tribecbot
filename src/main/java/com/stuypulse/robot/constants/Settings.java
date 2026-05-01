@@ -143,7 +143,7 @@ public interface Settings {
                 {4.43, 3350.0},
                 {5.66, 3650.0},
                 {6.44, 3800.0},
-                {10.0, 4646.0} // THIS POINT IS AN EXTRAPOLATION
+                {10.0, 5766.0} // THIS POINT IS AN EXTRAPOLATION
             };
         }
 
