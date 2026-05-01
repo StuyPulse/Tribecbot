@@ -143,7 +143,7 @@ public interface Settings {
                 {4.43, 3350.0},
                 {5.66, 3650.0},
                 {6.44, 3800.0},
-                {10.0, 5766.0} // THIS POINT IS AN EXTRAPOLATION
+                {8.23, 4500.0} // THIS POINT IS AN EXTRAPOLATION
             };
         }
 
@@ -156,7 +156,8 @@ public interface Settings {
                 {4.43, 1.165},
                 {5.50, 1.21},
                 {6.44, 1.255},
-                {10.0, 1.46} // THIS POINT IS AN EXTRAPOLATION
+                {6.6, 1.41},
+                {8.23, 1.71} // THIS POINT IS AN EXTRAPOLATION
             };
         }
 
@@ -201,7 +202,7 @@ public interface Settings {
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2.0);
             
             public interface RPM {
-                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target RPM", 3500.0);
+                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target RPM", 3863.0);
 
                 public final double REVERSE = 0.0;
                 public final double KB = 2675.0;
@@ -240,7 +241,7 @@ public interface Settings {
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
-                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 20.0);
+                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 44.0);
                 public final Rotation2d MAX = FORWARD_SOFT_LIMIT;
                 public final Rotation2d MIN = REVERSE_SOFT_LIMIT;
                 public final Rotation2d FERRY_ANGLE = MAX;//Rotation2d.fromDegrees(44.0);
