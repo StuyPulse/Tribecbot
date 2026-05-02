@@ -339,6 +339,8 @@ public class SOTMCalculator {
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated turret angle", hubSol.targetTurretAngle().getDegrees());
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated hood angle", hubSol.targetHoodAngle().getDegrees());
         // SmartDashboard.putNumber("Superstructure/SOTM/calculated flight time", hubSol.flightTime());
+        
+        DogLog.log("Superstructure/SOTM/virtual pose", virtualHubPose2d.getPose());
         DogLog.log("Superstructure/SOTM/turret dist to virtual pose", futureTurretPose.getTranslation().getDistance(hubSol.virtualPose().getTranslation()));
     }
 
