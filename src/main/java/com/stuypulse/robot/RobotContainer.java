@@ -41,6 +41,7 @@ import com.stuypulse.robot.commands.leds.LEDApplyPattern;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.superstructure.SuperstructureCacheState;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
 import com.stuypulse.robot.commands.superstructure.SuperstructureKB;
 import com.stuypulse.robot.commands.superstructure.SuperstructureLeftCorner;
@@ -196,8 +197,11 @@ public class RobotContainer {
         //             )
         //     ); 
 
-        // Digest (TR)
+        // Shoot in place (TR)
         driver.getTopButton()
+            .whileTrue(new SuperstructureCacheState(driver));
+        
+        driver.getDPadLeft() 
             .whileTrue(new IntakeTeleopDigest().repeatedly())
             .onFalse(new IntakeDeploy());
 
