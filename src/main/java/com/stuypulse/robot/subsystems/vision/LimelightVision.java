@@ -312,9 +312,8 @@ public class LimelightVision extends SubsystemBase {
                     // this is just the yaw of the internal imu 
                     DogLog.log("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
 
-                    //Rejection counters
-                    Cameras.LimelightCameras[i].log();
                 }
+                Cameras.LimelightCameras[i].log();
             }
 
             // Alternating pipelines for hdr

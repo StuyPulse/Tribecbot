@@ -103,7 +103,7 @@ public abstract class Intake extends SubsystemBase {
         DogLog.log("Intake/Pivot State", getPivotState().toString());
         DogLog.log("Intake/Roller State", getRollerState().toString());
 
-        DogLog.log("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
+        DogLog.forceNt.log("Intake/Current Angle (deg)", getPivotAngle().getDegrees());
         DogLog.log("Intake/Target Angle (deg)", getPivotState().getTargetAngle().getDegrees());
 
         DogLog.log("Intake/Target Duty Cycle", getRollerState().getTargetDutyCycle());

@@ -146,7 +146,7 @@ public abstract class Turret extends SubsystemBase {
         DogLog.log("Superstructure/Turret/State", state.name());
         
         DogLog.log("Superstructure/Turret/Target Angle", getTargetAngle().getDegrees());
-        DogLog.log("Superstructure/Turret/Current Angle", getAngle().getDegrees());
+        DogLog.forceNt.log("Superstructure/Turret/Current Angle", getAngle().getDegrees());
 
         if (Settings.DEBUG_MODE.get()) {
             if (EnabledSubsystems.TURRET.get()) {

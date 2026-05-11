@@ -141,7 +141,7 @@ public abstract class Hood extends SubsystemBase{
         DogLog.log("Superstructure/Hood/State", state.name());
 
         DogLog.log("Superstructure/Hood/Target Angle (deg)", getTargetAngle().getDegrees());
-        DogLog.log("Superstructure/Hood/Current Angle (deg)", getAngle().getDegrees());
+        DogLog.forceNt.log("Superstructure/Hood/Current Angle (deg)", getAngle().getDegrees());
 
         if (Settings.DEBUG_MODE.get()) {
             if (EnabledSubsystems.HOOD.get()) {

@@ -12,11 +12,13 @@ import com.stuypulse.robot.commands.auton.regular.LeftBump;
 import com.stuypulse.robot.commands.auton.regular.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCorner;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerShallow;
+import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.RightBump;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCorner;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
+import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
 import com.stuypulse.robot.commands.auton.test.BoxTest;
 import com.stuypulse.robot.commands.auton.test.EmptyTest;
@@ -74,6 +76,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
@@ -97,9 +100,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -199,7 +204,22 @@ public class RobotContainer {
 
         // Shoot in place (TR)
         driver.getTopButton()
-            .whileTrue(new SuperstructureCacheState(driver));
+            .whileTrue(new SuperstructureCacheState(driver)
+                .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
+                    .andThen(
+                        Commands.parallel(
+                            new IntakeDeploy(),
+                            new RunCommand(
+                                () -> handoff.setState(HandoffState.FORWARD),
+                                handoff),
+                            new RunCommand(
+                                () -> spindexer.setState(SpindexerState.FORWARD),
+                                spindexer)
+                        )
+                ))
+            .onFalse(
+                new SpindexerStop().alongWith(new HandoffStop())
+            );
         
         driver.getDPadLeft() 
             .whileTrue(new IntakeTeleopDigest().repeatedly())
@@ -423,6 +443,14 @@ public class RobotContainer {
         "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER_SHALLOW.register(autonChooser);
 
+        AutonConfig LEFT_TWO_CORNER_VARIANT = new AutonConfig("Left Two Corner Variant", LeftTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        LEFT_TWO_CORNER_VARIANT.register(autonChooser);
+
+        AutonConfig RIGHT_TWO_CORNER_VARIANT = new AutonConfig("Right Two Corner Variant", RightTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        RIGHT_TWO_CORNER_VARIANT.register(autonChooser);
+        
         // FOLLOWS
         AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
