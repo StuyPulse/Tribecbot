@@ -65,10 +65,10 @@ public class LEDDefaultCommand extends Command{
         if (Robot.getMode() == RobotMode.DISABLED) {
             if (LimelightVision.getInstance().getMaxTagCount() >= Settings.LED.DESIRED_TAGS_WHEN_DISABLED) {
                 leds.applyPattern(Settings.LED.DISABLED_ALIGNED);
-                state = "DISABLED_ALLOWED";
+                state = "DISABLED_ALIGNED";
             }
             else {
-                leds.applyPattern(LEDPattern.solid(Color.kRed));
+                leds.applyPattern(Settings.LED.DISABLED);
                 state = "DISABLED_DISALLOWED";
             }
         }
@@ -117,7 +117,7 @@ public class LEDDefaultCommand extends Command{
                 state = "INTAKE_DEPLOYED";
             }
             else {
-                leds.applyPattern(LEDPattern.solid(Color.kRed));
+                leds.applyPattern(Settings.LED.DISABLED);
             }
         }
 

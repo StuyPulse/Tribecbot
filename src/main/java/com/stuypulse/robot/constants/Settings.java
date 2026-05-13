@@ -6,10 +6,15 @@
 package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.RainbowAnimation;
+import com.ctre.phoenix6.controls.SolidColor;
+import com.ctre.phoenix6.signals.RGBWColor;
 import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
+import edu.wpi.first.hal.LEDJNI;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -62,7 +67,7 @@ public interface Settings {
     }
 
     public interface Intake {
-        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0); 
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0);
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(-10.0);
         Rotation2d PIVOT_DIGEST_ANGLE = Rotation2d.fromDegrees(30);
 
@@ -168,13 +173,9 @@ public interface Settings {
                 {5.16, 3300.0},
                 {6.94, 3600.0},
                 {7.87, 3800.0},
-                {9.77, 4300.0},
-                {10.694, 4700.0},       //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
-                {11.516, 4900.0}
-                // {11.516, 5200.0},
-                // {12.416, 5500.0},       // AFTER OPP ALLIANCE ZONE, RPM SHOULD BE AT 5500 -blay
-                // {13.316, 5500.0},
-                // {14.216, 5600.0}
+                // {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
+                // {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                // {11.516, 4900.0}
             };
         }
 
@@ -366,42 +367,44 @@ public interface Settings {
 
     public interface LED {
 
-        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kRed);
-        LEDPattern IS_BEHIND_HUB = LEDPattern.solid(Color.kRed);
+        public final int LED_LENGTH = 0 + 8; //CANdle already has 8
+        SolidColor BASE_SOLID_COLOR_REQUEST = new SolidColor(0, LED_LENGTH - 1);
+        SolidColor PASSING_TRENCH = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+        SolidColor IS_BEHIND_HUB = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
 
-        // LEDPattern CLIMB_ALIGNING = LEDPattern.solid(Color.kYellow);
-        // LEDPattern CLIMB_ALIGNED = LEDPattern.solid(Color.kGreen);
-        // LEDPattern CLIMBING = LEDPattern.solid(Color.kRed);
+        // SolidColor CLIMB_ALIGNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow);
+        // SolidColor CLIMB_ALIGNED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kGreen);
+        // SolidColor CLIMBING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed);
 
-        LEDPattern TURRET_WRAPPING = LEDPattern.solid(Color.kRed);
-        LEDPattern LEFT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
-        LEDPattern RIGHT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+        SolidColor TURRET_WRAPPING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+        SolidColor LEFT_WARNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlack)); // TBD
+        SolidColor RIGHT_WARNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlack)); // TBD
 
-        LEDPattern SHOOT_IN_PLACE = LEDPattern.solid(Color.kPurple);
+        SolidColor SHOOT_IN_PLACE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPurple));
 
-        LEDPattern SOTM_ON = LEDPattern.solid(Color.kCyan);
-        LEDPattern FOTM_ON = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 120.0));
+        SolidColor SOTM_ON = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kCyan));
+        RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60);
 
-        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kPurple);
-        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kBlue);
+        SolidColor LEFT_CORNER = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPurple));
+        SolidColor RIGHT_CORNER = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlue));
         
-        LEDPattern KB_DISTANCE = LEDPattern.solid(Color.kPink);
+        SolidColor KB_DISTANCE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPink));
 
-        LEDPattern REVERSE = LEDPattern.solid(Color.kWhite);
-        LEDPattern STOP_ROLLERS = LEDPattern.solid(Color.kYellow);
+        SolidColor REVERSE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kWhite));
+        SolidColor STOP_ROLLERS = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow));
 
-        LEDPattern RESET_HEADING = LEDPattern.solid(Color.kYellow);
-        LEDPattern X_WHEELS = LEDPattern.solid(Color.kRed);
+        SolidColor RESET_HEADING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow));
+        SolidColor X_WHEELS = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
 
-        LEDPattern INTAKE_STOW = LEDPattern.solid(Color.kBrown);        //broken
-        LEDPattern INTAKE_DEPLOYED = LEDPattern.solid(Color.kOrange);   //broken
+        SolidColor INTAKE_STOW = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBrown));        //broken
+        SolidColor INTAKE_DEPLOYED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kOrange));   //broken
 
-        LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kGreen);
-        // LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+        SolidColor DISABLED_ALIGNED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kGreen));
+        SolidColor DISABLED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+
+        // SolidColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
-        public final int LED_LENGTH = 9; // TBA
-
     }
 
     public interface Vision {

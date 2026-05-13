@@ -78,6 +78,7 @@ import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -142,7 +143,7 @@ public class RobotContainer {
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 
-    // private final LEDController leds = LEDController.getInstance();
+    private final LEDController leds = LEDController.getInstance();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -564,7 +565,7 @@ public class RobotContainer {
 
         handoff.periodicAfterScheduler();
         intake.periodicAfterScheduler();
-        // leds.periodicAfterScheduler(); TODO: ADD THESE BACK TY
+        leds.periodicAfterScheduler();
         spindexer.periodicAfterScheduler();
         hood.periodicAfterScheduler();
         shooter.periodicAfterScheduler();
