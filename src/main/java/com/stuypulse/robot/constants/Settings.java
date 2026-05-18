@@ -366,41 +366,43 @@ public interface Settings {
     }
 
     public interface LED {
+        public static SolidColor solidColor(Color color) {
+            return new SolidColor(0, LED_LENGTH - 1).withColor(new RGBWColor(color));
+        }
 
-        public final int LED_LENGTH = 0 + 8; //CANdle already has 8
-        SolidColor BASE_SOLID_COLOR_REQUEST = new SolidColor(0, LED_LENGTH - 1);
-        SolidColor PASSING_TRENCH = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
-        SolidColor IS_BEHIND_HUB = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+        public final int LED_LENGTH = 8 + 21; //CANdle already has 8
+        SolidColor PASSING_TRENCH = solidColor(Color.kRed);
+        SolidColor IS_BEHIND_HUB = solidColor(Color.kRed);
 
-        // SolidColor CLIMB_ALIGNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow);
-        // SolidColor CLIMB_ALIGNED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kGreen);
-        // SolidColor CLIMBING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed);
+        // SolidColor CLIMB_ALIGNING = solidColor(Color.kYellow);
+        // SolidColor CLIMB_ALIGNED = solidColor(Color.kGreen);
+        // SolidColor CLIMBING = solidColor(Color.kRed);
 
-        SolidColor TURRET_WRAPPING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
-        SolidColor LEFT_WARNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlack)); // TBD
-        SolidColor RIGHT_WARNING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlack)); // TBD
+        SolidColor TURRET_WRAPPING = solidColor(Color.kRed);
+        SolidColor LEFT_WARNING = solidColor(Color.kBlack); // TBD
+        SolidColor RIGHT_WARNING = solidColor(Color.kBlack); // TBD
 
-        SolidColor SHOOT_IN_PLACE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPurple));
+        SolidColor SHOOT_IN_PLACE = solidColor(Color.kPurple);
 
-        SolidColor SOTM_ON = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kCyan));
-        RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60);
+        SolidColor SOTM_ON = solidColor(Color.kCyan);
+        RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60).withSlot(0);
 
-        SolidColor LEFT_CORNER = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPurple));
-        SolidColor RIGHT_CORNER = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBlue));
+        SolidColor LEFT_CORNER = solidColor(Color.kPurple);
+        SolidColor RIGHT_CORNER = solidColor(Color.kBlue);
         
-        SolidColor KB_DISTANCE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kPink));
+        SolidColor KB_DISTANCE = solidColor(Color.kPink);
 
-        SolidColor REVERSE = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kWhite));
-        SolidColor STOP_ROLLERS = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow));
+        SolidColor REVERSE = solidColor(Color.kWhite);
+        SolidColor STOP_ROLLERS = solidColor(Color.kYellow);
 
-        SolidColor RESET_HEADING = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kYellow));
-        SolidColor X_WHEELS = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+        SolidColor RESET_HEADING = solidColor(Color.kYellow);
+        SolidColor X_WHEELS = solidColor(Color.kRed);
 
-        SolidColor INTAKE_STOW = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kBrown));        //broken
-        SolidColor INTAKE_DEPLOYED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kOrange));   //broken
+        SolidColor INTAKE_STOW = solidColor(Color.kBrown);        //broken
+        SolidColor INTAKE_DEPLOYED = solidColor(Color.kOrange);   //broken
 
-        SolidColor DISABLED_ALIGNED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kGreen));
-        SolidColor DISABLED = BASE_SOLID_COLOR_REQUEST.withColor(new RGBWColor(Color.kRed));
+        SolidColor DISABLED_ALIGNED = solidColor(Color.kGreen);
+        SolidColor DISABLED = solidColor(Color.kRed);
 
         // SolidColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 

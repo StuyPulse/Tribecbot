@@ -40,6 +40,7 @@ import com.stuypulse.robot.commands.intake.IntakeTeleopDigest;
 import com.stuypulse.robot.commands.intake.SeedPivotDeployed;
 import com.stuypulse.robot.commands.intake.SeedPivotStowed;
 import com.stuypulse.robot.commands.leds.LEDApplyPattern;
+import com.stuypulse.robot.commands.leds.LEDDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
@@ -172,7 +173,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        // leds.setDefaultCommand(new LEDDefaultCommand());
+        leds.setDefaultCommand(new LEDDefaultCommand());
     }
 
     /***************/
@@ -232,31 +233,31 @@ public class RobotContainer {
 
         // Intake Deploy
         driver.getRightTriggerButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
+            // .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
             .onTrue(new IntakeDeploy());
         
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
-            .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
+            // .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
             .onFalse(new SetIMUMode(0));   
 
         // Stop Rollers
         driver.getLeftBumper()
-            .onTrue(new LEDApplyPattern(Settings.LED.STOP_ROLLERS))
+            // .onTrue(new LEDApplyPattern(Settings.LED.STOP_ROLLERS))
             .onTrue(new IntakeDeploy()
                 .andThen(new IntakeStopRollers()));
 
         // Outtake
         driver.getRightBumper()
-            .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
             .whileTrue(new IntakeOuttake())
             .onFalse(new IntakeRunRollers());
         
         // SOTM (BR)
         driver.getRightMenuButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
+            // .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
             .onTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
                 .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData() && superstructure.getState() == SuperstructureState.SOTM)))
@@ -277,7 +278,7 @@ public class RobotContainer {
 
         // FOTM (BL)
         driver.getLeftMenuButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
+            // .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
@@ -295,8 +296,8 @@ public class RobotContainer {
             ));
 
         driver.getDPadDown()
-            .whileTrue(new SwerveXMode())
-            .onTrue(new LEDApplyPattern(Settings.LED.X_WHEELS));
+            .whileTrue(new SwerveXMode());
+            // .onTrue(new LEDApplyPattern(Settings.LED.X_WHEELS));
 
         // Reset (TL)
         driver.getDPadRight()
@@ -320,7 +321,7 @@ public class RobotContainer {
 
         // Manual Right Corner Scoring
         driver.getRightButton()
-            .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .onTrue(new SwerveResetPoseRightCorner())
@@ -331,7 +332,7 @@ public class RobotContainer {
 
         // Manual KB Distance Scoring
         driver.getBottomButton()
-            .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .onTrue(new SwerveResetPoseKBShot())

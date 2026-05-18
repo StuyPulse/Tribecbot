@@ -42,28 +42,27 @@ public class LEDController extends SubsystemBase {
         return instance;
     }
 
-
-    private int startingIndex = 0;
-    private int endIndex = null; //TODO: calculate the total
-
-
     private final CANdle leds;
     private CANdleConfiguration candleConfigs;
-    private ControlRequest ledPattern = new SolidColor(startingIndex, endIndex).withColor(RGBWColor.fromHSV(0, 0, 100));
+    private ControlRequest ledPattern = Settings.LED.DISABLED;
+    private boolean isChanged;
 
     public void applyPattern(ControlRequest ledPattern) {
-       this.ledPattern = ledPattern;
+        if(this.ledPattern != ledPattern) {
+            this.ledPattern = ledPattern;
+            isChanged = true;
+        }
     }
 
     private LEDController() {
-        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.RIO); // TODO: update ports value
+        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE); // TODO: update ports value
 
         candleConfigs = new CANdleConfiguration()
                 .withLED(
                         new LEDConfigs()
-                                .withBrightnessScalar(0.7)
-                                .withStripType(StripTypeValue.RGB)
-                                .withLossOfSignalBehavior(LossOfSignalBehaviorValue.DisableLEDs))
+                                .withBrightnessScalar(1.0)
+                                .withStripType(StripTypeValue.GRB)
+                                .withLossOfSignalBehavior(LossOfSignalBehaviorValue.KeepRunning))
                                 
                 .withCANdleFeatures(
                         new CANdleFeaturesConfigs().withStatusLedWhenActive(StatusLedWhenActiveValue.Enabled));
@@ -71,13 +70,16 @@ public class LEDController extends SubsystemBase {
         leds.getConfigurator().apply(candleConfigs);
 
         leds.setControl(ledPattern);
-        
+        isChanged = true;
     }
 
     public void periodicAfterScheduler() {
         if (RobotContainer.EnabledSubsystems.LEDS.get()) {
-            leds.setControl(ledPattern);
-
+            if(isChanged) {
+                leds.clearAllAnimations();
+                leds.setControl(ledPattern);
+                isChanged = false;
+            }
         } else {
             leds.clearAllAnimations();
         }

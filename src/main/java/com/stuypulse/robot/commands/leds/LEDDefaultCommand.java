@@ -7,6 +7,8 @@
 
 package com.stuypulse.robot.commands.leds;
 
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.SolidColor;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.constants.Settings;
@@ -27,11 +29,10 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class LEDDefaultCommand extends Command{
+public class LEDDefaultCommand extends InstantCommand{
     private final LEDController leds;
     private final CommandSwerveDrivetrain swerve;
     private final Handoff handoff;
@@ -59,7 +60,7 @@ public class LEDDefaultCommand extends Command{
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         String state = "NONE";
 
         if (Robot.getMode() == RobotMode.DISABLED) {
@@ -115,9 +116,6 @@ public class LEDDefaultCommand extends Command{
             else if (intake.getPivotState() == PivotState.DEPLOY) {
                 leds.applyPattern(Settings.LED.INTAKE_DEPLOYED);
                 state = "INTAKE_DEPLOYED";
-            }
-            else {
-                leds.applyPattern(Settings.LED.DISABLED);
             }
         }
 
