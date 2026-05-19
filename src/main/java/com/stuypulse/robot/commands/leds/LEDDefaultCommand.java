@@ -73,7 +73,7 @@ public class LEDDefaultCommand extends InstantCommand{
                 state = "DISABLED_DISALLOWED";
             }
         }
-
+        
         else {
             if (swerve.isUnderTrench()) {
                 leds.applyPattern(Settings.LED.PASSING_TRENCH);
