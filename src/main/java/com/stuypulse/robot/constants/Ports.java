@@ -56,5 +56,6 @@ public interface Ports {
 
     public interface Spindexer {
         int MOTOR = 30;
+        int FOLLOWER = -1; // TODO: follower port
     }
 }
