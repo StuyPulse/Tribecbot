@@ -381,21 +381,21 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Set Pipeline High Sun", new SetPipeline(Pipeline.HIGH_SUN));
 
         // Unjamming
-        SmartDashboard.putData("Robot/Handoff Reverse",
-        //IMPORTANT this will not work with LEDS 
-            new ConditionalCommand(
-                new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
-                new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
-                () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
+        // SmartDashboard.putData("Robot/Handoff Reverse",
+        // //IMPORTANT this will not work with LEDS 
+        //     new ConditionalCommand(
+        //         new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
+        //         new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
+        //         () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
-        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
+        // SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
-        SmartDashboard.putData("Robot/Spindexer Reverse", 
-        //IMPORTANT this will not work with LEDS
-            new ConditionalCommand(
-                new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
-                new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
-                () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
+        // SmartDashboard.putData("Robot/Spindexer Reverse", 
+        // //IMPORTANT this will not work with LEDS
+        //     new ConditionalCommand(
+        //         new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
+        //         new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
+        //         () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
     }
 

@@ -8,7 +8,6 @@ package com.stuypulse.robot.subsystems.leds;
 
 import java.util.Optional;
 
-
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANdleFeaturesConfigs;
 import com.ctre.phoenix6.configs.CustomParamsConfigs;
@@ -24,17 +23,25 @@ import com.ctre.phoenix6.signals.RGBWColor;
 import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
 import com.ctre.phoenix6.signals.StripTypeValue;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Cameras.Camera;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
     private final static LEDController instance;
+
+    public static boolean isLeftLLDead = false;
+    public static boolean isBackLLDead = false;
+    public static boolean isRightLLDead = false;
+
+    private Pose2d lastPoseOnAprilTag;
+    private boolean initialPoseUpdated = false;
 
     static {
         instance = new LEDController();
@@ -47,25 +54,23 @@ public class LEDController extends SubsystemBase {
     private final CANdle leds;
     private CANdleConfiguration candleConfigs;
     private ControlRequest ledPattern = Settings.LED.solidColorRequest.withColor(Settings.LED.DISABLED);
-    
 
-    //different portions of the LED should be a different color to indicate whether certain limelights are dead
-    //add the flashing aspect based on if we don't see a tag (with debounce) 
-    //  one way to go further with the flashing aspect is make it flash faster over DISTANCE (since last tag was seen) rather than time
+    // different portions of the LED should be a different color to indicate whether
+    // certain limelights are dead
+    // add the flashing aspect based on if we don't see a tag (with debounce)
+    // one way to go further with the flashing aspect is make it flash faster over
+    // DISTANCE (since last tag was seen) rather than time
 
     public enum LEDSTATE {
         PASSING_TRENCH(Settings.LED.PASSING_TRENCH),
         IS_BEHIND_HUB(Settings.LED.IS_BEHIND_HUB),
         TURRET_WRAPPING(Settings.LED.TURRET_WRAPPING),
-        LEFT_WARNING(Settings.LED.LEFT_WARNING),
-        RIGHT_WARNING(Settings.LED.RIGHT_WARNING),
         SHOOT_IN_PLACE(Settings.LED.SHOOT_IN_PLACE),
         SOTM_ON(Settings.LED.SOTM_ON),
-        FOTM_ON(Settings.LED.DISABLED), //holder bcs rainbow
+        FOTM_ON(Settings.LED.DISABLED), // holder bcs rainbow
         LEFT_CORNER(Settings.LED.LEFT_CORNER),
         RIGHT_CORNER(Settings.LED.RIGHT_CORNER),
         KB_DISTANCE(Settings.LED.KB_DISTANCE),
-        REVERSE(Settings.LED.REVERSE),
         STOP_ROLLERS(Settings.LED.STOP_ROLLERS),
         RESET_HEADING(Settings.LED.RESET_HEADING),
         X_WHEELS(Settings.LED.X_WHEELS),
@@ -80,16 +85,15 @@ public class LEDController extends SubsystemBase {
             this.color = color;
         }
 
-        public RGBWColor getColor() {
+        private RGBWColor getColor() {
             return this.color;
         }
 
         public ControlRequest getAnimation() {
             if (this == LEDSTATE.FOTM_ON) {
                 return Settings.LED.rainbowRequest;
-            }
-            else {
-                return Settings.LED.solidColorRequest.withColor(getColor());
+            } else {
+                return Settings.LED.solidColorRequest.withColor(this.color);
             }
         }
     }
@@ -97,15 +101,19 @@ public class LEDController extends SubsystemBase {
     private LEDSTATE state = LEDSTATE.DISABLED;
     private LEDSTATE cachedState = LEDSTATE.DISABLED;
 
-        //CHANGE apply pattern command to change state
+    // CHANGE apply pattern command to change state
 
     public void applyPattern() {
-        if (cachedState != state) { 
+        if (cachedState != state) {
+            if (cachedState.getAnimation().getName() != "SolidColor") {
+                leds.clearAllAnimations();
+            } // TODO: daniel's change, double check if works. If not keep calling
+              // clearAllAnimations every loop
             if (!(cachedState.getAnimation().getName().equals(state.getAnimation().getName()))) {
                 this.ledPattern = state.getAnimation();
-            } 
-            
-            else if (ledPattern instanceof SolidColor){
+            }
+
+            else if (ledPattern instanceof SolidColor) {
                 SolidColor solidColor = (SolidColor) ledPattern;
                 solidColor.withColor(state.getColor());
                 // SolidColor.class.cast(ledPattern).withColor(null); //change if neccesary
@@ -120,6 +128,7 @@ public class LEDController extends SubsystemBase {
 
     private LEDController() {
         leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
+        lastPoseOnAprilTag = new Pose2d();
 
         candleConfigs = new CANdleConfiguration()
                 .withLED(
@@ -127,10 +136,10 @@ public class LEDController extends SubsystemBase {
                                 .withBrightnessScalar(1.0)
                                 .withStripType(StripTypeValue.GRB)
                                 .withLossOfSignalBehavior(LossOfSignalBehaviorValue.KeepRunning))
-                                
+
                 .withCANdleFeatures(
                         new CANdleFeaturesConfigs().withStatusLedWhenActive(StatusLedWhenActiveValue.Enabled));
-                
+
         leds.getConfigurator().apply(candleConfigs);
 
         leds.setControl(ledPattern);
@@ -138,11 +147,37 @@ public class LEDController extends SubsystemBase {
 
     public void periodicAfterScheduler() {
         if (RobotContainer.EnabledSubsystems.LEDS.get()) {
-            leds.clearAllAnimations();
             applyPattern();
             leds.setControl(ledPattern);
         } else {
             leds.clearAllAnimations();
+        }
+
+        // reflective of the 3 LED gap between them
+        if (isRightLLDead) {
+            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 4, Settings.LED.LED_LENGTH - 1)
+                    .withColor(Settings.LED.RIGHTDEAD));
+        }
+        if (isLeftLLDead) {
+            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 11, Settings.LED.LED_LENGTH - 8)
+                    .withColor(Settings.LED.LEFTDEAD));
+        }
+        if (isBackLLDead) {
+            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 18, Settings.LED.LED_LENGTH - 15)
+                    .withColor(Settings.LED.BACKDEAD));
+        }
+
+        if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
+                Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||
+                Cameras.LimelightCameras[2].getNumberOfTagsSeen() > 0) {
+            lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
+            initialPoseUpdated = true;
+        }
+
+        if (initialPoseUpdated &&
+                lastPoseOnAprilTag.getTranslation()
+                        .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()) > Settings.LED.APRIL_TAG_DISTANCE_THRESHOLD) {
+            //TODO: add flashing
         }
 
         DogLog.log("LED/Applied Pattern Name", ledPattern.getName());
@@ -152,6 +187,6 @@ public class LEDController extends SubsystemBase {
 
         DogLog.log("LED/State", state.toString());
         DogLog.log("LED/Cached State", state.toString());
-    
+
     }
 }

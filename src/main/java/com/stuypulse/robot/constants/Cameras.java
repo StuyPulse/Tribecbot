@@ -49,6 +49,10 @@ public interface Cameras {
         private int rejectedCounterAngularVelocity;
         private int rejectedCounterInvalidPosition;
         private int rejectedCounterTargetArea;
+
+        // private boolean isDead;
+        // private double heartBeat;
+
         private LimelightResults result;
 
         private Pipeline currentPipeline;
@@ -115,6 +119,22 @@ public interface Cameras {
                     break;
             }
         }
+
+        public int getNumberOfTagsSeen() {
+            return LimelightHelpers.getRawFiducials(this.getName()).length;
+        }
+
+        // public boolean seesTag() {
+        //     return getNumberOfTagsSeen() == 0;
+        // }
+
+        // public void checkHeartBeats() {
+            
+        // }
+
+        // public boolean isDead(){
+        //     return this.isDead;
+        // }
 
         public void log() {
             DogLog.log(keyName + "# Rejected Not Null", rejectedCounterNotNull);

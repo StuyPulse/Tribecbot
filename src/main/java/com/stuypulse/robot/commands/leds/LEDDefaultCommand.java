@@ -95,11 +95,11 @@ public class LEDDefaultCommand extends InstantCommand{
             else if (superstructure.getState() == SuperstructureState.FOTM) {
                 leds.changeState(LEDSTATE.FOTM_ON);
             }
-            else if (spindexer.getState() == SpindexerState.REVERSE || 
-                     handoff.getState() == HandoffState.REVERSE ||
-                     intake.getRollerState() == RollerState.OUTTAKE) {
-                leds.changeState(LEDSTATE.REVERSE);
-            } 
+            // else if (spindexer.getState() == SpindexerState.REVERSE || 
+            //          handoff.getState() == HandoffState.REVERSE ||
+            //          intake.getRollerState() == RollerState.OUTTAKE) {
+            //     leds.changeState(LEDSTATE.REVERSE);
+            // } 
             else if (intake.getPivotState() == PivotState.STOW) {
                 leds.changeState(LEDSTATE.INTAKE_STOW);
             }

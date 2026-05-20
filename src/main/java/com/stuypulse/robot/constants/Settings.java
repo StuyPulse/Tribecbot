@@ -366,6 +366,26 @@ public interface Settings {
     }
 
     public interface LED {
+        //TODO:
+            //add back states (reverse and etc (low priority))
+
+            //(DONE) remove stuff we dont use 
+            //(DONE) space out dead limelight indicators
+
+            //FIX rainbow (flickering) 
+            //make dead limelight colors flash (GIVEN THEY WORK)
+            //TUNE constant for heart beat
+
+            //(DONE BUT CONFIRM WITH BLAY IF HE WANTS TIME (like 2 seconds outside of zone)) 
+                        //make debounce for the distance away from last pose with april tags in sight
+
+            //(DONE) make the getter for the last pose with april tags in sight
+            // (PARTIAL IMPLEMENTATION) add the variables to the Camera objects as fields (heartbeats)
+
+            //Add flashing based on the distance thing.
+
+            //SEPERATE THING: ADD JSONS TO LL from the PractiCAL
+
         public SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
         public RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
 
@@ -382,12 +402,12 @@ public interface Settings {
         // RGBWColor CLIMBING = rgbwConverter(Color.kRed);
 
         RGBWColor TURRET_WRAPPING = rgbwConverter(Color.kRed);
-        RGBWColor LEFT_WARNING = rgbwConverter(Color.kBlack); // TBD
-        RGBWColor RIGHT_WARNING = rgbwConverter(Color.kBlack); // TBD
+        // RGBWColor LEFT_WARNING = rgbwConverter(Color.kBlack); // TBD
+        // RGBWColor RIGHT_WARNING = rgbwConverter(Color.kBlack); // TBD
 
         RGBWColor SHOOT_IN_PLACE = rgbwConverter(Color.kPurple);
 
-        RGBWColor SOTM_ON = rgbwConverter(Color.kCyan);
+        RGBWColor SOTM_ON = rgbwConverter(Color.kGreen);
         RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60).withSlot(0);
 
         RGBWColor LEFT_CORNER = rgbwConverter(Color.kPurple);
@@ -395,7 +415,7 @@ public interface Settings {
         
         RGBWColor KB_DISTANCE = rgbwConverter(Color.kPink);
 
-        RGBWColor REVERSE = rgbwConverter(Color.kWhite);
+        // RGBWColor REVERSE = rgbwConverter(Color.kWhite);
         RGBWColor STOP_ROLLERS = rgbwConverter(Color.kYellow);
 
         RGBWColor RESET_HEADING = rgbwConverter(Color.kYellow);
@@ -407,9 +427,15 @@ public interface Settings {
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
         RGBWColor DISABLED = rgbwConverter(Color.kRed);
 
+        RGBWColor LEFTDEAD = rgbwConverter(Color.kWhite);
+        RGBWColor RIGHTDEAD = rgbwConverter(Color.kWhite);
+        RGBWColor BACKDEAD = rgbwConverter(Color.kWhite);
+
         // RGBWColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
+
+        public double APRIL_TAG_DISTANCE_THRESHOLD = Units.feetToMeters(2); //TODO: update because comparing Translation2d, so make sure it is 2 feet
     }
 
     public interface Vision {
@@ -421,6 +447,7 @@ public interface Settings {
         public final double INVALID_POSITION_TOLERANCE_M = 0.05;
         public final double MAX_ANGULAR_VELOCITY_RAD_SEC = 2 * Math.PI;
         double MIN_TAG_AREA = 5; //TODO: MAKE SURE THIS IS A GOOD VALUE!!!
+        public final double MIN_CYCLE_LL_HB = 1000; // TODO: tune
 
         SmartBoolean HDR_ENABLED = new SmartBoolean("Vision/HDR Enabled?", false);
         double HDR_TIMEOUT_SEC = 0.25;

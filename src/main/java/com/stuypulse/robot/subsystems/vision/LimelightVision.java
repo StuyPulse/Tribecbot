@@ -15,6 +15,7 @@ import com.stuypulse.robot.constants.Cameras.Camera.Pipeline;
 import com.stuypulse.robot.constants.Cameras.Camera.RejectionValue;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
@@ -47,6 +48,10 @@ public class LimelightVision extends SubsystemBase {
     private SmartBoolean enabled;
     private int maxTagCount;
     private MegaTagMode megaTagMode;
+
+    private double leftLLHeartbeat = 0.0; //change to -1 is we need to switch the way we do this
+    private double rightLLHeartbeat = 0.0;
+    private double backLLHeartbeat = 0.0;
 
     private Pose2d[] limelightPoseArray;
 
@@ -153,7 +158,7 @@ public class LimelightVision extends SubsystemBase {
         for (String name : names) {
             LimelightHelpers.SetIMUAssistAlpha(name, assistValue);
         }
-    }
+    } 
 
     /**
      * Allows all tags except the specified ones by setting blacklisted tag
@@ -210,6 +215,10 @@ public class LimelightVision extends SubsystemBase {
         return debouncedHasData.get();
     }
 
+    public boolean checkDead(double current, double prev) { 
+        return Math.abs(prev - current) < Settings.Vision.MIN_CYCLE_LL_HB;
+    }
+
     public void periodicAfterScheduler() {
         if (enabled.get()) {
             hasData = false;
@@ -219,6 +228,29 @@ public class LimelightVision extends SubsystemBase {
             for (int i = 0; i < names.length; i++) {
                 if (Cameras.LimelightCameras[i].isEnabled()) {
                     String limelightName = names[i];
+
+                    if (limelightName.equals("limelight-right")) {
+                        //prev
+                        // if (rightLLHeartbeat == LimelightHelpers.getHeartbeat(limelightName) && rightLLHeartbeat != -1)
+                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), rightLLHeartbeat)) {
+                            LEDController.isRightLLDead = true;
+                        }
+                        rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                    }
+                    else if (limelightName.equals("limelight-left") && leftLLHeartbeat != -1) {
+                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), leftLLHeartbeat)) {
+                            LEDController.isLeftLLDead = true;
+                        }
+                        leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                    }
+                    else if (limelightName.equals("limelight-back") && backLLHeartbeat != -1) {
+                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), backLLHeartbeat)) {
+                            LEDController.isBackLLDead = true;
+                        }
+                        backLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                    } 
+
+
 
                         // Seed robot heading (used by MT2)
                         LimelightHelpers.SetRobotOrientation(
@@ -243,6 +275,7 @@ public class LimelightVision extends SubsystemBase {
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
                     }
+
 
                     // Adding to pose estimator
                     boolean notNull = false;
@@ -312,8 +345,8 @@ public class LimelightVision extends SubsystemBase {
                     // this is just the yaw of the internal imu 
                     DogLog.log("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
 
+                    
                 }
-                Cameras.LimelightCameras[i].log();
             }
 
             // Alternating pipelines for hdr
