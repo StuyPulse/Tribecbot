@@ -54,6 +54,10 @@ public class SpindexerImpl extends Spindexer {
     private StatusSignal<Current> leaderStatorCurrent;
     private StatusSignal<AngularVelocity> leaderVelocity;
     private StatusSignal<Voltage> leaderMotorVoltage;
+    private StatusSignal<Current> followerSupplyCurrent;
+    private StatusSignal<Current> followerStatorCurrent;
+    private StatusSignal<AngularVelocity> followerVelocity;
+    private StatusSignal<Voltage> followerMotorVoltage;
 
     public SpindexerImpl() {
         spindexerLeadConfig = new Motors.TalonFXConfig()
@@ -82,26 +86,27 @@ public class SpindexerImpl extends Spindexer {
 
                 .withSensorToMechanismRatio(Settings.Spindexer.GEAR_RATIO);
 
-        leaderMotor = new TalonFX(Ports.Spindexer.MOTOR, Ports.CANIVORE);
+        leaderMotor = new TalonFX(Ports.Spindexer.LEADER, Ports.CANIVORE);
         followerMotor = new TalonFX(Ports.Spindexer.FOLLOWER, Ports.CANIVORE);
 
         spindexerLeadConfig.configure(leaderMotor);
         spindexerFollowConfig.configure(followerMotor);
 
         controller = new DutyCycleOut(getTargetDutyCycle()).withEnableFOC(true);
-        followerControl = new Follower(Ports.Spindexer.MOTOR, MotorAlignmentValue.Aligned);
+        followerControl = new Follower(Ports.Spindexer.LEADER, MotorAlignmentValue.Aligned);
 
         leaderSupplyCurrent = leaderMotor.getSupplyCurrent();
         leaderStatorCurrent = leaderMotor.getStatorCurrent();
         leaderVelocity = leaderMotor.getVelocity();
         leaderMotorVoltage = leaderMotor.getMotorVoltage();
-        // followerSupplyCurrent = leaderMotor.getSupplyCurrent();
-        // followerStatorCurrent = leaderMotor.getStatorCurrent();
-        // followerVelocity = leaderMotor.getVelocity();
-        // followerMotorVoltage = leaderMotor.getMotorVoltage();
-        PhoenixUtil.registerToCanivore(leaderSupplyCurrent, leaderStatorCurrent, leaderVelocity, leaderMotorVoltage);
+        followerSupplyCurrent = followerMotor.getSupplyCurrent();
+        followerStatorCurrent = followerMotor.getStatorCurrent();
+        followerVelocity = followerMotor.getVelocity();
+        followerMotorVoltage = followerMotor.getMotorVoltage();
+        PhoenixUtil.registerToCanivore(leaderSupplyCurrent, leaderStatorCurrent, leaderVelocity, leaderMotorVoltage,
+             followerSupplyCurrent, followerStatorCurrent, followerVelocity, followerMotorVoltage);
 
-        isStalling = BStream.create( () -> leaderSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
+        isStalling = BStream.create(() -> (leaderSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT) || followerSupplyCurrent.getValueAsDouble() > Settings.Spindexer.STALL_CURRENT_LIMIT)
                 .filtered(new BDebounce.Both(Settings.Superstructure.Hood.STALL_DEBOUNCE));
         voltageOverride = Optional.empty();
 
@@ -109,8 +114,11 @@ public class SpindexerImpl extends Spindexer {
         unjamTimer = new Timer();
     }
 
-    private double getMotorRPM() {
+    private double getLeaderRPM() {
         return leaderVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
+    }
+    private double getFollowerRpm() {
+        return followerVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
 
 
@@ -140,6 +148,7 @@ public class SpindexerImpl extends Spindexer {
         if (EnabledSubsystems.SPINDEXER.get()) {
             if (voltageOverride.isPresent()) {
                 leaderMotor.setVoltage(voltageOverride.get());
+                followerMotor.setVoltage(voltageOverride.get());
             } else {
                 if (Superstructure.getInstance().shouldStop()) {
                     leaderMotor.stopMotor();
@@ -155,12 +164,15 @@ public class SpindexerImpl extends Spindexer {
             followerMotor.stopMotor();
         }
 
-        DogLog.log("Spindexer/Leader Motor RPM", getMotorRPM());
+        DogLog.log("Spindexer/Leader Motor RPM", getLeaderRPM());
         // SmartDashboard.putBoolean("Spindexer/Unjamming", unJamming);
 
         DogLog.log("Spindexer/Leader Voltage (volts)", leaderMotorVoltage.getValueAsDouble());
         DogLog.log("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
         DogLog.log("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
+        DogLog.log("Spindexer/Follower Voltage (volts)", followerMotorVoltage.getValueAsDouble());
+        DogLog.log("Spindexer/Follower Supply Current (amps)", followerSupplyCurrent.getValueAsDouble());
+        DogLog.log("Spindexer/Follower Stator Current (amps)", followerStatorCurrent.getValueAsDouble());
 
     // SmartDashboard.putBoolean("Spindexer/Should Stop?", shouldStop());
 
@@ -168,8 +180,12 @@ public class SpindexerImpl extends Spindexer {
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                 DogLog.log(
                         "Robot/CAN/Canivore/Spindexer Leader Motor Connected? (ID "
-                                + String.valueOf(Ports.Spindexer.MOTOR) + ")",
+                                + String.valueOf(Ports.Spindexer.LEADER) + ")",
                         leaderMotor.isConnected());
+                DogLog.log(
+                        "Robot/CAN/Canivore/Spindexer Follower Motor Connected? (ID "
+                                + String.valueOf(Ports.Spindexer.FOLLOWER) + ")",
+                        followerMotor.isConnected());
             }
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }
