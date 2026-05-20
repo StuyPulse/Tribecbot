@@ -39,7 +39,7 @@ import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.IntakeTeleopDigest;
 import com.stuypulse.robot.commands.intake.SeedPivotDeployed;
 import com.stuypulse.robot.commands.intake.SeedPivotStowed;
-import com.stuypulse.robot.commands.leds.LEDApplyPattern;
+import com.stuypulse.robot.commands.leds.LEDApplyState;
 import com.stuypulse.robot.commands.leds.LEDDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
@@ -80,6 +80,7 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.leds.LEDController.LEDSTATE;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -380,19 +381,21 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Set Pipeline High Sun", new SetPipeline(Pipeline.HIGH_SUN));
 
         // Unjamming
-        SmartDashboard.putData("Robot/Handoff Reverse", 
+        SmartDashboard.putData("Robot/Handoff Reverse",
+        //IMPORTANT this will not work with LEDS 
             new ConditionalCommand(
                 new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
                 new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
-                () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+                () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
-        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
         SmartDashboard.putData("Robot/Spindexer Reverse", 
+        //IMPORTANT this will not work with LEDS
             new ConditionalCommand(
                 new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
                 new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
-                () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+                () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
     }
 

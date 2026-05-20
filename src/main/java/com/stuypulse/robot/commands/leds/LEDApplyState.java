@@ -17,22 +17,23 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.leds.LEDController.LEDSTATE;
 
-public class LEDApplyPattern extends InstantCommand {
-
+public class LEDApplyState extends InstantCommand {
+    //This will not work as default command will override it. Either make the cached class the same as this OR (better solution) have a boolean that tells you if it is manually applied or not and if it is then default command dont change
     protected final LEDController leds;
-    protected final ControlRequest pattern;
+    protected final LEDSTATE state;
 
-    public LEDApplyPattern(ControlRequest pattern) {
+    public LEDApplyState(LEDSTATE state) {
         leds = LEDController.getInstance();
-        this.pattern = pattern;
+        this.state = state;
 
         addRequirements(leds);
     }
 
     @Override
     public void execute() {
-        leds.applyPattern(pattern);
+        leds.changeState(state);
     }
 
 }

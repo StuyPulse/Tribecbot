@@ -366,45 +366,48 @@ public interface Settings {
     }
 
     public interface LED {
-        public static SolidColor solidColor(Color color) {
-            return new SolidColor(0, LED_LENGTH - 1).withColor(new RGBWColor(color));
+        public SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
+        public RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
+
+        public static RGBWColor rgbwConverter(Color color) {
+            return new RGBWColor(color);
         }
 
         public final int LED_LENGTH = 8 + 21; //CANdle already has 8
-        SolidColor PASSING_TRENCH = solidColor(Color.kRed);
-        SolidColor IS_BEHIND_HUB = solidColor(Color.kRed);
+        RGBWColor PASSING_TRENCH = rgbwConverter(Color.kRed);
+        RGBWColor IS_BEHIND_HUB = rgbwConverter(Color.kRed);
 
-        // SolidColor CLIMB_ALIGNING = solidColor(Color.kYellow);
-        // SolidColor CLIMB_ALIGNED = solidColor(Color.kGreen);
-        // SolidColor CLIMBING = solidColor(Color.kRed);
+        // RGBWColor CLIMB_ALIGNING = rgbwConverter(Color.kYellow);
+        // RGBWColor CLIMB_ALIGNED = rgbwConverter(Color.kGreen);
+        // RGBWColor CLIMBING = rgbwConverter(Color.kRed);
 
-        SolidColor TURRET_WRAPPING = solidColor(Color.kRed);
-        SolidColor LEFT_WARNING = solidColor(Color.kBlack); // TBD
-        SolidColor RIGHT_WARNING = solidColor(Color.kBlack); // TBD
+        RGBWColor TURRET_WRAPPING = rgbwConverter(Color.kRed);
+        RGBWColor LEFT_WARNING = rgbwConverter(Color.kBlack); // TBD
+        RGBWColor RIGHT_WARNING = rgbwConverter(Color.kBlack); // TBD
 
-        SolidColor SHOOT_IN_PLACE = solidColor(Color.kPurple);
+        RGBWColor SHOOT_IN_PLACE = rgbwConverter(Color.kPurple);
 
-        SolidColor SOTM_ON = solidColor(Color.kCyan);
+        RGBWColor SOTM_ON = rgbwConverter(Color.kCyan);
         RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60).withSlot(0);
 
-        SolidColor LEFT_CORNER = solidColor(Color.kPurple);
-        SolidColor RIGHT_CORNER = solidColor(Color.kBlue);
+        RGBWColor LEFT_CORNER = rgbwConverter(Color.kPurple);
+        RGBWColor RIGHT_CORNER = rgbwConverter(Color.kBlue);
         
-        SolidColor KB_DISTANCE = solidColor(Color.kPink);
+        RGBWColor KB_DISTANCE = rgbwConverter(Color.kPink);
 
-        SolidColor REVERSE = solidColor(Color.kWhite);
-        SolidColor STOP_ROLLERS = solidColor(Color.kYellow);
+        RGBWColor REVERSE = rgbwConverter(Color.kWhite);
+        RGBWColor STOP_ROLLERS = rgbwConverter(Color.kYellow);
 
-        SolidColor RESET_HEADING = solidColor(Color.kYellow);
-        SolidColor X_WHEELS = solidColor(Color.kRed);
+        RGBWColor RESET_HEADING = rgbwConverter(Color.kYellow);
+        RGBWColor X_WHEELS = rgbwConverter(Color.kRed);
 
-        SolidColor INTAKE_STOW = solidColor(Color.kBrown);        //broken
-        SolidColor INTAKE_DEPLOYED = solidColor(Color.kOrange);   //broken
+        RGBWColor INTAKE_STOW = rgbwConverter(Color.kBrown);        //broken
+        RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kOrange);   //broken
 
-        SolidColor DISABLED_ALIGNED = solidColor(Color.kGreen);
-        SolidColor DISABLED = solidColor(Color.kRed);
+        RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
+        RGBWColor DISABLED = rgbwConverter(Color.kRed);
 
-        // SolidColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+        // RGBWColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
     }

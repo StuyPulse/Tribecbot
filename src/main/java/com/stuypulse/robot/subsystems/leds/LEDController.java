@@ -34,9 +34,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
-    private SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
-    private RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
-
     private final static LEDController instance;
 
     static {
@@ -49,75 +46,69 @@ public class LEDController extends SubsystemBase {
 
     private final CANdle leds;
     private CANdleConfiguration candleConfigs;
-    private ControlRequest ledPattern = Settings.LED.DISABLED;
-    private boolean isChanged;
+    private ControlRequest ledPattern = Settings.LED.solidColorRequest.withColor(Settings.LED.DISABLED);
+    
 
     //different portions of the LED should be a different color to indicate whether certain limelights are dead
     //add the flashing aspect based on if we don't see a tag (with debounce) 
     //  one way to go further with the flashing aspect is make it flash faster over DISTANCE (since last tag was seen) rather than time
 
     public enum LEDSTATE {
-        PASSING_TRENCH,
-        IS_BEHIND_HUB,
-        TURRET_WRAPPING,
-        LEFT_WARNING,
-        RIGHT_WARNING,
-        SHOOT_IN_PLACE,
-        SOTM_ON,
-        FOTM_ON,
-        LEFT_CORNER,
-        RIGHT_CORNER,
-        KB_DISTANCE,
-        REVERSE,
-        STOP_ROLLERS,
-        RESET_HEADING,
-        X_WHEELS,
-        INTAKE_STOW,
-        INTAKE_DEPLOYED,
-        DISABLED_ALIGNED,
-        DISABLED
+        PASSING_TRENCH(Settings.LED.PASSING_TRENCH),
+        IS_BEHIND_HUB(Settings.LED.IS_BEHIND_HUB),
+        TURRET_WRAPPING(Settings.LED.TURRET_WRAPPING),
+        LEFT_WARNING(Settings.LED.LEFT_WARNING),
+        RIGHT_WARNING(Settings.LED.RIGHT_WARNING),
+        SHOOT_IN_PLACE(Settings.LED.SHOOT_IN_PLACE),
+        SOTM_ON(Settings.LED.SOTM_ON),
+        FOTM_ON(Settings.LED.DISABLED), //holder bcs rainbow
+        LEFT_CORNER(Settings.LED.LEFT_CORNER),
+        RIGHT_CORNER(Settings.LED.RIGHT_CORNER),
+        KB_DISTANCE(Settings.LED.KB_DISTANCE),
+        REVERSE(Settings.LED.REVERSE),
+        STOP_ROLLERS(Settings.LED.STOP_ROLLERS),
+        RESET_HEADING(Settings.LED.RESET_HEADING),
+        X_WHEELS(Settings.LED.X_WHEELS),
+        INTAKE_STOW(Settings.LED.INTAKE_STOW),
+        INTAKE_DEPLOYED(Settings.LED.INTAKE_DEPLOYED),
+        DISABLED_ALIGNED(Settings.LED.DISABLED_ALIGNED),
+        DISABLED(Settings.LED.DISABLED);
+
+        private RGBWColor color;
+
+        private LEDSTATE(RGBWColor color) {
+            this.color = color;
+        }
+
+        public RGBWColor getColor() {
+            return this.color;
+        }
+
+        public ControlRequest getAnimation() {
+            if (this == LEDSTATE.FOTM_ON) {
+                return Settings.LED.rainbowRequest;
+            }
+            else {
+                return Settings.LED.solidColorRequest.withColor(getColor());
+            }
+        }
     }
 
     private LEDSTATE state = LEDSTATE.DISABLED;
     private LEDSTATE cachedState = LEDSTATE.DISABLED;
 
-    
-    public ControlRequest stateToPattern(LEDSTATE state) {
-        return switch (state) {
-            case PASSING_TRENCH -> solidColorRequest.withColor(new RGBWColor(Color.kRed));
-            case IS_BEHIND_HUB -> solidColorRequest.withColor(new RGBWColor(Color.kRed));
-            case TURRET_WRAPPING -> solidColorRequest.withColor(new RGBWColor(Color.kRed));
-            case LEFT_WARNING -> solidColorRequest.withColor(new RGBWColor(Color.kBlack));
-            case RIGHT_WARNING -> solidColorRequest.withColor(new RGBWColor(Color.kBlack));
-            case SHOOT_IN_PLACE -> solidColorRequest.withColor(new RGBWColor(Color.kPurple));
-            case SOTM_ON -> solidColorRequest.withColor(new RGBWColor(Color.kCyan));
-
-            case FOTM_ON -> rainbowRequest; //rainbow animation -> need to add cached states and a change pattern type method -> maybe apply pattern should take in the pattern and the color/frequency -> then i would need a system like the status signal where we just call them once and mutate them after
-
-            case LEFT_CORNER -> solidColorRequest.withColor(new RGBWColor(Color.kPurple));
-            case RIGHT_CORNER -> solidColorRequest.withColor(new RGBWColor(Color.kBlue));
-            case KB_DISTANCE -> solidColorRequest.withColor(new RGBWColor(Color.kPink));
-            case REVERSE -> solidColorRequest.withColor(new RGBWColor(Color.kWhite));
-            case STOP_ROLLERS -> solidColorRequest.withColor(new RGBWColor(Color.kYellow));
-            case RESET_HEADING -> solidColorRequest.withColor(new RGBWColor(Color.kYellow));
-            case X_WHEELS -> solidColorRequest.withColor(new RGBWColor(Color.kRed));
-            case INTAKE_STOW -> solidColorRequest.withColor(new RGBWColor(Color.kBrown));
-            case INTAKE_DEPLOYED -> solidColorRequest.withColor(new RGBWColor(Color.kOrange));
-            case DISABLED_ALIGNED -> solidColorRequest.withColor(new RGBWColor(Color.kGreen));
-            case DISABLED -> solidColorRequest.withColor(new RGBWColor(Color.kRed));
-        };
-
         //CHANGE apply pattern command to change state
-    }
 
-    public void applyPattern(ControlRequest ledPattern) {
+    public void applyPattern() {
         if (cachedState != state) { 
-            if (stateToPattern(cachedState) != stateToPattern(state)) {
-                this.ledPattern = stateToPattern(state);
+            if (!(cachedState.getAnimation().getName().equals(state.getAnimation().getName()))) {
+                this.ledPattern = state.getAnimation();
             } 
             
-            else if (stateToPattern(state) instanceof SolidColor){
-                SolidColor.class.cast(ledPattern).withColor(null); //UPDATTTEEE
+            else if (ledPattern instanceof SolidColor){
+                SolidColor solidColor = (SolidColor) ledPattern;
+                solidColor.withColor(state.getColor());
+                // SolidColor.class.cast(ledPattern).withColor(null); //change if neccesary
             }
             cachedState = state;
         }
@@ -128,7 +119,7 @@ public class LEDController extends SubsystemBase {
     }
 
     private LEDController() {
-        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE); // TODO: update ports value
+        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
 
         candleConfigs = new CANdleConfiguration()
                 .withLED(
@@ -143,22 +134,24 @@ public class LEDController extends SubsystemBase {
         leds.getConfigurator().apply(candleConfigs);
 
         leds.setControl(ledPattern);
-        isChanged = true;
     }
 
     public void periodicAfterScheduler() {
         if (RobotContainer.EnabledSubsystems.LEDS.get()) {
-            if(isChanged) {
-                leds.clearAllAnimations();
-                leds.setControl(ledPattern);
-                isChanged = false;
-            }
+            leds.clearAllAnimations();
+            applyPattern();
+            leds.setControl(ledPattern);
         } else {
             leds.clearAllAnimations();
         }
 
-        DogLog.log("LED/Pattern Name", ledPattern.getName());
+        DogLog.log("LED/Applied Pattern Name", ledPattern.getName());
+
+        DogLog.log("LED/State Pattern Name", state.getAnimation().getName());
+        DogLog.log("LED/Cached State Pattern Name", state.getAnimation().getName());
+
         DogLog.log("LED/State", state.toString());
+        DogLog.log("LED/Cached State", state.toString());
     
     }
 }
