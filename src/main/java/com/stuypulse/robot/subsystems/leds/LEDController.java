@@ -67,7 +67,7 @@ public class LEDController extends SubsystemBase {
         TURRET_WRAPPING(Settings.LED.TURRET_WRAPPING),
         SHOOT_IN_PLACE(Settings.LED.SHOOT_IN_PLACE),
         SOTM_ON(Settings.LED.SOTM_ON),
-        FOTM_ON(Settings.LED.DISABLED), // holder bcs rainbow
+        FOTM_ON(Settings.LED.FOTM_ON),
         LEFT_CORNER(Settings.LED.LEFT_CORNER),
         RIGHT_CORNER(Settings.LED.RIGHT_CORNER),
         KB_DISTANCE(Settings.LED.KB_DISTANCE),
@@ -90,11 +90,7 @@ public class LEDController extends SubsystemBase {
         }
 
         public ControlRequest getAnimation() {
-            if (this == LEDSTATE.FOTM_ON) {
-                return Settings.LED.rainbowRequest;
-            } else {
-                return Settings.LED.solidColorRequest.withColor(this.color);
-            }
+            return Settings.LED.solidColorRequest.withColor(this.color);
         }
     }
 
@@ -105,19 +101,19 @@ public class LEDController extends SubsystemBase {
 
     public void applyPattern() {
         if (cachedState != state) {
-            if (cachedState.getAnimation().getName() != "SolidColor") {
-                leds.clearAllAnimations();
-            } // TODO: daniel's change, double check if works. If not keep calling
+            // if (cachedState.getAnimation().getName() != "SolidColor") {
+            //     leds.clearAllAnimations();
+            // } 
               // clearAllAnimations every loop
-            if (!(cachedState.getAnimation().getName().equals(state.getAnimation().getName()))) {
-                this.ledPattern = state.getAnimation();
-            }
+            // if (!(cachedState.getAnimation().getName().equals(state.getAnimation().getName()))) {
+            //     this.ledPattern = state.getAnimation();
+            // }
 
-            else if (ledPattern instanceof SolidColor) {
+            // else if (ledPattern instanceof SolidColor) {
                 SolidColor solidColor = (SolidColor) ledPattern;
                 solidColor.withColor(state.getColor());
                 // SolidColor.class.cast(ledPattern).withColor(null); //change if neccesary
-            }
+            // }
             cachedState = state;
         }
     }
@@ -155,6 +151,7 @@ public class LEDController extends SubsystemBase {
 
         // reflective of the 3 LED gap between them
         if (isRightLLDead) {
+            //TODO: when it goes back on CLEAR ANIMATIONS !!
             leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 4, Settings.LED.LED_LENGTH - 1)
                     .withColor(Settings.LED.RIGHTDEAD));
         }

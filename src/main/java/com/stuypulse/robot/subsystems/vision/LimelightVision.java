@@ -30,6 +30,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightVision extends SubsystemBase {
@@ -49,9 +50,13 @@ public class LimelightVision extends SubsystemBase {
     private int maxTagCount;
     private MegaTagMode megaTagMode;
 
-    private double leftLLHeartbeat = 0.0; //change to -1 is we need to switch the way we do this
-    private double rightLLHeartbeat = 0.0;
-    private double backLLHeartbeat = 0.0;
+    private double leftLLHeartbeat = -1; //change to -1 is we need to switch the way we do this
+    private double rightLLHeartbeat = -1;
+    private double backLLHeartbeat = -1;
+
+    private int leftLoopCounter = 0;
+    private int rightLoopCounter = 0;
+    private int backLoopCounter = 0; 
 
     private Pose2d[] limelightPoseArray;
 
@@ -215,10 +220,6 @@ public class LimelightVision extends SubsystemBase {
         return debouncedHasData.get();
     }
 
-    public boolean checkDead(double current, double prev) { 
-        return Math.abs(prev - current) < Settings.Vision.MIN_CYCLE_LL_HB;
-    }
-
     public void periodicAfterScheduler() {
         if (enabled.get()) {
             hasData = false;
@@ -229,25 +230,55 @@ public class LimelightVision extends SubsystemBase {
                 if (Cameras.LimelightCameras[i].isEnabled()) {
                     String limelightName = names[i];
 
-                    if (limelightName.equals("limelight-right")) {
-                        //prev
-                        // if (rightLLHeartbeat == LimelightHelpers.getHeartbeat(limelightName) && rightLLHeartbeat != -1)
-                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), rightLLHeartbeat)) {
-                            LEDController.isRightLLDead = true;
+                    DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
+
+                    if (limelightName.equals(Cameras.LimelightCameras[0].getName())) {
+                        DogLog.log("LED/Right Loop Counter", rightLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, leftLLHeartbeat);
+                        rightLoopCounter += 1;
+                        if (rightLoopCounter == 50) {
+                            DogLog.log("LED/Right Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                                LEDController.isRightLLDead = true;
+                            }
+                            else {
+                                LEDController.isBackLLDead = false;
+                            }
+                            rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            rightLoopCounter = 0;
                         }
-                        rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
                     }
-                    else if (limelightName.equals("limelight-left") && leftLLHeartbeat != -1) {
-                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), leftLLHeartbeat)) {
-                            LEDController.isLeftLLDead = true;
+                    if (limelightName.equals(Cameras.LimelightCameras[1].getName())) {
+                        DogLog.log("LED/Left Loop Counter", leftLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, leftLLHeartbeat);
+                        leftLoopCounter += 1;
+                        if (leftLoopCounter == 50) {
+                            DogLog.log("LED/Left Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                                LEDController.isLeftLLDead = true;
+                            }
+                            else {
+                                LEDController.isBackLLDead = false;
+                            }
+                            leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            leftLoopCounter = 0;
                         }
-                        leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
                     }
-                    else if (limelightName.equals("limelight-back") && backLLHeartbeat != -1) {
-                        if (checkDead(LimelightHelpers.getHeartbeat(limelightName), backLLHeartbeat)) {
-                            LEDController.isBackLLDead = true;
+                    if (limelightName.equals(Cameras.LimelightCameras[2].getName())) {
+                        DogLog.log("LED/Back Loop Counter", backLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, backLLHeartbeat);
+                        backLoopCounter += 1;
+                        if (backLoopCounter == 50) {
+                            DogLog.log("LED/Back Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                                LEDController.isBackLLDead = true;
+                            }
+                            else {
+                                LEDController.isBackLLDead = false;
+                            }
+                            backLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            backLoopCounter = 0;
                         }
-                        backLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
                     } 
 
 

@@ -408,8 +408,7 @@ public interface Settings {
         RGBWColor SHOOT_IN_PLACE = rgbwConverter(Color.kPurple);
 
         RGBWColor SOTM_ON = rgbwConverter(Color.kGreen);
-        RainbowAnimation FOTM_ON = new RainbowAnimation(0, LED_LENGTH - 1).withFrameRate(60).withSlot(0);
-
+        RGBWColor FOTM_ON = rgbwConverter(Color.kDarkBlue);
         RGBWColor LEFT_CORNER = rgbwConverter(Color.kPurple);
         RGBWColor RIGHT_CORNER = rgbwConverter(Color.kBlue);
         
@@ -447,7 +446,7 @@ public interface Settings {
         public final double INVALID_POSITION_TOLERANCE_M = 0.05;
         public final double MAX_ANGULAR_VELOCITY_RAD_SEC = 2 * Math.PI;
         double MIN_TAG_AREA = 5; //TODO: MAKE SURE THIS IS A GOOD VALUE!!!
-        public final double MIN_CYCLE_LL_HB = 1000; // TODO: tune
+        public final double MIN_CYCLE_LL_HB = 1; // TODO: tune
 
         SmartBoolean HDR_ENABLED = new SmartBoolean("Vision/HDR Enabled?", false);
         double HDR_TIMEOUT_SEC = 0.25;
