@@ -430,6 +430,10 @@ public interface Settings {
         RGBWColor RIGHTDEAD = rgbwConverter(Color.kWhite);
         RGBWColor BACKDEAD = rgbwConverter(Color.kWhite);
 
+        SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 4, Settings.LED.LED_LENGTH - 1);
+        SolidColor BACK_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 11, Settings.LED.LED_LENGTH - 8);
+        SolidColor LEFT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 18, Settings.LED.LED_LENGTH - 15);
+
         // RGBWColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;

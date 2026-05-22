@@ -39,6 +39,9 @@ public class LEDController extends SubsystemBase {
     public static boolean isLeftLLDead = false;
     public static boolean isBackLLDead = false;
     public static boolean isRightLLDead = false;
+    // public static boolean isLeftLLDeadControlApplied;
+    // public static boolean isBackLLDeadControlApplied;
+    // public static boolean isRightLLDeadControlApplied;
 
     private Pose2d lastPoseOnAprilTag;
     private boolean initialPoseUpdated = false;
@@ -123,6 +126,11 @@ public class LEDController extends SubsystemBase {
     }
 
     private LEDController() {
+
+        // isLeftLLDeadControlApplied= false;
+        // isBackLLDeadControlApplied= false;
+        // isRightLLDeadControlApplied = false;
+
         leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
         lastPoseOnAprilTag = new Pose2d();
 
@@ -152,16 +160,28 @@ public class LEDController extends SubsystemBase {
         // reflective of the 3 LED gap between them
         if (isRightLLDead) {
             //TODO: when it goes back on CLEAR ANIMATIONS !!
-            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 4, Settings.LED.LED_LENGTH - 1)
+            leds.setControl(Settings.LED.RIGHT_DEAD_STRIP
                     .withColor(Settings.LED.RIGHTDEAD));
+            // isRightLLDeadControlApplied = true;
+        } else if (!isRightLLDead /*&& isRightLLDeadControlApplied*/) {
+            leds.clearAllAnimations();
+            //isRightLLDeadControlApplied = false;
         }
         if (isLeftLLDead) {
-            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 11, Settings.LED.LED_LENGTH - 8)
+            leds.setControl(Settings.LED.LEFT_DEAD_STRIP
                     .withColor(Settings.LED.LEFTDEAD));
+                //isLeftLLDeadControlApplied = true;
+        } else if (!isLeftLLDead /*&& isLeftLLDeadControlApplied */) {
+            leds.clearAllAnimations();
+            //isLeftLLDeadControlApplied = false;
         }
         if (isBackLLDead) {
-            leds.setControl(new SolidColor(Settings.LED.LED_LENGTH - 18, Settings.LED.LED_LENGTH - 15)
+            leds.setControl(Settings.LED.BACK_DEAD_STRIP
                     .withColor(Settings.LED.BACKDEAD));
+                    //isBackLLDeadControlApplied = true;
+        } else if (!isBackLLDead /*&& isBackLLDeadControlApplied*/) {
+            leds.clearAllAnimations();
+            //isBackLLDeadControlApplied = false;
         }
 
         if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
@@ -184,6 +204,10 @@ public class LEDController extends SubsystemBase {
 
         DogLog.log("LED/State", state.toString());
         DogLog.log("LED/Cached State", state.toString());
+        
+        DogLog.log("LED/Is Back LL dead", isBackLLDead);
+        DogLog.log("LED/Is Right LL dead", isRightLLDead);
+        DogLog.log("LED/Is Left LL dead", isLeftLLDead);
 
     }
 }
