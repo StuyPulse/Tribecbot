@@ -64,7 +64,7 @@ public class LEDController extends SubsystemBase {
     // one way to go further with the flashing aspect is make it flash faster over
     // DISTANCE (since last tag was seen) rather than time
 
-    public enum LEDSTATE {
+    public enum LedState {
         PASSING_TRENCH(Settings.LED.PASSING_TRENCH),
         IS_BEHIND_HUB(Settings.LED.IS_BEHIND_HUB),
         TURRET_WRAPPING(Settings.LED.TURRET_WRAPPING),
@@ -75,7 +75,7 @@ public class LEDController extends SubsystemBase {
         RIGHT_CORNER(Settings.LED.RIGHT_CORNER),
         KB_DISTANCE(Settings.LED.KB_DISTANCE),
         STOP_ROLLERS(Settings.LED.STOP_ROLLERS),
-        RESET_HEADING(Settings.LED.RESET_HEADING),
+        RESET(Settings.LED.RESET_HEADING),
         X_WHEELS(Settings.LED.X_WHEELS),
         INTAKE_STOW(Settings.LED.INTAKE_STOW),
         INTAKE_DEPLOYED(Settings.LED.INTAKE_DEPLOYED),
@@ -84,7 +84,7 @@ public class LEDController extends SubsystemBase {
 
         private RGBWColor color;
 
-        private LEDSTATE(RGBWColor color) {
+        private LedState(RGBWColor color) {
             this.color = color;
         }
 
@@ -97,8 +97,8 @@ public class LEDController extends SubsystemBase {
         }
     }
 
-    private LEDSTATE state = LEDSTATE.DISABLED;
-    private LEDSTATE cachedState = LEDSTATE.DISABLED;
+    private LedState state = LedState.DISABLED;
+    private LedState cachedState = LedState.DISABLED;
 
     // CHANGE apply pattern command to change state
 
@@ -121,7 +121,7 @@ public class LEDController extends SubsystemBase {
         }
     }
 
-    public void changeState(LEDSTATE state) {
+    public void changeState(LedState state) {
         this.state = state;
     }
 

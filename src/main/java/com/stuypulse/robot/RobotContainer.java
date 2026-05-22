@@ -80,7 +80,7 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.leds.LEDController;
-import com.stuypulse.robot.subsystems.leds.LEDController.LEDSTATE;
+import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -99,12 +99,14 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import dev.doglog.DogLog;
+import dev.doglog.internal.TimedCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -304,7 +306,8 @@ public class RobotContainer {
         driver.getDPadRight()
             .onTrue(new SuperstructureStow()
                         .alongWith(new HandoffStop())
-                        .alongWith(new SpindexerStop()));
+                        .alongWith(new SpindexerStop()))
+            .onTrue(new LEDApplyState(LedState.RESET).repeatedly().withTimeout(2.0));
 
         // Manual Left Corner Scoring
         driver.getLeftButton()
