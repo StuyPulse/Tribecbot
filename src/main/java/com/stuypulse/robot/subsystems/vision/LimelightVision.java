@@ -238,7 +238,7 @@ public class LimelightVision extends SubsystemBase {
                         rightLoopCounter += 1;
                         if (rightLoopCounter == 50) {
                             DogLog.log("LED/Right Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat);
-                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1) {
                                 LEDController.isRightLLDead = true;
                             }
                             else {
