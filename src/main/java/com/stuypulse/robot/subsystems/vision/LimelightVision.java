@@ -234,15 +234,15 @@ public class LimelightVision extends SubsystemBase {
 
                     if (limelightName.equals(Cameras.LimelightCameras[0].getName())) {
                         DogLog.log("LED/Right Loop Counter", rightLoopCounter);
-                        DogLog.log("LED/variable heartbeat " + limelightName, leftLLHeartbeat);
+                        DogLog.log("LED/variable heartbeat " + limelightName, rightLLHeartbeat);
                         rightLoopCounter += 1;
                         if (rightLoopCounter == 50) {
                             DogLog.log("LED/Right Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat);
-                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1) {
                                 LEDController.isRightLLDead = true;
                             }
                             else {
-                                LEDController.isBackLLDead = false;
+                                LEDController.isRightLLDead = false;
                             }
                             rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
                             rightLoopCounter = 0;
@@ -254,11 +254,11 @@ public class LimelightVision extends SubsystemBase {
                         leftLoopCounter += 1;
                         if (leftLoopCounter == 50) {
                             DogLog.log("LED/Left Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat);
-                            if (LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                            if (LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1) {
                                 LEDController.isLeftLLDead = true;
                             }
                             else {
-                                LEDController.isBackLLDead = false;
+                                LEDController.isLeftLLDead = false;
                             }
                             leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
                             leftLoopCounter = 0;
@@ -270,7 +270,7 @@ public class LimelightVision extends SubsystemBase {
                         backLoopCounter += 1;
                         if (backLoopCounter == 50) {
                             DogLog.log("LED/Back Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat);
-                            if (LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && rightLLHeartbeat != -1) {
+                            if (LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && backLLHeartbeat != -1) {
                                 LEDController.isBackLLDead = true;
                             }
                             else {
