@@ -51,7 +51,7 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]).withTimeout(1.0),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
@@ -64,7 +64,7 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
 
             // NZ Trip 2
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[2], paths[0].getGlobalConstraints()),
+                CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[2], PathConstraints.unlimitedConstraints(12)),
                 new HandoffStop(),
                 new SpindexerStop()
             ),
@@ -72,7 +72,7 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]).withTimeout(1.0),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
@@ -80,7 +80,7 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
                 // new WaitCommand(1.0) //cut this down
             ),
 
-            CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[5], paths[0].getGlobalConstraints()),
+            CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[5], PathConstraints.unlimitedConstraints(12)),
             new SwerveXMode()
         
         );
