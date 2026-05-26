@@ -39,12 +39,6 @@
           "data": {
             "pathName": "Left Corner to Dot"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Dot to Middle"
-          }
         }
       ]
     }

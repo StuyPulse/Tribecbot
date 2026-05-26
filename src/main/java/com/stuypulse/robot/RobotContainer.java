@@ -22,6 +22,7 @@ import com.stuypulse.robot.commands.auton.regular.RightTwoCornerBC;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
+import com.stuypulse.robot.commands.auton.test.TestBC;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.HomingRoutineLower;
@@ -419,6 +420,9 @@ public class RobotContainer {
         AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CYCLE.register(autonChooser);
+
+        AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot v2");
+        BC_TEST.register(autonChooser);
 
         // TWO CYCLES (CORNER)
         AutonConfig LEFT_TWO_CORNER = new AutonConfig("Left Two Corner", LeftTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,

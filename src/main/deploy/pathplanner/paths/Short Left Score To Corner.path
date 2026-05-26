@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2000538693416494,
-        "y": 7.4888359978960555
+        "x": 3.1972863164901653,
+        "y": 7.441
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2824809160305346,
+        "x": 3.482,
         "y": 7.441
       },
       "prevControl": {
-        "x": 3.516912705949025,
-        "y": 7.354156831727459
+        "x": 3.732,
+        "y": 7.441
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.15,
+    "maxVelocity": 0.1,
     "maxAcceleration": 4.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BC Dot",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
