@@ -113,7 +113,7 @@ public class RobotContainer {
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
-        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", false);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
         SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
@@ -423,7 +423,7 @@ public class RobotContainer {
         "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot v2");
+        AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot");
         BC_TEST.register(autonChooser);
 
         // TWO CYCLES (CORNER)
@@ -431,8 +431,8 @@ public class RobotContainer {
         "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CORNER.register(autonChooser);
 
-        AutonConfig LEFT_TWO_CORNER_BC = new AutonConfig("BC Left Two Corner BC", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner To Dot", "Short Left Score to Corner");
+        AutonConfig LEFT_TWO_CORNER_BC = new AutonConfig("BC Left Two Corner", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner to Dot", "Short Left Score to Corner");
         LEFT_TWO_CORNER_BC.register(autonChooser);
 
         AutonConfig LEFT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Left Two Corner BC Center", LeftTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,
@@ -443,8 +443,8 @@ public class RobotContainer {
         "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER.register(autonChooser);
 
-        AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner BC", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner To Dot", "Short Right Score To Corner");
+        AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner to Dot");
         RIGHT_TWO_CORNER_BC.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Right Two Corner BC Center", RightTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,

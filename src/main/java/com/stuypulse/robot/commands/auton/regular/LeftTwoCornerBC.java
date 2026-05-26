@@ -18,6 +18,7 @@ import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
+import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -73,12 +74,12 @@ public class LeftTwoCornerBC extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().withTimeout(1.5)), //cut this down
+                    .andThen(new IntakeAutoDigest().withTimeout(2.5)), //cut this down
                 new WaitCommand(1.0) //cut this down
             ),
 
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5])
-        
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5]),
+            new SwerveXMode()
         );
 
     }
