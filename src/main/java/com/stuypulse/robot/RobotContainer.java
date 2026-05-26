@@ -12,6 +12,7 @@ import com.stuypulse.robot.commands.auton.regular.LeftBump;
 import com.stuypulse.robot.commands.auton.regular.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCorner;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerBC;
+import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerBCCenter;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
@@ -19,6 +20,7 @@ import com.stuypulse.robot.commands.auton.regular.RightBump;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCorner;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerBC;
+import com.stuypulse.robot.commands.auton.regular.RightTwoCornerBCCenter;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
@@ -429,17 +431,25 @@ public class RobotContainer {
         "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
         LEFT_TWO_CORNER.register(autonChooser);
 
-        AutonConfig LEFT_TWO_CORNER_BC = new AutonConfig("BC Left Two Corner", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig LEFT_TWO_CORNER_BC = new AutonConfig("BC Left Two Corner BC", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner To Dot", "Short Left Score to Corner");
         LEFT_TWO_CORNER_BC.register(autonChooser);
+
+        AutonConfig LEFT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Left Two Corner BC Center", LeftTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner to Center Dot", "Short Left Score to Corner");
+        LEFT_TWO_CORNER_BC_CENTER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER = new AutonConfig("Right Two Corner", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         RIGHT_TWO_CORNER.register(autonChooser);
 
-        AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner BC", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner To Dot", "Short Right Score To Corner");
         RIGHT_TWO_CORNER_BC.register(autonChooser);
+
+        AutonConfig RIGHT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Right Two Corner BC Center", RightTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner To Center Dot", "Short Right Score To Corner");
+        RIGHT_TWO_CORNER_BC_CENTER.register(autonChooser);
 
         AutonConfig LEFT_TWO_CORNER_SHALLOW = new AutonConfig("Left Two Corner Shallow", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
