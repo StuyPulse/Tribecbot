@@ -7,43 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Trench To NZ"
+            "pathName": "Right Corner Bite"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left NZ To Score"
+            "pathName": "Right NZ To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Short Left Score To Corner"
+            "pathName": "Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Score"
+            "pathName": "Right Bite Score To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Short Left Score To Corner"
+            "pathName": "Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Corner to Dot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Dot to Middle"
+            "pathName": "Right Corner To Dot"
           }
         }
       ]

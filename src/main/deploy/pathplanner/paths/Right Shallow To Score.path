@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 6.419771754636235,
-        "y": 0.3410128388017126
+        "y": 0.34101283880171307
       },
       "isLocked": false,
       "linkedName": "Right Shallow NZ"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 3.6120827389443653,
-        "y": 0.5868473609129818
+        "y": 0.559
       },
       "prevControl": {
         "x": 6.018673323823109,
-        "y": 0.392767475035663
+        "y": 0.36492011412268166
       },
       "nextControl": null,
       "isLocked": false,
