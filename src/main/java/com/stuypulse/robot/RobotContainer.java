@@ -444,7 +444,7 @@ public class RobotContainer {
         RIGHT_TWO_CORNER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner to Dot");
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner to Dot");
         RIGHT_TWO_CORNER_BC.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Right Two Corner BC Center", RightTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,

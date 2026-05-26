@@ -25,6 +25,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.stuypulse.robot.Robot;
@@ -477,8 +478,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
+    public Command pathfindThenFollowPath(String pathName, PathConstraints pathFindingConstraints) {
+        try {
+            return pathfindThenFollowPath(PathPlannerPath.fromPathFile(pathName), pathFindingConstraints);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(pathName + " does not exist");
+        }
+    }
+
     public Command followPathCommand(PathPlannerPath path) {
         return AutoBuilder.followPath(path);
+    }
+
+    public Command pathfindThenFollowPath(PathPlannerPath path, PathConstraints pathFindingConstraints) {
+        return AutoBuilder.pathfindThenFollowPath(path, pathFindingConstraints);
     }
 
     public SwerveModuleState[] getModuleStates() {

@@ -7,6 +7,7 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import java.util.Set;
 
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -54,15 +55,16 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(5.0)), //changed to 4 bcs of delay (from 5)
-                new WaitCommand(1.0).andThen(
-                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(1.0)) //changed to 4 bcs of delay (from 5)
+                // new WaitCommand(1.0).andThen(
+                //     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
             ),
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
+
             // NZ Trip 2
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
+                CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[2], paths[0].getGlobalConstraints()),
                 new HandoffStop(),
                 new SpindexerStop()
             ),
@@ -74,11 +76,11 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().withTimeout(4.0)), //cut this down CHANGE HERE
-                new WaitCommand(1.0) //cut this down
+                    .andThen(new IntakeAutoDigest().withTimeout(1.0)) //cut this down CHANGE HERE
+                // new WaitCommand(1.0) //cut this down
             ),
 
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5]),
+            CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[5], paths[0].getGlobalConstraints()),
             new SwerveXMode()
         
         );
