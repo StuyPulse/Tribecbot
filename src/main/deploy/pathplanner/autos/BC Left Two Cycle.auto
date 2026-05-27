@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Short Left Score to Corner"
+            "pathName": "Left Score To Corner"
           }
         },
         {
@@ -31,19 +31,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Short Left Score to Corner"
+            "pathName": "Left Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Corner to Dot"
+            "pathName": "Left Corner To Dot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Dot to Middle"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BC Extras",
   "choreoAuto": false
 }

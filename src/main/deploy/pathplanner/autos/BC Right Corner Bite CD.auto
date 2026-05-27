@@ -7,37 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left Corner Bite"
+            "pathName": "BC Right Corner Bite"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left NZ To Score"
+            "pathName": "BC Right NZ To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
+            "pathName": "Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Score"
+            "pathName": "Right Score To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
+            "pathName": "Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Corner To Dot"
+            "pathName": "Right Corner To Center Dot"
           }
         }
       ]

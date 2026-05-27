@@ -3,48 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.308,
+        "x": 3.282,
         "y": 0.559
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.508899325763389,
-        "y": 0.4843175015516353
+        "x": 5.6206165228113445,
+        "y": 0.531325524044389
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.358801711840228,
-        "y": 0.559
+        "x": 6.20456226879871,
+        "y": 1.7965413070243335
       },
       "prevControl": {
-        "x": 4.815378031383736,
-        "y": 0.5480313837375183
+        "x": 6.193748458692971,
+        "y": 0.6502774352651044
       },
       "nextControl": {
-        "x": 6.222474731027868,
-        "y": 0.5764326189020147
+        "x": 6.2118058772904625,
+        "y": 2.564363807519222
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.347631954350925,
-        "y": 4.080285306704707
+        "x": 8.27,
+        "y": 4.067
       },
       "prevControl": {
-        "x": 7.748480008528932,
-        "y": 3.4192923215240993
+        "x": 5.685499383471953,
+        "y": 4.089069050550844
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.23,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.109909909909912,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.6432432432432433,
+      "rotationDegrees": 0.4456470247826539
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -53,17 +66,17 @@
     "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 12.7,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BC To Dot",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

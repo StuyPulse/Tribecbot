@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6120827389443653,
-        "y": 7.441
+        "x": 4.440805008944544,
+        "y": 7.547799642218246
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1972863164901653,
-        "y": 7.441
+        "x": 5.440805008944544,
+        "y": 7.547799642218246
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.482,
-        "y": 7.441
+        "x": 5.441,
+        "y": 7.547799642218246
       },
       "prevControl": {
-        "x": 3.732,
-        "y": 7.441
+        "x": 4.441,
+        "y": 7.547799642218246
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Pathfinder"
     }
   ],
   "rotationTargets": [],
@@ -33,11 +33,11 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.1,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 12.7,
     "unlimited": false
   },
   "goalEndState": {
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "BC Dot",
+  "folder": "PathFinder Test",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

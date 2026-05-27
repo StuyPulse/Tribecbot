@@ -24,6 +24,7 @@ import com.stuypulse.robot.commands.auton.regular.RightTwoCornerBCCenter;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
+import com.stuypulse.robot.commands.auton.test.PathfindTest;
 import com.stuypulse.robot.commands.auton.test.TestBC;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
@@ -432,11 +433,17 @@ public class RobotContainer {
         LEFT_TWO_CORNER.register(autonChooser);
 
         AutonConfig LEFT_TWO_CORNER_BC = new AutonConfig("BC Left Two Corner", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner to Dot", "Short Left Score to Corner");
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "Left Score To Score", "Left Corner To Dot");
         LEFT_TWO_CORNER_BC.register(autonChooser);
 
+        //before i get flamed ITS NOT EXPERIMENTAL! 
+        //i just needed a distinct name. All it does is instead of pathfinding to the dot path at the end of shooting, it path finds forward to save time
+        AutonConfig LEFT_TWO_CORNER_V3 = new AutonConfig("V3 Left BC Two Corner", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "Left Score To Score", "Left Corner To Dot v3");
+        LEFT_TWO_CORNER_V3.register(autonChooser);
+
         AutonConfig LEFT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Left Two Corner BC Center", LeftTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)", "Left Corner to Center Dot", "Short Left Score to Corner");
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "Left Score To Score", "Left Corner To Center Dot");
         LEFT_TWO_CORNER_BC_CENTER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER = new AutonConfig("Right Two Corner", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
@@ -444,11 +451,17 @@ public class RobotContainer {
         RIGHT_TWO_CORNER.register(autonChooser);
 
         AutonConfig RIGHT_TWO_CORNER_BC = new AutonConfig("BC Right Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "BC Right Corner Bite", "BC Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner to Dot");
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "Right Score To Score", "Right Corner To Dot");
         RIGHT_TWO_CORNER_BC.register(autonChooser);
 
+        //before i get flamed ITS NOT EXPERIMENTAL! 
+        //i just needed a distinct name. All it does is instead of pathfinding to the dot path at the end of shooting, it path finds forward to save time
+        AutonConfig RIGHT_TWO_CORNER_V3 = new AutonConfig("V3 Right BC Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "Right Score To Score", "Right Corner To Dot v3");
+        RIGHT_TWO_CORNER_V3.register(autonChooser);
+
         AutonConfig RIGHT_TWO_CORNER_BC_CENTER = new AutonConfig("BC Right Two Corner BC Center", RightTwoCornerBCCenter::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)", "Right Corner To Center Dot", "Short Right Score To Corner");
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "Right Score To Score", "Right Corner To Center Dot");
         RIGHT_TWO_CORNER_BC_CENTER.register(autonChooser);
 
         AutonConfig LEFT_TWO_CORNER_SHALLOW = new AutonConfig("Left Two Corner Shallow", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
@@ -479,6 +492,10 @@ public class RobotContainer {
         // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
         //     "Right Trench Score To Corner");
         // EMPTY_TEST.register(autonChooser);
+
+        AutonConfig PATH_FIND_TEST = new AutonConfig("Path Find Test", PathfindTest::new, prevWaitTimeOne, prevWaitTimeTwo,
+         "Straight One", "Straight Two");
+        PATH_FIND_TEST.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
 

@@ -70,9 +70,9 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "BC Dot",
+  "folder": "BC modified",
   "idealStartingState": {
-    "velocity": 0.0,
+    "velocity": 1.2,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

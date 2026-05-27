@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Corner to Dot v2"
+            "pathName": "Right Corner To Dot v2"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BC Extras",
   "choreoAuto": false
 }

@@ -25,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Bite Score To Score"
+            "pathName": "Right Score To Score"
           }
         },
         {
@@ -37,13 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Corner to Dot"
+            "pathName": "Right Corner To Dot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BC Main",
   "choreoAuto": false
 }
