@@ -77,7 +77,7 @@ public class LeftTwoCornerBCCenter extends SequentialCommandGroup {
                     .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //cut this down
                 // new WaitCommand(1.0)  
             ).withTimeout(1.0),
-            new IntakeDeploy(), //in case digestion doesn't finish neatly
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //ensure not in SOTM and digestion works
 
             CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[4], PathConstraints.unlimitedConstraints(12)),
             new SwerveXMode()

@@ -436,8 +436,7 @@ public class RobotContainer {
         "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "Left Score To Score", "Left Corner To Dot");
         LEFT_TWO_CORNER_BC.register(autonChooser);
 
-        //before i get flamed ITS NOT EXPERIMENTAL! 
-        //i just needed a distinct name. All it does is instead of pathfinding to the dot path at the end of shooting, it path finds forward to save time
+       
         AutonConfig LEFT_TWO_CORNER_V3 = new AutonConfig("V3 Left BC Two Corner", LeftTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
         "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "Left Score To Score", "Left Corner To Dot v3");
         LEFT_TWO_CORNER_V3.register(autonChooser);
@@ -454,8 +453,6 @@ public class RobotContainer {
         "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "Right Score To Score", "Right Corner To Dot");
         RIGHT_TWO_CORNER_BC.register(autonChooser);
 
-        //before i get flamed ITS NOT EXPERIMENTAL! 
-        //i just needed a distinct name. All it does is instead of pathfinding to the dot path at the end of shooting, it path finds forward to save time
         AutonConfig RIGHT_TWO_CORNER_V3 = new AutonConfig("V3 Right BC Two Corner", RightTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
         "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "Right Score To Score", "Right Corner To Dot v3");
         RIGHT_TWO_CORNER_V3.register(autonChooser);

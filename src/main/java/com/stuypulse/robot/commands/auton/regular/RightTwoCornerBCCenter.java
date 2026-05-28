@@ -57,7 +57,7 @@ public class RightTwoCornerBCCenter extends SequentialCommandGroup {
                 // new WaitCommand(1.0).andThen(
                 //     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
             ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //ensure not in SOTM and digestion works
 
             // NZ Trip 2
             new ParallelCommandGroup(
@@ -76,7 +76,7 @@ public class RightTwoCornerBCCenter extends SequentialCommandGroup {
                     .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //cut this down
                 // new WaitCommand(1.0)  
             ).withTimeout(1.0),
-            new IntakeDeploy(), //in case digestion doesn't finish neatly
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //ensure not in SOTM and digestion works 
 
             CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[4], PathConstraints.unlimitedConstraints(12)),
             new SwerveXMode()

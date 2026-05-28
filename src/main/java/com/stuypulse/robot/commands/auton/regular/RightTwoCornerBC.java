@@ -50,11 +50,11 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]).withTimeout(1.0), //uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //changed to 4 bcs of delay (from 5)
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(1.0)) //changed to 4 bcs of delay (from 5)
                 // new WaitCommand(1.0).andThen(
                 //     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
             ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
@@ -70,14 +70,14 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]).withTimeout(1.0), //uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //cut this down
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(1.0)) //cut this down
                 // new WaitCommand(1.0)  
             ).withTimeout(1.0),
-            new IntakeDeploy(), //in case digestion doesn't finish neatly
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //ensure not in SOTM and digestion works
 
             CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[4], PathConstraints.unlimitedConstraints(12)),
             new SwerveXMode()
