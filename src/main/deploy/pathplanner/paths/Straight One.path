@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 4.440805008944544,
-        "y": 7.547799642218246
+        "y": 0.559
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.440805008944544,
-        "y": 7.547799642218246
+        "y": 0.5589999999999999
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 5.441,
-        "y": 7.547799642218246
+        "y": 0.559
       },
       "prevControl": {
         "x": 4.441,
-        "y": 7.547799642218246
+        "y": 0.5589999999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Pathfinder"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
