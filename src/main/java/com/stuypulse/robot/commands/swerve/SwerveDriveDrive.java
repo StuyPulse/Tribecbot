@@ -8,13 +8,15 @@ package com.stuypulse.robot.commands.swerve;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.math.Vector2D;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import com.stuypulse.stuylib.streams.numbers.IStream;
 import com.stuypulse.stuylib.streams.numbers.filters.LowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.VStream;
 import com.stuypulse.stuylib.streams.vectors.filters.VDeadZone;
 import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import com.stuypulse.stuylib.streams.vectors.filters.VRateLimit;
-
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.stuypulse.robot.constants.DriverConstants.Driver.Drive;
 import com.stuypulse.robot.constants.DriverConstants.Driver.Turn;
 import com.stuypulse.robot.constants.Settings.Swerve;
@@ -30,6 +32,9 @@ public class SwerveDriveDrive extends Command {
 
     private final VStream speed;
     private final IStream turn;
+
+    private final BStream isIdle;
+    private boolean isIdleInit;
 
     public SwerveDriveDrive(Gamepad driver) {
         swerve = CommandSwerveDrivetrain.getInstance();
@@ -53,7 +58,10 @@ public class SwerveDriveDrive extends Command {
         );
 
         this.driver = driver;
-
+        isIdle = BStream.create(
+            () -> getDriverInputAsVelocity().magnitude() <= Drive.DEADBAND && Math.abs(driver.getRightX()) <= Turn.DEADBAND)
+                .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
+        isIdleInit = false;
         addRequirements(swerve);
     }
 
@@ -63,10 +71,19 @@ public class SwerveDriveDrive extends Command {
 
     @Override
     public void execute() {
-        swerve.setControl(swerve.getFieldCentricSwerveRequest()
-            .withVelocityX(speed.get().x)
-            .withVelocityY(speed.get().y)
-            .withRotationalRate(-turn.getAsDouble())
-        );
+        if (isIdle.get()) {
+            // if (!isIdleInit) {
+            //     CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
+                swerve.setControl(new SwerveRequest.SwerveDriveBrake());
+            // }
+            isIdleInit = true;
+        } else { 
+            swerve.setControl(swerve.getFieldCentricSwerveRequest()
+                .withVelocityX(speed.get().x)
+                .withVelocityY(speed.get().y)
+                .withRotationalRate(-turn.getAsDouble())
+            );
+            isIdleInit = false;
+        }
     }
 }
