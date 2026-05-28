@@ -16,6 +16,7 @@ import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
+import com.stuypulse.robot.commands.superstructure.SuperstructureStow;
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
 import com.stuypulse.robot.commands.swerve.SwerveTeleopInit;
 import com.stuypulse.robot.commands.vision.BlackListAllTagsForAllCameras;
@@ -256,6 +257,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
         CommandScheduler.getInstance().schedule(new IntakeDeploy());
+        CommandScheduler.getInstance().schedule(new HandoffStop().alongWith(new SpindexerStop()));
 
         if (auto != null) {
             auto.cancel();

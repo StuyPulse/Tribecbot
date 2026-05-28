@@ -28,9 +28,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class RightTwoCornerBCNewFour extends SequentialCommandGroup {
-    //this one removes pathfinder, and removes is hopper empty, and puts timeout only on group, not even on digestion
-    public RightTwoCornerBCNewFour(PathPlannerPath... paths) {
+public class TwoCornerBC extends SequentialCommandGroup {
+    //this one puts a timeout only on parallel command
+    //optimizations, remove wait commands
+    
+    public TwoCornerBC(PathPlannerPath... paths) {
 
         addCommands(
 
@@ -53,7 +55,7 @@ public class RightTwoCornerBCNewFour extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest()
-            ).withTimeout(2.0),
+            ).withTimeout(1.5), //update to 3.0 for actual, this just ensures pathfinding occurs
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             // NZ Trip 2
@@ -65,16 +67,17 @@ public class RightTwoCornerBCNewFour extends SequentialCommandGroup {
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-             new ParallelCommandGroup(
+            new ParallelCommandGroup(
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest()
-            ).withTimeout(2.0), 
-            
-             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
+                new IntakeAutoDigest(),
+                new WaitCommand(5)
+            ),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
+
             new SwerveXMode()
         );
 

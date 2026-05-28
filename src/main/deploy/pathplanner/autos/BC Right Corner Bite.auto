@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Corner To Dot"
+            "pathName": null
           }
         }
       ]

@@ -7,7 +7,6 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import java.util.Set;
 
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -29,9 +28,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class RightTwoCornerBCNewThree extends SequentialCommandGroup {
-    //this one removes pathfinder + optimized timeouts, and removes is hopper empty, with timeout on group
-    public RightTwoCornerBCNewThree(PathPlannerPath... paths) {
+public class CenterTwoCornerBC extends SequentialCommandGroup {
+    //this one puts a timeout only on parallel command
+    //optimizations, remove wait commands
+    
+    public CenterTwoCornerBC(PathPlannerPath... paths) {
 
         addCommands(
 
@@ -48,13 +49,14 @@ public class RightTwoCornerBCNewThree extends SequentialCommandGroup {
                 new SuperstructureAutoInterpolation()
             ),
             new SuperstructureSOTM(),
+    
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest().withTimeout(2)
-            ).withTimeout(2.0), //update to 3.0 for actual, this just ensures pathfinding occurs
+                new IntakeAutoDigest()
+            ).withTimeout(1.5), //update to 3.0 for actual, this just ensures pathfinding occurs
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             // NZ Trip 2
@@ -70,12 +72,14 @@ public class RightTwoCornerBCNewThree extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest().withTimeout(2)
-                // new WaitCommand(1.0)  
-            ).withTimeout(2.0),
+                new IntakeAutoDigest(),
+                new WaitCommand(5)
+            ), //removed time out - run to the max
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5]),
+
             new SwerveXMode()
         );
 

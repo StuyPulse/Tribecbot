@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.282,
-        "y": 0.559
+        "x": 3.48,
+        "y": 0.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.6206165228113445,
-        "y": 0.531325524044389
+        "x": 5.818616522811345,
+        "y": 0.5423255240443889
       },
       "isLocked": false,
       "linkedName": null
@@ -56,6 +56,10 @@
     {
       "waypointRelativePos": 1.6432432432432433,
       "rotationDegrees": 0.4456470247826539
+    },
+    {
+      "waypointRelativePos": 1.7,
+      "rotationDegrees": -10.05657822827732
     }
   ],
   "constraintZones": [],
@@ -71,7 +75,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "BC To Dot",
