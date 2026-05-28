@@ -54,10 +54,10 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //changed to 4 bcs of delay (from 5)
-                // new WaitCommand(1.0).andThen(
-                //     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
-            ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(2.0)), //changed to 4 bcs of delay (from 5)
+                new WaitCommand(1.0).andThen(
+                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(2.5))
+            ).withTimeout(2.0), //update to 3.0 for actual, this just ensures pathfinding occurs
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             // NZ Trip 2
@@ -77,7 +77,7 @@ public class RightTwoCornerBC extends SequentialCommandGroup {
                     .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //cut this down
                 // new WaitCommand(1.0)  
             ).withTimeout(1.0),
-            new IntakeDeploy(), //in case digestion doesn't finish neatly
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[4], PathConstraints.unlimitedConstraints(12)),
             new SwerveXMode()

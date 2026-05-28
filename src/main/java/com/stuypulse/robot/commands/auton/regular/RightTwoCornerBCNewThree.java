@@ -29,11 +29,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class RightTwoCornerBCCenter extends SequentialCommandGroup {
-    
-    public RightTwoCornerBCCenter(PathPlannerPath... paths) {
+public class RightTwoCornerBCNewThree extends SequentialCommandGroup {
+    //this one removes pathfinder + optimized timeouts, and removes is hopper empty, with timeout on group
+    public RightTwoCornerBCNewThree(PathPlannerPath... paths) {
 
         addCommands(
+
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
@@ -52,15 +53,13 @@ public class RightTwoCornerBCCenter extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //changed to 4 bcs of delay (from 5)
-                // new WaitCommand(1.0).andThen(
-                //     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
-            ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), 
+                new IntakeAutoDigest().withTimeout(2)
+            ).withTimeout(2.0), //update to 3.0 for actual, this just ensures pathfinding occurs
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
+
             // NZ Trip 2
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[3], PathConstraints.unlimitedConstraints(12)),
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
                 new HandoffStop(),
                 new SpindexerStop()
             ),
@@ -71,13 +70,12 @@ public class RightTwoCornerBCCenter extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)) //cut this down
+                new IntakeAutoDigest().withTimeout(2)
                 // new WaitCommand(1.0)  
-            ).withTimeout(1.0),
-             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
+            ).withTimeout(2.0),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
-            CommandSwerveDrivetrain.getInstance().pathfindThenFollowPath(paths[4], PathConstraints.unlimitedConstraints(12)),
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
             new SwerveXMode()
         );
 
