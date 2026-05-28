@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.282,
-        "y": 0.559
+        "x": 3.48,
+        "y": 0.57
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.885082564711262,
-        "y": 0.5201840228245365
+        "x": 7.083082715798332,
+        "y": 0.5311980499756427
       },
       "isLocked": false,
-      "linkedName": "Right Corner"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -52,12 +52,12 @@
         "y": 0.559
       },
       "prevControl": {
-        "x": 7.673089129599259,
+        "x": 7.6730891295992585,
         "y": 0.5209487097696721
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
@@ -102,7 +102,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "To Score",
+  "folder": "BC modified",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

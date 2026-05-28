@@ -190,6 +190,9 @@ public class LEDController extends SubsystemBase {
             lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
             initialPoseUpdated = true;
         }
+        else {
+            
+        }
 
         if (initialPoseUpdated &&
                 lastPoseOnAprilTag.getTranslation()
