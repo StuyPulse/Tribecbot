@@ -28,11 +28,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class RightTwoCornerBCNew extends SequentialCommandGroup {
+public class RightTwoCornerBCNewCenter extends SequentialCommandGroup {
     //this one puts a timeout only on parallel command
     //optimizations, remove wait commands
     
-    public RightTwoCornerBCNew(PathPlannerPath... paths) {
+    public RightTwoCornerBCNewCenter(PathPlannerPath... paths) {
 
         addCommands(
 
@@ -54,8 +54,11 @@ public class RightTwoCornerBCNew extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest()
-            ).withTimeout(1.25), //update to 3.0 for actual, this just ensures pathfinding occurs
+                new WaitCommand(0.5)
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty())), //changed to 4 bcs of delay (from 5)
+                new WaitCommand(1.0).andThen(
+                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()))
+            ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             // NZ Trip 2
@@ -71,8 +74,11 @@ public class RightTwoCornerBCNew extends SequentialCommandGroup {
                 CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest()
-            ).withTimeout(4.2),
+                new WaitCommand(0.5)
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty())), //changed to 4 bcs of delay (from 5)
+                new WaitCommand(1.0).andThen(
+                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()))
+            ).withTimeout(1.0), //update to 3.0 for actual, this just ensures pathfinding occurs
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
