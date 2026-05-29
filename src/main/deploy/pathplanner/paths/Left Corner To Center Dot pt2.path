@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 6.27,
-        "y": 0.57
+        "y": 7.44
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.436401056802655,
-        "y": 0.7829836402426446
+        "y": 7.227016359757356
       },
       "isLocked": false,
       "linkedName": null
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 8.135084631168585,
-        "y": 3.8672306449316527
+        "y": 4.261236021735014
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "BC To Dot",

@@ -29,8 +29,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class CenterTwoCornerBC extends SequentialCommandGroup {
-    //this one puts a timeout only on parallel command
-    //optimizations, remove wait commands
     
     public CenterTwoCornerBC(PathPlannerPath... paths) {
 
@@ -52,12 +50,12 @@ public class CenterTwoCornerBC extends SequentialCommandGroup {
     
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest()
-            ).withTimeout(1.5), //update to 3.0 for actual, this just ensures pathfinding occurs
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
+            ).withTimeout(1.5), 
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             // NZ Trip 2
             new ParallelCommandGroup(
@@ -69,13 +67,13 @@ public class CenterTwoCornerBC extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),//.withTimeout(1.0), uncomment if we have issues
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest(),
                 new WaitCommand(5)
-            ), //removed time out - run to the max
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //still have to shoot so we go back to interpolating
+            ), 
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()), //ensure SOTM is over
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5]),
