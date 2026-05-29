@@ -5,7 +5,6 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
-import java.sql.ResultSet;
 import java.util.Arrays;
 
 import com.stuypulse.robot.Robot;
@@ -15,11 +14,9 @@ import com.stuypulse.robot.constants.Cameras.Camera.Pipeline;
 import com.stuypulse.robot.constants.Cameras.Camera.RejectionValue;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
-import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -29,10 +26,7 @@ import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightVision extends SubsystemBase {
@@ -52,17 +46,9 @@ public class LimelightVision extends SubsystemBase {
     private int maxTagCount;
     private MegaTagMode megaTagMode;
 
-    private double leftLLHeartbeat = -1; // change to -1 is we need to switch the way we do this
-    private double rightLLHeartbeat = -1;
-    private double backLLHeartbeat = -1;
-
     private double prevLeftLLLatency = -1; // change to -1 is we need to switch the way we do this
     private double prevRightLLLatency = -1;
     private double prevBackLLLatency = -1;
-
-    private int leftLoopCounter = 0;
-    private int rightLoopCounter = 0;
-    private int backLoopCounter = 0;
 
     private Pose2d[] limelightPoseArray;
 
@@ -246,65 +232,20 @@ public class LimelightVision extends SubsystemBase {
 
                     DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
 
-                    if (limelightName.equals(Cameras.LimelightCameras[0].getName())) {
-                        DogLog.log("LED/Right Loop Counter", rightLoopCounter);
-                        DogLog.log("LED/variable heartbeat " + limelightName, rightLLHeartbeat);
-                        rightLoopCounter += 1;
-                        if (rightLoopCounter == 50) {
-                            DogLog.log("LED/Right Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat);
-                            boolean isDeadLatency = (prevRightLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
-                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1 || isDeadLatency) {
-                                LEDController.isRightLLDead = true;
-                            }
-                            else {
-                                LEDController.isRightLLDead = false;
-                            }
-                            rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
-                            prevRightLLLatency = LimelightHelpers.getLatency_Pipeline(limelightName);
-                            rightLoopCounter = 0;
-                            DogLog.log("Vision/" + limelightName +"/is dead by latency", isDeadLatency);
-                        }
-                    }
-                    if (limelightName.equals(Cameras.LimelightCameras[1].getName())) {
-                        DogLog.log("LED/Left Loop Counter", leftLoopCounter);
-                        DogLog.log("LED/variable heartbeat " + limelightName, leftLLHeartbeat);
-                        leftLoopCounter += 1;
-                        if (leftLoopCounter == 50) {
-                            DogLog.log("LED/Left Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat);
-                            boolean isDeadLatency = (prevLeftLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
-                            if (LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1 || isDeadLatency) {
-                                LEDController.isLeftLLDead = true;
-                            }
-                            else {
-                                LEDController.isLeftLLDead = false;
-                            }
-                            leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
-                            leftLoopCounter = 0;
-                            prevLeftLLLatency = LimelightHelpers.getLatency_Pipeline(limelightName);
-                            DogLog.log("Vision/" + limelightName +"/is dead by latency", isDeadLatency);
-                        }
-                    }
-                    if (limelightName.equals(Cameras.LimelightCameras[2].getName())) {
-                        DogLog.log("LED/Back Loop Counter", backLoopCounter);
-                        DogLog.log("LED/variable heartbeat " + limelightName, backLLHeartbeat);
-                        backLoopCounter += 1;
-                        if (backLoopCounter == 50) {
-                            boolean isDeadLatency = (prevBackLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
-                            DogLog.log("LED/Back Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat);
-                            if (LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && backLLHeartbeat != -1 || isDeadLatency) {
-                                LEDController.isBackLLDead = true;
-                            }
-                            else {
-                                LEDController.isBackLLDead = false;
-                            }
-                            backLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
-                            backLoopCounter = 0;
-                            prevBackLLLatency = LimelightHelpers.getLatency_Pipeline(limelightName);
-                            DogLog.log("Vision/" + limelightName +"/is dead by latency", isDeadLatency);
-                        }
-                    } 
-                        // Seed robot heading (used by MT2)
-                        LimelightHelpers.SetRobotOrientation(
+                    Cameras.LimelightCameras[i].updateLEDs();
+                    //boolean isDeadLatency = (prevRightLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
+                            //if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1 || isDeadLatency) {
+                              //  LEDController.isRightLLDead = true;
+
+                    // prevRightLLLatency = LimelightHelpers.getLatency_Pipeline(limelightName);
+                    
+                    //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
+                    Cameras.LimelightCameras[i].updateHeartBeat();
+                    Cameras.LimelightCameras[i].incrementLoopCounter();
+
+
+                    // Seed robot heading (used by MT2)
+                    LimelightHelpers.SetRobotOrientation(
                                 limelightName,
                                 (CommandSwerveDrivetrain.getInstance().getPose().getRotation().getDegrees() + (Robot.isBlue() ? 0 : 180)) % 360,
                                 0,
