@@ -7,6 +7,7 @@ package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.RawFiducial;
@@ -45,13 +46,13 @@ public interface Cameras {
         private SmartBoolean isEnabled;
         private String keyName;
 
+        private double LLHeartbeat = -1;
+        private int loopCounter = 0;
+
         private int rejectedCounterNotNull;
         private int rejectedCounterAngularVelocity;
         private int rejectedCounterInvalidPosition;
         private int rejectedCounterTargetArea;
-
-        // private boolean isDead;
-        // private double heartBeat;
 
         private LimelightResults result;
 
@@ -122,6 +123,34 @@ public interface Cameras {
 
         public int getNumberOfTagsSeen() {
             return LimelightHelpers.getRawFiducials(this.getName()).length;
+        }
+
+        public void updateHeartBeat() {
+            LLHeartbeat = LimelightHelpers.getHeartbeat(this.getName());
+        }
+
+        public void incrementLoopCounter() {
+            loopCounter += 1;
+        }
+
+        public boolean isAlive() {
+            //latest - old heartbeat
+            if (LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        public void updateLEDs() {
+            switch (this.getName()) {
+                case "limelight-right" -> { if (!isAlive()) LEDController.isRightLLDead = true; }
+            
+                case "limelight-left" -> { if (!isAlive()) LEDController.isLeftLLDead = true; }
+            
+                case "limelight-back" -> { if (!isAlive()) LEDController.isBackLLDead = true; }
+            }
         }
 
         // public boolean seesTag() {
