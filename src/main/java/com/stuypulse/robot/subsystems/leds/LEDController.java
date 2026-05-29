@@ -94,7 +94,9 @@ public class LEDController extends SubsystemBase {
         INTAKE_STOW(Settings.LED.INTAKE_STOW),
         INTAKE_DEPLOYED(Settings.LED.INTAKE_DEPLOYED),
         DISABLED_ALIGNED(Settings.LED.DISABLED_ALIGNED),
-        DISABLED(Settings.LED.DISABLED);
+        DISABLED(Settings.LED.DISABLED),
+        AUTON_COLOR_ONE(Settings.LED.AUTON_ONE),
+        AUTON_COLOR_TWO(Settings.LED.AUTON_TWO);
 
         private RGBWColor color;
 

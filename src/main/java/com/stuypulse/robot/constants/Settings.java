@@ -421,6 +421,9 @@ public interface Settings {
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
         RGBWColor DISABLED = rgbwConverter(Color.kRed);
 
+        RGBWColor AUTON_ONE = rgbwConverter(Color.kBlue);
+        RGBWColor AUTON_TWO = rgbwConverter(Color.kOrange);
+
         RGBWColor LLDEAD = rgbwConverter(Color.kWhite);
 
         SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 6, Settings.LED.LED_LENGTH - 2);

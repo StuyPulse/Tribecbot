@@ -14,6 +14,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.leds.LEDApplyState;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
 import com.stuypulse.robot.commands.swerve.SwerveAutonInit;
@@ -22,7 +23,7 @@ import com.stuypulse.robot.commands.vision.BlackListAllTagsForAllCameras;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
 import com.stuypulse.robot.commands.vision.WhitelistAllTagsForAllCameras;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -45,7 +46,6 @@ import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class Robot extends TimedRobot {
 
@@ -259,7 +259,9 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
         CommandScheduler.getInstance().schedule(new IntakeDeploy());
-        // CommandScheduler.getInstance().schedule(new InstantCommand(() -> Intake.getInstance().teleopInit(), Intake.getInstance()));
+        CommandScheduler.getInstance().schedule(new HandoffStop().alongWith(new SpindexerStop()));
+        //Reset LEDs from auton. InstantCommand to be removed
+        CommandScheduler.getInstance().schedule(new LEDApplyState(LedState.RESET).withTimeout(1.0));
 
         if (auto != null) {
             auto.cancel();
