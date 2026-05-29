@@ -6,10 +6,16 @@
 
 package com.stuypulse.robot.subsystems.leds;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANdleFeaturesConfigs;
+import com.ctre.phoenix6.configs.CustomParamsConfigs;
 import com.ctre.phoenix6.configs.LEDConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.EmptyAnimation;
+import com.ctre.phoenix6.controls.RainbowAnimation;
+import com.ctre.phoenix6.controls.SingleFadeAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
 import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
@@ -17,25 +23,28 @@ import com.ctre.phoenix6.signals.RGBWColor;
 import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
 import com.ctre.phoenix6.signals.StripTypeValue;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Cameras.Camera;
+import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
     private final static LEDController instance;
 
-    public static boolean isLeftLLDead;
-    public static boolean isBackLLDead;
-    public static boolean isRightLLDead;
-;
-    public boolean leftDeadAnimationCleared; 
-    public boolean backDeadAnimationCleared; 
-    public boolean rightDeadAnimationCleared;
+    public static boolean isLeftLLDead = false;
+    public static boolean isBackLLDead = false;
+    public static boolean isRightLLDead = false;
+    // public static boolean isLeftLLDeadControlApplied;
+    // public static boolean isBackLLDeadControlApplied;
+    // public static boolean isRightLLDeadControlApplied;
 
-    // private Pose2d lastPoseOnAprilTag;
-    // private boolean initialPoseUpdated = false;
+    private Pose2d lastPoseOnAprilTag;
+    private boolean initialPoseUpdated = false;
 
     static {
         instance = new LEDController();
@@ -49,34 +58,11 @@ public class LEDController extends SubsystemBase {
     private CANdleConfiguration candleConfigs;
     private ControlRequest ledPattern = Settings.LED.solidColorRequest.withColor(Settings.LED.DISABLED);
 
-    private LEDController() {
-        leftDeadAnimationCleared = false;
-        backDeadAnimationCleared = false;
-        rightDeadAnimationCleared = false;
-
-        isLeftLLDead = false;
-        isBackLLDead = false;
-        isRightLLDead = false;
-
-        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
-        // lastPoseOnAprilTag = new Pose2d();
-
-        candleConfigs = new CANdleConfiguration()
-                .withLED(
-                        new LEDConfigs()
-                                .withBrightnessScalar(1.0)
-                                .withStripType(StripTypeValue.GRB)
-                                .withLossOfSignalBehavior(LossOfSignalBehaviorValue.KeepRunning))
-
-                .withCANdleFeatures(
-                        new CANdleFeaturesConfigs().withStatusLedWhenActive(StatusLedWhenActiveValue.Enabled));
-
-        leds.getConfigurator().apply(candleConfigs);
-
-        leds.setControl(ledPattern);
-    }
-
-    // add the flashing aspect based on if we don't see a tag (with debounce or by distance)
+    // different portions of the LED should be a different color to indicate whether
+    // certain limelights are dead
+    // add the flashing aspect based on if we don't see a tag (with debounce)
+    // one way to go further with the flashing aspect is make it flash faster over
+    // DISTANCE (since last tag was seen) rather than time
 
     public enum LedState {
         PASSING_TRENCH(Settings.LED.PASSING_TRENCH),
@@ -114,18 +100,23 @@ public class LEDController extends SubsystemBase {
     private LedState state = LedState.DISABLED;
     private LedState cachedState = LedState.DISABLED;
 
-    //TODO: make branch for the distance flashing thing
+    // CHANGE apply pattern command to change state
+
     public void applyPattern() {
-        // if (initialPoseUpdated &&
-        //         lastPoseOnAprilTag.getTranslation()
-        //                 .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()) > Settings.LED.APRIL_TAG_DISTANCE_THRESHOLD) {
-        //     
-        // }
-
         if (cachedState != state) {
-            SolidColor solidColor = (SolidColor) ledPattern;
-            solidColor.withColor(state.getColor());
+            // if (cachedState.getAnimation().getName() != "SolidColor") {
+            //     leds.clearAllAnimations();
+            // } 
+              // clearAllAnimations every loop
+            // if (!(cachedState.getAnimation().getName().equals(state.getAnimation().getName()))) {
+            //     this.ledPattern = state.getAnimation();
+            // }
 
+            // else if (ledPattern instanceof SolidColor) {
+                SolidColor solidColor = (SolidColor) ledPattern;
+                solidColor.withColor(state.getColor());
+                // SolidColor.class.cast(ledPattern).withColor(null); //change if neccesary
+            // }
             cachedState = state;
         }
     }
@@ -134,15 +125,31 @@ public class LEDController extends SubsystemBase {
         this.state = state;
     }
 
+    private LEDController() {
+
+        // isLeftLLDeadControlApplied= false;
+        // isBackLLDeadControlApplied= false;
+        // isRightLLDeadControlApplied = false;
+
+        leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
+        lastPoseOnAprilTag = new Pose2d();
+
+        candleConfigs = new CANdleConfiguration()
+                .withLED(
+                        new LEDConfigs()
+                                .withBrightnessScalar(1.0)
+                                .withStripType(StripTypeValue.GRB)
+                                .withLossOfSignalBehavior(LossOfSignalBehaviorValue.KeepRunning))
+
+                .withCANdleFeatures(
+                        new CANdleFeaturesConfigs().withStatusLedWhenActive(StatusLedWhenActiveValue.Enabled));
+
+        leds.getConfigurator().apply(candleConfigs);
+
+        leds.setControl(ledPattern);
+    }
 
     public void periodicAfterScheduler() {
-        // if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
-        //         Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||
-        //         Cameras.LimelightCameras[2].getNumberOfTagsSeen() > 0) {
-        //     lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
-        //     initialPoseUpdated = true;
-        // }
-
         if (RobotContainer.EnabledSubsystems.LEDS.get()) {
             applyPattern();
             leds.setControl(ledPattern);
@@ -150,30 +157,47 @@ public class LEDController extends SubsystemBase {
             leds.clearAllAnimations();
         }
 
-        //deadAnimationClear booleans ensure we aren't clearing animations 3 times per loop.
+        // reflective of the 3 LED gap between them
         if (isRightLLDead) {
+            //TODO: when it goes back on CLEAR ANIMATIONS !!
             leds.setControl(Settings.LED.RIGHT_DEAD_STRIP
                     .withColor(Settings.LED.RIGHTDEAD));
-            rightDeadAnimationCleared = false;
-        } else if (!isRightLLDead && !rightDeadAnimationCleared) {
+            // isRightLLDeadControlApplied = true;
+        } else if (!isRightLLDead /*&& isRightLLDeadControlApplied*/) {
             leds.clearAllAnimations();
-            rightDeadAnimationCleared = true;
+            //isRightLLDeadControlApplied = false;
         }
         if (isLeftLLDead) {
             leds.setControl(Settings.LED.LEFT_DEAD_STRIP
                     .withColor(Settings.LED.LEFTDEAD));
-            leftDeadAnimationCleared = false;
-        } else if (!isLeftLLDead && !leftDeadAnimationCleared) {
+                //isLeftLLDeadControlApplied = true;
+        } else if (!isLeftLLDead /*&& isLeftLLDeadControlApplied */) {
             leds.clearAllAnimations();
-            leftDeadAnimationCleared = true;
+            //isLeftLLDeadControlApplied = false;
         }
         if (isBackLLDead) {
             leds.setControl(Settings.LED.BACK_DEAD_STRIP
                     .withColor(Settings.LED.BACKDEAD));
-            backDeadAnimationCleared = false;
-        } else if (!isBackLLDead && !backDeadAnimationCleared) {
+                    //isBackLLDeadControlApplied = true;
+        } else if (!isBackLLDead /*&& isBackLLDeadControlApplied*/) {
             leds.clearAllAnimations();
-            backDeadAnimationCleared = true;
+            //isBackLLDeadControlApplied = false;
+        }
+
+        if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
+                Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||
+                Cameras.LimelightCameras[2].getNumberOfTagsSeen() > 0) {
+            lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
+            initialPoseUpdated = true;
+        }
+        else {
+            
+        }
+
+        if (initialPoseUpdated &&
+                lastPoseOnAprilTag.getTranslation()
+                        .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()) > Settings.LED.APRIL_TAG_DISTANCE_THRESHOLD) {
+            //TODO: add flashing
         }
 
         DogLog.log("LED/Applied Pattern Name", ledPattern.getName());

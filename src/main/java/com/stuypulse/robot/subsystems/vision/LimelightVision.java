@@ -50,6 +50,14 @@ public class LimelightVision extends SubsystemBase {
     private int maxTagCount;
     private MegaTagMode megaTagMode;
 
+    private double leftLLHeartbeat = -1; //change to -1 is we need to switch the way we do this
+    private double rightLLHeartbeat = -1;
+    private double backLLHeartbeat = -1;
+
+    private int leftLoopCounter = 0;
+    private int rightLoopCounter = 0;
+    private int backLoopCounter = 0; 
+
     private Pose2d[] limelightPoseArray;
 
     // private StructPublisher<Pose2d> leftLimelightPosePublisher;
@@ -224,15 +232,59 @@ public class LimelightVision extends SubsystemBase {
 
                     DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
 
-                    Cameras.LimelightCameras[i].updateLEDs();
-                    
-                    //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
-                    Cameras.LimelightCameras[i].updateHeartBeat();
-                    Cameras.LimelightCameras[i].incrementLoopCounter();
+                    if (limelightName.equals(Cameras.LimelightCameras[0].getName())) {
+                        DogLog.log("LED/Right Loop Counter", rightLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, rightLLHeartbeat);
+                        rightLoopCounter += 1;
+                        if (rightLoopCounter == 50) {
+                            DogLog.log("LED/Right Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1) {
+                                LEDController.isRightLLDead = true;
+                            }
+                            else {
+                                LEDController.isRightLLDead = false;
+                            }
+                            rightLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            rightLoopCounter = 0;
+                        }
+                    }
+                    if (limelightName.equals(Cameras.LimelightCameras[1].getName())) {
+                        DogLog.log("LED/Left Loop Counter", leftLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, leftLLHeartbeat);
+                        leftLoopCounter += 1;
+                        if (leftLoopCounter == 50) {
+                            DogLog.log("LED/Left Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - leftLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1) {
+                                LEDController.isLeftLLDead = true;
+                            }
+                            else {
+                                LEDController.isLeftLLDead = false;
+                            }
+                            leftLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            leftLoopCounter = 0;
+                        }
+                    }
+                    if (limelightName.equals(Cameras.LimelightCameras[2].getName())) {
+                        DogLog.log("LED/Back Loop Counter", backLoopCounter);
+                        DogLog.log("LED/variable heartbeat " + limelightName, backLLHeartbeat);
+                        backLoopCounter += 1;
+                        if (backLoopCounter == 50) {
+                            DogLog.log("LED/Back Limelight HB Diff", LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat);
+                            if (LimelightHelpers.getHeartbeat(limelightName) - backLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && backLLHeartbeat != -1) {
+                                LEDController.isBackLLDead = true;
+                            }
+                            else {
+                                LEDController.isBackLLDead = false;
+                            }
+                            backLLHeartbeat = LimelightHelpers.getHeartbeat(limelightName);
+                            backLoopCounter = 0;
+                        }
+                    } 
 
 
-                    // Seed robot heading (used by MT2)
-                    LimelightHelpers.SetRobotOrientation(
+
+                        // Seed robot heading (used by MT2)
+                        LimelightHelpers.SetRobotOrientation(
                                 limelightName,
                                 (CommandSwerveDrivetrain.getInstance().getPose().getRotation().getDegrees() + (Robot.isBlue() ? 0 : 180)) % 360,
                                 0,
