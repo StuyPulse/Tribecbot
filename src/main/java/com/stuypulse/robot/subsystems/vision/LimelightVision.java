@@ -232,6 +232,7 @@ public class LimelightVision extends SubsystemBase {
 
                     DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
 
+                    Cameras.LimelightCameras[i].incrementLoopCounter();
                     Cameras.LimelightCameras[i].updateLEDs();
                     //boolean isDeadLatency = (prevRightLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
                             //if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1 || isDeadLatency) {
@@ -241,7 +242,7 @@ public class LimelightVision extends SubsystemBase {
                     
                     //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
                     Cameras.LimelightCameras[i].updateHeartBeat();
-                    Cameras.LimelightCameras[i].incrementLoopCounter();
+                    
 
 
                     // Seed robot heading (used by MT2)

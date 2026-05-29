@@ -135,21 +135,57 @@ public interface Cameras {
 
         public boolean isAlive() {
             //latest - old heartbeat
-            if (LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1) {
-                return false;
-            }
-            else {
-                return true;
-            }
+            
+                if (LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            
         }
 
         public void updateLEDs() {
             switch (this.getName()) {
-                case "limelight-right" -> { if (!isAlive()) LEDController.isRightLLDead = true; }
-            
-                case "limelight-left" -> { if (!isAlive()) LEDController.isLeftLLDead = true; }
-            
-                case "limelight-back" -> { if (!isAlive()) LEDController.isBackLLDead = true; }
+                case "limelight-right" -> { 
+                    if (this.loopCounter == 50) {
+                        if (!isAlive()) {
+                            LEDController.isRightLLDead = true; 
+                        }
+                        else {
+                            LEDController.isRightLLDead = false; 
+                        }
+
+                        this.loopCounter = 0;
+                    }
+                }
+                
+                case "limelight-left" -> { 
+                    if (this.loopCounter == 50) {
+                        if (!isAlive()) {
+                            LEDController.isLeftLLDead = true; 
+                        }
+                        else {
+                            LEDController.isLeftLLDead = false; 
+                        }
+
+                        this.loopCounter = 0;
+                    } 
+                }
+                
+                
+                case "limelight-back" -> {
+                    if (this.loopCounter == 50) {
+                        if (!isAlive()) {
+                            LEDController.isBackLLDead = true; 
+                        }
+                        else {
+                            LEDController.isBackLLDead = false; 
+                        }
+
+                        this.loopCounter = 0;
+                    } 
+                }
             }
         }
 
