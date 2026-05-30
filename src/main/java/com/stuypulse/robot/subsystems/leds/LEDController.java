@@ -6,16 +6,10 @@
 
 package com.stuypulse.robot.subsystems.leds;
 
-import java.util.Optional;
-
 import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANdleFeaturesConfigs;
-import com.ctre.phoenix6.configs.CustomParamsConfigs;
 import com.ctre.phoenix6.configs.LEDConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.EmptyAnimation;
-import com.ctre.phoenix6.controls.RainbowAnimation;
-import com.ctre.phoenix6.controls.SingleFadeAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
 import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
@@ -26,7 +20,6 @@ import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Cameras.Camera;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
 import dev.doglog.DogLog;
@@ -161,7 +154,7 @@ public class LEDController extends SubsystemBase {
         if (isRightLLDead) {
             //TODO: when it goes back on CLEAR ANIMATIONS !!
             leds.setControl(Settings.LED.RIGHT_DEAD_STRIP
-                    .withColor(Settings.LED.RIGHTDEAD));
+                    .withColor(Settings.LED.LLDEAD));
             // isRightLLDeadControlApplied = true;
         } else if (!isRightLLDead /*&& isRightLLDeadControlApplied*/) {
             leds.clearAllAnimations();
@@ -169,7 +162,7 @@ public class LEDController extends SubsystemBase {
         }
         if (isLeftLLDead) {
             leds.setControl(Settings.LED.LEFT_DEAD_STRIP
-                    .withColor(Settings.LED.LEFTDEAD));
+                    .withColor(Settings.LED.LLDEAD));
                 //isLeftLLDeadControlApplied = true;
         } else if (!isLeftLLDead /*&& isLeftLLDeadControlApplied */) {
             leds.clearAllAnimations();
@@ -177,12 +170,23 @@ public class LEDController extends SubsystemBase {
         }
         if (isBackLLDead) {
             leds.setControl(Settings.LED.BACK_DEAD_STRIP
-                    .withColor(Settings.LED.BACKDEAD));
+                    .withColor(Settings.LED.LLDEAD));
                     //isBackLLDeadControlApplied = true;
         } else if (!isBackLLDead /*&& isBackLLDeadControlApplied*/) {
             leds.clearAllAnimations();
             //isBackLLDeadControlApplied = false;
         }
+
+        if (isBackLLDead || isLeftLLDead || isRightLLDead) {
+            leds.setControl(Settings.LED.CANDLE_DEAD_STRIP
+                    .withColor(Settings.LED.LLDEAD));
+                    //isBackLLDeadControlApplied = true;
+        } else if (!(isBackLLDead || isLeftLLDead || isRightLLDead) /*&& isBackLLDeadControlApplied*/) {
+            leds.clearAllAnimations();
+            //isBackLLDeadControlApplied = false;
+        }
+
+
 
         if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
                 Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||

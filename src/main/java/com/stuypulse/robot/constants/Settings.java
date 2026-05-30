@@ -6,7 +6,6 @@
 package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.RainbowAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.signals.RGBWColor;
@@ -14,7 +13,6 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.hal.LEDJNI;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,9 +21,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 
 /*-
@@ -426,13 +421,12 @@ public interface Settings {
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
         RGBWColor DISABLED = rgbwConverter(Color.kRed);
 
-        RGBWColor LEFTDEAD = rgbwConverter(Color.kWhite);
-        RGBWColor RIGHTDEAD = rgbwConverter(Color.kWhite);
-        RGBWColor BACKDEAD = rgbwConverter(Color.kWhite);
+        RGBWColor LLDEAD = rgbwConverter(Color.kWhite);
 
-        SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 4, Settings.LED.LED_LENGTH - 1);
-        SolidColor BACK_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 11, Settings.LED.LED_LENGTH - 8);
-        SolidColor LEFT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 18, Settings.LED.LED_LENGTH - 15);
+        SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 6, Settings.LED.LED_LENGTH - 2);
+        SolidColor BACK_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 13, Settings.LED.LED_LENGTH - 9);
+        SolidColor LEFT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 20, Settings.LED.LED_LENGTH - 16);
+        SolidColor CANDLE_DEAD_STRIP = new SolidColor(0, 7);
 
         // RGBWColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
