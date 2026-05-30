@@ -257,7 +257,6 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new SetMegaTagMode(LimelightVision.MegaTagMode.MEGATAG2));
         CommandScheduler.getInstance().schedule(new WhitelistAllTagsForAllCameras());
         CommandScheduler.getInstance().schedule(new IntakeDeploy());
-        CommandScheduler.getInstance().schedule(new HandoffStop().alongWith(new SpindexerStop()));
 
         if (auto != null) {
             auto.cancel();
