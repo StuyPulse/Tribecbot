@@ -3,13 +3,14 @@
   "robotLength": 0.762,
   "holonomicMode": true,
   "pathFolders": [
+    "Anti-Anti Collision",
+    "BC To Dot",
     "BC modified",
     "Bump Stuff",
     "Follow",
     "Non-Collision",
     "PathFinder Test",
     "To Depot",
-    "BC To Dot",
     "To NZ",
     "To Score"
   ],
