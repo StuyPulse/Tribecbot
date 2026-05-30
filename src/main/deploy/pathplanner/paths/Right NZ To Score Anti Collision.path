@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.569,
-        "y": 2.7346647646219684
+        "x": 7.637,
+        "y": 3.235955555555555
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1198701854493605,
-        "y": 0.34101283880171307
+        "x": 5.9317817608038474,
+        "y": 3.1385145133157755
       },
       "isLocked": false,
-      "linkedName": "Right Shallow NZ"
+      "linkedName": "R-Anti-Collision"
+    },
+    {
+      "anchor": {
+        "x": 6.419771754636234,
+        "y": 1.4925534950071324
+      },
+      "prevControl": {
+        "x": 6.437298642104417,
+        "y": 2.392382816720799
+      },
+      "nextControl": {
+        "x": 6.399066666666666,
+        "y": 0.42955555555555525
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,17 +36,21 @@
         "y": 0.559
       },
       "prevControl": {
-        "x": 6.018590584878744,
-        "y": 0.36492011412268166
+        "x": 6.511813503834114,
+        "y": 0.5261116588846113
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.37526652452025683,
+      "waypointRelativePos": 0.23445825932504563,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.488272921108742,
       "rotationDegrees": 0.0
     }
   ],
@@ -46,13 +66,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Non-Collision",
+  "folder": "Anti-Anti Collision",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

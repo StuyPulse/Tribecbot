@@ -77,7 +77,7 @@ public interface Settings {
         double HOMING_VOLTAGE = 3.0;
         
         double PUSHDOWN_VOLTAGE = -3.0;
-        double PUSHDOWN_CURRENT_TELEOP = -75.0;//new SmartNumber("Intake/Pushdown Current", -65.0); //TODO: GET ACTUAL TYTY
+        double PUSHDOWN_CURRENT_TELEOP = -55.0;//new SmartNumber("Intake/Pushdown Current", -65.0); //TODO: GET ACTUAL TYTY
         double PUSHDOWN_CURRENT_AUTON = -80.0;
 
         double GEAR_RATIO = 32.0/20.0 * 64.0/18.0 * 60.0/8.0;
