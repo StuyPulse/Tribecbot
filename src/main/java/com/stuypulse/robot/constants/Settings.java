@@ -168,9 +168,9 @@ public interface Settings {
                 {5.16, 3300.0},
                 {6.94, 3600.0},
                 {7.87, 3800.0},
-                // {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
-                // {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
-                // {11.516, 4900.0}
+                {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
+                {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                {11.516, 4900.0}
             };
         }
 

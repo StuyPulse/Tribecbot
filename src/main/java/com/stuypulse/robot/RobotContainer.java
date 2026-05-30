@@ -449,21 +449,21 @@ public class RobotContainer {
         "Right Corner Bite", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
         R_CN_NF.register(autonChooser);
 
-        AutonConfig LEFT_SHALLOW_SWIPE_DOT = new AutonConfig("Left Shallow Swipe Dot", ShallowSwipeDot::new, 
+        AutonConfig L_CNL_D = new AutonConfig("Left Corner-Near Long Dot", ShallowSwipeDot::new, 
             "BC Left To Shallow", "BC Left Shallow To Score", "Left Score To Corner", "Left Corner To Dot Straight"
         );
-        LEFT_SHALLOW_SWIPE_DOT.register(autonChooser);
+        L_CNL_D.register(autonChooser);
 
-        AutonConfig RIGHT_SHALLOW_SWIPE_DOT = new AutonConfig("Right Shallow Swipe Dot", ShallowSwipeDot::new, 
+        AutonConfig R_CNL_D = new AutonConfig("Right Corner-Near Long Dot", ShallowSwipeDot::new, 
             "BC Right To Shallow", "BC Right Shallow To Score", "Right Score To Corner", "Right Corner To Dot Straight"
         );
-        RIGHT_SHALLOW_SWIPE_DOT.register(autonChooser);
+        R_CNL_D.register(autonChooser);
 
         AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Corner Bite", "Right NZ To Score", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
         R_CN_NFS.register(autonChooser);
 
-        AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Corner Bite", "Left NZ To Score", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
         L_CN_NFS.register(autonChooser);
 
