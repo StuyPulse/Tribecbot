@@ -8,6 +8,8 @@ package com.stuypulse.robot.subsystems.intake;
 import java.util.Optional;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -77,7 +79,7 @@ public class IntakeImpl extends Intake {
                 .withInvertedValue(InvertedValue.Clockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Brake)
 
-                .withSupplyCurrentLimitAmps(10.0) // was 60 on practice day
+                .withSupplyCurrentLimitAmps(20.0) // was 60 on practice day
                 .withStatorCurrentLimitEnabled(false)
                 .withRampRate(0.25)
 
@@ -143,6 +145,22 @@ public class IntakeImpl extends Intake {
         isPivotBelowPushDownThreshold = BStream.create(() -> isBelowPushDownThreshold())
             .filtered(new BDebounce.Rising(0.5))
             .filtered(new BDebounce.Falling(0.1));
+    }
+
+    @Override
+    public void teleopInit() {
+        TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+        pivot.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(10));
+        pivot.getConfigurator().apply(newConfiguration);
+    }
+
+    @Override
+    public void autonInit() {
+        TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+        pivot.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(20));
+        pivot.getConfigurator().apply(newConfiguration);
     }
 
     @Override
@@ -280,6 +298,7 @@ public class IntakeImpl extends Intake {
                             + String.valueOf(Ports.Intake.ROLLER_LEADER) + ")", rollerLeader.isConnected());
                     DogLog.log("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
+
                 }
                 Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 
