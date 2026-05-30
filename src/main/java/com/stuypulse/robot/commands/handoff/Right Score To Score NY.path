@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.282,
-        "y": 0.559
+        "x": 3.6120827389443653,
+        "y": 0.5868473609129818
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.885082564711262,
-        "y": 0.5201840228245365
+        "x": 6.575035663338087,
+        "y": 0.6515406562054205
       },
       "isLocked": false,
-      "linkedName": "Right Corner"
+      "linkedName": "Right Trench Score"
     },
     {
       "anchor": {
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 3.612,
-        "y": 0.559
+        "x": 3.6120827389443653,
+        "y": 0.5868473609129818
       },
       "prevControl": {
-        "x": 7.673006390654893,
-        "y": 0.5209487097696721
+        "x": 7.673089129599265,
+        "y": 0.5487960706826538
       },
       "nextControl": null,
       "isLocked": false,
@@ -78,11 +78,11 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 2.1812366737739914,
+      "waypointRelativePos": 2.289978678038381,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 2.4179104477611943,
+      "waypointRelativePos": 2.6703967446591785,
       "rotationDegrees": 0.0
     }
   ],
