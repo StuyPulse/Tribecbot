@@ -59,6 +59,7 @@ public class IntakeImpl extends Intake {
     private final BStream isPivotBelowPushDownThreshold;
 
     StatusSignal<Current> pivotSupplyCurrent;
+    StatusSignal<Current> pivotTorqueCurrent;
     StatusSignal<Current> pivotStatorCurrent;
     StatusSignal<Current> rollerLeaderSupplyCurrent;
     StatusSignal<Current> rollerLeaderStatorCurrent;
@@ -77,7 +78,7 @@ public class IntakeImpl extends Intake {
                 .withInvertedValue(InvertedValue.Clockwise_Positive)
                 .withNeutralMode(NeutralModeValue.Brake)
 
-                .withSupplyCurrentLimitAmps(10.0) // was 60 on practice day
+                .withSupplyCurrentLimitAmps(20.0) // was 60 on practice day
                 .withStatorCurrentLimitEnabled(false)
                 .withRampRate(0.25)
 
@@ -121,6 +122,7 @@ public class IntakeImpl extends Intake {
 
         pivotSupplyCurrent = pivot.getSupplyCurrent();
         pivotStatorCurrent = pivot.getStatorCurrent();
+        pivotTorqueCurrent = pivot.getTorqueCurrent();
         pivotMotorPosition = pivot.getPosition();
         rollerLeaderSupplyCurrent = rollerLeader.getSupplyCurrent();
         rollerLeaderStatorCurrent = rollerLeader.getStatorCurrent();
@@ -135,7 +137,7 @@ public class IntakeImpl extends Intake {
         PhoenixUtil.registerToRio(pivotSupplyCurrent, pivotStatorCurrent, pivotMotorPosition, rollerLeaderSupplyCurrent,
                 rollerLeaderStatorCurrent, rollerFollowerSupplyCurrent, rollerFollowerStatorCurrent,
                 rollerLeaderTemperature, rollerFollowerTemperature, pivotTemperature, pivotMotorVoltage,
-                rollerLeaderVoltage, rollerFollowerVoltage);
+                rollerLeaderVoltage, rollerFollowerVoltage, pivotTorqueCurrent);
 
         pivotStalling = BStream.create(
                 () -> Math.abs(pivotSupplyCurrent.getValueAsDouble()) > Settings.Intake.PIVOT_STALL_CURRENT)
@@ -264,6 +266,7 @@ public class IntakeImpl extends Intake {
                         rollerFollowerSupplyCurrent.getValueAsDouble());
                 DogLog.log("Intake/Roller Follower Stator Current (amps)",
                         rollerFollowerStatorCurrent.getValueAsDouble());
+                
 
                 // Pivot
                 DogLog.log("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
@@ -272,6 +275,7 @@ public class IntakeImpl extends Intake {
                 DogLog.log("Intake/Pivot Stator Current (amps)",
                         pivotStatorCurrent.getValueAsDouble());
                 DogLog.log("Intake/Pivot is below pushdown Threshold", isPivotBelowPushDownThreshold.get());
+                DogLog.log("Intake/Pivot Torque Current", pivotTorqueCurrent.getValueAsDouble());
 
                 if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                     DogLog.log("Robot/CAN/Main/Intake Pivot Motor Connected? (ID "
