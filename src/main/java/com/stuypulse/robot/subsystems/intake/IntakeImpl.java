@@ -8,6 +8,8 @@ package com.stuypulse.robot.subsystems.intake;
 import java.util.Optional;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -148,6 +150,22 @@ public class IntakeImpl extends Intake {
     }
 
     @Override
+    public void teleopInit() {
+        TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+        pivot.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(10));
+        pivot.getConfigurator().apply(newConfiguration);
+    }
+
+    @Override
+    public void autonInit() {
+        TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+        pivot.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(20));
+        pivot.getConfigurator().apply(newConfiguration);
+    }
+
+    @Override
     public boolean pivotStalling() {
         return pivotStalling.get();
     }
@@ -284,6 +302,7 @@ public class IntakeImpl extends Intake {
                             + String.valueOf(Ports.Intake.ROLLER_LEADER) + ")", rollerLeader.isConnected());
                     DogLog.log("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
+
                 }
                 Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 

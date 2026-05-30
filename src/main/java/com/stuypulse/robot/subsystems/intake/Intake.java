@@ -93,6 +93,8 @@ public abstract class Intake extends SubsystemBase {
     public abstract void setPivotVoltageOverride(Optional<Double> voltage);
     public abstract SysIdRoutine getPivotSysIdRoutine();
     public abstract boolean pivotStalling();
+    public abstract void teleopInit();
+    public abstract void autonInit();
 
     public abstract void seedPivotDeployed();
     public abstract void seedPivotStowed();
