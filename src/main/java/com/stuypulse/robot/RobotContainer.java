@@ -520,7 +520,6 @@ public class RobotContainer {
         PATH_FIND_TEST.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
-
     }
 
     public boolean hasWaitTimeOneChanged() {
@@ -591,12 +590,15 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        if (autonChooser.getSelected() == null) {
-            return new DoNothingAuton();
+        Command autonCommand = autonChooser.getSelected();
+
+        if (autonCommand == null) {
+            autonCommand = new DoNothingAuton();
         }
-        else {
-            return autonChooser.getSelected();
-        }
+
+        DogLog.log("Auton/Selected", autonCommand.getName());
+        
+        return autonCommand;
     }
 
     public static double getWaitTimeOne() {
