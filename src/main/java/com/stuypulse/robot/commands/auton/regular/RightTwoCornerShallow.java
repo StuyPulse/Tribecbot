@@ -11,12 +11,15 @@ import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeDigest;
+import com.stuypulse.robot.commands.intake.IntakeOuttake;
+import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
+import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -61,7 +64,10 @@ public class RightTwoCornerShallow extends SequentialCommandGroup {
                 new WaitCommand(1.0).andThen(
                     new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(3.5))
             ),
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeSetState(PivotState.DEPLOY)),
+            new IntakeOuttake(),
+            new WaitCommand(0.2),
+            new IntakeDeploy(),
 
             // NZ Trip 2
             new ParallelCommandGroup(
