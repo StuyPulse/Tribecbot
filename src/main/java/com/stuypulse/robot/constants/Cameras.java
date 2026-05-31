@@ -144,6 +144,7 @@ public interface Cameras {
 
             DogLog.log(keyName + "Heartbeat", LimelightHelpers.getHeartbeat(name));
             DogLog.log(keyName + "Temp (C)", LimelightHelpers.getLimelightDoubleArrayEntry(name, "hw").get());
+            DogLog.log(keyName + "cpu usage", LimelightHelpers.getLimelightDoubleArrayEntry(name, "cpu").get());
             DogLog.log(keyName + "Pose MT1", (Robot.isBlue()
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed(name).pose));
