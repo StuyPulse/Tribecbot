@@ -416,7 +416,7 @@ public interface Settings {
         RGBWColor X_WHEELS = rgbwConverter(Color.kRed);
 
         RGBWColor INTAKE_STOW = rgbwConverter(Color.kBrown);        //broken
-        RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kGray);   //broken
+        RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kPurple);   //broken
 
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
         RGBWColor DISABLED = rgbwConverter(Color.kRed);
