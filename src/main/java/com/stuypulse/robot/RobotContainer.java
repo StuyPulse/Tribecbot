@@ -304,7 +304,7 @@ public class RobotContainer {
                     new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                         .andThen(new HandoffRun())
                         .andThen(new SpindexerRun()),
-                    new SwerveResetPoseLeftCorner(),
+                    // new SwerveResetPoseLeftCorner(),
                     new SwerveXMode()
                 )
                     )
@@ -315,7 +315,7 @@ public class RobotContainer {
             // .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
-            .onTrue(new SwerveResetPoseRightCorner())
+            // .onTrue(new SwerveResetPoseRightCorner())
             .whileTrue(new SuperstructureRightCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
                 .andThen(new SpindexerRun())))

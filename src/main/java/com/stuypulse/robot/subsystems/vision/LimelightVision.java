@@ -393,6 +393,8 @@ public class LimelightVision extends SubsystemBase {
                     // this is just the yaw of the internal imu 
                     DogLog.log("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
                     DogLog.log("Vision/latency_pipeline " + limelightName , LimelightHelpers.getLatency_Pipeline(limelightName));
+                    
+                    Cameras.LimelightCameras[i].log();
                 }
             }
 
