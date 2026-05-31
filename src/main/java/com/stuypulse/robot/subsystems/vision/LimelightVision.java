@@ -1,7 +1,7 @@
 /** ********************** PROJECT TRIBECBOT ************************ */
 /* Copyright (c) 2026 StuyPulse Robotics. All rights reserved. */
- /* Use of this source code is governed by an MIT-style license */
- /* that can be found in the repository LICENSE file.           */
+/* Use of this source code is governed by an MIT-style license */
+/* that can be found in the repository LICENSE file.           */
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
@@ -52,23 +52,23 @@ public class LimelightVision extends SubsystemBase {
     private int maxTagCount;
     private MegaTagMode megaTagMode;
 
-    private double leftLLHeartbeat = -1; //change to -1 is we need to switch the way we do this
+    private double leftLLHeartbeat = -1; // change to -1 is we need to switch the way we do this
     private double rightLLHeartbeat = -1;
     private double backLLHeartbeat = -1;
 
-    private double prevLeftLLLatency = -1; //change to -1 is we need to switch the way we do this
+    private double prevLeftLLLatency = -1; // change to -1 is we need to switch the way we do this
     private double prevRightLLLatency = -1;
     private double prevBackLLLatency = -1;
 
     private int leftLoopCounter = 0;
     private int rightLoopCounter = 0;
-    private int backLoopCounter = 0; 
+    private int backLoopCounter = 0;
 
     private Pose2d[] limelightPoseArray;
 
-    private StructPublisher<Pose2d> leftLimelightPosePublisher;
-    private StructPublisher<Pose2d> rightLimelightPosePublisher;
-    private StructPublisher<Pose2d> backLimelightPosePublisher;
+    // private StructPublisher<Pose2d> leftLimelightPosePublisher;
+    // private StructPublisher<Pose2d> rightLimelightPosePublisher;
+    // private StructPublisher<Pose2d> backLimelightPosePublisher;
 
     private boolean hasData;
     private BStream debouncedHasData;
@@ -82,16 +82,22 @@ public class LimelightVision extends SubsystemBase {
     }
 
     public void setPipeline(Pipeline pipeline) {
-        for(Camera camera: Cameras.LimelightCameras) {
+        for (Camera camera : Cameras.LimelightCameras) {
             camera.setPipeline(pipeline);
         }
     }
 
     public LimelightVision() {
         limelightPoseArray = new Pose2d[Cameras.LimelightCameras.length];
-        leftLimelightPosePublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Left", Pose2d.struct).publish();
-        rightLimelightPosePublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Right", Pose2d.struct).publish();
-        backLimelightPosePublisher = NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Back", Pose2d.struct).publish();
+        // leftLimelightPosePublisher =
+        // NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Left",
+        // Pose2d.struct).publish();
+        // rightLimelightPosePublisher =
+        // NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Right",
+        // Pose2d.struct).publish();
+        // backLimelightPosePublisher =
+        // NetworkTableInstance.getDefault().getStructTopic("Limelight/Pose Back",
+        // Pose2d.struct).publish();
 
         names = new String[Cameras.LimelightCameras.length];
 
@@ -107,8 +113,7 @@ public class LimelightVision extends SubsystemBase {
                     robotRelativePose.getZ(),
                     Units.radiansToDegrees(robotRelativePose.getRotation().getX()),
                     Units.radiansToDegrees(robotRelativePose.getRotation().getY()),
-                    Units.radiansToDegrees(robotRelativePose.getRotation().getZ())
-            );
+                    Units.radiansToDegrees(robotRelativePose.getRotation().getZ()));
 
             limelightPoseArray[i] = new Pose2d();
         }
@@ -160,33 +165,36 @@ public class LimelightVision extends SubsystemBase {
      * gyro.
      *
      * @param assistValue, an double that sets the correction speed of the
-     * complementary filter for the IMU. IMU Mode 4 uses the fusing of the
-     * internal IMU (1khz) with the external gyro reading as well. Higher values
-     * ranging towards 1 indicate a faster convergence of internal IMU to the
-     * robot IMU mode. Defaults to 0.001.
+     *                     complementary filter for the IMU. IMU Mode 4 uses the
+     *                     fusing of the
+     *                     internal IMU (1khz) with the external gyro reading as
+     *                     well. Higher values
+     *                     ranging towards 1 indicate a faster convergence of
+     *                     internal IMU to the
+     *                     robot IMU mode. Defaults to 0.001.
      */
     public void setIMUAssistValue(double assistValue) {
         for (String name : names) {
             LimelightHelpers.SetIMUAssistAlpha(name, assistValue);
         }
-    } 
+    }
 
     /**
      * Allows all tags except the specified ones by setting blacklisted tag
      * indexes to -1 in the full tag list before applying the new list.
      *
      * @param tagsToBlacklist array of tag IDs to exclude from detection
-     * @param limelight the name of the Limelight camera to configure
+     * @param limelight       the name of the Limelight camera to configure
      */
     public void setTagBlacklist(int[] tagsToBlacklist, String limelight) {
         int[] allTags = Field.ALL_TAGS.clone();
-        
+
         for (int i = 0; i < tagsToBlacklist.length; i++) {
             allTags[tagsToBlacklist[i] - 1] = -1;
         }
 
         int[] validTags = new int[allTags.length - tagsToBlacklist.length];
-        
+
         int counter = 0;
         for (int i = 0; i < allTags.length; i++) {
             if (allTags[i] != -1) {
@@ -206,7 +214,7 @@ public class LimelightVision extends SubsystemBase {
      * as the whitelist.
      *
      * @param tagsToWhitelist array of tag IDs to allow for detection
-     * @param limelight the name of the Limelight camera to configure
+     * @param limelight       the name of the Limelight camera to configure
      */
     public void setTagWhitelist(int[] tagsToWhitelist, String limelight) {
         LimelightHelpers.SetFiducialIDFiltersOverride(limelight, tagsToWhitelist);
@@ -307,16 +315,19 @@ public class LimelightVision extends SubsystemBase {
                     );
 
                     PoseEstimate poseEstimate;
+                    PoseEstimate poseEstimateMT1 = Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
+
+                    PoseEstimate poseEstimateMT2 = Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
 
                     // MegaTag switching
                     if (megaTagMode == MegaTagMode.MEGATAG1) {
-                        poseEstimate = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
+                         poseEstimate = poseEstimateMT1;
                     } else {
-                        poseEstimate = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
+                        poseEstimate = poseEstimateMT2;
                     }
 
 
@@ -366,14 +377,8 @@ public class LimelightVision extends SubsystemBase {
                         DogLog.log("Vision/Pose Estimate Y " + limelightName, poseEstimate.pose.getY());
                         DogLog.log("Vision/Pose Estimate Theta " + limelightName, poseEstimate.pose.getRotation().getDegrees());
 
-                        switch (limelightName) {
-                            case "limelight-right" ->
-                                rightLimelightPosePublisher.set(robotPose);
-                            case "limelight-left" ->
-                                leftLimelightPosePublisher.set(robotPose);
-                            case "limelight-back" ->
-                                backLimelightPosePublisher.set(robotPose);
-                        }
+                        DogLog.log("Vision/" + Cameras.LimelightCameras[i].getName() + "/Pose MT1", poseEstimateMT1.pose);
+                        DogLog.log("Vision/" + Cameras.LimelightCameras[i].getName() + "/Pose MT2", poseEstimateMT2.pose);
 
                         DogLog.log("Vision/" + names[i] + " Has Data", true);
                         
