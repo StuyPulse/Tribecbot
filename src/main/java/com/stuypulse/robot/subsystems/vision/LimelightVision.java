@@ -231,6 +231,7 @@ public class LimelightVision extends SubsystemBase {
                     String limelightName = names[i];
 
                     DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
+                    DogLog.log("LED/raw fiducials" + limelightName, LimelightHelpers.getRawFiducials(limelightName).length);
 
                     Cameras.LimelightCameras[i].incrementLoopCounter();
                     Cameras.LimelightCameras[i].updateLEDs();

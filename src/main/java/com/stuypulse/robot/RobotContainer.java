@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.regular.CenterTwoCornerBC;
 import com.stuypulse.robot.commands.auton.regular.Depot;
 import com.stuypulse.robot.commands.auton.regular.LeftBump;
 import com.stuypulse.robot.commands.auton.regular.LeftFollow;
@@ -21,6 +22,7 @@ import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
 import com.stuypulse.robot.commands.auton.regular.ShallowSwipeDot;
+import com.stuypulse.robot.commands.auton.regular.TwoCornerBC;
 import com.stuypulse.robot.commands.auton.test.PathfindTest;
 import com.stuypulse.robot.commands.auton.test.TestBC;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -104,7 +106,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class RobotContainer {
     public interface EnabledSubsystems {
-        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", true);
+        SmartBoolean SWERVE = new SmartBoolean("Enabled Subsystems/Swerve Is Enabled", false);
         SmartBoolean TURRET = new SmartBoolean("Enabled Subsystems/Turret Is Enabled", true);
         SmartBoolean HANDOFF = new SmartBoolean("Enabled Subsystems/Handoff Is Enabled", true);
         SmartBoolean INTAKE = new SmartBoolean("Enabled Subsystems/Intake Is Enabled", true);
@@ -294,7 +296,7 @@ public class RobotContainer {
             .onTrue(new SuperstructureStow()
                         .alongWith(new HandoffStop())
                         .alongWith(new SpindexerStop()))
-            .onTrue(new LEDApplyState(LedState.RESET).repeatedly().withTimeout(2.0));
+            .onTrue(new LEDApplyState(LedState.RESET).withTimeout(2.0));
 
         // Manual Left Corner Scoring
         driver.getLeftButton()
@@ -470,38 +472,38 @@ public class RobotContainer {
         
 
         //BC RIGHT
-        // AutonConfig R_CN_FN_D = new AutonConfig("Right Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Dot");
-        // R_CN_FN_D.register(autonChooser);
+        AutonConfig R_CN_FN_D = new AutonConfig("Right Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Dot");
+        R_CN_FN_D.register(autonChooser);
 
-        // AutonConfig R_CN_NF_D = new AutonConfig("Right Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Dot");
-        // R_CN_NF_D.register(autonChooser);
+        AutonConfig R_CN_NF_D = new AutonConfig("Right Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Dot");
+        R_CN_NF_D.register(autonChooser);
 
-        // AutonConfig R_CN_FN_CD = new AutonConfig("Right Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
-        // R_CN_FN_CD.register(autonChooser);
+        AutonConfig R_CN_FN_CD = new AutonConfig("Right Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
+        R_CN_FN_CD.register(autonChooser);
 
-        // AutonConfig R_CN_NF_CD = new AutonConfig("Right Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
-        // R_CN_NF_CD.register(autonChooser);
+        AutonConfig R_CN_NF_CD = new AutonConfig("Right Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
+        R_CN_NF_CD.register(autonChooser);
 
         //BC LEFT
-        // AutonConfig L_CN_FN_D = new AutonConfig("Left Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Dot");
-        // L_CN_FN_D.register(autonChooser);
+        AutonConfig L_CN_FN_D = new AutonConfig("Left Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Dot");
+        L_CN_FN_D.register(autonChooser);
 
-        // AutonConfig L_CN_NF_D = new AutonConfig("Left Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Dot");
-        // L_CN_NF_D.register(autonChooser);
+        AutonConfig L_CN_NF_D = new AutonConfig("Left Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Dot");
+        L_CN_NF_D.register(autonChooser);
 
-        // AutonConfig L_CN_FN_CD = new AutonConfig("Left Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
-        // L_CN_FN_CD.register(autonChooser);
+        AutonConfig L_CN_FN_CD = new AutonConfig("Left Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
+        L_CN_FN_CD.register(autonChooser);
 
-        // AutonConfig L_CN_NF_CD = new AutonConfig("Left Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
-        // L_CN_NF_CD.register(autonChooser);
+        AutonConfig L_CN_NF_CD = new AutonConfig("Left Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
+        L_CN_NF_CD.register(autonChooser);
         
         // FOLLOWS
         AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,

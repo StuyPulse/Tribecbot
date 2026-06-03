@@ -16,7 +16,6 @@ import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class LEDApplyState extends Command {
-    //This will not work as default command will override it. Either make the cached class the same as this OR (better solution) have a boolean that tells you if it is manually applied or not and if it is then default command dont change
     protected final LEDController leds;
     protected final Supplier<LedState> state;
 
