@@ -47,6 +47,7 @@ public interface Cameras {
         private String keyName;
 
         private double LLHeartbeat = -1;
+        private double LLLatency = -1;
         private int loopCounter = 0;
 
         private int rejectedCounterNotNull;
@@ -129,14 +130,20 @@ public interface Cameras {
             LLHeartbeat = LimelightHelpers.getHeartbeat(this.getName());
         }
 
+        public void updateLatency() {
+            LLLatency = LimelightHelpers.getLatency_Pipeline(this.name);
+        }
+
         public void incrementLoopCounter() {
             loopCounter += 1;
         }
 
         public boolean isAlive() {
             //latest - old heartbeat
-            
-                if (LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1) {
+                boolean isDeadLatency = (LLLatency == LimelightHelpers.getLatency_Pipeline(this.name) && LLLatency != -1); 
+                //TODO: double check that latency cannot be negative
+                boolean isDeadHeartbeat = LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1;
+                if (isDeadHeartbeat || isDeadLatency) {
                     return false;
                 }
                 else {

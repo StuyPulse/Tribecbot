@@ -234,14 +234,10 @@ public class LimelightVision extends SubsystemBase {
 
                     Cameras.LimelightCameras[i].incrementLoopCounter();
                     Cameras.LimelightCameras[i].updateLEDs();
-                    //boolean isDeadLatency = (prevRightLLLatency == LimelightHelpers.getLatency_Pipeline(limelightName)); 
-                            //if (LimelightHelpers.getHeartbeat(limelightName) - rightLLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && leftLLHeartbeat != -1 || isDeadLatency) {
-                              //  LEDController.isRightLLDead = true;
-
-                    // prevRightLLLatency = LimelightHelpers.getLatency_Pipeline(limelightName);
                     
                     //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
                     Cameras.LimelightCameras[i].updateHeartBeat();
+                    Cameras.LimelightCameras[i].updateLatency();
                     
 
 
