@@ -117,10 +117,10 @@ public class SpindexerImpl extends Spindexer {
     private double getLeaderRPM() {
         return leaderVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
-    private double getFollowerRpm() {
+
+    private double getFollowerRPM() {
         return followerVelocity.getValueAsDouble() * Settings.SECONDS_IN_A_MINUTE * Settings.Spindexer.GEAR_RATIO;
     }
-
 
     private boolean spindexerUnjam() {
         if (!hasStartedStallTimer && Handoff.getInstance().isHandoffStalling()) {
@@ -164,15 +164,16 @@ public class SpindexerImpl extends Spindexer {
             followerMotor.stopMotor();
         }
 
-        DogLog.log("Spindexer/Leader Motor RPM", getLeaderRPM());
+        DogLog.log("Spindexer/Leader RPM", getLeaderRPM(), "RPM");
+        DogLog.log("Spindexer/Follower RPM", getFollowerRPM(), "RPM");
         // SmartDashboard.putBoolean("Spindexer/Unjamming", unJamming);
 
-        DogLog.log("Spindexer/Leader Voltage (volts)", leaderMotorVoltage.getValueAsDouble());
-        DogLog.log("Spindexer/Leader Supply Current (amps)", leaderSupplyCurrent.getValueAsDouble());
-        DogLog.log("Spindexer/Leader Stator Current (amps)", leaderStatorCurrent.getValueAsDouble());
-        DogLog.log("Spindexer/Follower Voltage (volts)", followerMotorVoltage.getValueAsDouble());
-        DogLog.log("Spindexer/Follower Supply Current (amps)", followerSupplyCurrent.getValueAsDouble());
-        DogLog.log("Spindexer/Follower Stator Current (amps)", followerStatorCurrent.getValueAsDouble());
+        DogLog.log("Spindexer/Leader Voltage", leaderMotorVoltage.getValueAsDouble(), "Volts");
+        DogLog.log("Spindexer/Leader Supply Current", leaderSupplyCurrent.getValueAsDouble(), "Amps");
+        DogLog.log("Spindexer/Leader Stator Current", leaderStatorCurrent.getValueAsDouble(), "Amps");
+        DogLog.log("Spindexer/Follower Voltage", followerMotorVoltage.getValueAsDouble(), "Volts");
+        DogLog.log("Spindexer/Follower Supply Current", followerSupplyCurrent.getValueAsDouble(), "Amps");
+        DogLog.log("Spindexer/Follower Stator Current", followerStatorCurrent.getValueAsDouble(), "Amps");
 
     // SmartDashboard.putBoolean("Spindexer/Should Stop?", shouldStop());
 

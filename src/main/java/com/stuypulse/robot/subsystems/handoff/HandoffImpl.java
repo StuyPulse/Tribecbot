@@ -115,8 +115,6 @@ public class HandoffImpl extends Handoff {
     public void periodicAfterScheduler() {
         super.periodicAfterScheduler();
 
-        // removed shouldNotShootIntoHub logic (no longer used)
-        
         if (EnabledSubsystems.HANDOFF.get() && getState() != HandoffState.STOP) {
             if (voltageOverride.isPresent()) {
                 motorLead.setVoltage(voltageOverride.get());
@@ -132,18 +130,18 @@ public class HandoffImpl extends Handoff {
             motorFollow.stopMotor();
         }
         
-        DogLog.log("Handoff/Lead Velocity", getLeaderRPM());
-        DogLog.log("Handoff/Follow Velocity", getLeaderRPM());
+        DogLog.log("Handoff/Lead Velocity", getLeaderRPM(), "RPM");
+        DogLog.log("Handoff/Follow Velocity", getLeaderRPM(), "RPM");
         
 
         if (Settings.DEBUG_MODE.get()) {     
-            DogLog.log("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble());
-            DogLog.log("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            DogLog.log("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Lead Voltage", motorLeadVoltage.getValueAsDouble(), "Volts");
+            DogLog.log("Handoff/Lead Supply Current", motorLeadSupplyCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Handoff/Lead Stator Current", motorLeadStatorCurrent.getValueAsDouble(), "Amps");
 
-            DogLog.log("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble());
-            DogLog.log("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble());
-            DogLog.log("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble());
+            DogLog.log("Handoff/Follow Voltage", motorLeadVoltage.getValueAsDouble(), "Volts");
+            DogLog.log("Handoff/Follow Supply Current", motorLeadSupplyCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Handoff/Follow Stator Current", motorLeadStatorCurrent.getValueAsDouble(), "Amps");
             
             if(Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                 DogLog.log("Robot/CAN/Main/Handoff Lead Motor Connected? (ID " + String.valueOf(Ports.Handoff.MOTOR_LEAD) + ")", motorLead.isConnected());

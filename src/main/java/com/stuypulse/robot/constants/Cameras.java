@@ -215,8 +215,8 @@ public interface Cameras {
             DogLog.log(keyName + "# Rejected Invalid Position", rejectedCounterInvalidPosition);
 
             DogLog.log(keyName + "Heartbeat", LimelightHelpers.getHeartbeat(name));
-            DogLog.log(keyName + "Temp (C)", LimelightHelpers.getLimelightDoubleArrayEntry(name, "hw").get());
-            DogLog.log(keyName + "cpu usage", LimelightHelpers.getLimelightDoubleArrayEntry(name, "cpu").get());
+            DogLog.log(keyName + "Temp", LimelightHelpers.getLimelightDoubleArrayEntry(name, "hw").get(), "Celsius");
+            DogLog.log(keyName + "Cpu Usage", LimelightHelpers.getLimelightDoubleArrayEntry(name, "cpu").get(), "Percent");
             DogLog.log(keyName + "Pose MT1", (Robot.isBlue()
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed(name).pose));
@@ -224,6 +224,12 @@ public interface Cameras {
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(name).pose));
             DogLog.log(keyName + "Pipeline", LimelightHelpers.getCurrentPipelineIndex(name));
+
+            // this yaw is seems to be the robot yaw passed into the LL
+            DogLog.log(keyName + "Robot Yaw Passed In", LimelightHelpers.getIMUData(name).robotYaw);
+            // this is just the yaw of the internal imu 
+            DogLog.log(keyName + "IMU Yaw", LimelightHelpers.getIMUData(name).Yaw);
+            DogLog.log(keyName + "Pipeline Latency", LimelightHelpers.getLatency_Pipeline(name));
     
             result = LimelightHelpers.getLatestResults(name);
             DogLog.log(keyName + "Time since last boot", result.timestamp_LIMELIGHT_publish / 1000.0, "Seconds");

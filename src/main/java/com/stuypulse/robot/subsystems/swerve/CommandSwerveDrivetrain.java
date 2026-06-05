@@ -755,15 +755,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         ChassisSpeeds chassisSpeeds = getChassisSpeeds();
         Vector2D fieldRelativeSpeeds = getFieldRelativeSpeeds();
-        DogLog.log("Swerve/Velocity Robot Relative X (m per s)", chassisSpeeds.vxMetersPerSecond);
-        DogLog.log("Swerve/Velocity Robot Relative Y (m per s)", chassisSpeeds.vyMetersPerSecond);
+        DogLog.log("Swerve/Velocity Robot Relative X", chassisSpeeds.vxMetersPerSecond, "Meters/Second");
+        DogLog.log("Swerve/Velocity Robot Relative Y", chassisSpeeds.vyMetersPerSecond, "Meters/Second");
 
-        DogLog.log("Swerve/Velocity Field Relative X (m per s)", fieldRelativeSpeeds.x);
-        DogLog.log("Swerve/Field Relative Rotation", pose.getRotation().getDegrees());
-        DogLog.log("Swerve/Velocity Field Relative Y (m per s)", getFieldRelativeSpeeds().y);
+        DogLog.log("Swerve/Velocity Field Relative X", fieldRelativeSpeeds.x, "Meters/Second");
+        DogLog.log("Swerve/Field Relative Rotation", pose.getRotation().getDegrees(), "Degrees");
+        DogLog.log("Swerve/Velocity Field Relative Y", getFieldRelativeSpeeds().y, "Meters/Second");
 
-        DogLog.log("Swerve/Angular Velocity (rad per s)", chassisSpeeds.omegaRadiansPerSecond);
-        DogLog.log("Swerve/Distance From Hub (meters)", Field.HUB_CENTER.getTranslation().getDistance(pose.getTranslation()));
+        DogLog.log("Swerve/Angular Velocity", chassisSpeeds.omegaRadiansPerSecond, "Radians/Second");
+        DogLog.log("Swerve/Distance From Hub", Field.HUB_CENTER.getTranslation().getDistance(pose.getTranslation()), "Meters");
 
         DogLog.log("Swerve/Pose", pose);
 
@@ -781,27 +781,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             // will confirm whether we are even getting data
 
             DogLog.log("Superstructure/Turret/Dist From Hub",
-                    turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()));
+                    turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()), "Meters");
             DogLog.log("InterpolationTesting/Turret Dist From Hub",
-                    turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()));
+                    turretPose.getTranslation().getDistance(Field.HUB_CENTER.getTranslation()), "Meters");
             DogLog.log("InterpolationTesting/Turret Dist From Ferry Zone", turretPose.getTranslation()
-                    .getDistance(Field.getFerryZonePose(pose.getTranslation()).getTranslation()));
+                    .getDistance(Field.getFerryZonePose(pose.getTranslation()).getTranslation()), "Meters");
 
             for (int i = 0; i < 4; i++) {
                 String prefix = "Swerve/Modules/Module " + i;
                 SwerveModuleState current = getModule(i).getCurrentState();
                 SwerveModuleState target = getModule(i).getTargetState();
 
-                DogLog.log(prefix + "/Speed (m per s)", current.speedMetersPerSecond);
-                DogLog.log(prefix + "/Target Speed (m per s)", target.speedMetersPerSecond);
-                DogLog.log(prefix + "/Angle (deg)", current.angle.getDegrees() % 360);
-                DogLog.log(prefix + "/Target Angle (deg)", target.angle.getDegrees() % 360);
+                DogLog.log(prefix + "/Speed", current.speedMetersPerSecond, "Meters/Second");
+                DogLog.log(prefix + "/Target Speed", target.speedMetersPerSecond, "Meters/Second");
+                DogLog.log(prefix + "/Angle", current.angle.getDegrees() % 360, "Degrees");
+                DogLog.log(prefix + "/Target Angle", target.angle.getDegrees() % 360, "Degrees");
 
                 if (Settings.DEBUG_MODE.get()) {
                     DogLog.log(prefix + "/Stator Current",
-                            getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble());
+                            getModule(i).getDriveMotor().getStatorCurrent().getValueAsDouble(), "Amps");
                     DogLog.log(prefix + "/Supply Current",
-                            getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble());
+                            getModule(i).getDriveMotor().getSupplyCurrent().getValueAsDouble(), "Amps");
                 }
             }
 

@@ -221,6 +221,5 @@ public class LEDController extends SubsystemBase {
         DogLog.log("LED/Is Back LL dead", isBackLLDead);
         DogLog.log("LED/Is Right LL dead", isRightLLDead);
         DogLog.log("LED/Is Left LL dead", isLeftLLDead);
-
     }
 }

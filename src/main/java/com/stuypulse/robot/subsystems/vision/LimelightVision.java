@@ -230,17 +230,12 @@ public class LimelightVision extends SubsystemBase {
                 if (Cameras.LimelightCameras[i].isEnabled()) {
                     String limelightName = names[i];
 
-                    DogLog.log("LED/heartbeat" + limelightName, LimelightHelpers.getHeartbeat(limelightName));
-                    DogLog.log("LED/raw fiducials" + limelightName, LimelightHelpers.getRawFiducials(limelightName).length);
-
                     Cameras.LimelightCameras[i].incrementLoopCounter();
                     Cameras.LimelightCameras[i].updateLEDs();
                     
                     //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
                     Cameras.LimelightCameras[i].updateHeartBeat();
                     Cameras.LimelightCameras[i].updateLatency();
-                    
-
 
                     // Seed robot heading (used by MT2)
                     LimelightHelpers.SetRobotOrientation(
@@ -254,21 +249,17 @@ public class LimelightVision extends SubsystemBase {
                     );
 
                     PoseEstimate poseEstimate;
-                    PoseEstimate poseEstimateMT1 = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
-
-                    PoseEstimate poseEstimateMT2 = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
 
                     // MegaTag switching
                     if (megaTagMode == MegaTagMode.MEGATAG1) {
-                         poseEstimate = poseEstimateMT1;
+                         poseEstimate = Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
                     } else {
-                        poseEstimate = poseEstimateMT2;
+                        poseEstimate = Robot.isBlue()
+                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
+                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
                     }
-
 
                     // Adding to pose estimator
                     boolean notNull = false;
@@ -309,15 +300,10 @@ public class LimelightVision extends SubsystemBase {
                         DogLog.log("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
                         DogLog.log("Vision/Not Null", notNull);
 
-                        DogLog.log("Vision/Pose X Component", robotPose.getX());
-                        DogLog.log("Vision/Pose Y Component", robotPose.getY());
-                        DogLog.log("Vision/Pose Theta (Degrees)", robotPose.getRotation().getDegrees());
-                        DogLog.log("Vision/Pose Estimate X " + limelightName, poseEstimate.pose.getX());
-                        DogLog.log("Vision/Pose Estimate Y " + limelightName, poseEstimate.pose.getY());
-                        DogLog.log("Vision/Pose Estimate Theta " + limelightName, poseEstimate.pose.getRotation().getDegrees());
-
-                        DogLog.log("Vision/" + Cameras.LimelightCameras[i].getName() + "/Pose MT1", poseEstimateMT1.pose);
-                        DogLog.log("Vision/" + Cameras.LimelightCameras[i].getName() + "/Pose MT2", poseEstimateMT2.pose);
+                        DogLog.log("Vision/Pose", robotPose);
+                        DogLog.log("Vision/Pose X Component", robotPose.getX(), "Meters");
+                        DogLog.log("Vision/Pose Y Component", robotPose.getY(), "Meters");
+                        DogLog.log("Vision/Pose Theta", robotPose.getRotation().getDegrees(), "Degrees");
 
                         DogLog.log("Vision/" + names[i] + " Has Data", true);
                         
@@ -327,11 +313,6 @@ public class LimelightVision extends SubsystemBase {
                     }
 
                     DogLog.log("Vision/MegaTag Mode", megaTagMode.toString());
-                    // this yaw is seems to be the robot yaw passed into the LL
-                    DogLog.log("Vision/Limelight Robot Yaw", LimelightHelpers.getIMUData(limelightName).robotYaw);
-                    // this is just the yaw of the internal imu 
-                    DogLog.log("Vision/Limelight Yaw", LimelightHelpers.getIMUData(limelightName).Yaw);
-                    DogLog.log("Vision/latency_pipeline " + limelightName , LimelightHelpers.getLatency_Pipeline(limelightName));
                     
                     Cameras.LimelightCameras[i].log();
                 }

@@ -619,7 +619,7 @@ public class RobotContainer {
                                   superstructure.getCurrentDraw() +
                                   swerve.getTotalDriveSupplyCurrent() +
                                   swerve.getTotalSteerSupplyCurrent();      
-        DogLog.log("Robot/Total Current Draw", totalCurrentDraw);
+        DogLog.log("Robot/Total Current Draw", totalCurrentDraw, "Amps");
 
         handoff.periodicAfterScheduler();
         intake.periodicAfterScheduler();

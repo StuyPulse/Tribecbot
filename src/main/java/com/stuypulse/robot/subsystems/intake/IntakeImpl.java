@@ -260,40 +260,39 @@ public class IntakeImpl extends Intake {
             // PIVOT
             DogLog.log("Intake/Pivot Pushdown Voltage Applied?", applyingPushdownCurrent);
 
-            DogLog.log("Intake/Pivot Closed Loop Error (deg)",
-                    pivot.getClosedLoopError().getValueAsDouble() * 360.0);
+            DogLog.log("Intake/Pivot Closed Loop Error",
+                    pivot.getClosedLoopError().getValueAsDouble() * 360.0, "Degrees");
 
             if (Settings.DEBUG_MODE.get()) {
                 DogLog.log("Intake/Voltage Override", pivotVoltageOverride.isPresent());
-                DogLog.log("Intake/Pivot Temperature (C)", pivotTemperature.getValueAsDouble());
-                DogLog.log("Intake/Leader Temperature (C)",
-                        rollerLeaderTemperature.getValueAsDouble());
-                DogLog.log("Intake/Follower Temperature (C)",
-                        rollerFollowerTemperature.getValueAsDouble());
+                DogLog.log("Intake/Pivot Temperature", pivotTemperature.getValueAsDouble(), "Celsius");
+                DogLog.log("Intake/Leader Temperature",
+                        rollerLeaderTemperature.getValueAsDouble(), "Celsius");
+                DogLog.log("Intake/Follower Temperature",
+                        rollerFollowerTemperature.getValueAsDouble(), "Celsius");
 
                 // Rolers
-                DogLog.log("Intake/Roller Leader Voltage (volts)",
-                        rollerLeaderVoltage.getValueAsDouble());
-                DogLog.log("Intake/Roller Leader Current (amps)",
-                        rollerLeaderSupplyCurrent.getValueAsDouble());
-                DogLog.log("Intake/Roller Leader Stator Current (amps)",
-                        rollerLeaderStatorCurrent.getValueAsDouble());
-                DogLog.log("Intake/Roller Follower Voltage (volts)",
-                        rollerFollowerVoltage.getValueAsDouble());
-                DogLog.log("Intake/Roller Follower Current (amps)",
-                        rollerFollowerSupplyCurrent.getValueAsDouble());
-                DogLog.log("Intake/Roller Follower Stator Current (amps)",
-                        rollerFollowerStatorCurrent.getValueAsDouble());
+                DogLog.log("Intake/Roller Leader Voltage",
+                        rollerLeaderVoltage.getValueAsDouble(), "Volts");
+                DogLog.log("Intake/Roller Leader Current",
+                        rollerLeaderSupplyCurrent.getValueAsDouble(), "Amps");
+                DogLog.log("Intake/Roller Leader Stator Current",
+                        rollerLeaderStatorCurrent.getValueAsDouble(), "Amps");
+                DogLog.log("Intake/Roller Follower Voltage",
+                        rollerFollowerVoltage.getValueAsDouble(), "Volts");
+                DogLog.log("Intake/Roller Follower Current",
+                        rollerFollowerSupplyCurrent.getValueAsDouble(), "Amps");
+                DogLog.log("Intake/Roller Follower Stator Current",
+                        rollerFollowerStatorCurrent.getValueAsDouble(), "Amps");
                 
-
                 // Pivot
-                DogLog.log("Intake/Pivot Voltage (volts)", pivotMotorVoltage.getValueAsDouble());
-                DogLog.log("Intake/Pivot Supply Current (amps)",
-                        pivotSupplyCurrent.getValueAsDouble());
-                DogLog.log("Intake/Pivot Stator Current (amps)",
-                        pivotStatorCurrent.getValueAsDouble());
+                DogLog.log("Intake/Pivot Voltage", pivotMotorVoltage.getValueAsDouble(), "Volts");
+                DogLog.log("Intake/Pivot Supply Current",
+                        pivotSupplyCurrent.getValueAsDouble(), "Amps");
+                DogLog.log("Intake/Pivot Stator Current",
+                        pivotStatorCurrent.getValueAsDouble(), "Amps");
                 DogLog.log("Intake/Pivot is below pushdown Threshold", isPivotBelowPushDownThreshold.get());
-                DogLog.log("Intake/Pivot Torque Current", pivotTorqueCurrent.getValueAsDouble());
+                DogLog.log("Intake/Pivot Torque Current", pivotTorqueCurrent.getValueAsDouble(), "Amps");
 
                 if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                     DogLog.log("Robot/CAN/Main/Intake Pivot Motor Connected? (ID "
@@ -305,7 +304,6 @@ public class IntakeImpl extends Intake {
 
                 }
                 Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
-
             }
         }
     }

@@ -153,34 +153,32 @@ public class ShooterImpl extends Shooter {
             shooterLeader.stopMotor();
         }
 
-        DogLog.log("Superstructure/Shooter/Leader RPM", getLeaderRPM());
-        DogLog.log("Superstructure/Shooter/Follower RPM", getFollowerRPM());
+        DogLog.log("Superstructure/Shooter/Leader RPM", getLeaderRPM(), "RPM");
+        DogLog.log("Superstructure/Shooter/Follower RPM", getFollowerRPM(), "RPM");
 
         if (Settings.DEBUG_MODE.get()) {
             DogLog.log("InterpolationTesting/Shooter Applied Voltage",
-                    shooterLeaderVoltage.getValueAsDouble());
+                    shooterLeaderVoltage.getValueAsDouble(), "Volts");
 
-            DogLog.log("Superstructure/Shooter/Leader Voltage (volts)",
-                    shooterLeaderVoltage.getValueAsDouble());
-            DogLog.log("Superstructure/Shooter/Leader Supply Current (amps)",
-                    shooterLeadSupplyCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Shooter/Leader Stator Current (amps)",
-                    shooterLeadStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Shooter/Leader Voltage",
+                    shooterLeaderVoltage.getValueAsDouble(), "Volts");
+            DogLog.log("Superstructure/Shooter/Leader Supply Current",
+                    shooterLeadSupplyCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Superstructure/Shooter/Leader Stator Current",
+                    shooterLeadStatorCurrent.getValueAsDouble(), "Amps");
 
-            DogLog.log("Superstructure/Shooter/Leader Motor Temp (C)",
-                    shooterLeaderTemperature.getValueAsDouble());
+            DogLog.log("Superstructure/Shooter/Leader Motor Temp",
+                    shooterLeaderTemperature.getValueAsDouble(), "Celsius");
 
-            DogLog.log("Superstructure/Shooter/Follower Voltage (volts)",
-                    shooterFollowerVoltage.getValueAsDouble());
-            DogLog.log("Superstructure/Shooter/Follower Supply Current (amps)",
-                    shooterFollowSupplyCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Shooter/Follower Stator Current (amps)",
-                    shooterFollowStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Shooter/Follower Voltage",
+                    shooterFollowerVoltage.getValueAsDouble(), "Volts");
+            DogLog.log("Superstructure/Shooter/Follower Supply Current",
+                    shooterFollowSupplyCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Superstructure/Shooter/Follower Stator Current",
+                    shooterFollowStatorCurrent.getValueAsDouble(), "Amps");
                     
-            DogLog.log("Superstructure/Shooter/Follower Motor Temp (C)",
-                    shooterFollowerTemperature.getValueAsDouble());
-
-            
+            DogLog.log("Superstructure/Shooter/Follower Motor Temp",
+                    shooterFollowerTemperature.getValueAsDouble(), "Celsius");
 
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                 DogLog.log(
@@ -195,10 +193,10 @@ public class ShooterImpl extends Shooter {
            Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
         }
 
-        DogLog.log("InterpolationTesting/Shooter Closed Loop Error (RPM)",
-                shooterLeaderClosedLoopError.getValueAsDouble() * 60.0);
+        DogLog.log("InterpolationTesting/Shooter Closed Loop Error",
+                shooterLeaderClosedLoopError.getValueAsDouble() * 60.0, "RPM");
 
-        DogLog.log("Superstructure/Shooter/Implemented Error (RPM)", getTargetRPM() - getLeaderRPM());
+        DogLog.log("Superstructure/Shooter/Implemented Error", getTargetRPM() - getLeaderRPM(), "RPM");
     }
 
     private void setVoltageOverride(Optional<Double> voltageOverride) {
@@ -222,9 +220,9 @@ public class ShooterImpl extends Shooter {
     public double getCurrentDraw() {
         return Double.max(0, shooterLeadSupplyCurrent.getValueAsDouble()) +
                 Double.max(0, shooterFollowSupplyCurrent.getValueAsDouble());
-    }
+        }
 
-	@Override
+    @Override
 	public boolean isShooting() {
 		return currentlyShooting.get();
 	}

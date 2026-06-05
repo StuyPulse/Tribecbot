@@ -254,9 +254,6 @@ public class TurretImpl extends Turret {
         if (isWrapping) {
             slot = 1;
         }
-        // else if (!deltaIsSignificant) {
-        //     slot = 2;
-        // }
 
         if (EnabledSubsystems.TURRET.get()) {
             if (voltageOverride.isPresent()) {
@@ -281,26 +278,26 @@ public class TurretImpl extends Turret {
             turretMotor.stopMotor();
         }
 
-        DogLog.log("Superstructure/Turret/Relative Encoder Position (deg)",
-                turretMotorPos.getValueAsDouble() * 360.0);
-        DogLog.log("Superstructure/Turret/Closed Loop Error (deg)",
-                turretMotorClosedLoopError.getValueAsDouble() * 360.0);
+        DogLog.log("Superstructure/Turret/Relative Encoder Position",
+                turretMotorPos.getValueAsDouble() * 360.0, "Degrees");
+        DogLog.log("Superstructure/Turret/Closed Loop Error",
+                turretMotorClosedLoopError.getValueAsDouble() * 360.0, "Degrees");
 
-        DogLog.log("Superstructure/Turret/Encoder18t Abs Position (Rot)",
-                encoder18tPos.getValueAsDouble());
-        DogLog.log("Superstructure/Turret/Encoder17t Abs Position (Rot)",
-                encoder17tPos.getValueAsDouble());
+        DogLog.log("Superstructure/Turret/Encoder18t Abs Position",
+                encoder18tPos.getValueAsDouble(), "Rotations");
+        DogLog.log("Superstructure/Turret/Encoder17t Abs Position",
+                encoder17tPos.getValueAsDouble(), "Rotations");
 
-        DogLog.log("Superstructure/Turret/Voltage (volts)",
-                turretMotorVoltage.getValueAsDouble());
+        DogLog.log("Superstructure/Turret/Voltage",
+                turretMotorVoltage.getValueAsDouble(), "Volts");
 
-        DogLog.log("Superstructure/Turret/Wrapped Target Angle (deg)", prevActualTargetAngle);
+        DogLog.log("Superstructure/Turret/Wrapped Target Angle", prevActualTargetAngle, "Degrees");
 
         if (Settings.DEBUG_MODE.get()) {
-            DogLog.log("Superstructure/Turret/Stator Current (amps)",
-                    turretMotorStatorCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Turret/Supply Current (amps)",
-                    turretMotorSupplyCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Turret/Stator Current",
+                    turretMotorStatorCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Superstructure/Turret/Supply Current",
+                    turretMotorSupplyCurrent.getValueAsDouble(), "Amps");
 
             if (Robot.getMode() == RobotMode.DISABLED && !Robot.fmsAttached) {
                 DogLog.log(
@@ -312,7 +309,6 @@ public class TurretImpl extends Turret {
                         + String.valueOf(Ports.Superstructure.Turret.ENCODER18T) + ")", encoder18t.isConnected());
             }
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
-
         }
     }
 
