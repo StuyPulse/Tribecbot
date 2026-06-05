@@ -7,6 +7,7 @@ package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.controls.RainbowAnimation;
+import com.ctre.phoenix6.controls.SingleFadeAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.controls.TwinkleAnimation;
 import com.ctre.phoenix6.signals.RGBWColor;
@@ -384,7 +385,7 @@ public interface Settings {
 
         public SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
         public RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
-        public TwinkleAnimation twinkleAnimation = new TwinkleAnimation(0, Settings.LED.LED_LENGTH - 1);
+        public SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(700);
 
         public static RGBWColor rgbwConverter(Color color) {
             return new RGBWColor(color);
@@ -421,13 +422,13 @@ public interface Settings {
         RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kPurple);   //broken
 
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
-        RGBWColor DISABLED = rgbwConverter(Color.kRed);
+        RGBWColor DISABLED = rgbwConverter(Color.kRed); //kred
 
         RGBWColor AUTON_ONE = rgbwConverter(Color.kBlue);
-        RGBWColor AUTON_TWO = rgbwConverter(Color.kOrange);
+        RGBWColor AUTON_TWO = rgbwConverter(Color.kOrangeRed);
 
         RGBWColor LLDEAD = rgbwConverter(Color.kWhite);
-
+        
         SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 6, Settings.LED.LED_LENGTH - 2);
         SolidColor BACK_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 13, Settings.LED.LED_LENGTH - 9);
         SolidColor LEFT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 20, Settings.LED.LED_LENGTH - 16);
