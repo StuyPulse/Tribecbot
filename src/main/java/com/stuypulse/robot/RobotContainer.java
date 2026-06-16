@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.auton.regular.LeftTwoCorner;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerVariant;
 import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
+import com.stuypulse.robot.commands.auton.regular.MasterAuton;
 import com.stuypulse.robot.commands.auton.regular.RightBump;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.RightTwoCorner;
@@ -467,6 +468,22 @@ public class RobotContainer {
         "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
         L_CN_NFS.register(autonChooser);
 
+        //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
+        AutonConfig Right_Champs = new AutonConfig("Right Champs", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
+        Right_Champs.register(autonChooser);
+
+        AutonConfig Left_Champs = new AutonConfig("Left Champs", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
+        Left_Champs.register(autonChooser);
+
+        AutonConfig Exp_Right_Champs = new AutonConfig("Exp Right Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Score To Corner", "Champs Right Bite Score To Score");
+        Right_Champs.register(autonChooser);
+
+        AutonConfig Exp_Left_Champs = new AutonConfig("Exp Left Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Score To Corner", "Champs Left Bite Score To Score");
+        Left_Champs.register(autonChooser);
         
 
         //BC RIGHT
