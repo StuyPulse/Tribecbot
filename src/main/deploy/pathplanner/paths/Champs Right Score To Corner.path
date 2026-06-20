@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.27,
-        "y": 7.44
+        "x": 3.612,
+        "y": 0.559
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.436401056802655,
-        "y": 7.227016359757356
+        "x": 3.199971130397284,
+        "y": 0.6068359978960554
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Trench Score"
     },
     {
       "anchor": {
-        "x": 8.289,
-        "y": 4.064233333333333
+        "x": 3.282,
+        "y": 0.559
       },
       "prevControl": {
-        "x": 8.135084631168585,
-        "y": 4.261236021735014
+        "x": 3.5164317899184905,
+        "y": 0.4721568317274595
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Corner"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.19,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 0.1,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,
-    "unlimited": true
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "BC To Dot",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

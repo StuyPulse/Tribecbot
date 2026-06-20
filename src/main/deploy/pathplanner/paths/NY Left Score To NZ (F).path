@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.31,
-        "y": 7.44
+        "x": 3.63796005706134,
+        "y": 7.440906488549619
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5785777777777783,
-        "y": 7.4359777777777785
+        "x": 6.846747503566332,
+        "y": 7.440906488549619
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Trench Score"
     },
     {
       "anchor": {
-        "x": 6.27,
-        "y": 7.44
+        "x": 8.248481613285884,
+        "y": 4.621376037959667
       },
       "prevControl": {
-        "x": 6.02,
-        "y": 7.44
+        "x": 7.860321841531247,
+        "y": 7.196169190598754
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left NZ"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1902339776195354,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,13 +46,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.8,
-    "rotation": 0.0
+    "velocity": 0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "BC To Dot",
+  "folder": "To NZ",
   "idealStartingState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

@@ -7,43 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left Corner Bite"
+            "pathName": "Right Corner Bite Anti Collision"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left NZ To Score"
+            "pathName": "Right NZ To Score Anti Collision"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
+            "pathName": "Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Score"
+            "pathName": "BC Right Score To Score NY"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": null
+            "pathName": "Right Score To Corner"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "BC Main",
+  "folder": "Duel",
   "choreoAuto": false
 }

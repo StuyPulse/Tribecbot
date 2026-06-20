@@ -11,15 +11,12 @@ import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeDigest;
-import com.stuypulse.robot.commands.intake.IntakeOuttake;
-import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
-import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
@@ -34,9 +31,9 @@ import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 
-public class LeftTwoCornerShallow extends SequentialCommandGroup {
-    
-    public LeftTwoCornerShallow(PathPlannerPath... paths) {
+public class TwoCorner extends SequentialCommandGroup {
+    //Champs sequence
+    public TwoCorner(PathPlannerPath... paths) {
 
         addCommands(
 
@@ -56,18 +53,15 @@ public class LeftTwoCornerShallow extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),                
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
-                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.0)),
+                    .andThen(new IntakeAutoDigest().until(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(5.0)),
                 new WaitCommand(1.0).andThen(
-                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(3.5))
+                    new WaitUntilCommand(() -> Superstructure.getInstance().isHopperEmpty()).withTimeout(4.5))
             ),
-            new SuperstructureAutoInterpolation().alongWith(new IntakeSetState(PivotState.DEPLOY)),
-            new IntakeOuttake(),
-            new WaitCommand(0.2),
-            new IntakeDeploy(),
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             // NZ Trip 2
             new ParallelCommandGroup(

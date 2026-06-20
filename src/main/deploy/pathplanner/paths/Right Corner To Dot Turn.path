@@ -3,34 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.569,
-        "y": 5.374151212553495
+        "x": 3.28,
+        "y": 0.56
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.235545760690833,
-        "y": 7.811409368840588
+        "x": 4.440424253599775,
+        "y": 0.56
       },
       "isLocked": false,
-      "linkedName": "Left Shallow"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.63796005706134,
-        "y": 7.440906488549619
+        "x": 8.254,
+        "y": 0.559
       },
       "prevControl": {
-        "x": 6.085868320610687,
-        "y": 7.650114503816795
+        "x": 8.003999999999998,
+        "y": 0.559
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Trench Score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.3816631130063977,
+      "waypointRelativePos": 0.58,
       "rotationDegrees": 0.0
     }
   ],
@@ -42,18 +42,18 @@
     "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.7,
-    "unlimited": false
+    "nominalVoltage": 12.0,
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Shallow",
+  "folder": "BC To Dot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

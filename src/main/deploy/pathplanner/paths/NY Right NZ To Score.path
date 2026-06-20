@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.631,
-        "y": 3.16
+        "x": 8.237722419928826,
+        "y": 3.4271055753262156
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.925781760803848,
-        "y": 3.0625589577602206
+        "x": 5.763107947805457,
+        "y": 3.5131791221826814
       },
       "isLocked": false,
-      "linkedName": "R-Anti-Collision"
+      "linkedName": "Right NZ"
     },
     {
       "anchor": {
-        "x": 6.419771754636234,
-        "y": 1.4925534950071324
+        "x": 6.053851272542522,
+        "y": 1.6151808747904899
       },
       "prevControl": {
-        "x": 6.437298642104417,
-        "y": 2.392382816720799
+        "x": 6.040480921648686,
+        "y": 2.6846376869648685
       },
       "nextControl": {
-        "x": 6.399066666666666,
-        "y": 0.42955555555555525
+        "x": 6.070427960057061,
+        "y": 0.289258202567761
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.612,
+        "x": 3.6120827389443653,
         "y": 0.559
       },
       "prevControl": {
-        "x": 6.511813503834114,
-        "y": 0.5261116588846113
+        "x": 6.290385164051354,
+        "y": 0.5848773181169763
       },
       "nextControl": null,
       "isLocked": false,
@@ -70,7 +70,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Anti Collision",
+  "folder": "To Score",
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": 90.0

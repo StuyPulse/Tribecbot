@@ -7,43 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left Corner Bite"
+            "pathName": "Champs Right To Shallow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BC Left NZ To Score"
+            "pathName": "Champs Right Shallow To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
+            "pathName": "Champs Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Score"
+            "pathName": "Right Score To Score NY"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score To Corner"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": null
+            "pathName": "Champs Right Score To Corner"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "BC Main",
+  "folder": "Duel",
   "choreoAuto": false
 }

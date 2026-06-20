@@ -3,20 +3,21 @@
   "robotLength": 0.762,
   "holonomicMode": true,
   "pathFolders": [
-    "Anti-Anti Collision",
+    "Anti Collision",
     "BC To Dot",
     "BC modified",
     "Bump Stuff",
     "Follow",
-    "Non-Collision",
+    "Shallow",
     "PathFinder Test",
     "To Depot",
     "To NZ",
     "To Score"
   ],
   "autoFolders": [
+    "BC Extras",
     "BC Main",
-    "BC Extras"
+    "Duel"
   ],
   "defaultMaxVel": 4.19,
   "defaultMaxAccel": 10.0,

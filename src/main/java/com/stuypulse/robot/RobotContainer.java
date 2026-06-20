@@ -7,22 +7,8 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
-import com.stuypulse.robot.commands.auton.regular.Depot;
-import com.stuypulse.robot.commands.auton.regular.LeftBump;
-import com.stuypulse.robot.commands.auton.regular.LeftFollow;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCorner;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerShallow;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCornerVariant;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
-import com.stuypulse.robot.commands.auton.regular.RightBump;
-import com.stuypulse.robot.commands.auton.regular.RightFollow;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCorner;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCornerShallow;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCornerVariant;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
-import com.stuypulse.robot.commands.auton.regular.ShallowSwipeDot;
-import com.stuypulse.robot.commands.auton.test.PathfindTest;
-import com.stuypulse.robot.commands.auton.test.TestBC;
+import com.stuypulse.robot.commands.auton.regular.TwoCorner;
+import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.HomingRoutineLower;
@@ -400,73 +386,115 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         // DEPOT
-        AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Center Hub To Depot");
-        DEPOT_ONLY.register(autonChooser);
+        // AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Center Hub To Depot");
+        // DEPOT_ONLY.register(autonChooser);
 
-        AutonConfig LEFT_BUMP = new AutonConfig("Left Bump", LeftBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Bump To Score (Start)", "Left Bump To Score", "Left Bump Score To Depot");
-        LEFT_BUMP.register(autonChooser);
+        // AutonConfig LEFT_BUMP = new AutonConfig("Left Bump", Bump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Bump To Score (Start)", "Left Bump To Score", "Left Bump Score To Depot");
+        // LEFT_BUMP.register(autonChooser);
 
-        AutonConfig RIGHT_BUMP = new AutonConfig("Right Bump", RightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Bump To Score (Start)", "Right Bump To Score", "Right Bump Score To Depot");
-        RIGHT_BUMP.register(autonChooser);
+        // AutonConfig RIGHT_BUMP = new AutonConfig("Right Bump", RightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Bump To Score (Start)", "Right Bump To Score", "Right Bump Score To Depot");
+        // RIGHT_BUMP.register(autonChooser);
 
-        // TWO CYCLES (TRENCH)
-        AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        LEFT_TWO_CYCLE.register(autonChooser);
+        // // TWO CYCLES (TRENCH)
+        // AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // LEFT_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        RIGHT_TWO_CYCLE.register(autonChooser);
+        // AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // RIGHT_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot");
-        BC_TEST.register(autonChooser);
+        // AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot");
+        // BC_TEST.register(autonChooser);
 
-        // TWO CYCLES (CORNER)
-        AutonConfig L_CN_FN = new AutonConfig("Left Corner-Near Far-Near", LeftTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        L_CN_FN.register(autonChooser);
+        // // TWO CYCLES (CORNER)
+        // AutonConfig L_CN_FN = new AutonConfig("Left Corner-Near Far-Near", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_FN.register(autonChooser);
 
-        AutonConfig R_CN_FN = new AutonConfig("Right Corner-Near Far-Near", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        R_CN_FN.register(autonChooser);
+        // AutonConfig R_CN_FN = new AutonConfig("Right Corner-Near Far-Near", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_FN.register(autonChooser);
 
-        AutonConfig L_FNS_FN = new AutonConfig("Left Far-Near Shallow Far-Near", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        L_FNS_FN.register(autonChooser);
+        // AutonConfig L_FNS_FN = new AutonConfig("Left Far-Near Shallow Far-Near", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_FNS_FN.register(autonChooser);
 
-        AutonConfig R_FNS_FN = new AutonConfig("Right Far-Near Shallow Far-Near", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        R_FNS_FN.register(autonChooser);
+        // AutonConfig R_FNS_FN = new AutonConfig("Right Far-Near Shallow Far-Near", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_FNS_FN.register(autonChooser);
 
-        AutonConfig L_CN_NF = new AutonConfig("Left Corner-Near Near-Far", LeftTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        L_CN_NF.register(autonChooser);
+        // AutonConfig L_CN_NF = new AutonConfig("Left Corner-Near Near-Far", LeftTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_NF.register(autonChooser);
 
-        AutonConfig R_CN_NF = new AutonConfig("Right Corner-Near Near-Far", RightTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        R_CN_NF.register(autonChooser);
+        // AutonConfig R_CN_NF = new AutonConfig("Right Corner-Near Near-Far", RightTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_NF.register(autonChooser);
 
-        AutonConfig L_CNL_D = new AutonConfig("Left Corner-Near Long Dot", ShallowSwipeDot::new, 
-            "BC Left To Shallow", "BC Left Shallow To Score", "Left Score To Corner", "Left Corner To Dot Straight"
-        );
-        L_CNL_D.register(autonChooser);
+        // AutonConfig L_CNL_D = new AutonConfig("Left Corner-Near Long Dot", ShallowSwipeDot::new, 
+        //     "BC Left To Shallow", "BC Left Shallow To Score", "Left Score To Corner", "Left Corner To Dot Straight"
+        // );
+        // L_CNL_D.register(autonChooser);
 
-        AutonConfig R_CNL_D = new AutonConfig("Right Corner-Near Long Dot", ShallowSwipeDot::new, 
-            "BC Right To Shallow", "BC Right Shallow To Score", "Right Score To Corner", "Right Corner To Dot Straight"
-        );
-        R_CNL_D.register(autonChooser);
+        // AutonConfig R_CNL_D = new AutonConfig("Right Corner-Near Long Dot", ShallowSwipeDot::new, 
+        //     "BC Right To Shallow", "BC Right Shallow To Score", "Right Score To Corner", "Right Corner To Dot Straight"
+        // );
+        // R_CNL_D.register(autonChooser);
 
-        AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", RightTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
-        R_CN_NFS.register(autonChooser);
+        //RAN AT BATTLE CRY
+        // AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_NFS.register(autonChooser);
 
-        AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", LeftTwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
-        L_CN_NFS.register(autonChooser);
+        // AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_NFS.register(autonChooser);
 
+        //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
+        AutonConfig Right_Champs = new AutonConfig("Right Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
+        Right_Champs.register(autonChooser);
+
+        AutonConfig Left_Champs = new AutonConfig("Left Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
+        Left_Champs.register(autonChooser);
+
+        AutonConfig Right_NY = new AutonConfig("Right NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "NY Right Trench To NZ", "NY Right NZ To Score", "NY Right Score To Score", "Right Score To Corner");
+        Right_NY.register(autonChooser);
+
+        AutonConfig Left_NY = new AutonConfig("Left NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "NY Left Trench To NZ", "NY Left NZ To Score", "NY Left Score To Score", "Left Score To Corner");
+        Left_NY.register(autonChooser);
+
+        AutonConfig Right_Champs_NY = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Right To Shallow", "Champs Right Shallow To Score", "NY Right Score To Score", "Right Score To Corner");
+        Right_Champs_NY.register(autonChooser);
+
+        AutonConfig Left_Champs_NY = new AutonConfig("Left Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Left To Shallow", "Champs Left Shallow To Score", "NY Left Score To Score", "Left Score To Corner");
+        Left_Champs_NY.register(autonChooser);
+
+        //BC Score To Score NY is a shorened version of NY and w the slow down
+        AutonConfig Right_BC = new AutonConfig("Right BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner");
+        Right_BC.register(autonChooser);
+
+        AutonConfig Left_BC = new AutonConfig("Left BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner");
+        Left_BC.register(autonChooser);
+
+        // AutonConfig Exp_Right_Champs = new AutonConfig("Exp Right Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Score To Corner", "Champs Right Bite Score To Score");
+        // Right_Champs.register(autonChooser);
+
+        // AutonConfig Exp_Left_Champs = new AutonConfig("Exp Left Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Score To Corner", "Champs Left Bite Score To Score");
+        // Left_Champs.register(autonChooser);
         
 
         //BC RIGHT
@@ -504,20 +532,20 @@ public class RobotContainer {
         // L_CN_NF_CD.register(autonChooser);
         
         // FOLLOWS
-        AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
-        LEFT_FOLLOW.register(autonChooser);
+        // AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
+        // LEFT_FOLLOW.register(autonChooser);
 
-        AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Follow To Bump", "Right Follow To Score");
-        RIGHT_FOLLOW.register(autonChooser);
+        // AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Follow To Bump", "Right Follow To Score");
+        // RIGHT_FOLLOW.register(autonChooser);
         // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
         //     "Right Trench Score To Corner");
         // EMPTY_TEST.register(autonChooser);
 
-        AutonConfig PATH_FIND_TEST = new AutonConfig("Path Find Test", PathfindTest::new, prevWaitTimeOne, prevWaitTimeTwo,
-         "Straight One", "Straight Two");
-        PATH_FIND_TEST.register(autonChooser);
+        // AutonConfig PATH_FIND_TEST = new AutonConfig("Path Find Test", PathfindTest::new, prevWaitTimeOne, prevWaitTimeTwo,
+        //  "Straight One", "Straight Two");
+        // PATH_FIND_TEST.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
