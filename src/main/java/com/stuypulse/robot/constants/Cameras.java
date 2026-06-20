@@ -12,6 +12,8 @@ import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.RawFiducial;
 import com.stuypulse.stuylib.network.SmartBoolean;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -54,6 +56,7 @@ public interface Cameras {
         private int rejectedCounterAngularVelocity;
         private int rejectedCounterInvalidPosition;
         private int rejectedCounterTargetArea;
+        private final BStream isdead;
 
         private LimelightResults result;
 
@@ -65,6 +68,7 @@ public interface Cameras {
             this.isEnabled = isEnabled;
             this.keyName = "Vision/" + name + "/";
             this.result = LimelightHelpers.getLatestResults(name);
+            this.isdead = BStream.create(() -> !isAlive()).filtered( new BDebounce.Rising(1), new BDebounce.Falling(0.2));
         }
 
         public enum Pipeline {
@@ -154,46 +158,23 @@ public interface Cameras {
         }
 
         public void updateLEDs() {
-            switch (this.getName()) {
-                case "limelight-right" -> { 
-                    if (this.loopCounter == 50) {
-                        if (!isAlive()) {
-                            LEDController.isRightLLDead = true; 
-                        }
-                        else {
-                            LEDController.isRightLLDead = false; 
-                        }
-
-                        this.loopCounter = 0;
+            if (this.loopCounter == 50) {
+                boolean iscurrentlyDead = isdead.get();
+                switch (this.getName()) {
+                    case "limelight-right" -> { 
+                            LEDController.isRightLLDead = iscurrentlyDead;
+                            this.loopCounter = 0;
                     }
-                }
-                
-                case "limelight-left" -> { 
-                    if (this.loopCounter == 50) {
-                        if (!isAlive()) {
-                            LEDController.isLeftLLDead = true; 
+                    case "limelight-left" -> { 
+                            LEDController.isLeftLLDead = iscurrentlyDead;
+                            this.loopCounter = 0;
+                        } 
+                    case "limelight-back" -> {
+                            LEDController.isBackLLDead = iscurrentlyDead;
                         }
-                        else {
-                            LEDController.isLeftLLDead = false; 
-                        }
-
-                        this.loopCounter = 0;
-                    } 
-                }
-                
-                
-                case "limelight-back" -> {
-                    if (this.loopCounter == 50) {
-                        if (!isAlive()) {
-                            LEDController.isBackLLDead = true; 
-                        }
-                        else {
-                            LEDController.isBackLLDead = false; 
-                        }
-
-                        this.loopCounter = 0;
-                    } 
-                }
+                    
+                    }
+                this.loopCounter = 0;
             }
         }
 
