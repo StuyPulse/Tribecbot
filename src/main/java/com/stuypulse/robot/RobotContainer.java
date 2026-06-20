@@ -204,8 +204,8 @@ public class RobotContainer {
             .onFalse(new IntakeDeploy());
 
         // Intake Stow
-        // driver.getLeftTriggerButton()
-        //     .onTrue(new IntakeStow());
+        driver.getLeftTriggerButton()
+            .onTrue(new IntakeStow());
 
         // Intake Deploy
         driver.getRightTriggerButton()
@@ -472,11 +472,11 @@ public class RobotContainer {
         Left_NY.register(autonChooser);
 
         AutonConfig Right_Champs_NY = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Champs Right To Shallow", "Champs Right Shallow To Score Wide", "NY Right Score To Score", "Right Score To Corner");
+        "316 Champs Right To Shallow", "316 Champs Right Shallow To Score Wide", "316 NY Right Score To Score", "Right Score To Corner");
         Right_Champs_NY.register(autonChooser);
 
         AutonConfig Left_Champs_NY = new AutonConfig("Left Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Champs Left To Shallow", "Champs Left Shallow To Score Wide", "NY Left Score To Score", "Left Score To Corner");
+        "316 Champs Left To Shallow", "316 Champs Left Shallow To Score Wide", "316 NY Left Score To Score", "Left Score To Corner");
         Left_Champs_NY.register(autonChooser);
 
         //BC Score To Score NY is a shorened version of NY and w the slow down

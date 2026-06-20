@@ -8,40 +8,56 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.244952924393722,
-        "y": 0.6236932952924387
+        "x": 6.46089863956213,
+        "y": 0.4753134455838692
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.850470756062768,
-        "y": 2.851112696148359
+        "x": 6.163,
+        "y": 2.355
       },
       "prevControl": {
-        "x": 5.850470756062768,
-        "y": 0.3280741797432247
+        "x": 6.488590333125495,
+        "y": 0.5084854631021092
       },
       "nextControl": {
-        "x": 5.850470756062768,
-        "y": 4.150659142168011
+        "x": 6.001159898414421,
+        "y": 3.272840825807378
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.302881844380403,
-        "y": 2.851112696148359
+        "x": 7.637,
+        "y": 2.328
       },
       "prevControl": {
-        "x": 7.215816731986725,
-        "y": 3.83143356936277
+        "x": 7.637,
+        "y": 3.228
       },
       "nextControl": {
-        "x": 7.525057636887608,
-        "y": 0.34949567723342856
+        "x": 7.637,
+        "y": 2.078
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.067,
+        "y": 0.559
+      },
+      "prevControl": {
+        "x": 8.016675326208684,
+        "y": 0.583834950985082
+      },
+      "nextControl": {
+        "x": 5.087385536493331,
+        "y": 0.5072311198219507
       },
       "isLocked": false,
       "linkedName": null
@@ -52,21 +68,21 @@
         "y": 0.559
       },
       "prevControl": {
-        "x": 7.673006390654898,
-        "y": 0.520948709769672
+        "x": 5.268148066661913,
+        "y": 0.6003141499164485
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.17051509769094172,
+      "waypointRelativePos": 0.34587995930824006,
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 0.644760213143872,
+      "waypointRelativePos": 0.8,
       "rotationDegrees": 90.0
     },
     {
@@ -74,15 +90,15 @@
       "rotationDegrees": 90.0
     },
     {
-      "waypointRelativePos": 2.05,
+      "waypointRelativePos": 2.3,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 2.289978678038381,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 3.0,
+      "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 2.6703967446591785,
+      "waypointRelativePos": 3.05,
       "rotationDegrees": 0.0
     }
   ],
@@ -91,7 +107,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.5,
-    "maxAcceleration": 7.5,
+    "maxAcceleration": 7.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,
@@ -102,9 +118,9 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "To Score",
+  "folder": "BC modified",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": false
