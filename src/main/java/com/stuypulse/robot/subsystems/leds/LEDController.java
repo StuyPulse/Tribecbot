@@ -11,20 +11,16 @@ import com.ctre.phoenix6.configs.CANdleFeaturesConfigs;
 import com.ctre.phoenix6.configs.LEDConfigs;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.SolidColor;
-import com.ctre.phoenix6.controls.TwinkleAnimation;
 import com.ctre.phoenix6.hardware.CANdle;
 import com.ctre.phoenix6.signals.LossOfSignalBehaviorValue;
 import com.ctre.phoenix6.signals.RGBWColor;
 import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
 import com.ctre.phoenix6.signals.StripTypeValue;
 import com.stuypulse.robot.RobotContainer;
-import com.stuypulse.robot.constants.Cameras;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDController extends SubsystemBase {
@@ -38,10 +34,8 @@ public class LEDController extends SubsystemBase {
     public boolean backDeadAnimationCleared; 
     public boolean rightDeadAnimationCleared;
 
-    private Pose2d lastPoseOnAprilTag;
-    private boolean initialPoseUpdated;
-
-    private boolean needToBeTwinkle;
+    // private Pose2d lastPoseOnAprilTag;
+    // private boolean initialPoseUpdated = false;
 
     static {
         instance = new LEDController();
@@ -64,13 +58,8 @@ public class LEDController extends SubsystemBase {
         isBackLLDead = false;
         isRightLLDead = false;
 
-        initialPoseUpdated = false;
-        needToBeTwinkle = false;
-
-        lastPoseOnAprilTag = new Pose2d();
-
         leds = new CANdle(Ports.LED.CANDLE_PORT, Ports.CANIVORE);
-        
+        // lastPoseOnAprilTag = new Pose2d();
 
         candleConfigs = new CANdleConfiguration()
                 .withLED(
@@ -129,32 +118,15 @@ public class LEDController extends SubsystemBase {
 
     //TODO: make branch for the distance flashing thing
     public void applyPattern() {
-        if (initialPoseUpdated &&
-                lastPoseOnAprilTag.getTranslation()
-                        .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()) > Settings.LED.APRIL_TAG_DISTANCE_THRESHOLD) {
-            needToBeTwinkle = true;
-        }
-        else {
-            needToBeTwinkle = false;
-        }
-
-        //TODO: potentially make this go both ways - if need be
-        boolean shouldClear = (cachedState.getAnimation() instanceof TwinkleAnimation && state.getAnimation() instanceof SolidColor) ? true : false; 
+        // if (initialPoseUpdated &&
+        //         lastPoseOnAprilTag.getTranslation()
+        //                 .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()) > Settings.LED.APRIL_TAG_DISTANCE_THRESHOLD) {
+        //     
+        // }
 
         if (cachedState != state) {
-            //not clearing animations
-            //instance of locks me out
-            if (shouldClear) leds.clearAllAnimations();
-            ledPattern = needToBeTwinkle ? Settings.LED.twinkleAnimation : Settings.LED.solidColorRequest;
-
-            if (ledPattern instanceof SolidColor) { 
-                SolidColor solidColor = (SolidColor) ledPattern;
-                solidColor.withColor(state.getColor());
-            }
-            else if (ledPattern instanceof TwinkleAnimation) {
-                TwinkleAnimation twinkleAnimation = (TwinkleAnimation) ledPattern;
-                twinkleAnimation.withColor(state.getColor());
-            }
+            SolidColor solidColor = (SolidColor) ledPattern;
+            solidColor.withColor(state.getColor());
 
             cachedState = state;
         }
@@ -166,16 +138,12 @@ public class LEDController extends SubsystemBase {
 
 
     public void periodicAfterScheduler() {
-        if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
-                Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||
-                Cameras.LimelightCameras[2].getNumberOfTagsSeen() > 0) {
-            lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
-            initialPoseUpdated = true;
-        }
-
-        DogLog.log("LED/last pose updated", this.lastPoseOnAprilTag);
-        DogLog.log("LED/distance from last pose", lastPoseOnAprilTag.getTranslation()
-            .getDistance(CommandSwerveDrivetrain.getInstance().getPose().getTranslation()));
+        // if (Cameras.LimelightCameras[0].getNumberOfTagsSeen() > 0 ||
+        //         Cameras.LimelightCameras[1].getNumberOfTagsSeen() > 0 ||
+        //         Cameras.LimelightCameras[2].getNumberOfTagsSeen() > 0) {
+        //     lastPoseOnAprilTag = CommandSwerveDrivetrain.getInstance().getPose();
+        //     initialPoseUpdated = true;
+        // }
 
         if (RobotContainer.EnabledSubsystems.LEDS.get()) {
             applyPattern();

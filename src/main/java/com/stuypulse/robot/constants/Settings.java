@@ -8,7 +8,6 @@ package com.stuypulse.robot.constants;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.controls.RainbowAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
-import com.ctre.phoenix6.controls.TwinkleAnimation;
 import com.ctre.phoenix6.signals.RGBWColor;
 import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -384,7 +383,6 @@ public interface Settings {
 
         public SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
         public RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
-        public TwinkleAnimation twinkleAnimation = new TwinkleAnimation(0, Settings.LED.LED_LENGTH - 1);
 
         public static RGBWColor rgbwConverter(Color color) {
             return new RGBWColor(color);
