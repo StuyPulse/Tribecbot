@@ -141,6 +141,7 @@ public interface Cameras {
         public boolean isAlive() {
             //latest - old heartbeat
                 boolean isDeadLatency = (LLLatency == LimelightHelpers.getLatency_Pipeline(this.name) && LLLatency != -1); 
+                DogLog.log(keyName + "isDeadLatency", isDeadLatency);
                 //TODO: double check that latency cannot be negative
                 boolean isDeadHeartbeat = LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1;
                 if (isDeadHeartbeat || isDeadLatency) {
