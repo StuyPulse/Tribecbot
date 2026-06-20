@@ -456,11 +456,11 @@ public class RobotContainer {
 
         //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
         AutonConfig Right_Champs = new AutonConfig("Right Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
+        "Champs Right To Shallow Wide", "Champs Right Shallow To Score", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
         Right_Champs.register(autonChooser);
 
         AutonConfig Left_Champs = new AutonConfig("Left Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
+        "Champs Left To Shallow Wide", "Champs Left Shallow To Score", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
         Left_Champs.register(autonChooser);
 
         AutonConfig Right_NY = new AutonConfig("Right NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
