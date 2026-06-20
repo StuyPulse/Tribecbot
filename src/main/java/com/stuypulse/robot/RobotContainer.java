@@ -204,8 +204,8 @@ public class RobotContainer {
             .onFalse(new IntakeDeploy());
 
         // Intake Stow
-        driver.getLeftTriggerButton()
-            .onTrue(new IntakeStow());
+        // driver.getLeftTriggerButton()
+        //     .onTrue(new IntakeStow());
 
         // Intake Deploy
         driver.getRightTriggerButton()
