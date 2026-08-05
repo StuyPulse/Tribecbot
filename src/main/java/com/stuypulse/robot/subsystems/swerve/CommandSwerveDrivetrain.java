@@ -45,6 +45,7 @@ import com.stuypulse.stuylib.math.Vector2D;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -61,6 +62,8 @@ import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+import frc.robot.lib.BLine.FollowPath;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -111,6 +114,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     // }
     public static CommandSwerveDrivetrain getInstance() {
         return instance;
+    }
+
+    private final FollowPath.Builder pathBuilder = new FollowPath.Builder(
+        this,
+        this::getPose,
+        this::getChassisSpeeds,
+        this::setChassisSpeeds,
+        new PIDController(2.0, 0.0, 0.0),
+        new PIDController(1.0, 0.0, 0.0),
+        new PIDController(0.2, 0.0, 0.0)
+    ).withDefaultShouldFlip().withTRatioBasedTranslationHandoffs(true);
+
+    public FollowPath.Builder getPathBuilder() {
+        return pathBuilder;
     }
 
     private static final double kSimLoopPeriod = 0.005; // 5 ms
