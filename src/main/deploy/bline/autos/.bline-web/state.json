@@ -1,0 +1,678 @@
+{
+  "schema_version": 1,
+  "editor_config": {
+    "gui": {
+      "robot": {
+        "length_meters": 0.76,
+        "width_meters": 0.98
+      },
+      "protrusions": {
+        "enabled": true,
+        "distance_meters": 0.19,
+        "side": "front",
+        "default_state": "shown",
+        "show_on_event_keys": [],
+        "hide_on_event_keys": []
+      },
+      "field": {
+        "selected_field_id": "frc2026-rebuilt",
+        "custom_fields": []
+      }
+    },
+    "kinematic_constraints": {
+      "default_auto_velocity_velocity_safety_factor": 0.9,
+      "default_auto_velocity_acceleration_safety_factor": 0.8,
+      "default_auto_velocity_merge_tolerance_meters_per_sec": 0.3
+    }
+  },
+  "active_path_file_name": "Right_Trench_To_NZ.json",
+  "active_path_group_id": "group-aaa214d9-acb5-4a40-998d-41c0fdab967b",
+  "path_groups": [
+    {
+      "group_id": "group-aaa214d9-acb5-4a40-998d-41c0fdab967b",
+      "display_name": "Right_Two_Cycle",
+      "path_file_names": [
+        "Right_Trench_To_NZ.json",
+        "Right_NZ_to_Score.json",
+        "Right_Score_To_Score.json",
+        "Right_Score_Shake.json"
+      ]
+    },
+    {
+      "group_id": "group-ad80bde3-371f-45c6-a033-2a0b0c99d120",
+      "display_name": "Left_Two_Cycle",
+      "path_file_names": [
+        "left-trench-to-nz.json",
+        "left-nz-to-score.json",
+        "left-score-to-score.json",
+        "left-score-shake.json"
+      ]
+    },
+    {
+      "group_id": "group-cd6d7d5f-fa53-4000-b278-cb23bacfda5e",
+      "display_name": "Center_Hub_Depot",
+      "path_file_names": [
+        "Center_Hub_To_Depot.json"
+      ]
+    },
+    {
+      "group_id": "group-1c5e417f-6b51-4200-8309-b5e370a01a78",
+      "display_name": "Right_Follow",
+      "path_file_names": [
+        "right-follow-to-bump.json",
+        "right-follow-to-score.json"
+      ]
+    },
+    {
+      "group_id": "group-1830f510-2e33-461e-897a-df96f1afe69a",
+      "display_name": "Left_Follow",
+      "path_file_names": [
+        "left-follow-to-trench.json",
+        "left-follower-to-score.json"
+      ]
+    },
+    {
+      "group_id": "group-91156140-facd-40d0-a9e1-4a8083564a28",
+      "display_name": "Right_Corner_Bite",
+      "path_file_names": [
+        "right-corner-bite.json",
+        "Right_NZ_to_Score.json",
+        "right-bite-score-to-score.json",
+        "Right_Score_Shake.json"
+      ]
+    },
+    {
+      "group_id": "group-56c42cc2-e9bf-4579-913b-7de93ad4cb4a",
+      "display_name": "Left_Corner_Bite",
+      "path_file_names": [
+        "left-corner-bite.json",
+        "left-corner-bite-to-score.json",
+        "left-bite-score-to-score.json",
+        "left-score-shake.json"
+      ]
+    },
+    {
+      "group_id": "group-d4ba0123-b2f0-4dc7-9e18-2edcf626c528",
+      "display_name": "Right_Bump",
+      "path_file_names": [
+        "right-bump-to-score-start.json",
+        "right-bump-to-score.json",
+        "right-bump-score-to-depot.json",
+        "depot-to-score.json"
+      ]
+    },
+    {
+      "group_id": "group-eb9d1380-974f-4911-a92c-ea0dd5a14813",
+      "display_name": "Left_Bump",
+      "path_file_names": [
+        "left-bump-to-score-start.json",
+        "left-bump-to-score.json",
+        "Left_Bump_Score_To_Depot.json",
+        "depot-to-score.json"
+      ]
+    }
+  ],
+  "linked_targets": [
+    {
+      "target_id": "target-30470400",
+      "display_name": "Right Trench Start",
+      "kind": "waypoint",
+      "x_meters": 4.41,
+      "y_meters": 0.39,
+      "rotation_radians": 1.5708,
+      "locked": true
+    },
+    {
+      "target_id": "target-c87f8af2",
+      "display_name": "Right NZ",
+      "kind": "waypoint",
+      "x_meters": 8.23,
+      "y_meters": 3.42,
+      "rotation_radians": 1.5708,
+      "locked": true
+    },
+    {
+      "target_id": "target-16d62561",
+      "display_name": "Right Trench Score",
+      "kind": "waypoint",
+      "x_meters": 3.61,
+      "y_meters": 0.58,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-069bd37e",
+      "display_name": "Right Corner",
+      "kind": "waypoint",
+      "x_meters": 3.0,
+      "y_meters": 0.58,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-25066754",
+      "display_name": "Left Trench Start",
+      "kind": "waypoint",
+      "x_meters": 4.44,
+      "y_meters": 7.67,
+      "rotation_radians": -1.5708,
+      "locked": true
+    },
+    {
+      "target_id": "target-1ba2eb32",
+      "display_name": "Left NZ",
+      "kind": "waypoint",
+      "x_meters": 8.24,
+      "y_meters": 4.62,
+      "rotation_radians": -1.5708,
+      "locked": true
+    },
+    {
+      "target_id": "target-bc2faebe",
+      "display_name": "Left Trench Score",
+      "kind": "waypoint",
+      "x_meters": 3.63,
+      "y_meters": 7.44,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-ddc6fee9",
+      "display_name": "Center Hub",
+      "kind": "waypoint",
+      "x_meters": 3.67,
+      "y_meters": 4.01,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-9f3d7736",
+      "display_name": "Depot",
+      "kind": "waypoint",
+      "x_meters": 0.54,
+      "y_meters": 5.93,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-129efc02",
+      "display_name": "Right Follower Start",
+      "kind": "waypoint",
+      "x_meters": 3.67,
+      "y_meters": 0.48,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-efae5ed2",
+      "display_name": "Right Follower Trench",
+      "kind": "waypoint",
+      "x_meters": 7.95,
+      "y_meters": 0.62,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-eb4f9f39",
+      "display_name": "Left Follower Start",
+      "kind": "waypoint",
+      "x_meters": 3.63,
+      "y_meters": 7.58,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-02df8cfe",
+      "display_name": "Left Follower Trench",
+      "kind": "waypoint",
+      "x_meters": 8.49,
+      "y_meters": 7.45,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-d5a86e91",
+      "display_name": "Right Bump Start",
+      "kind": "waypoint",
+      "x_meters": 3.50285,
+      "y_meters": 2.51,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-8eeef94f",
+      "display_name": "Right Bump Pre",
+      "kind": "waypoint",
+      "x_meters": 2.92,
+      "y_meters": 2.51,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-231c0486",
+      "display_name": "Right Bump Score",
+      "kind": "waypoint",
+      "x_meters": 2.17,
+      "y_meters": 2.51,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-6a9aff31",
+      "display_name": "Depot Out",
+      "kind": "waypoint",
+      "x_meters": 1.46,
+      "y_meters": 5.96,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-bc4847ba",
+      "display_name": "Left Bump Start",
+      "kind": "waypoint",
+      "x_meters": 3.65,
+      "y_meters": 5.5,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-31d5e428",
+      "display_name": "Left Bump Pre",
+      "kind": "waypoint",
+      "x_meters": 2.92,
+      "y_meters": 5.5,
+      "rotation_radians": 0.0,
+      "locked": true
+    },
+    {
+      "target_id": "target-e827c6c5",
+      "display_name": "Left Bump Score",
+      "kind": "waypoint",
+      "x_meters": 3.47,
+      "y_meters": 5.5,
+      "rotation_radians": 3.14159
+    }
+  ],
+  "paths": {
+    "Right_Trench_To_NZ.json": {
+      "display_name": "Right_Trench_To_NZ",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-30470400"
+          },
+          {
+            "element_index": 3.0,
+            "target_id": "target-c87f8af2"
+          }
+        ]
+      }
+    },
+    "Right_NZ_to_Score.json": {
+      "display_name": "Right_NZ_to_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-c87f8af2"
+          },
+          {
+            "element_index": 5.0,
+            "target_id": "target-16d62561"
+          }
+        ]
+      }
+    },
+    "Right_Score_Shake.json": {
+      "display_name": "Right_Score_Shake",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 2.0,
+            "target_id": "target-069bd37e"
+          },
+          {
+            "element_index": 4.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 6.0,
+            "target_id": "target-069bd37e"
+          },
+          {
+            "element_index": 8.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 10.0,
+            "target_id": "target-069bd37e"
+          }
+        ]
+      }
+    },
+    "Right_Score_To_Score.json": {
+      "display_name": "Right_Score_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 9.0,
+            "target_id": "target-16d62561"
+          }
+        ]
+      }
+    },
+    "left-trench-to-nz.json": {
+      "display_name": "Left_Trench_To_NZ",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-25066754"
+          },
+          {
+            "element_index": 3.0,
+            "target_id": "target-1ba2eb32"
+          }
+        ]
+      }
+    },
+    "left-nz-to-score.json": {
+      "display_name": "Left_NZ_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-1ba2eb32"
+          },
+          {
+            "element_index": 5.0,
+            "target_id": "target-bc2faebe"
+          }
+        ]
+      }
+    },
+    "left-score-to-score.json": {
+      "display_name": "Left_Score_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-bc2faebe"
+          },
+          {
+            "element_index": 9.0,
+            "target_id": "target-bc2faebe"
+          }
+        ]
+      }
+    },
+    "left-score-shake.json": {
+      "display_name": "Left_Score_Shake",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-bc2faebe"
+          }
+        ]
+      }
+    },
+    "Center_Hub_To_Depot.json": {
+      "display_name": "Center_Hub_To_Depot",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-ddc6fee9"
+          },
+          {
+            "element_index": 3.0,
+            "target_id": "target-9f3d7736"
+          }
+        ]
+      }
+    },
+    "right-follow-to-bump.json": {
+      "display_name": "Right_Follow_To_Bump",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-129efc02"
+          },
+          {
+            "element_index": 8.0,
+            "target_id": "target-efae5ed2"
+          }
+        ]
+      }
+    },
+    "right-follow-to-score.json": {
+      "display_name": "Right_Follow_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-efae5ed2"
+          }
+        ]
+      }
+    },
+    "left-follow-to-trench.json": {
+      "display_name": "Left_Follow_To_Trench",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-eb4f9f39"
+          },
+          {
+            "element_index": 8.0,
+            "target_id": "target-02df8cfe"
+          }
+        ]
+      }
+    },
+    "left-follower-to-score.json": {
+      "display_name": "Left_Follower_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-02df8cfe"
+          }
+        ]
+      }
+    },
+    "right-corner-bite.json": {
+      "display_name": "Right_Corner_Bite",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-30470400"
+          },
+          {
+            "element_index": 6.0,
+            "target_id": "target-c87f8af2"
+          }
+        ]
+      }
+    },
+    "right-bite-score-to-score.json": {
+      "display_name": "Right_Bite_Score_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 11.0,
+            "target_id": "target-16d62561"
+          }
+        ]
+      }
+    },
+    "left-corner-bite.json": {
+      "display_name": "Left_Corner_Bite",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-25066754"
+          },
+          {
+            "element_index": 6.0,
+            "target_id": "target-1ba2eb32"
+          }
+        ]
+      }
+    },
+    "left-corner-bite-to-score.json": {
+      "display_name": "Left_Corner_Bite_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-1ba2eb32"
+          },
+          {
+            "element_index": 7.0,
+            "target_id": "target-bc2faebe"
+          }
+        ]
+      }
+    },
+    "left-bite-score-to-score.json": {
+      "display_name": "Left_Bite_Score_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-bc2faebe"
+          },
+          {
+            "element_index": 10.0,
+            "target_id": "target-bc2faebe"
+          }
+        ]
+      }
+    },
+    "right-bump-to-score-start.json": {
+      "display_name": "Right_Bump_To_Score_Start",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-d5a86e91"
+          },
+          {
+            "element_index": 1.0,
+            "target_id": "target-8eeef94f"
+          }
+        ]
+      }
+    },
+    "right-bump-to-score.json": {
+      "display_name": "Right_Bump_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-8eeef94f"
+          },
+          {
+            "element_index": 15.0,
+            "target_id": "target-231c0486"
+          }
+        ]
+      }
+    },
+    "right-bump-score-to-depot.json": {
+      "display_name": "Right_Bump_Score_To_Depot",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-231c0486"
+          },
+          {
+            "element_index": 2.0,
+            "target_id": "target-9f3d7736"
+          }
+        ]
+      }
+    },
+    "depot-to-score.json": {
+      "display_name": "Depot_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-9f3d7736"
+          },
+          {
+            "element_index": 1.0,
+            "target_id": "target-6a9aff31"
+          }
+        ]
+      }
+    },
+    "left-bump-to-score-start.json": {
+      "display_name": "Left_Bump_To_Score_Start",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-bc4847ba"
+          },
+          {
+            "element_index": 1.0,
+            "target_id": "target-31d5e428"
+          }
+        ]
+      }
+    },
+    "left-bump-to-score.json": {
+      "display_name": "Left_Bump_To_Score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-31d5e428"
+          },
+          {
+            "element_index": 14.0,
+            "target_id": "target-e827c6c5"
+          }
+        ]
+      }
+    },
+    "Left_Bump_Score_To_Depot.json": {
+      "display_name": "Left_Bump_Score_To_Depot",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-e827c6c5"
+          },
+          {
+            "element_index": 2.0,
+            "target_id": "target-9f3d7736"
+          }
+        ]
+      }
+    }
+  },
+  "field_assets": {}
+}
