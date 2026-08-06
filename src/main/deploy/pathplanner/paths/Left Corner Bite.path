@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.231184022824536,
-        "y": 5.257703281027104
+        "x": 8.248481613285884,
+        "y": 4.621376037959667
       },
       "prevControl": {
-        "x": 6.782054208273893,
-        "y": 7.276134094151212
+        "x": 7.751514946619217,
+        "y": 7.583687149070779
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left NZ Corner"
+      "linkedName": "Left NZ"
     }
   ],
   "rotationTargets": [
@@ -38,8 +38,8 @@
       "rotationDegrees": -55.0
     },
     {
-      "waypointRelativePos": 0.9253731343283487,
-      "rotationDegrees": -55.0
+      "waypointRelativePos": 0.9402985074626858,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [
@@ -68,7 +68,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": -90.0
   },
   "reversed": false,

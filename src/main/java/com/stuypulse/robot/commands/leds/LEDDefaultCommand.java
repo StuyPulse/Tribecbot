@@ -7,6 +7,8 @@
 
 package com.stuypulse.robot.commands.leds;
 
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.SolidColor;
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
 import com.stuypulse.robot.constants.Settings;
@@ -16,6 +18,7 @@ import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
 import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -27,11 +30,10 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class LEDDefaultCommand extends Command{
+public class LEDDefaultCommand extends InstantCommand{
     private final LEDController leds;
     private final CommandSwerveDrivetrain swerve;
     private final Handoff handoff;
@@ -59,69 +61,50 @@ public class LEDDefaultCommand extends Command{
     }
 
     @Override
-    public void execute() {
-        String state = "NONE";
-
+    public void initialize() {
         if (Robot.getMode() == RobotMode.DISABLED) {
             if (LimelightVision.getInstance().getMaxTagCount() >= Settings.LED.DESIRED_TAGS_WHEN_DISABLED) {
-                leds.applyPattern(Settings.LED.DISABLED_ALIGNED);
-                state = "DISABLED_ALLOWED";
+                leds.changeState(LedState.DISABLED_ALIGNED);
             }
             else {
-                leds.applyPattern(LEDPattern.solid(Color.kRed));
-                state = "DISABLED_DISALLOWED";
+                leds.changeState(LedState.DISABLED);
             }
         }
-
+        
         else {
             if (swerve.isUnderTrench()) {
-                leds.applyPattern(Settings.LED.PASSING_TRENCH);
-                state = "UNDER_TRENCH";
+                leds.changeState(LedState.PASSING_TRENCH);
             }
             else if (turret.isWrapping()) {
-                leds.applyPattern(Settings.LED.TURRET_WRAPPING);
-                state = "TURRET_WRAPPING";
+                leds.changeState(LedState.TURRET_WRAPPING);
             }
             else if (superstructure.getState() == SuperstructureState.LEFT_CORNER) {
-                leds.applyPattern(Settings.LED.LEFT_CORNER);
-                state = "LEFT_CORNER";
+                leds.changeState(LedState.LEFT_CORNER);
             }
             else if (superstructure.getState() == SuperstructureState.RIGHT_CORNER) {
-                leds.applyPattern(Settings.LED.RIGHT_CORNER);
-                state = "RIGHT_CORNER";
+                leds.changeState(LedState.RIGHT_CORNER);
             } 
             else if (superstructure.getState() == SuperstructureState.KB) {
-                leds.applyPattern(Settings.LED.KB_DISTANCE);
-                state = "KITBOT";
+                leds.changeState(LedState.KB_DISTANCE);
             }
             else if (superstructure.getState() == SuperstructureState.SOTM) {
-                leds.applyPattern(Settings.LED.SOTM_ON);
-                state = "SOTM";
+                leds.changeState(LedState.SOTM_ON);
             }
             else if (superstructure.getState() == SuperstructureState.FOTM) {
-                leds.applyPattern(Settings.LED.FOTM_ON);
-                state = "FOTM";
+                leds.changeState(LedState.FOTM_ON);
             }
-            else if (spindexer.getState() == SpindexerState.REVERSE || 
-                     handoff.getState() == HandoffState.REVERSE ||
-                     intake.getRollerState() == RollerState.OUTTAKE) {
-                leds.applyPattern(Settings.LED.REVERSE);
-                state = "REVERSE";
-            } 
+            // else if (superstructure.getState() == SuperstructureState.STOW) {
+            //     leds.changeState(LedState.RESET);
+            // }
             else if (intake.getPivotState() == PivotState.STOW) {
-                leds.applyPattern(Settings.LED.INTAKE_STOW);
-                state = "INTAKE_STOW";
+                leds.changeState(LedState.INTAKE_STOW);
             }
             else if (intake.getPivotState() == PivotState.DEPLOY) {
-                leds.applyPattern(Settings.LED.INTAKE_DEPLOYED);
-                state = "INTAKE_DEPLOYED";
-            }
-            else {
-                leds.applyPattern(LEDPattern.solid(Color.kRed));
+                leds.changeState(LedState.INTAKE_DEPLOYED);
             }
         }
 
-        DogLog.log("Leds/State", state);
+        // DogLog.log("Leds/State", state);
     }
 
     @Override

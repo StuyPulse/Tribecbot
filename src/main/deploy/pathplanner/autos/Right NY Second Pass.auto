@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Corner Bite"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right NZ To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BC Right Score To Score NY"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Score To Corner"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

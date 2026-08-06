@@ -19,6 +19,7 @@ public class FMSUtil {
     private final Timer timer = new Timer();
     private boolean autoMode;
     private boolean autoOverride = false;
+    private int maxErrorPrint = 0;
 
     public enum FieldState {
         AUTO(0.0, 20.0),
@@ -115,9 +116,10 @@ public class FMSUtil {
         String winner = DriverStation.getGameSpecificMessage();
         Optional<Alliance> allianceOpt = DriverStation.getAlliance();
 
-        if (winner == null || winner.isEmpty() || allianceOpt.isEmpty()) {
+        if (winner == null || winner.isEmpty() || allianceOpt.isEmpty() && maxErrorPrint < 5) {
             DriverStation.reportWarning("No FMS auto winner data available", false);
             DogLog.log("FMSUtil/No Auto Winner Data", true);
+            maxErrorPrint += 1;
             return autoOverride;
         }
 

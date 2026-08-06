@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Trench To NZ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left NZ To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Omit Second Shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Dot to Middle"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BC Extras",
+  "choreoAuto": false
+}

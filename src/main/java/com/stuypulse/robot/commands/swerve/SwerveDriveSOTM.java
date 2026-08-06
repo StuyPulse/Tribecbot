@@ -46,7 +46,6 @@ public class SwerveDriveSOTM extends Command {
     private final IStream turn;
 
     private final BStream isIdle;
-    private boolean isIdleInit;
 
     public SwerveDriveSOTM(Gamepad driver) {
         swerve = CommandSwerveDrivetrain.getInstance();
@@ -75,7 +74,6 @@ public class SwerveDriveSOTM extends Command {
                 .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
 
         this.driver = driver;
-        isIdleInit = false;
 
        addRequirements(swerve);
     }
@@ -93,14 +91,12 @@ public class SwerveDriveSOTM extends Command {
             //     CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
                 swerve.setControl(new SwerveRequest.SwerveDriveBrake());
             // }
-            isIdleInit = true;
         } else {
             Vector2D velocity = speed.get();
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
                 .withRotationalRate(-turn.get()));
-            isIdleInit = false;
         }
 
     }

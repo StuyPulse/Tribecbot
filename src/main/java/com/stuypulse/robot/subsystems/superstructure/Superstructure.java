@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.Robot.RobotMode;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
@@ -143,6 +144,11 @@ public class Superstructure extends SubsystemBase {
         return turret.atTolerance();
     }
 
+    public boolean isTurretLaggingFOTM() {
+        double error = Math.abs(turret.getAngle().minus(turret.getTargetAngle()).getRotations());
+        return error >= Settings.Superstructure.Turret.GAIN_SWITCHING_THRESHOLD_START.getRotations() && getState() == SuperstructureState.FOTM;
+    }
+
     public double getTargetRPM() {
         return shooter.getTargetRPM();
     }
@@ -189,21 +195,27 @@ public class Superstructure extends SubsystemBase {
             getState() == SuperstructureState.RIGHT_CORNER &&
             getState() == SuperstructureState.KB;
         boolean isBehindTower = swerve.isBehindTower() && getState() == SuperstructureState.SOTM;
+        boolean isBtwnOppHubAndWall = swerve.isBtwnOppHubAndWall() && getState() == SuperstructureState.FOTM;
 
         boolean turretLaggingSOTM = !isTurretAtTolerance() && getState() == SuperstructureState.SOTM;
+        boolean turretLaggingFOTM = isTurretLaggingFOTM();
 
+        DogLog.log("Spindexer/Should Stop/Is Behind Tower?", isBehindTower);
         DogLog.log("Spindexer/Should Stop/Is Behind Hub While Ferrying?", isBehindHubWhileFerrying);
+        DogLog.log("Spindexer/Should Stop/Is behind Opponent's Hub While Ferrying?", isBtwnOppHubAndWall);
         DogLog.log("Spindexer/Should Stop/Is Turret Wrapping?", isTurretWrapping);
         DogLog.log("Spindexer/Should Stop/Is Outside Alliance Zone?", isOutsideAllianceZone);
         DogLog.log("Spindexer/Should Stop/Is Under Trench?", isUnderTrench);
         DogLog.log("Spindexer/Should Stop/Turret Lagging SOTM", turretLaggingSOTM);
+        DogLog.log("Spindexer/Should Stop/Turret Lagging FOTM", turretLaggingFOTM);
         DogLog.log("Spindexer/Should Stop/In Manual State", inManualState);
         
         boolean shouldStop = isSpindexerStopState || 
             isHandOffStopState ||
-            isTurretWrapping || 
             (isBehindHubWhileFerrying && !inManualState) || 
+            isBtwnOppHubAndWall ||
             turretLaggingSOTM || 
+            turretLaggingFOTM ||
             (isOutsideAllianceZone  && !inManualState) || 
             (isUnderTrench && !inManualState) ||
             isBehindTower;
@@ -241,7 +253,7 @@ public class Superstructure extends SubsystemBase {
 
         if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
             Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
-            setState(SuperstructureState.FOTM);
+            setState(SuperstructureState.STOW);
             Spindexer.getInstance().setState(SpindexerState.STOP);
             Handoff.getInstance().setState(HandoffState.STOP);
         }

@@ -182,15 +182,15 @@ public class HoodImpl extends Hood {
         // SmartDashboard.putBoolean("Superstructure/Hood/Has Used Absolute Encoder", hasUsedAbsoluteEncoder);
 
         DogLog.log("Prematch Checks/Hood at Bottom?", getAngle().getDegrees() < Settings.Superstructure.Hood.REVERSE_SOFT_LIMIT.getDegrees());
-        DogLog.log("Superstructure/Hood/Correct Hood Angle (deg)", getAbsoluteHoodAngleDeg());
-        DogLog.log("Superstructure/Hood/Closed Loop Error (deg)", hoodMotorClosedLoopError.getValueAsDouble() * 360.0);
-        DogLog.log("Superstructure/Hood/Implemented Error (Degrees)", getTargetAngle().getDegrees() - getAngle().getDegrees());
+        DogLog.log("Superstructure/Hood/Correct Hood Angle", getAbsoluteHoodAngleDeg(), "Degrees");
+        DogLog.log("Superstructure/Hood/Closed Loop Error", hoodMotorClosedLoopError.getValueAsDouble() * 360.0, "Degrees");
+        DogLog.log("Superstructure/Hood/Implemented Error", getTargetAngle().getDegrees() - getAngle().getDegrees(), "Degrees");
 
         if (Settings.DEBUG_MODE.get()) {
-            DogLog.log("Superstructure/Hood/Applied Voltage (amps)", hoodMotorVoltage.getValueAsDouble());
-            DogLog.log("Superstructure/Hood/Supply Current (amps)", hoodMotorSupplyCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Hood/Stator Current (amps)", hoodMotorStatorCurrent.getValueAsDouble());
-            DogLog.log("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble());
+            DogLog.log("Superstructure/Hood/Applied Voltage", hoodMotorVoltage.getValueAsDouble(), "Volts");
+            DogLog.log("Superstructure/Hood/Supply Current", hoodMotorSupplyCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Superstructure/Hood/Stator Current", hoodMotorStatorCurrent.getValueAsDouble(), "Amps");
+            DogLog.log("Superstructure/Hood/Raw Motor Encoder Value",hoodMotorStatorCurrent.getValueAsDouble(), "Degrees");
             DogLog.log("Superstructure/Hood/is stalling", isStalling());
             Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
 

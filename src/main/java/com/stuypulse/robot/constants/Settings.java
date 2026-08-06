@@ -6,6 +6,9 @@
 package com.stuypulse.robot.constants;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.controls.RainbowAnimation;
+import com.ctre.phoenix6.controls.SolidColor;
+import com.ctre.phoenix6.signals.RGBWColor;
 import com.pathplanner.lib.path.PathConstraints;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -18,9 +21,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 
 /*-
@@ -62,7 +62,7 @@ public interface Settings {
     }
 
     public interface Intake {
-        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0); 
+        Rotation2d PIVOT_STOW_ANGLE = Rotation2d.fromDegrees(71.0);
         Rotation2d PIVOT_DEPLOY_ANGLE = Rotation2d.fromDegrees(-10.0);
         Rotation2d PIVOT_DIGEST_ANGLE = Rotation2d.fromDegrees(30);
 
@@ -77,7 +77,7 @@ public interface Settings {
         double HOMING_VOLTAGE = 3.0;
         
         double PUSHDOWN_VOLTAGE = -3.0;
-        double PUSHDOWN_CURRENT_TELEOP = -75.0;//new SmartNumber("Intake/Pushdown Current", -65.0); //TODO: GET ACTUAL TYTY
+        double PUSHDOWN_CURRENT_TELEOP = -55.0;//new SmartNumber("Intake/Pushdown Current", -65.0); //TODO: GET ACTUAL TYTY
         double PUSHDOWN_CURRENT_AUTON = -80.0;
 
         double GEAR_RATIO = 32.0/20.0 * 64.0/18.0 * 60.0/8.0;
@@ -142,7 +142,8 @@ public interface Settings {
                 {3.38, 3075},
                 {4.43, 3350.0},
                 {5.66, 3650.0},
-                {6.44, 3800}
+                {6.44, 3800.0},
+                {8.23, 4500.0} // THIS POINT IS AN EXTRAPOLATION
             };
         }
 
@@ -154,7 +155,9 @@ public interface Settings {
                 {3.38, 1.02},  
                 {4.43, 1.165},
                 {5.50, 1.21},
-                {6.44, 1.255}
+                {6.44, 1.255},
+                {6.6, 1.41},
+                {8.23, 1.71} // THIS POINT IS AN EXTRAPOLATION
             };
         }
 
@@ -165,12 +168,9 @@ public interface Settings {
                 {5.16, 3300.0},
                 {6.94, 3600.0},
                 {7.87, 3800.0},
-                {9.77, 4300.0},
-                {10.694, 4700.0},       //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
-                {11.516, 4900.0},
-                {12.416, 5200.0},
-                {13.316, 5500.0},
-                {14.216, 5600.0}
+                {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
+                {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                {11.516, 4900.0}
             };
         }
 
@@ -198,7 +198,7 @@ public interface Settings {
             public final double FLYWHEEL_RADIUS = Units.inchesToMeters(3.965 / 2.0);
             
             public interface RPM {
-                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target RPM", 3500.0);
+                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target RPM", 3863.0);
 
                 public final double REVERSE = 0.0;
                 public final double KB = 2675.0;
@@ -237,10 +237,10 @@ public interface Settings {
             public final double STALL_DEBOUNCE = 0.5;
 
             public interface Angles {
-                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 20.0);
-                public final Rotation2d FERRY_ANGLE = Rotation2d.fromDegrees(44.0);
+                public final SmartNumber MANUAL_OVERRIDE = new SmartNumber("InterpolationTesting/Shoot State Target Angle (deg)", 44.0);
                 public final Rotation2d MAX = FORWARD_SOFT_LIMIT;
                 public final Rotation2d MIN = REVERSE_SOFT_LIMIT;
+                public final Rotation2d FERRY_ANGLE = MAX;//Rotation2d.fromDegrees(44.0);
 
                 public final Rotation2d STOW = Rotation2d.fromDegrees(21.0);
                 public final Rotation2d KB = Rotation2d.fromDegrees(20.0);
@@ -361,43 +361,81 @@ public interface Settings {
     }
 
     public interface LED {
+        //TODO:
+            //add back states (reverse and etc (low priority))
 
-        LEDPattern PASSING_TRENCH = LEDPattern.solid(Color.kRed);
-        LEDPattern IS_BEHIND_HUB = LEDPattern.solid(Color.kRed);
+            //(DONE) remove stuff we dont use 
+            //(DONE) space out dead limelight indicators
 
-        // LEDPattern CLIMB_ALIGNING = LEDPattern.solid(Color.kYellow);
-        // LEDPattern CLIMB_ALIGNED = LEDPattern.solid(Color.kGreen);
-        // LEDPattern CLIMBING = LEDPattern.solid(Color.kRed);
+            //FIX rainbow (flickering) 
+            //make dead limelight colors flash (GIVEN THEY WORK)
+            //TUNE constant for heart beat
 
-        LEDPattern TURRET_WRAPPING = LEDPattern.solid(Color.kRed);
-        LEDPattern LEFT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
-        LEDPattern RIGHT_WARNING = LEDPattern.solid(Color.kBlack); // TBD
+            //(DONE BUT CONFIRM WITH BLAY IF HE WANTS TIME (like 2 seconds outside of zone)) 
+                        //make debounce for the distance away from last pose with april tags in sight
 
-        LEDPattern SHOOT_IN_PLACE = LEDPattern.solid(Color.kPurple);
+            //(DONE) make the getter for the last pose with april tags in sight
+            // (PARTIAL IMPLEMENTATION) add the variables to the Camera objects as fields (heartbeats)
 
-        LEDPattern SOTM_ON = LEDPattern.solid(Color.kCyan);
-        LEDPattern FOTM_ON = LEDPattern.rainbow(255, 128).scrollAtAbsoluteSpeed(MetersPerSecond.of(1), Meters.of(1 / 120.0));
+            //Add flashing based on the distance thing.
 
-        LEDPattern LEFT_CORNER = LEDPattern.solid(Color.kPurple);
-        LEDPattern RIGHT_CORNER = LEDPattern.solid(Color.kBlue);
+            //SEPERATE THING: ADD JSONS TO LL from the PractiCAL
+
+        public SolidColor solidColorRequest = new SolidColor(0, Settings.LED.LED_LENGTH - 1).withColor(new RGBWColor(Color.kRed));
+        public RainbowAnimation rainbowRequest = new RainbowAnimation(0, Settings.LED.LED_LENGTH - 1).withFrameRate(60).withSlot(0);
+
+        public static RGBWColor rgbwConverter(Color color) {
+            return new RGBWColor(color);
+        }
+
+        public final int LED_LENGTH = 8 + 21; //CANdle already has 8
+        RGBWColor PASSING_TRENCH = rgbwConverter(Color.kRed);
+        RGBWColor IS_BEHIND_HUB = rgbwConverter(Color.kRed);
+
+        // RGBWColor CLIMB_ALIGNING = rgbwConverter(Color.kYellow);
+        // RGBWColor CLIMB_ALIGNED = rgbwConverter(Color.kGreen);
+        // RGBWColor CLIMBING = rgbwConverter(Color.kRed);
+
+        RGBWColor TURRET_WRAPPING = rgbwConverter(Color.kRed);
+        // RGBWColor LEFT_WARNING = rgbwConverter(Color.kBlack); // TBD
+        // RGBWColor RIGHT_WARNING = rgbwConverter(Color.kBlack); // TBD
+
+        RGBWColor SHOOT_IN_PLACE = rgbwConverter(Color.kPurple);
+
+        RGBWColor SOTM_ON = rgbwConverter(Color.kGreen);
+        RGBWColor FOTM_ON = rgbwConverter(Color.kDarkBlue);
+        RGBWColor LEFT_CORNER = rgbwConverter(Color.kPurple);
+        RGBWColor RIGHT_CORNER = rgbwConverter(Color.kBlue);
         
-        LEDPattern KB_DISTANCE = LEDPattern.solid(Color.kPink);
+        RGBWColor KB_DISTANCE = rgbwConverter(Color.kPink);
 
-        LEDPattern REVERSE = LEDPattern.solid(Color.kWhite);
-        LEDPattern STOP_ROLLERS = LEDPattern.solid(Color.kYellow);
+        // RGBWColor REVERSE = rgbwConverter(Color.kWhite);
+        RGBWColor STOP_ROLLERS = rgbwConverter(Color.kYellow);
 
-        LEDPattern RESET_HEADING = LEDPattern.solid(Color.kYellow);
-        LEDPattern X_WHEELS = LEDPattern.solid(Color.kRed);
+        RGBWColor RESET_HEADING = rgbwConverter(Color.kYellow);
+        RGBWColor X_WHEELS = rgbwConverter(Color.kRed);
 
-        LEDPattern INTAKE_STOW = LEDPattern.solid(Color.kBrown);        //broken
-        LEDPattern INTAKE_DEPLOYED = LEDPattern.solid(Color.kOrange);   //broken
+        RGBWColor INTAKE_STOW = rgbwConverter(Color.kBrown);        //broken
+        RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kPurple);   //broken
 
-        LEDPattern DISABLED_ALIGNED = LEDPattern.solid(Color.kGreen);
-        // LEDPattern.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
+        RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
+        RGBWColor DISABLED = rgbwConverter(Color.kRed);
+
+        RGBWColor AUTON_ONE = rgbwConverter(Color.kBlue);
+        RGBWColor AUTON_TWO = rgbwConverter(Color.kOrange);
+
+        RGBWColor LLDEAD = rgbwConverter(Color.kWhite);
+
+        SolidColor RIGHT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 6, Settings.LED.LED_LENGTH - 2);
+        SolidColor BACK_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 13, Settings.LED.LED_LENGTH - 9);
+        SolidColor LEFT_DEAD_STRIP = new SolidColor(Settings.LED.LED_LENGTH - 20, Settings.LED.LED_LENGTH - 16);
+        SolidColor CANDLE_DEAD_STRIP = new SolidColor(0, 7);
+
+        // RGBWColor.gradient(GradientType.kDiscontinuous, Color.kRed, Color.kWhite).scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
         public final int DESIRED_TAGS_WHEN_DISABLED = 2;
-        public final int LED_LENGTH = 9; // TBA
 
+        public double APRIL_TAG_DISTANCE_THRESHOLD = Units.feetToMeters(2); //TODO: update because comparing Translation2d, so make sure it is 2 feet
     }
 
     public interface Vision {
@@ -409,6 +447,7 @@ public interface Settings {
         public final double INVALID_POSITION_TOLERANCE_M = 0.05;
         public final double MAX_ANGULAR_VELOCITY_RAD_SEC = 2 * Math.PI;
         double MIN_TAG_AREA = 5; //TODO: MAKE SURE THIS IS A GOOD VALUE!!!
+        public final double MIN_CYCLE_LL_HB = 1; // TODO: tune
 
         SmartBoolean HDR_ENABLED = new SmartBoolean("Vision/HDR Enabled?", false);
         double HDR_TIMEOUT_SEC = 0.25;

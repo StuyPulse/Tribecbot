@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right To Shallow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Shallow To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bite Score To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Score To Corner"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

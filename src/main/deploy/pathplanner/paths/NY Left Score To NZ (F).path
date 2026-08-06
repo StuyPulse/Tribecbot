@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.63796005706134,
+        "y": 7.440906488549619
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.846747503566332,
+        "y": 7.440906488549619
+      },
+      "isLocked": false,
+      "linkedName": "Left Trench Score"
+    },
+    {
+      "anchor": {
+        "x": 8.248481613285884,
+        "y": 4.621376037959667
+      },
+      "prevControl": {
+        "x": 7.860321841531247,
+        "y": 7.196169190598754
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Left NZ"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1902339776195354,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.7,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": "To NZ",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

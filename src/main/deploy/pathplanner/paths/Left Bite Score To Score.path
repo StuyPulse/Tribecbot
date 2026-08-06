@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.63796005706134,
+        "x": 3.3075858778625955,
         "y": 7.440906488549619
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.894778887303849,
+        "x": 7.5644047081051005,
         "y": 7.509029957203994
       },
       "isLocked": false,
-      "linkedName": "Left Trench Score"
+      "linkedName": "Left Corner"
     },
     {
       "anchor": {
@@ -68,8 +68,8 @@
         "y": 7.440906488549619
       },
       "prevControl": {
-        "x": 6.0057346647646215,
-        "y": 7.664293865905849
+        "x": 6.328549618320611,
+        "y": 7.591536259541984
       },
       "nextControl": null,
       "isLocked": false,
@@ -90,7 +90,7 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 1.9104477611940158,
+      "waypointRelativePos": 1.7421203438395327,
       "rotationDegrees": 180.0
     },
     {
@@ -106,7 +106,21 @@
       "rotationDegrees": 0.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8835202761000936,
+      "maxWaypointRelativePos": 3.057808455565133,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 10.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.7,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

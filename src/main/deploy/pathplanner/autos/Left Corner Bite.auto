@@ -13,19 +13,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Corner Bite To Score"
+            "pathName": "Left NZ To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Bite Score To Score"
+            "pathName": "Left Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Score Jiggle"
+            "pathName": "Left Score To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Corner"
           }
         }
       ]

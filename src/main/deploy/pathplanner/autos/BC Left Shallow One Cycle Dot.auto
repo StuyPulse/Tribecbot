@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BC Left To Shallow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BC Left Shallow To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Corner To Dot Straight"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BC Main",
+  "choreoAuto": false
+}

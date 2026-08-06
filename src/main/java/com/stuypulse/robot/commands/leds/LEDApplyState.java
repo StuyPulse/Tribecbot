@@ -8,32 +8,32 @@
 package com.stuypulse.robot.commands.leds;
 
 
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj2.command.Command;
-
 import java.util.function.Supplier;
 
 import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 
-public class LEDApplyPattern extends Command {
+import edu.wpi.first.wpilibj2.command.Command;
 
+public class LEDApplyState extends Command {
+    //This will not work as default command will override it. Either make the cached class the same as this OR (better solution) have a boolean that tells you if it is manually applied or not and if it is then default command dont change
     protected final LEDController leds;
-    protected final Supplier<LEDPattern> pattern;
+    protected final Supplier<LedState> state;
 
-    public LEDApplyPattern(Supplier<LEDPattern> pattern) {
+    public LEDApplyState(Supplier<LedState> state) {
         leds = LEDController.getInstance();
-        this.pattern = pattern;
+        this.state = state;
 
         addRequirements(leds);
     }
 
-    public LEDApplyPattern(LEDPattern pattern) {
-        this(() -> pattern);
+    public LEDApplyState(LedState state) {
+        this(() -> state);
     }
 
     @Override
     public void execute() {
-        leds.applyPattern(pattern.get());
+        leds.changeState(state.get());
     }
 
 }

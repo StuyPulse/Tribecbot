@@ -7,42 +7,30 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
-import com.stuypulse.robot.commands.auton.regular.Depot;
-import com.stuypulse.robot.commands.auton.regular.LeftBump;
-import com.stuypulse.robot.commands.auton.regular.LeftFollow;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCorner;
-import com.stuypulse.robot.commands.auton.regular.LeftTwoCycle;
-import com.stuypulse.robot.commands.auton.regular.RightBump;
-import com.stuypulse.robot.commands.auton.regular.RightFollow;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCorner;
-import com.stuypulse.robot.commands.auton.regular.RightTwoCycle;
-import com.stuypulse.robot.commands.auton.test.BoxTest;
-import com.stuypulse.robot.commands.auton.test.EmptyTest;
-import com.stuypulse.robot.commands.handoff.HandoffReverse;
+import com.stuypulse.robot.commands.auton.regular.TwoCorner;
+import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.hood.HomingRoutineLower;
 import com.stuypulse.robot.commands.hood.HomingRoutineUpper;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtLowerHardstop;
 import com.stuypulse.robot.commands.hood.SeedHoodRelativeEncoderAtUpperHardstop;
-import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.intake.IntakeOuttake;
 import com.stuypulse.robot.commands.intake.IntakeRunRollers;
-import com.stuypulse.robot.commands.intake.IntakeSetState;
 import com.stuypulse.robot.commands.intake.IntakeStopRollers;
 import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.intake.IntakeTeleopDigest;
 import com.stuypulse.robot.commands.intake.SeedPivotDeployed;
 import com.stuypulse.robot.commands.intake.SeedPivotStowed;
-import com.stuypulse.robot.commands.leds.LEDApplyPattern;
-import com.stuypulse.robot.commands.spindexer.SpindexerReverse;
+import com.stuypulse.robot.commands.leds.LEDApplyState;
+import com.stuypulse.robot.commands.leds.LEDDefaultCommand;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
+import com.stuypulse.robot.commands.superstructure.SuperstructureCacheState;
 import com.stuypulse.robot.commands.superstructure.SuperstructureFOTM;
 import com.stuypulse.robot.commands.superstructure.SuperstructureKB;
 import com.stuypulse.robot.commands.superstructure.SuperstructureLeftCorner;
-import com.stuypulse.robot.commands.superstructure.SuperstructureManualOverride;
 import com.stuypulse.robot.commands.superstructure.SuperstructureRightCorner;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.superstructure.SuperstructureStow;
@@ -50,7 +38,6 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveFOTM;
 import com.stuypulse.robot.commands.swerve.SwerveDriveSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
-import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.commands.swerve.SwerveResetPoseKBShot;
 import com.stuypulse.robot.commands.swerve.SwerveResetPoseLeftCorner;
 import com.stuypulse.robot.commands.swerve.SwerveResetPoseRightCorner;
@@ -67,11 +54,11 @@ import com.stuypulse.robot.commands.vision.WhitelistTowerTags;
 import com.stuypulse.robot.constants.Cameras.Camera.Pipeline;
 import com.stuypulse.robot.constants.Field;
 import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.handoff.Handoff.HandoffState;
 import com.stuypulse.robot.subsystems.intake.Intake;
-import com.stuypulse.robot.subsystems.intake.Intake.RollerState;
+import com.stuypulse.robot.subsystems.leds.LEDController;
+import com.stuypulse.robot.subsystems.leds.LEDController.LedState;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer;
 import com.stuypulse.robot.subsystems.spindexer.Spindexer.SpindexerState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
@@ -83,23 +70,22 @@ import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
-import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 
 public class RobotContainer {
@@ -111,7 +97,7 @@ public class RobotContainer {
         SmartBoolean SPINDEXER = new SmartBoolean("Enabled Subsystems/Spindexer Is Enabled", true);
         SmartBoolean HOOD = new SmartBoolean("Enabled Subsystems/Hood Is Enabled", true);
         SmartBoolean SHOOTER = new SmartBoolean("Enabled Subsystems/Shooter Is Enabled", true);
-        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", false);
+        SmartBoolean LEDS = new SmartBoolean("Enabled Subsystems/LEDs Is Enabled", true);
 
         SmartBoolean BACK_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Back Limelight Is Enabled", true);
         SmartBoolean LEFT_LIMELIGHT = new SmartBoolean("Enabled Subsystems/Left Limelight Is Enabled", true);
@@ -134,7 +120,7 @@ public class RobotContainer {
     private final Shooter shooter = Shooter.getInstance();
     private final Hood hood = Hood.getInstance();
 
-    // private final LEDController leds = LEDController.getInstance();
+    private final LEDController leds = LEDController.getInstance();
 
     // Autons
     private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -163,7 +149,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerve.setDefaultCommand(new SwerveDriveDrive(driver));
-        // leds.setDefaultCommand(new LEDDefaultCommand());
+        leds.setDefaultCommand(new LEDDefaultCommand());
     }
 
     /***************/
@@ -194,8 +180,26 @@ public class RobotContainer {
         //             )
         //     ); 
 
-        // Digest (TR)
+        // Shoot in place (TR)
         driver.getTopButton()
+            .whileTrue(new SuperstructureCacheState(driver)
+                .andThen(new WaitUntilCommand(superstructure::isReadyToShoot))
+                    .andThen(
+                        Commands.parallel(
+                            new IntakeDeploy(),
+                            new RunCommand(
+                                () -> handoff.setState(HandoffState.FORWARD),
+                                handoff),
+                            new RunCommand(
+                                () -> spindexer.setState(SpindexerState.FORWARD),
+                                spindexer)
+                        )
+                ))
+            .onFalse(
+                new SpindexerStop().alongWith(new HandoffStop())
+            );
+        
+        driver.getDPadLeft() 
             .whileTrue(new IntakeTeleopDigest().repeatedly())
             .onFalse(new IntakeDeploy());
 
@@ -205,31 +209,31 @@ public class RobotContainer {
 
         // Intake Deploy
         driver.getRightTriggerButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
+            // .onTrue(new LEDApplyPattern(Settings.LED.INTAKE_DEPLOYED))
             .onTrue(new IntakeDeploy());
         
         // Reset Heading
         driver.getDPadUp()
             .onTrue(new SwerveResetHeading())
             .onTrue(new ResetLimelightIMU())
-            .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
+            // .onTrue(new LEDApplyPattern(Settings.LED.RESET_HEADING))
             .onFalse(new SetIMUMode(0));   
 
         // Stop Rollers
         driver.getLeftBumper()
-            .onTrue(new LEDApplyPattern(Settings.LED.STOP_ROLLERS))
+            // .onTrue(new LEDApplyPattern(Settings.LED.STOP_ROLLERS))
             .onTrue(new IntakeDeploy()
                 .andThen(new IntakeStopRollers()));
 
         // Outtake
         driver.getRightBumper()
-            .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.REVERSE))
             .whileTrue(new IntakeOuttake())
             .onFalse(new IntakeRunRollers());
         
         // SOTM (BR)
         driver.getRightMenuButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
+            // .onTrue(new LEDApplyPattern(Settings.LED.SOTM_ON))
             .onTrue(new WaitUntilCommand(() -> spindexer.getState() == SpindexerState.FORWARD)
                 .andThen(new WaitCommand(0.75).andThen(new IntakeDeploy())))
             .whileTrue(new RepeatCommand(new BuzzController(driver).onlyWhile(() -> !vision.hasData() && superstructure.getState() == SuperstructureState.SOTM)))
@@ -250,7 +254,7 @@ public class RobotContainer {
 
         // FOTM (BL)
         driver.getLeftMenuButton()
-            .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
+            // .onTrue(new LEDApplyPattern(Settings.LED.FOTM_ON))
             .onTrue(new IntakeRunRollers())
             .onTrue(new ConditionalCommand(
                 new ParallelCommandGroup(
@@ -268,14 +272,15 @@ public class RobotContainer {
             ));
 
         driver.getDPadDown()
-            .whileTrue(new SwerveXMode())
-            .onTrue(new LEDApplyPattern(Settings.LED.X_WHEELS));
+            .whileTrue(new SwerveXMode());
+            // .onTrue(new LEDApplyPattern(Settings.LED.X_WHEELS));
 
         // Reset (TL)
         driver.getDPadRight()
             .onTrue(new SuperstructureStow()
                         .alongWith(new HandoffStop())
-                        .alongWith(new SpindexerStop()));
+                        .alongWith(new SpindexerStop()))
+            .onTrue(new LEDApplyState(LedState.RESET).repeatedly().withTimeout(2.0));
 
         // Manual Left Corner Scoring
         driver.getLeftButton()
@@ -285,7 +290,7 @@ public class RobotContainer {
                     new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                         .andThen(new HandoffRun())
                         .andThen(new SpindexerRun()),
-                    new SwerveResetPoseLeftCorner(),
+                    // new SwerveResetPoseLeftCorner(),
                     new SwerveXMode()
                 )
                     )
@@ -293,10 +298,10 @@ public class RobotContainer {
 
         // Manual Right Corner Scoring
         driver.getRightButton()
-            .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.RIGHT_CORNER))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
-            .onTrue(new SwerveResetPoseRightCorner())
+            // .onTrue(new SwerveResetPoseRightCorner())
             .whileTrue(new SuperstructureRightCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
                 .andThen(new SpindexerRun())))
@@ -304,7 +309,7 @@ public class RobotContainer {
 
         // Manual KB Distance Scoring
         driver.getBottomButton()
-            .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
+            // .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
             .whileTrue(new SwerveXMode())
             .onTrue(new IntakeRunRollers())
             .onTrue(new SwerveResetPoseKBShot())
@@ -352,19 +357,21 @@ public class RobotContainer {
         SmartDashboard.putData("Robot/Set Pipeline High Sun", new SetPipeline(Pipeline.HIGH_SUN));
 
         // Unjamming
-        SmartDashboard.putData("Robot/Handoff Reverse", 
-            new ConditionalCommand(
-                new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
-                new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
-                () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+        // SmartDashboard.putData("Robot/Handoff Reverse",
+        // //IMPORTANT this will not work with LEDS 
+        //     new ConditionalCommand(
+        //         new HandoffReverse().andThen(new WaitCommand(0.25)).andThen(new HandoffRun()), 
+        //         new HandoffReverse().andThen(new WaitCommand(0.25).andThen(new HandoffStop())),
+        //         () -> handoff.getState() == HandoffState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
-        SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+        // SmartDashboard.putData("Robot/Intake Reverse", new IntakeSetState(RollerState.OUTTAKE).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
-        SmartDashboard.putData("Robot/Spindexer Reverse", 
-            new ConditionalCommand(
-                new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
-                new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
-                () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyPattern(Settings.LED.REVERSE)));
+        // SmartDashboard.putData("Robot/Spindexer Reverse", 
+        // //IMPORTANT this will not work with LEDS
+        //     new ConditionalCommand(
+        //         new SpindexerReverse().andThen(new WaitCommand(1)).andThen(new SpindexerRun()), 
+        //         new SpindexerReverse().andThen(new WaitCommand(1).andThen(new SpindexerStop())),
+        //         () -> spindexer.getState() == SpindexerState.FORWARD).alongWith(new LEDApplyState(LEDSTATE.REVERSE)));
 
     }
 
@@ -379,57 +386,173 @@ public class RobotContainer {
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
 
         // DEPOT
-        AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Center Hub To Depot");
-        DEPOT_ONLY.register(autonChooser);
+        // AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Center Hub To Depot");
+        // DEPOT_ONLY.register(autonChooser);
 
-        AutonConfig LEFT_BUMP = new AutonConfig("Left Bump", LeftBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Bump To Score (Start)", "Left Bump To Score", "Left Bump Score To Depot");
-        LEFT_BUMP.register(autonChooser);
+        // AutonConfig LEFT_BUMP = new AutonConfig("Left Bump", Bump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Bump To Score (Start)", "Left Bump To Score", "Left Bump Score To Depot");
+        // LEFT_BUMP.register(autonChooser);
 
-        AutonConfig RIGHT_BUMP = new AutonConfig("Right Bump", RightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Bump To Score (Start)", "Right Bump To Score", "Right Bump Score To Depot");
-        RIGHT_BUMP.register(autonChooser);
+        // AutonConfig RIGHT_BUMP = new AutonConfig("Right Bump", RightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Bump To Score (Start)", "Right Bump To Score", "Right Bump Score To Depot");
+        // RIGHT_BUMP.register(autonChooser);
 
-        // TWO CYCLES (TRENCH)
-        AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        LEFT_TWO_CYCLE.register(autonChooser);
+        // // TWO CYCLES (TRENCH)
+        // AutonConfig LEFT_TWO_CYCLE = new AutonConfig("Left Two Cycle", LeftTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Trench To NZ", "Left NZ To Score", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // LEFT_TWO_CYCLE.register(autonChooser);
 
-        AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        RIGHT_TWO_CYCLE.register(autonChooser);
+        // AutonConfig RIGHT_TWO_CYCLE = new AutonConfig("Right Two Cycle", RightTwoCycle::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Trench To NZ", "Right NZ To Score", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // RIGHT_TWO_CYCLE.register(autonChooser);
 
-        // TWO CYCLES (CORNER)
-        AutonConfig LEFT_TWO_CORNER = new AutonConfig("Left Two Corner", LeftTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite", "Left NZ To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
-        LEFT_TWO_CORNER.register(autonChooser);
+        // AutonConfig BC_TEST = new AutonConfig("BC Test", TestBC::new, prevWaitTimeOne, prevWaitTimeTwo, "Right Corner to Dot");
+        // BC_TEST.register(autonChooser);
 
-        AutonConfig RIGHT_TWO_CORNER = new AutonConfig("Right Two Corner", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite", "Right NZ To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
-        RIGHT_TWO_CORNER.register(autonChooser);
+        // // TWO CYCLES (CORNER)
+        // AutonConfig L_CN_FN = new AutonConfig("Left Corner-Near Far-Near", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_FN.register(autonChooser);
 
+        // AutonConfig R_CN_FN = new AutonConfig("Right Corner-Near Far-Near", RightTwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_FN.register(autonChooser);
+
+        // AutonConfig L_FNS_FN = new AutonConfig("Left Far-Near Shallow Far-Near", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left To Shallow", "Left Shallow To Score", "Left Bite Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_FNS_FN.register(autonChooser);
+
+        // AutonConfig R_FNS_FN = new AutonConfig("Right Far-Near Shallow Far-Near", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right To Shallow", "Right Shallow To Score", "Right Bite Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_FNS_FN.register(autonChooser);
+
+        // AutonConfig L_CN_NF = new AutonConfig("Left Corner-Near Near-Far", LeftTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "Left Score To Score", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_NF.register(autonChooser);
+
+        // AutonConfig R_CN_NF = new AutonConfig("Right Corner-Near Near-Far", RightTwoCornerVariant::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "Right Score To Score", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_NF.register(autonChooser);
+
+        // AutonConfig L_CNL_D = new AutonConfig("Left Corner-Near Long Dot", ShallowSwipeDot::new, 
+        //     "BC Left To Shallow", "BC Left Shallow To Score", "Left Score To Corner", "Left Corner To Dot Straight"
+        // );
+        // L_CNL_D.register(autonChooser);
+
+        // AutonConfig R_CNL_D = new AutonConfig("Right Corner-Near Long Dot", ShallowSwipeDot::new, 
+        //     "BC Right To Shallow", "BC Right Shallow To Score", "Right Score To Corner", "Right Corner To Dot Straight"
+        // );
+        // R_CNL_D.register(autonChooser);
+
+        //RAN AT BATTLE CRY
+        // AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
+        // R_CN_NFS.register(autonChooser);
+
+        // AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
+        // L_CN_NFS.register(autonChooser);
+
+        //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
+        AutonConfig Right_Champs = new AutonConfig("Right Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Right To Shallow", "Champs Right Shallow To Score Wide", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
+        Right_Champs.register(autonChooser);
+
+        AutonConfig Left_Champs = new AutonConfig("Left Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Champs Left To Shallow", "Champs Left Shallow To Score Wide", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
+        Left_Champs.register(autonChooser);
+
+        AutonConfig Right_NY = new AutonConfig("Right NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "NY Right Trench To NZ", "NY Right NZ To Score", "NY Right Score To Score", "Right Score To Corner");
+        Right_NY.register(autonChooser);
+
+        AutonConfig Left_NY = new AutonConfig("Left NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "NY Left Trench To NZ", "NY Left NZ To Score", "NY Left Score To Score", "Left Score To Corner");
+        Left_NY.register(autonChooser);
+
+        AutonConfig Right_Champs_NY = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "316 Champs Right To Shallow", "316 Champs Right Shallow To Score Wide", "316 NY Right Score To Score", "Right Score To Corner");
+        Right_Champs_NY.register(autonChooser);
+
+        AutonConfig Left_Champs_NY = new AutonConfig("Left Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "316 Champs Left To Shallow", "316 Champs Left Shallow To Score Wide", "316 NY Left Score To Score", "Left Score To Corner");
+        Left_Champs_NY.register(autonChooser);
+
+        //BC Score To Score NY is a shorened version of NY and w the slow down
+        AutonConfig Right_BC = new AutonConfig("Right BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner");
+        Right_BC.register(autonChooser);
+
+        AutonConfig Left_BC = new AutonConfig("Left BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner");
+        Left_BC.register(autonChooser);
+
+        // AutonConfig Exp_Right_Champs = new AutonConfig("Exp Right Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Score To Corner", "Champs Right Bite Score To Score");
+        // Right_Champs.register(autonChooser);
+
+        // AutonConfig Exp_Left_Champs = new AutonConfig("Exp Left Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Champs Left To Shallow", "Champs Left Shallow To Score", "Champs Left Score To Corner", "Champs Left Bite Score To Score");
+        // Left_Champs.register(autonChooser);
+        
+
+        //BC RIGHT
+        // AutonConfig R_CN_FN_D = new AutonConfig("Right Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Dot");
+        // R_CN_FN_D.register(autonChooser);
+
+        // AutonConfig R_CN_NF_D = new AutonConfig("Right Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Dot");
+        // R_CN_NF_D.register(autonChooser);
+
+        // AutonConfig R_CN_FN_CD = new AutonConfig("Right Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Bite Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
+        // R_CN_FN_CD.register(autonChooser);
+
+        // AutonConfig R_CN_NF_CD = new AutonConfig("Right Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Right Corner Bite", "BC Right NZ To Score", "Right Score To Corner", "BC Right Score To Score", "Right Corner To Center Dot pt1", "Right Corner To Center Dot pt2");
+        // R_CN_NF_CD.register(autonChooser);
+
+        //BC LEFT
+        // AutonConfig L_CN_FN_D = new AutonConfig("Left Corner-Near Far-Near Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Dot");
+        // L_CN_FN_D.register(autonChooser);
+
+        // AutonConfig L_CN_NF_D = new AutonConfig("Left Corner-Near Near-Far Dot", TwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Dot");
+        // L_CN_NF_D.register(autonChooser);
+
+        // AutonConfig L_CN_FN_CD = new AutonConfig("Left Corner-Near Far-Near Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Bite Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
+        // L_CN_FN_CD.register(autonChooser);
+
+        // AutonConfig L_CN_NF_CD = new AutonConfig("Left Corner-Near Near-Far Center Dot", CenterTwoCornerBC::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "BC Left Corner Bite", "BC Left NZ To Score", "Left Score To Corner", "BC Left Score To Score", "Left Corner To Center Dot pt1", "Left Corner To Center Dot pt2");
+        // L_CN_NF_CD.register(autonChooser);
+        
         // FOLLOWS
-        AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
-        LEFT_FOLLOW.register(autonChooser);
+        // AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
+        // LEFT_FOLLOW.register(autonChooser);
 
-        AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Follow To Bump", "Right Follow To Score");
-        RIGHT_FOLLOW.register(autonChooser);
+        // AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Follow To Bump", "Right Follow To Score");
+        // RIGHT_FOLLOW.register(autonChooser);
+        // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
+        //     "Right Trench Score To Corner");
+        // EMPTY_TEST.register(autonChooser);
 
-        AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
-            "Right Trench Score To Corner");
-        EMPTY_TEST.register(autonChooser);
+        // AutonConfig PATH_FIND_TEST = new AutonConfig("Path Find Test", PathfindTest::new, prevWaitTimeOne, prevWaitTimeTwo,
+        //  "Straight One", "Straight Two");
+        // PATH_FIND_TEST.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
-
     }
 
     public boolean hasWaitTimeOneChanged() {
         hasWaitTimeOneChanged = prevWaitTimeOne != getWaitTimeOne();
         prevWaitTimeOne = getWaitTimeOne();
-        prevWaitTimeTwo = getWaitTimeTwo();
         return hasWaitTimeOneChanged;
     }
 
@@ -440,10 +563,10 @@ public class RobotContainer {
     }
 
     public void configureSysids() {
-        autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
-        autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
-        autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
-        autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
+        // autonChooser.addOption("SysID Module Translation Dynamic Forwards", swerve.sysIdDynamic(Direction.kForward));
+        // autonChooser.addOption("SysID Module Translation Dynamic Backwards", swerve.sysIdDynamic(Direction.kReverse));
+        // autonChooser.addOption("SysID Module Translation Quasi Forwards", swerve.sysIdQuasistatic(Direction.kForward));
+        // autonChooser.addOption("SysID Module Translation Quasi Backwards", swerve.sysIdQuasistatic(Direction.kReverse)); 
 
         // autonChooser.addOption("SysID Rotation Translation Dynamic Forwards", swerve.sysidRotationDynamic(Direction.kForward));
         // autonChooser.addOption("SysID Rotation Translation Dynamic Backwards", swerve.sysidRotationDynamic(Direction.kReverse));
@@ -495,12 +618,15 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        if (autonChooser.getSelected() == null) {
-            return new DoNothingAuton();
+        Command autonCommand = autonChooser.getSelected();
+
+        if (autonCommand == null) {
+            autonCommand = new DoNothingAuton();
         }
-        else {
-            return autonChooser.getSelected();
-        }
+
+        DogLog.log("Auton/Selected", autonCommand.getName());
+        
+        return autonCommand;
     }
 
     public static double getWaitTimeOne() {
@@ -519,11 +645,11 @@ public class RobotContainer {
                                   superstructure.getCurrentDraw() +
                                   swerve.getTotalDriveSupplyCurrent() +
                                   swerve.getTotalSteerSupplyCurrent();      
-        DogLog.log("Robot/Total Current Draw", totalCurrentDraw);
+        DogLog.log("Robot/Total Current Draw", totalCurrentDraw, "Amps");
 
         handoff.periodicAfterScheduler();
         intake.periodicAfterScheduler();
-        // leds.periodicAfterScheduler(); TODO: ADD THESE BACK TY
+        leds.periodicAfterScheduler();
         spindexer.periodicAfterScheduler();
         hood.periodicAfterScheduler();
         shooter.periodicAfterScheduler();

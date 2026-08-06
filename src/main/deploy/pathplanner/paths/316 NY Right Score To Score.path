@@ -1,0 +1,111 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.282,
+        "y": 0.559
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.445245848532716,
+        "y": 0.48992249468502347
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.850470756062768,
+        "y": 2.451
+      },
+      "prevControl": {
+        "x": 6.024782241558084,
+        "y": 0.4586106038165092
+      },
+      "nextControl": {
+        "x": 5.7807461618646405,
+        "y": 3.247955758473397
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.353,
+        "y": 2.651
+      },
+      "prevControl": {
+        "x": 7.273381801565748,
+        "y": 3.547471384082104
+      },
+      "nextControl": {
+        "x": 7.575134773631564,
+        "y": 0.14984483841092855
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.612,
+        "y": 0.559
+      },
+      "prevControl": {
+        "x": 7.673006390654894,
+        "y": 0.520948709769672
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Right Trench Score"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 0.9,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2.05,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.289978678038381,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.6,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 7.5,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "To Score",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

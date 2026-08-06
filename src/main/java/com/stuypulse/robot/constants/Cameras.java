@@ -7,9 +7,13 @@ package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
 import com.stuypulse.robot.util.vision.LimelightHelpers.RawFiducial;
 import com.stuypulse.stuylib.network.SmartBoolean;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -44,10 +48,17 @@ public interface Cameras {
         private SmartBoolean isEnabled;
         private String keyName;
 
+        private double LLHeartbeat = -1;
+        private double LLLatency = -1;
+        private int loopCounter = 0;
+
         private int rejectedCounterNotNull;
         private int rejectedCounterAngularVelocity;
         private int rejectedCounterInvalidPosition;
         private int rejectedCounterTargetArea;
+        private final BStream isdead;
+
+        private LimelightResults result;
 
         private Pipeline currentPipeline;
 
@@ -56,6 +67,8 @@ public interface Cameras {
             this.location = location;
             this.isEnabled = isEnabled;
             this.keyName = "Vision/" + name + "/";
+            this.result = LimelightHelpers.getLatestResults(name);
+            this.isdead = BStream.create(() -> !isAlive()).filtered( new BDebounce.Rising(1), new BDebounce.Falling(0.2));
         }
 
         public enum Pipeline {
@@ -113,6 +126,70 @@ public interface Cameras {
             }
         }
 
+        public int getNumberOfTagsSeen() {
+            return LimelightHelpers.getRawFiducials(this.getName()).length;
+        }
+
+        public void updateHeartBeat() {
+            LLHeartbeat = LimelightHelpers.getHeartbeat(this.getName());
+        }
+
+        public void updateLatency() {
+            LLLatency = LimelightHelpers.getLatency_Pipeline(this.name);
+        }
+
+        public void incrementLoopCounter() {
+            loopCounter += 1;
+        }
+
+        public boolean isAlive() {
+            //latest - old heartbeat
+                boolean isDeadLatency = (LLLatency == LimelightHelpers.getLatency_Pipeline(this.name) && LLLatency != -1); 
+                DogLog.log(keyName + "isDeadLatency", isDeadLatency);
+                //TODO: double check that latency cannot be negative
+                boolean isDeadHeartbeat = LimelightHelpers.getHeartbeat(this.getName()) - LLHeartbeat < Settings.Vision.MIN_CYCLE_LL_HB && LLHeartbeat != -1;
+                if (isDeadHeartbeat || isDeadLatency) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            
+        }
+
+        public void updateLEDs() {
+            if (this.loopCounter == 50) {
+                boolean iscurrentlyDead = isdead.get();
+                switch (this.getName()) {
+                    case "limelight-right" -> { 
+                            LEDController.isRightLLDead = iscurrentlyDead;
+                            this.loopCounter = 0;
+                    }
+                    case "limelight-left" -> { 
+                            LEDController.isLeftLLDead = iscurrentlyDead;
+                            this.loopCounter = 0;
+                        } 
+                    case "limelight-back" -> {
+                            LEDController.isBackLLDead = iscurrentlyDead;
+                        }
+                    
+                    }
+                this.loopCounter = 0;
+            }
+        }
+
+        // public boolean seesTag() {
+        //     return getNumberOfTagsSeen() == 0;
+        // }
+
+        // public void checkHeartBeats() {
+            
+        // }
+
+        // public boolean isDead(){
+        //     return this.isDead;
+        // }
+
         public void log() {
             DogLog.log(keyName + "# Rejected Not Null", rejectedCounterNotNull);
             DogLog.log(keyName + "# Rejected Target Area", rejectedCounterTargetArea);
@@ -120,7 +197,8 @@ public interface Cameras {
             DogLog.log(keyName + "# Rejected Invalid Position", rejectedCounterInvalidPosition);
 
             DogLog.log(keyName + "Heartbeat", LimelightHelpers.getHeartbeat(name));
-            DogLog.log(keyName + "Temp (C)", LimelightHelpers.getLimelightDoubleArrayEntry(name, "hw").get());
+            DogLog.log(keyName + "Temp", LimelightHelpers.getLimelightDoubleArrayEntry(name, "hw").get(), "Celsius");
+            DogLog.log(keyName + "Cpu Usage", LimelightHelpers.getLimelightDoubleArrayEntry(name, "cpu").get(), "Percent");
             DogLog.log(keyName + "Pose MT1", (Robot.isBlue()
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed(name).pose));
@@ -128,6 +206,15 @@ public interface Cameras {
                                 ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name).pose
                                 : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(name).pose));
             DogLog.log(keyName + "Pipeline", LimelightHelpers.getCurrentPipelineIndex(name));
+
+            // this yaw is seems to be the robot yaw passed into the LL
+            DogLog.log(keyName + "Robot Yaw Passed In", LimelightHelpers.getIMUData(name).robotYaw);
+            // this is just the yaw of the internal imu 
+            DogLog.log(keyName + "IMU Yaw", LimelightHelpers.getIMUData(name).Yaw);
+            DogLog.log(keyName + "Pipeline Latency", LimelightHelpers.getLatency_Pipeline(name));
+    
+            result = LimelightHelpers.getLatestResults(name);
+            DogLog.log(keyName + "Time since last boot", result.timestamp_LIMELIGHT_publish / 1000.0, "Seconds");
             
             RawFiducial[] rawFiducials = LimelightHelpers.getRawFiducials(name);
             for(Integer i = 0; i < rawFiducials.length; i++) {

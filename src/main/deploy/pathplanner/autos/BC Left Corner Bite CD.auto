@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BC Left Corner Bite"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BC Left NZ To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": null
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BC Main",
+  "choreoAuto": false
+}

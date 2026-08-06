@@ -19,13 +19,19 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Right Score To Corner"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Right Score To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Score Jiggle"
+            "pathName": "Right Score To Corner"
           }
         }
       ]

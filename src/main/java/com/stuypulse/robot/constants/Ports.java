@@ -18,6 +18,7 @@ public interface Ports {
 
     public interface LED {
         int LED_PORT = 1;
+        int CANDLE_PORT = 61;
     }
 
     public interface ClimberHopper {
@@ -54,6 +55,7 @@ public interface Ports {
     }
 
     public interface Spindexer {
-        int MOTOR = 30;
+        int LEADER = 30;
+        int FOLLOWER = 31; // TODO: follower port
     }
 }
