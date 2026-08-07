@@ -7,6 +7,15 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.bline.DepotBLine;
+import com.stuypulse.robot.commands.auton.bline.LeftBumpBLine;
+import com.stuypulse.robot.commands.auton.bline.LeftFollowBLine;
+import com.stuypulse.robot.commands.auton.bline.LeftTwoCornerBLine;
+import com.stuypulse.robot.commands.auton.bline.LeftTwoCycleBLine;
+import com.stuypulse.robot.commands.auton.bline.RightBumpBLine;
+import com.stuypulse.robot.commands.auton.bline.RightFollowBLine;
+import com.stuypulse.robot.commands.auton.bline.RightTwoCornerBLine;
+import com.stuypulse.robot.commands.auton.bline.RightTwoCycleBLine;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -69,6 +78,7 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
+import com.stuypulse.robot.util.BLinePathUtil.BLineAutonConfig;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
@@ -86,6 +96,7 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.lib.BLine.FollowPath;
 
 
 public class RobotContainer {
@@ -134,6 +145,14 @@ public class RobotContainer {
     // Robot container
     public RobotContainer() {
         swerve.configureAutoBuilder();
+
+        FollowPath.setDoubleLoggingConsumer(pair ->
+            SmartDashboard.putNumber("BLine/" + pair.getFirst(), pair.getSecond()));
+        FollowPath.setBooleanLoggingConsumer(pair ->
+            SmartDashboard.putBoolean("BLine/" + pair.getFirst(), pair.getSecond()));
+        FollowPath.setPoseLoggingConsumer(pair ->
+            SmartDashboard.putString("BLine/" + pair.getFirst(), pair.getSecond().toString()));  
+
         configureDefaultCommands();
         configureButtonBindings();
         configureAutons();
@@ -384,6 +403,43 @@ public class RobotContainer {
     public void configureAutons() {
 
         autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+
+        //BLINE
+        BLineAutonConfig DEPOT_BLINE = new BLineAutonConfig("Depot BLine", DepotBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "center-hub-to-depot");
+            DEPOT_BLINE.register(autonChooser);
+
+        BLineAutonConfig LEFT_BUMP_BLINE = new BLineAutonConfig("Left Bump BLine", LeftBumpBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "left-bump-to-score-start", "left-bump-to-score", "left-bump-score-to-depot");
+            LEFT_BUMP_BLINE.register(autonChooser);
+
+        BLineAutonConfig LEFT_FOLLOW_BLINE = new BLineAutonConfig("Left Follow BLine", LeftFollowBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "left-follow-to-trench", "left-follower-to-score", "left-corner-to-depot");
+            LEFT_FOLLOW_BLINE.register(autonChooser);
+
+        BLineAutonConfig LEFT_TWO_CORNER_BLINE = new BLineAutonConfig("Left Two Corner BLine", LeftTwoCornerBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "left-corner-bite", "left-nz-to-score", "left-bite-score-to-score", "left-score-shake", "left-score-to-nz-f");
+            LEFT_TWO_CORNER_BLINE.register(autonChooser);
+
+        BLineAutonConfig LEFT_TWO_CYCLE_BLINE = new BLineAutonConfig("Left Two Cycle BLine", LeftTwoCycleBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "left-trench-to-nz", "left-nz-to-score", "left-score-to-score", "left-score-shake", "left-score-to-nz-f");
+            LEFT_TWO_CYCLE_BLINE.register(autonChooser);
+
+        BLineAutonConfig RIGHT_BUMP_BLINE = new BLineAutonConfig("Right Bump BLine", RightBumpBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "right-bump-to-score-start", "right-bump-to-score", "right-bump-score-to-depot");
+            RIGHT_BUMP_BLINE.register(autonChooser);
+
+        BLineAutonConfig RIGHT_FOLLOW_BLINE = new BLineAutonConfig("Right Follow BLine", RightFollowBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "right-follow-to-bump", "right-follow-to-score");
+            RIGHT_FOLLOW_BLINE.register(autonChooser);
+        
+        BLineAutonConfig RIGHT_TWO_CORNER_BLINE = new BLineAutonConfig("Right Two Corner BLine", RightTwoCornerBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "right-corner-bite", "right-nz-to-score", "right-bite-score-to-score", "right-score-shake", "right-score-to-nz-f");
+            RIGHT_TWO_CORNER_BLINE.register(autonChooser);
+
+        BLineAutonConfig RIGHT_TWO_CYCLE_BLINE = new BLineAutonConfig("Right Two Cycle BLine", RightTwoCycleBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "right-trench-to-nz", "right-nz-to-score", "right-score-to-score", "right-score-shake", "right-score-to-nz-f");
+            RIGHT_TWO_CYCLE_BLINE.register(autonChooser);
 
         // DEPOT
         // AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
