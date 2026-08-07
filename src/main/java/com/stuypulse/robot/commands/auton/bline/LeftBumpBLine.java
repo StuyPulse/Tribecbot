@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands.auton.bline;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -14,8 +15,10 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.BLinePathUtil;
 
+import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class LeftBumpBLine extends SequentialCommandGroup {
+
+    private static final double HANDOFF_THRESHOLD_METERS = 0.15; // tune per-path
 
     public LeftBumpBLine(String... pathNames) {
 
@@ -37,17 +42,13 @@ public class LeftBumpBLine extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new HandoffRun(),
                 new SpindexerRun(),
-                swerve.getPathBuilder()
-                    .withPoseReset(swerve::resetPose)
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[0])),
+                followUntil(swerve, pathNames[0], HANDOFF_THRESHOLD_METERS, swerve::resetPose),
                 new WaitCommand(0.5).andThen(new IntakeDeploy()).andThen(new WaitCommand(1.0))
             ),
 
             // NZ Trip 1
             new ParallelCommandGroup(
-                swerve.getPathBuilder()
-                    //.withPoseReset(pose -> {})
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[1])),
+                followUntil(swerve, pathNames[1], HANDOFF_THRESHOLD_METERS, pose -> {}),
                 new IntakeDeploy(),
                 new HandoffStop(),
                 new SpindexerStop()
@@ -60,7 +61,7 @@ public class LeftBumpBLine extends SequentialCommandGroup {
             new HandoffRun().alongWith(new SpindexerRun()),
             new ParallelCommandGroup(
                 swerve.getPathBuilder()
-                    //.withPoseReset(pose -> {})
+                    .withPoseReset(pose -> {})
                     .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[2])),
                 new WaitCommand(5.0).andThen(
                     new HandoffStop().alongWith(new SpindexerStop())
@@ -77,6 +78,16 @@ public class LeftBumpBLine extends SequentialCommandGroup {
 
         );
 
+    }
+
+    private static Command followUntil(CommandSwerveDrivetrain swerve, String pathName, double thresholdMeters, Consumer<Pose2d> poseReset) {
+        FollowPath path = (FollowPath) swerve.getPathBuilder()
+            .withPoseReset(poseReset)
+            .build(new Path(BLinePathUtil.PATHS_DIR, pathName));
+
+        return path.raceWith(
+            new WaitUntilCommand(() -> path.getRemainingPathDistanceMeters() < thresholdMeters)
+        );
     }
 
 }

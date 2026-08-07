@@ -13,8 +13,10 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.BLinePathUtil;
 
+import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -22,8 +24,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class RightTwoCornerBLine extends SequentialCommandGroup {
+
+    private static final double HANDOFF_THRESHOLD_METERS = 0.15; // tune per-path
 
     public RightTwoCornerBLine(String... pathNames) {
 
@@ -34,18 +39,12 @@ public class RightTwoCornerBLine extends SequentialCommandGroup {
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
 
             // NZ Trip 1 — first path, pose reset happens here
-            swerve.getPathBuilder()
-                .withPoseReset(swerve::resetPose)
-                .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[0])).alongWith(
-                    new WaitCommand(0.2).andThen(new IntakeDeploy())
-                ),
+            followUntil(swerve, pathNames[0], HANDOFF_THRESHOLD_METERS, swerve::resetPose)
+            .alongWith(new WaitCommand(0.2).andThen(new IntakeDeploy())),
 
             // Trip 1 To Score
-            swerve.getPathBuilder()
-                .withPoseReset(pose -> {})
-                .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[1])).alongWith(
-                    new SuperstructureAutoInterpolation()
-                ),
+            followUntil(swerve, pathNames[1], HANDOFF_THRESHOLD_METERS, pose -> {})
+            .alongWith(new SuperstructureAutoInterpolation()),
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
@@ -60,9 +59,7 @@ public class RightTwoCornerBLine extends SequentialCommandGroup {
 
             // NZ Trip 2
             new ParallelCommandGroup(
-                swerve.getPathBuilder()
-                    .withPoseReset(pose -> {})
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[2])),
+                followUntil(swerve, pathNames[2], HANDOFF_THRESHOLD_METERS, pose -> {}),
                 new HandoffStop(),
                 new SpindexerStop()
             ),
@@ -70,9 +67,7 @@ public class RightTwoCornerBLine extends SequentialCommandGroup {
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                swerve.getPathBuilder()
-                    .withPoseReset(pose -> {})
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[3])),
+                followUntil(swerve, pathNames[3], HANDOFF_THRESHOLD_METERS, pose -> {}),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
@@ -86,6 +81,16 @@ public class RightTwoCornerBLine extends SequentialCommandGroup {
 
         );
 
+    }
+
+    private static Command followUntil(CommandSwerveDrivetrain swerve, String pathName, double thresholdMeters, Consumer<Pose2d> poseReset) {
+        FollowPath path = (FollowPath) swerve.getPathBuilder()
+            .withPoseReset(poseReset)
+            .build(new Path(BLinePathUtil.PATHS_DIR, pathName));
+
+        return path.raceWith(
+            new WaitUntilCommand(() -> path.getRemainingPathDistanceMeters() < thresholdMeters)
+        );
     }
 
 }
