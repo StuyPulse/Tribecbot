@@ -121,9 +121,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         this::getPose,
         this::getChassisSpeeds,
         this::setChassisSpeeds,
-        new PIDController(2.0, 0.0, 0.0),
-        new PIDController(1.0, 0.0, 0.0),
-        new PIDController(0.2, 0.0, 0.0)
+        new PIDController(4.0, 0.0, 0.0),
+        new PIDController(7.0, 0.0, 0.0),
+        new PIDController(0.5, 0.0, 0.0)
     ).withDefaultShouldFlip().withTRatioBasedTranslationHandoffs(true);
 
     public FollowPath.Builder getPathBuilder() {
