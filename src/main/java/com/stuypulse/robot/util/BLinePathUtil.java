@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class BLinePathUtil {
+
+    public static final java.io.File PATHS_DIR = Paths.get("").toAbsolutePath().resolve("src/main/deploy/bline/autos").toFile();
+
     public static class BLineAutonConfig {
 
     private final String name;
@@ -37,16 +40,17 @@ public class BLinePathUtil {
         this.waitTimeOne = Optional.of(waitTimeOne);
         this.waitTimeTwo = Optional.of(waitTimeTwo);
 
-        for (String path : paths) {
-            Path loaded = new Path(path);
-            if (!loaded.isValid()) {
-                DriverStation.reportError(
-                    "BLine path \"" + path + "\" not found or invalid. Did you mean \""
-                        + BLinePathUtil.findClosestMatch(BLinePathUtil.getPathFileNames(), path) + "\"?",
-                    false);
-            }
+    for (String path : paths) {
+        try {
+            new Path(PATHS_DIR, path);
+        } catch (Exception e) {
+            DriverStation.reportError(
+                "BLine path \"" + path + "\" not found. Did you mean \""
+                    + BLinePathUtil.findClosestMatch(BLinePathUtil.getPathFileNames(), path) + "\"?",
+                false);
         }
     }
+}
 
     public BLineAutonConfig(String name, Function<String[], Command> auton, String... paths) {
         this(name, auton, 0.0, 0.0, paths);
@@ -77,30 +81,31 @@ public class BLinePathUtil {
         return output;
     }
 
-    public static Path load(String name) {
-        Path path = new Path(name);
-        if (!path.isValid()) {
-            DriverStation.reportError("BLine path \"" + name + "\" not found.", false);
-        }
-        return path;
+public static Path load(String name) {
+    try {
+        return new Path(PATHS_DIR, name);
+    } catch (Exception e) {
+        DriverStation.reportError("BLine path \"" + name + "\" not found.", false);
+        return null;
     }
+}
 
     /*** PATH FILENAME CORRECTION ***/
 
-    public static List<String> getPathFileNames() {
-        // ../../../../../deploy/autos/paths
-        java.nio.file.Path dir = Paths.get("").toAbsolutePath().resolve("src/main/deploy/autos/paths");
-        ArrayList<String> fileList = new ArrayList<String>();
-        try (DirectoryStream<java.nio.file.Path> stream = Files.newDirectoryStream(dir, "*.json")) {
-            for (java.nio.file.Path file : stream) {
-                fileList.add(file.getFileName().toString().replaceFirst(".json", ""));
-            }
-        } catch (IOException error) {
-            DriverStation.reportError(error.getMessage(), false);
+public static List<String> getPathFileNames() {
+    // ../../../../../deploy/bline/autos/paths
+    java.nio.file.Path dir = Paths.get("").toAbsolutePath().resolve("src/main/deploy/bline/autos/paths");
+    ArrayList<String> fileList = new ArrayList<String>();
+    try (DirectoryStream<java.nio.file.Path> stream = Files.newDirectoryStream(dir, "*.json")) {
+        for (java.nio.file.Path file : stream) {
+            fileList.add(file.getFileName().toString().replaceFirst(".json", ""));
         }
-        Collections.sort(fileList);
-        return fileList;
+    } catch (IOException error) {
+        DriverStation.reportError(error.getMessage(), false);
     }
+    Collections.sort(fileList);
+    return fileList;
+}
 
     public static String findClosestMatch(List<String> paths, String input) {
         double closestValue = 10.0;
