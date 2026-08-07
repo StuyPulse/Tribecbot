@@ -25,17 +25,18 @@
       "default_auto_velocity_merge_tolerance_meters_per_sec": 0.3
     }
   },
-  "active_path_file_name": "Right_Trench_To_NZ.json",
-  "active_path_group_id": "group-aaa214d9-acb5-4a40-998d-41c0fdab967b",
+  "active_path_file_name": "right-bite-score-to-score-2.json",
+  "active_path_group_id": "group-91156140-facd-40d0-a9e1-4a8083564a28",
   "path_groups": [
     {
       "group_id": "group-aaa214d9-acb5-4a40-998d-41c0fdab967b",
       "display_name": "Right_Two_Cycle",
       "path_file_names": [
-        "Right_Trench_To_NZ.json",
-        "Right_NZ_to_Score.json",
-        "Right_Score_To_Score.json",
-        "Right_Score_Shake.json"
+        "right-trench-to-nz.json",
+        "right-nz-to-score.json",
+        "right-score-to-score.json",
+        "right-score-shake.json",
+        "right-score-to-nz-f.json"
       ]
     },
     {
@@ -45,14 +46,15 @@
         "left-trench-to-nz.json",
         "left-nz-to-score.json",
         "left-score-to-score.json",
-        "left-score-shake.json"
+        "left-score-shake.json",
+        "left-score-to-nz-f.json"
       ]
     },
     {
       "group_id": "group-cd6d7d5f-fa53-4000-b278-cb23bacfda5e",
       "display_name": "Center_Hub_Depot",
       "path_file_names": [
-        "Center_Hub_To_Depot.json"
+        "center-hub-to-depot.json"
       ]
     },
     {
@@ -68,7 +70,8 @@
       "display_name": "Left_Follow",
       "path_file_names": [
         "left-follow-to-trench.json",
-        "left-follower-to-score.json"
+        "left-follower-to-score.json",
+        "left-corner-to-depot.json"
       ]
     },
     {
@@ -76,9 +79,11 @@
       "display_name": "Right_Corner_Bite",
       "path_file_names": [
         "right-corner-bite.json",
-        "Right_NZ_to_Score.json",
+        "right-nz-to-score.json",
         "right-bite-score-to-score.json",
-        "Right_Score_Shake.json"
+        "right-score-shake.json",
+        "right-score-to-nz-f.json",
+        "right-bite-score-to-score-2.json"
       ]
     },
     {
@@ -88,7 +93,9 @@
         "left-corner-bite.json",
         "left-corner-bite-to-score.json",
         "left-bite-score-to-score.json",
-        "left-score-shake.json"
+        "left-score-shake.json",
+        "left-nz-to-score.json",
+        "left-score-to-nz-f.json"
       ]
     },
     {
@@ -107,7 +114,7 @@
       "path_file_names": [
         "left-bump-to-score-start.json",
         "left-bump-to-score.json",
-        "Left_Bump_Score_To_Depot.json",
+        "left-bump-score-to-depot.json",
         "depot-to-score.json"
       ]
     }
@@ -290,12 +297,30 @@
       "kind": "waypoint",
       "x_meters": 3.47,
       "y_meters": 5.5,
-      "rotation_radians": 3.14159
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-cb557b8b",
+      "display_name": "Left Follow Depot Post",
+      "kind": "waypoint",
+      "x_meters": 1.47,
+      "y_meters": 5.96,
+      "rotation_radians": 3.14159,
+      "locked": true
+    },
+    {
+      "target_id": "target-d6253d50",
+      "display_name": "Left Corner",
+      "kind": "waypoint",
+      "x_meters": 3.0,
+      "y_meters": 7.44,
+      "rotation_radians": 0.0
     }
   ],
   "paths": {
-    "Right_Trench_To_NZ.json": {
-      "display_name": "Right_Trench_To_NZ",
+    "right-trench-to-nz.json": {
+      "display_name": "right-trench-to-nz",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -309,8 +334,8 @@
         ]
       }
     },
-    "Right_NZ_to_Score.json": {
-      "display_name": "Right_NZ_to_Score",
+    "right-nz-to-score.json": {
+      "display_name": "right-nz-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -324,8 +349,8 @@
         ]
       }
     },
-    "Right_Score_Shake.json": {
-      "display_name": "Right_Score_Shake",
+    "right-score-shake.json": {
+      "display_name": "right-score-shake",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -355,8 +380,8 @@
         ]
       }
     },
-    "Right_Score_To_Score.json": {
-      "display_name": "Right_Score_To_Score",
+    "right-score-to-score.json": {
+      "display_name": "right-score-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -371,7 +396,7 @@
       }
     },
     "left-trench-to-nz.json": {
-      "display_name": "Left_Trench_To_NZ",
+      "display_name": "left-trench-to-nz",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -386,7 +411,7 @@
       }
     },
     "left-nz-to-score.json": {
-      "display_name": "Left_NZ_To_Score",
+      "display_name": "left-nz-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -401,7 +426,7 @@
       }
     },
     "left-score-to-score.json": {
-      "display_name": "Left_Score_To_Score",
+      "display_name": "left-score-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -416,18 +441,22 @@
       }
     },
     "left-score-shake.json": {
-      "display_name": "Left_Score_Shake",
+      "display_name": "left-score-shake",
       "editor_metadata": {
         "linked_targets": [
           {
             "element_index": 0.0,
             "target_id": "target-bc2faebe"
+          },
+          {
+            "element_index": 10.0,
+            "target_id": "target-d6253d50"
           }
         ]
       }
     },
-    "Center_Hub_To_Depot.json": {
-      "display_name": "Center_Hub_To_Depot",
+    "center-hub-to-depot.json": {
+      "display_name": "center-hub-to-depot",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -442,7 +471,7 @@
       }
     },
     "right-follow-to-bump.json": {
-      "display_name": "Right_Follow_To_Bump",
+      "display_name": "right-follow-to-bump",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -457,7 +486,7 @@
       }
     },
     "right-follow-to-score.json": {
-      "display_name": "Right_Follow_To_Score",
+      "display_name": "right-follow-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -468,7 +497,7 @@
       }
     },
     "left-follow-to-trench.json": {
-      "display_name": "Left_Follow_To_Trench",
+      "display_name": "left-follow-to-trench",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -483,18 +512,22 @@
       }
     },
     "left-follower-to-score.json": {
-      "display_name": "Left_Follower_To_Score",
+      "display_name": "left-follower-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
             "element_index": 0.0,
             "target_id": "target-02df8cfe"
+          },
+          {
+            "element_index": 3.0,
+            "target_id": "target-cb557b8b"
           }
         ]
       }
     },
     "right-corner-bite.json": {
-      "display_name": "Right_Corner_Bite",
+      "display_name": "right-corner-bite",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -509,7 +542,7 @@
       }
     },
     "right-bite-score-to-score.json": {
-      "display_name": "Right_Bite_Score_To_Score",
+      "display_name": "right-bite-score-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -524,7 +557,7 @@
       }
     },
     "left-corner-bite.json": {
-      "display_name": "Left_Corner_Bite",
+      "display_name": "left-corner-bite",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -539,7 +572,7 @@
       }
     },
     "left-corner-bite-to-score.json": {
-      "display_name": "Left_Corner_Bite_To_Score",
+      "display_name": "left-corner-bite-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -554,7 +587,7 @@
       }
     },
     "left-bite-score-to-score.json": {
-      "display_name": "Left_Bite_Score_To_Score",
+      "display_name": "left-bite-score-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -569,7 +602,7 @@
       }
     },
     "right-bump-to-score-start.json": {
-      "display_name": "Right_Bump_To_Score_Start",
+      "display_name": "right-bump-to-score-start",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -584,7 +617,7 @@
       }
     },
     "right-bump-to-score.json": {
-      "display_name": "Right_Bump_To_Score",
+      "display_name": "right-bump-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -599,7 +632,7 @@
       }
     },
     "right-bump-score-to-depot.json": {
-      "display_name": "Right_Bump_Score_To_Depot",
+      "display_name": "right-bump-score-to-depot",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -614,7 +647,7 @@
       }
     },
     "depot-to-score.json": {
-      "display_name": "Depot_To_Score",
+      "display_name": "depot-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -629,7 +662,7 @@
       }
     },
     "left-bump-to-score-start.json": {
-      "display_name": "Left_Bump_To_Score_Start",
+      "display_name": "left-bump-to-score-start",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -644,7 +677,7 @@
       }
     },
     "left-bump-to-score.json": {
-      "display_name": "Left_Bump_To_Score",
+      "display_name": "left-bump-to-score",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -652,14 +685,14 @@
             "target_id": "target-31d5e428"
           },
           {
-            "element_index": 14.0,
+            "element_index": 15.0,
             "target_id": "target-e827c6c5"
           }
         ]
       }
     },
-    "Left_Bump_Score_To_Depot.json": {
-      "display_name": "Left_Bump_Score_To_Depot",
+    "left-bump-score-to-depot.json": {
+      "display_name": "left-bump-score-to-depot",
       "editor_metadata": {
         "linked_targets": [
           {
@@ -669,6 +702,66 @@
           {
             "element_index": 2.0,
             "target_id": "target-9f3d7736"
+          }
+        ]
+      }
+    },
+    "left-corner-to-depot.json": {
+      "display_name": "left-corner-to-depot",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-cb557b8b"
+          },
+          {
+            "element_index": 1.0,
+            "target_id": "target-9f3d7736"
+          }
+        ]
+      }
+    },
+    "left-score-to-nz-f.json": {
+      "display_name": "left-score-to-nz-f",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-d6253d50"
+          },
+          {
+            "element_index": 6.0,
+            "target_id": "target-1ba2eb32"
+          }
+        ]
+      }
+    },
+    "right-score-to-nz-f.json": {
+      "display_name": "right-score-to-nz-f",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-069bd37e"
+          },
+          {
+            "element_index": 6.0,
+            "target_id": "target-c87f8af2"
+          }
+        ]
+      }
+    },
+    "right-bite-score-to-score-2.json": {
+      "display_name": "right-bite-score-to-score",
+      "editor_metadata": {
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-16d62561"
+          },
+          {
+            "element_index": 10.0,
+            "target_id": "target-16d62561"
           }
         ]
       }
