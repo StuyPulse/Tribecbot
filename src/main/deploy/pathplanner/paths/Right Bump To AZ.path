@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.95,
+        "y": 2.3
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.95,
+        "y": 2.3
+      },
+      "isLocked": false,
+      "linkedName": "Right Bump Pre Chezy"
+    },
+    {
+      "anchor": {
+        "x": 2.0,
+        "y": 2.3
+      },
+      "prevControl": {
+        "x": 3.0,
+        "y": 2.3
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Right Bump Post Chezy"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.7,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Chezy",
+  "idealStartingState": {
+    "velocity": 1.8,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
