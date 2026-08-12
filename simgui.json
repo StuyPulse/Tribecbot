@@ -98,6 +98,15 @@
       "open": false
     },
     "transitory": {
+      "Robot": {
+        "Spindexer": {
+          "open": true
+        },
+        "Superstructure": {
+          "open": true
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "FieldPositions": {
           "open": true
@@ -108,8 +117,7 @@
         "Robot": {
           "Auton": {
             "open": true
-          },
-          "open": true
+          }
         },
         "Spindexer": {
           "open": true
@@ -122,8 +130,7 @@
             "open": true
           },
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },

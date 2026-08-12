@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -487,6 +488,10 @@ public class RobotContainer {
         AutonConfig Left_BC = new AutonConfig("Left BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner");
         Left_BC.register(autonChooser);
+
+        AutonConfig Right_Chezy_Bump = new AutonConfig("Right Chezy Bump", ChezyRightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Score To Bump", "Right Bump To AZ", "Right Score To Corner Extra Long");
+        Right_Chezy_Bump.register(autonChooser);
 
         // AutonConfig Exp_Right_Champs = new AutonConfig("Exp Right Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
         // "Champs Right To Shallow", "Champs Right Shallow To Score", "Champs Right Score To Corner", "Champs Right Bite Score To Score");
