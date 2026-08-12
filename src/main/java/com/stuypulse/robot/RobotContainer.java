@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
 import com.stuypulse.robot.commands.auton.regular.FastFollowLeft;
 import com.stuypulse.robot.commands.auton.regular.FastFollowRight;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
+import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -522,6 +523,10 @@ public class RobotContainer {
         AutonConfig Non_Depot_Chezy_Bump = new AutonConfig("Non Depot Chezy Bump", ChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
         Non_Depot_Chezy_Bump.register(autonChooser);
+
+        AutonConfig Right_Chezy_Bump = new AutonConfig("Right Chezy Bump", ChezyRightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Score To Bump", "Right Bump To AZ", "Right Score To Corner Extra Long");
+        Right_Chezy_Bump.register(autonChooser);
 
         AutonConfig Depot_Chezy_Bump = new AutonConfig("Depot Chezy Bump", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Chezy Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
