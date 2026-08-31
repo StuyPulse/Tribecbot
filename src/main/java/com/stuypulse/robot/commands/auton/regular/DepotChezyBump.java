@@ -22,8 +22,8 @@ import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-public class ChezyRightBump extends SequentialCommandGroup {
-    public ChezyRightBump(PathPlannerPath... paths) {
+public class DepotChezyBump extends SequentialCommandGroup {
+    public DepotChezyBump(PathPlannerPath... paths) {
         addCommands( 
             
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
@@ -32,11 +32,13 @@ public class ChezyRightBump extends SequentialCommandGroup {
 
             new SuperstructureInterpolation(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-            new WaitCommand(Seconds.of(2)).deadlineFor(
+            new WaitCommand(Seconds.of(2)).deadlineFor( //configure for follow delay
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest()
-            ).andThen(
+            ).andThen( 
+            //extra precaution bcs reviewing the logic, i dont see anything set the state back after the respecive Commands finish. 
+            //worked b4 so if this changes the behavior, just remove it
                 new HandoffStop(),
                 new SpindexerStop()
             ),
@@ -45,18 +47,23 @@ public class ChezyRightBump extends SequentialCommandGroup {
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]),
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
 
-            new WaitCommand(Seconds.of(1)),
+            new WaitCommand(Seconds.of(0.5)), //let robot stabilize
+            new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
+            //if it does not work, remove and increase wait time to 1+ seconds. Will delay but probably be accurate.
+            //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
+
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]).alongWith(
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]).alongWith(
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest()
+                //all get turned off during teleop init - and this also means that after the path finishes, we will keep shooting in auton
             )
-
-
         );
 
     }

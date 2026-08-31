@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Chezy Score To Hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Chezy Hub To Transition"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Chezy NZ To Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Transition To Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Score To Corner Extra Long"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Chezy",
+  "choreoAuto": false
+}

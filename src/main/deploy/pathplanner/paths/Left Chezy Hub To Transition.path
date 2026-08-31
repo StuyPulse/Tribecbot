@@ -1,0 +1,86 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.7,
+        "y": 4.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.7,
+        "y": 4.0
+      },
+      "isLocked": false,
+      "linkedName": "Hub To Transition"
+    },
+    {
+      "anchor": {
+        "x": 6.7,
+        "y": 4.0
+      },
+      "prevControl": {
+        "x": 6.45,
+        "y": 4.0
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Transition To Bump"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.8,
+      "constraints": {
+        "maxVelocity": 0.85,
+        "maxAcceleration": 10.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.3,
+        "maxAcceleration": 10.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "Chezy",
+  "idealStartingState": {
+    "velocity": 4.0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

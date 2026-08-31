@@ -5,31 +5,27 @@ import static edu.wpi.first.units.Units.Seconds;
 import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
-import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
-import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
-import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import com.stuypulse.robot.commands.handoff.HandoffStop;
+import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
-public class Depot extends SequentialCommandGroup {
-    
-    public Depot(PathPlannerPath... paths) {
-addCommands( 
+import edu.wpi.first.wpilibj2.command.*;
+
+public class ChezyBump extends SequentialCommandGroup {
+    public ChezyBump(PathPlannerPath... paths) {
+        addCommands( 
             
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
@@ -37,7 +33,7 @@ addCommands(
 
             new SuperstructureInterpolation(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-            new WaitCommand(Seconds.of(2)).deadlineFor(
+            new WaitCommand(Seconds.of(2)).deadlineFor( //configure for follow delay
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeAutoDigest()
@@ -54,8 +50,10 @@ addCommands(
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
 
-            new WaitCommand(Seconds.of(1)), //let robot stabilize
+            new WaitCommand(Seconds.of(0.5)), //let robot stabilize
             new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
+            //if it does not work, remove and increase wait time to 1+ seconds. Will delay but probably be accurate.
+            //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
 
@@ -70,5 +68,4 @@ addCommands(
         );
 
     }
-
 }

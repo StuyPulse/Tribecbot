@@ -7,19 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Score To Bump"
+            "pathName": "Left Chezy Score To Hub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Bump To AZ"
+            "pathName": "Left Chezy Hub To Transition"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Score To Corner Extra Long"
+            "pathName": "Left Chezy NZ To Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Transition To Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Bump To Depot"
           }
         }
       ]

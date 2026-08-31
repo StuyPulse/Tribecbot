@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.67,
+        "x": 3.3,
         "y": 2.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.257971130397284,
-        "y": 2.347835997896055
+        "x": 3.05,
+        "y": 2.3
       },
       "isLocked": false,
-      "linkedName": "First Score End Chezy"
+      "linkedName": "Bump To Transition"
     },
     {
       "anchor": {
-        "x": 1.34,
+        "x": 2.0,
         "y": 2.3
       },
       "prevControl": {
-        "x": 1.5744317899184905,
-        "y": 2.213156831727459
+        "x": 2.25,
+        "y": 2.3
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Transition To Shoot"
     }
   ],
   "rotationTargets": [],
@@ -33,15 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.1,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.8,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.2,
     "rotation": 180.0
   },
   "reversed": false,
