@@ -494,6 +494,10 @@ public class RobotContainer {
         "Left Chezy Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Bump To Depot");
         Depot_Chezy_Bump.register(autonChooser);
 
+        AutonConfig Depot_Chezy_Bump_Abrupt = new AutonConfig("Depot Chezy Bump Abrupt", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Chezy Abrupt Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Bump To Depot");
+        Depot_Chezy_Bump_Abrupt.register(autonChooser);
+
         AutonConfig Non_Depot_Chezy_Bump = new AutonConfig("Non Depot Chezy Bump", ChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Score To Corner Extra Long");
         Non_Depot_Chezy_Bump.register(autonChooser);

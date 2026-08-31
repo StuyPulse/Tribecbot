@@ -51,7 +51,7 @@ public class ChezyBump extends SequentialCommandGroup {
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
 
             new WaitCommand(Seconds.of(0.5)), //let robot stabilize
-            new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
+            // new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
             //if it does not work, remove and increase wait time to 1+ seconds. Will delay but probably be accurate.
             //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
 
