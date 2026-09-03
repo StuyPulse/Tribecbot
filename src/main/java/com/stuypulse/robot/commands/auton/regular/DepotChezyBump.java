@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.*;
 public class DepotChezyBump extends SequentialCommandGroup {
     public DepotChezyBump(PathPlannerPath... paths) {
         addCommands( 
-            
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
