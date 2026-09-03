@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 3.5,
-        "y": 7.7
+        "y": 7.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 4.5,
-        "y": 7.7
+        "y": 7.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.531811111115419,
-        "y": 7.572233333332802
+        "x": 5.532,
+        "y": 7.4
       },
       "prevControl": {
-        "x": 4.509522222230838,
-        "y": 7.731144444443383
+        "x": 4.5097111111154184,
+        "y": 7.558911111110581
       },
       "nextControl": {
-        "x": 6.124690819677919,
-        "y": 7.48007232653033
+        "x": 6.124879708562499,
+        "y": 7.307838993197528
       },
       "isLocked": false,
       "linkedName": null
@@ -95,7 +95,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.1901408450704145,
-      "rotationDegrees": -90.0
+      "rotationDegrees": 0.0
     },
     {
       "waypointRelativePos": 1.5774647887323905,
@@ -154,11 +154,11 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.19,
+    "maxVelocity": 2.5,
     "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.7,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
@@ -169,7 +169,7 @@
   "folder": "Chezy",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
