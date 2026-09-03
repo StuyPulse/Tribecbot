@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.694,
-        "y": 5.52
+        "x": 2.3,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.694,
-        "y": 5.52
+        "x": 2.05,
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": "Chezy Bump End"
     },
     {
       "anchor": {
-        "x": 1.8,
+        "x": 1.7,
         "y": 5.52
       },
       "prevControl": {
-        "x": 2.8000000000000003,
+        "x": 1.9499999999999997,
         "y": 5.52
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bump To Depot"
     }
   ],
   "rotationTargets": [],
@@ -47,7 +47,7 @@
   "reversed": false,
   "folder": "Chezy",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 4.19,
     "rotation": 180.0
   },
   "useDefaultConstraints": false
