@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3,
+        "x": 2.694,
         "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3,
+        "x": 1.694,
         "y": 5.52
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Chezy Bump End"
     },
     {
       "anchor": {

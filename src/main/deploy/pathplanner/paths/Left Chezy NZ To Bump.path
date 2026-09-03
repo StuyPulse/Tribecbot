@@ -16,15 +16,15 @@
     },
     {
       "anchor": {
-        "x": 5.7,
+        "x": 6.5,
         "y": 5.52
       },
       "prevControl": {
-        "x": 6.9,
+        "x": 6.75,
         "y": 5.52
       },
       "nextControl": {
-        "x": 4.9,
+        "x": 5.839646294944731,
         "y": 5.52
       },
       "isLocked": false,
@@ -32,41 +32,25 @@
     },
     {
       "anchor": {
-        "x": 4.4,
-        "y": 5.5197837761773005
-      },
-      "prevControl": {
-        "x": 4.65,
-        "y": 5.5197837761773005
-      },
-      "nextControl": {
-        "x": 3.739646294944731,
-        "y": 5.5197837761773005
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.3,
+        "x": 2.694,
         "y": 5.52
       },
       "prevControl": {
-        "x": 3.55,
+        "x": 2.944,
         "y": 5.52
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Chezy Bump End"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.1,
+      "waypointRelativePos": 0.05,
       "rotationDegrees": 90.0
     },
     {
-      "waypointRelativePos": 0.95,
+      "waypointRelativePos": 0.9183098591549176,
       "rotationDegrees": 180.0
     }
   ],
