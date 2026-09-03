@@ -32,33 +32,49 @@
     },
     {
       "anchor": {
-        "x": 1.0,
+        "x": 0.9,
         "y": 6.0
       },
       "prevControl": {
-        "x": 1.0,
-        "y": 5.75
+        "x": 1.0752462465637445,
+        "y": 5.821705992626451
+      },
+      "nextControl": {
+        "x": 0.7247537534362555,
+        "y": 6.178294007373549
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.9,
+        "y": 6.5
+      },
+      "prevControl": {
+        "x": 0.9,
+        "y": 6.25
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depot Chezy End"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0455097399259872,
+      "waypointRelativePos": 1.1,
       "rotationDegrees": 180.0
     },
     {
-      "waypointRelativePos": 1.5956555818256575,
+      "waypointRelativePos": 1.6,
       "rotationDegrees": 160.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.3518610421836244,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 1.7,
+      "maxWaypointRelativePos": 3.0,
       "constraints": {
         "maxVelocity": 0.2,
         "maxAcceleration": 10.0,

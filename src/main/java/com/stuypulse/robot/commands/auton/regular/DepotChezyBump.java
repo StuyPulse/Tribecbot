@@ -48,13 +48,13 @@ public class DepotChezyBump extends SequentialCommandGroup {
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[0]),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[1]),
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[2]),
+            
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
 
-            new WaitCommand(Seconds.of(2.0)), //let robot stabilize
-            new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
+            // new SwerveResetPose(CommandSwerveDrivetrain.getInstance().getPose()), //MT2 fused pose bcs of addVisionmeasurement
+            new WaitCommand(Seconds.of(1.3)), //let robot stabilize
             //if it does not work, remove and increase wait time to 1+ seconds. Will delay but probably be accurate.
             //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
-
-            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
