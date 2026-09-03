@@ -16,31 +16,15 @@
     },
     {
       "anchor": {
-        "x": 1.5,
-        "y": 5.52
-      },
-      "prevControl": {
-        "x": 1.765,
-        "y": 5.52
-      },
-      "nextControl": {
-        "x": 1.25,
-        "y": 5.52
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 0.9,
         "y": 6.0
       },
       "prevControl": {
-        "x": 1.0752462465637445,
+        "x": 1.0752462465637447,
         "y": 5.821705992626451
       },
       "nextControl": {
-        "x": 0.7247537534362555,
+        "x": 0.7247537534362554,
         "y": 6.178294007373549
       },
       "isLocked": false,
@@ -57,24 +41,24 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot Pass 1 End"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1,
+      "waypointRelativePos": 0.55,
       "rotationDegrees": 180.0
     },
     {
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.8,
       "rotationDegrees": 160.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.7,
-      "maxWaypointRelativePos": 3.0,
+      "minWaypointRelativePos": 0.7017776570855613,
+      "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 0.2,
         "maxAcceleration": 10.0,
@@ -96,7 +80,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
