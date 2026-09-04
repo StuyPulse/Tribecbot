@@ -7,8 +7,10 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.deprecated.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyBump;
 import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
+import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -491,15 +493,15 @@ public class RobotContainer {
         Left_BC.register(autonChooser);
 
         AutonConfig Depot_Chezy_Bump = new AutonConfig("Depot Chezy Bump", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Chezy Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Bump To Depot");
+        "Left Chezy Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
         Depot_Chezy_Bump.register(autonChooser);
 
         AutonConfig Depot_Chezy_Bump_Abrupt = new AutonConfig("Depot Chezy Bump Abrupt", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Chezy Abrupt Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Bump To Depot");
+        "Left Chezy Abrupt Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
         Depot_Chezy_Bump_Abrupt.register(autonChooser);
 
         AutonConfig Non_Depot_Chezy_Bump = new AutonConfig("Non Depot Chezy Bump", ChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Score To Corner Extra Long");
+        "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
         Non_Depot_Chezy_Bump.register(autonChooser);
 
         // AutonConfig Exp_Right_Champs = new AutonConfig("Exp Right Champs", MasterAuton::new, prevWaitTimeOne, prevWaitTimeTwo,
@@ -546,13 +548,13 @@ public class RobotContainer {
         // L_CN_NF_CD.register(autonChooser);
         
         // FOLLOWS
-        // AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
-        // LEFT_FOLLOW.register(autonChooser);
+        AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
+        LEFT_FOLLOW.register(autonChooser);
 
-        // AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Right Follow To Bump", "Right Follow To Score");
-        // RIGHT_FOLLOW.register(autonChooser);
+        AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Follow To Bump", "Right Follow To Score");
+        RIGHT_FOLLOW.register(autonChooser);
         // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
         //     "Right Trench Score To Corner");
         // EMPTY_TEST.register(autonChooser);

@@ -31,7 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Score To Corner Extra Long"
+            "pathName": "Right Bump Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Score End To NZ"
           }
         }
       ]

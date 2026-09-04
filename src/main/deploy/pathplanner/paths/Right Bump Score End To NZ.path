@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.311591575701539,
+        "y": 0.6508504516583079
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.561359622399083,
+        "y": 0.6400837042899797
+      },
+      "isLocked": false,
+      "linkedName": "Right Bump Score End"
+    },
+    {
+      "anchor": {
+        "x": 4.294266666666667,
+        "y": 0.6341888888888878
+      },
+      "prevControl": {
+        "x": 2.8107145722411415,
+        "y": 0.6039123155332642
+      },
+      "nextControl": {
+        "x": 5.726700000000001,
+        "y": 0.6634222222222217
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.4088111111111115,
+        "y": 0.9947333333333324
+      },
+      "prevControl": {
+        "x": 6.11963421721916,
+        "y": 0.7055564394413774
+      },
+      "nextControl": {
+        "x": 6.585587806407747,
+        "y": 1.1715100286299704
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.227344444444444,
+        "y": 1.9594333333333327
+      },
+      "prevControl": {
+        "x": 7.077344444444444,
+        "y": 1.759433333333333
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.25,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.8169014084506863,
+      "rotationDegrees": 45.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 45.0
+  },
+  "reversed": false,
+  "folder": "Chezy",
+  "idealStartingState": {
+    "velocity": 4.19,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

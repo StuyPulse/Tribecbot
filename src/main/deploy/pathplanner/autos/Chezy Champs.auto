@@ -7,43 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Chezy Score To Hub"
+            "pathName": "Champs Right To Shallow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Chezy Hub To Transition"
+            "pathName": "Champs Right Shallow To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Chezy NZ To Bump"
+            "pathName": "Champs Right Score To Corner"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Transition To Depot"
+            "pathName": "Champs Right Bite Score To Score"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Chezy Depot Pass 1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Chezy Depot Pass 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Chezy Depot Pass 3"
+            "pathName": "Champs Right Score To Corner"
           }
         }
       ]
