@@ -32,7 +32,7 @@ public class DepotChezyBump extends SequentialCommandGroup {
 
             new SuperstructureInterpolation(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-            new WaitCommand(Seconds.of(2)).deadlineFor( //configure for follow delay
+            new WaitCommand(Seconds.of(1.5)).deadlineFor( //configure for follow delay
                 new HandoffRun(),
                 new SpindexerRun(),
                 new IntakeStow()
