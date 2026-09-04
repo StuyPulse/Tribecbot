@@ -92,7 +92,7 @@
   "reversed": false,
   "folder": "Chezy",
   "idealStartingState": {
-    "velocity": 4.19,
+    "velocity": 0,
     "rotation": 0.0
   },
   "useDefaultConstraints": false
