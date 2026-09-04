@@ -56,7 +56,7 @@ public class ChezyBump extends SequentialCommandGroup {
             //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
-            new WaitCommand(Seconds.of(1.3)), //let robot stabilize
+            new WaitCommand(Seconds.of(0.5)), //let robot stabilize
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
