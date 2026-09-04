@@ -10,6 +10,7 @@ import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
+import com.stuypulse.robot.commands.intake.IntakeStow;
 import com.stuypulse.robot.commands.spindexer.SpindexerRun;
 import com.stuypulse.robot.commands.superstructure.SuperstructureAutoInterpolation;
 import com.stuypulse.robot.commands.superstructure.SuperstructureInterpolation;
@@ -36,7 +37,7 @@ public class ChezyBump extends SequentialCommandGroup {
             new WaitCommand(Seconds.of(1.5)).deadlineFor( //configure for follow delay
                 new HandoffRun(),
                 new SpindexerRun(),
-                new IntakeAutoDigest()
+                new IntakeStow()
             ).andThen( 
             //extra precaution bcs reviewing the logic, i dont see anything set the state back after the respecive Commands finish. 
             //worked b4 so if this does not work, just remove it

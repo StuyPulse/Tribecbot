@@ -7,8 +7,10 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.deprecated.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyBump;
 import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
+import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -546,13 +548,13 @@ public class RobotContainer {
         // L_CN_NF_CD.register(autonChooser);
         
         // FOLLOWS
-        // AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
-        // LEFT_FOLLOW.register(autonChooser);
+        AutonConfig LEFT_FOLLOW = new AutonConfig("Left Follow", LeftFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Follow To Bump", "Left Follow To Score", "Left Corner To Depot");
+        LEFT_FOLLOW.register(autonChooser);
 
-        // AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Right Follow To Bump", "Right Follow To Score");
-        // RIGHT_FOLLOW.register(autonChooser);
+        AutonConfig RIGHT_FOLLOW = new AutonConfig("Right Follow", RightFollow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Follow To Bump", "Right Follow To Score");
+        RIGHT_FOLLOW.register(autonChooser);
         // AutonConfig EMPTY_TEST = new AutonConfig("Empty Test", EmptyTest::new, prevWaitTimeOne, prevWaitTimeTwo,
         //     "Right Trench Score To Corner");
         // EMPTY_TEST.register(autonChooser);
