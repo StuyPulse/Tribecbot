@@ -60,12 +60,16 @@ public class ChezyBump extends SequentialCommandGroup {
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
+
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]).alongWith(
                 new HandoffRun(),
-                new SpindexerRun(),
-                new IntakeAutoDigest()
-                //all get turned off during teleop init - and this also means that after the path finishes, we will keep shooting in auton
+                new SpindexerRun()
+            ).deadlineFor(
+                new RepeatCommand(new IntakeAutoDigest())
             ),
+
+            new IntakeDeploy(),
+            
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5])
         );
 
