@@ -106,6 +106,9 @@
     },
     "transitory": {
       "Robot": {
+        "Handoff": {
+          "open": true
+        },
         "Spindexer": {
           "open": true
         },
@@ -118,8 +121,7 @@
               "open": true
             },
             "open": true
-          },
-          "open": true
+          }
         },
         "open": true
       },

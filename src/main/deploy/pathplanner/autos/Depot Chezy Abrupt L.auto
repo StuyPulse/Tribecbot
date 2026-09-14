@@ -31,7 +31,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Chezy Bump To Depot"
+            "pathName": "Left Chezy Depot Pass 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Depot Pass 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Depot Pass 3"
           }
         }
       ]
