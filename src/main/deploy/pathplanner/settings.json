@@ -8,8 +8,9 @@
     "BC modified",
     "Bump Stuff",
     "Follow",
-    "Shallow",
+    "Chezy",
     "PathFinder Test",
+    "Shallow",
     "To Depot",
     "To NZ",
     "To Score"
@@ -17,7 +18,8 @@
   "autoFolders": [
     "BC Extras",
     "BC Main",
-    "Duel"
+    "Duel",
+    "Chezy"
   ],
   "defaultMaxVel": 4.19,
   "defaultMaxAccel": 10.0,

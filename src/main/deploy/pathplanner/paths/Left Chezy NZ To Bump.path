@@ -3,55 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.237722419928826,
-        "y": 3.4271055753262156
+        "x": 7.0,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.532444642151049,
-        "y": 3.329661130881772
+        "x": 7.0,
+        "y": 5.5
       },
       "isLocked": false,
-      "linkedName": "Right NZ"
+      "linkedName": "Transition To Bump"
     },
     {
       "anchor": {
-        "x": 6.419771754636234,
-        "y": 1.4925534950071324
+        "x": 6.9,
+        "y": 5.52
       },
       "prevControl": {
-        "x": 6.44766178400938,
-        "y": 2.924425883014991
+        "x": 7.15,
+        "y": 5.52
       },
       "nextControl": {
-        "x": 6.399066666666666,
-        "y": 0.42955555555555525
+        "x": 6.239646294944731,
+        "y": 5.52
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.612,
-        "y": 0.559
+        "x": 2.75,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 6.311283927722302,
-        "y": 0.5283859724203506
+        "x": 3.0,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": "Chezy Bump End"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.23445825932504563,
+      "waypointRelativePos": 0.05,
       "rotationDegrees": 90.0
     },
     {
-      "waypointRelativePos": 1.488272921108742,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 0.9183098591549176,
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [],
@@ -62,17 +62,17 @@
     "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.7,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 0.0
+    "velocity": 4.19,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "To Score",
+  "folder": "Chezy",
   "idealStartingState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

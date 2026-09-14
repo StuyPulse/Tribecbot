@@ -262,6 +262,8 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new HandoffStop().alongWith(new SpindexerStop()));
         //Reset LEDs from auton. InstantCommand to be removed
         CommandScheduler.getInstance().schedule(new LEDApplyState(LedState.RESET).withTimeout(1.0));
+        
+        CommandScheduler.getInstance().schedule(new SpindexerStop().alongWith(new HandoffStop()));
 
         if (auto != null) {
             auto.cancel();

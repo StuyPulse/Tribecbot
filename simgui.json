@@ -97,7 +97,34 @@
     "Persistent Values": {
       "open": false
     },
+    "retained": {
+      "SmartDashboard": {
+        "Autonomous": {
+          "open": true
+        }
+      }
+    },
     "transitory": {
+      "Robot": {
+        "Handoff": {
+          "open": true
+        },
+        "Spindexer": {
+          "open": true
+        },
+        "Superstructure": {
+          "open": true
+        },
+        "Vision": {
+          "limelight-back": {
+            "Pose2d##v_/Robot/Vision/limelight-back/Pose MT2": {
+              "open": true
+            },
+            "open": true
+          }
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "FieldPositions": {
           "open": true
@@ -108,8 +135,7 @@
         "Robot": {
           "Auton": {
             "open": true
-          },
-          "open": true
+          }
         },
         "Spindexer": {
           "open": true
@@ -122,8 +148,7 @@
             "open": true
           },
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },

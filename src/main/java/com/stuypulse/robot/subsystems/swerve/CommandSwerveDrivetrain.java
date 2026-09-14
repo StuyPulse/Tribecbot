@@ -487,6 +487,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public Command followPathCommand(PathPlannerPath path) {
+        DogLog.log("Swerve/Last Path Followed", path.name);
         return AutoBuilder.followPath(path);
     }
 

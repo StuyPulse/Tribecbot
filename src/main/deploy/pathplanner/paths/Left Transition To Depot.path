@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.612,
-        "y": 0.559
+        "x": 2.75,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.199970867125222,
-        "y": 0.6068337301834346
+        "x": 2.5,
+        "y": 5.5
       },
       "isLocked": false,
-      "linkedName": "Right Trench Score"
+      "linkedName": "Chezy Bump End"
     },
     {
       "anchor": {
-        "x": 3.282,
-        "y": 0.559
+        "x": 1.4,
+        "y": 5.52
       },
       "prevControl": {
-        "x": 3.5164317899184905,
-        "y": 0.47215683172745937
+        "x": 1.6499999999999997,
+        "y": 5.52
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Corner"
+      "linkedName": "Bump To Depot"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.1,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 2.8,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Chezy",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 4.19,
+    "rotation": 180.0
   },
   "useDefaultConstraints": false
 }
