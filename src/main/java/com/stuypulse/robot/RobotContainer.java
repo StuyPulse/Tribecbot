@@ -459,21 +459,21 @@ public class RobotContainer {
         // L_CN_NFS.register(autonChooser);
 
         //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
-        AutonConfig Right_Champs = new AutonConfig("Right Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig Right_Champs = new AutonConfig("Right Chezy Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Champs Right To Shallow", "Champs Right Shallow To Score Wide", "Champs Right Bite Score To Score", "Champs Right Score To Corner");
         Right_Champs.register(autonChooser);
 
-        AutonConfig Left_Champs = new AutonConfig("Left Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig Left_Champs = new AutonConfig("Left Chezy Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Champs Left To Shallow", "Champs Left Shallow To Score Wide", "Champs Left Bite Score To Score", "Champs Left Score To Corner");
         Left_Champs.register(autonChooser);
 
-        AutonConfig Right_NY = new AutonConfig("Right NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "NY Right Trench To NZ", "NY Right NZ To Score", "NY Right Score To Score", "Right Score To Corner");
-        Right_NY.register(autonChooser);
+        // AutonConfig Right_NY = new AutonConfig("Right NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "NY Right Trench To NZ", "NY Right NZ To Score", "NY Right Score To Score", "Right Score To Corner");
+        // Right_NY.register(autonChooser);
 
-        AutonConfig Left_NY = new AutonConfig("Left NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "NY Left Trench To NZ", "NY Left NZ To Score", "NY Left Score To Score", "Left Score To Corner");
-        Left_NY.register(autonChooser);
+        // AutonConfig Left_NY = new AutonConfig("Left NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "NY Left Trench To NZ", "NY Left NZ To Score", "NY Left Score To Score", "Left Score To Corner");
+        // Left_NY.register(autonChooser);
 
         AutonConfig Right_Champs_NY = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "316 Champs Right To Shallow", "316 Champs Right Shallow To Score Wide", "316 NY Right Score To Score", "Right Score To Corner");
@@ -492,13 +492,13 @@ public class RobotContainer {
         Left_Champs_Greedy.register(autonChooser);
 
         //BC Score To Score NY is a shorened version of NY and w the slow down
-        AutonConfig Right_BC = new AutonConfig("Right BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner");
-        Right_BC.register(autonChooser);
+        // AutonConfig Right_BC = new AutonConfig("Right BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner");
+        // Right_BC.register(autonChooser);
 
-        AutonConfig Left_BC = new AutonConfig("Left BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner");
-        Left_BC.register(autonChooser);
+        // AutonConfig Left_BC = new AutonConfig("Left BC", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner");
+        // Left_BC.register(autonChooser);
 
         AutonConfig Depot_Chezy_Bump = new AutonConfig("Depot Chezy Bump", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Chezy Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
