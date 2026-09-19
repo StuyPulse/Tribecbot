@@ -476,11 +476,11 @@ public class RobotContainer {
         Left_NY.register(autonChooser);
 
         AutonConfig Right_Champs_NY = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "316 Champs Right To Shallow", "316 Champs Right Shallow To Score Wide", "316 NY Right Score To Score", "Right Score To Corner");
+        "Greedy Champs Right To Shallow", "Greedy Right Shallow To Score", "Greedy NY Right Score To Score", "Champs Right Score To Corner");
         Right_Champs_NY.register(autonChooser);
 
         AutonConfig Left_Champs_NY = new AutonConfig("Left Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "316 Champs Left To Shallow", "316 Champs Left Shallow To Score Wide", "316 NY Left Score To Score", "Left Score To Corner");
+        "Greedy Champs Left To Shallow", "Greedy Left Shallow To Score", "Greedy NY Left Score To Score", "Champs Left Score To Corner");
         Left_Champs_NY.register(autonChooser);
 
         //BC Score To Score NY is a shorened version of NY and w the slow down
