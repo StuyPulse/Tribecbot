@@ -483,11 +483,11 @@ public class RobotContainer {
         "316 Champs Left To Shallow", "316 Champs Left Shallow To Score Wide", "316 NY Left Score To Score", "Left Score To Corner");
         Left_Champs_NY.register(autonChooser);
 
-        AutonConfig Right_Champs_Greedy = new AutonConfig("Right Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig Right_Champs_Greedy = new AutonConfig("Right Champs NY Greedy", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Greedy Champs Right To Shallow", "Greedy Right Shallow To Score", "Greedy NY Right Score To Score", "Champs Right Score To Corner");
         Right_Champs_Greedy.register(autonChooser);
 
-        AutonConfig Left_Champs_Greedy = new AutonConfig("Left Champs NY", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
+        AutonConfig Left_Champs_Greedy = new AutonConfig("Left Champs NY Greedy", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Greedy Champs Left To Shallow", "Greedy Left Shallow To Score", "Greedy NY Left Score To Score", "Champs Left Score To Corner");
         Left_Champs_Greedy.register(autonChooser);
 
