@@ -9,9 +9,14 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
+
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import com.stuypulse.robot.commands.auton.regular.FastFollow;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.intake.IntakeDeploy;
 import com.stuypulse.robot.commands.leds.LEDApplyState;
@@ -28,14 +33,18 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
+import com.stuypulse.robot.util.AutonWrapper;
 import com.stuypulse.robot.util.EnergyUtil;
 import com.stuypulse.robot.util.FMSUtil;
 import com.stuypulse.robot.util.PhoenixUtil;
 import com.stuypulse.robot.util.superstructure.InterpolationCalculator;
 import com.stuypulse.robot.util.superstructure.SOTMCalculator;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
 import dev.doglog.DogLog;
 import dev.doglog.DogLogOptions;
+import dev.doglog.internal.tunable.Tunable;
+import edu.wpi.first.networktables.BooleanSubscriber;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -57,13 +66,14 @@ public class Robot extends TimedRobot {
     }
 
     private RobotContainer robot;
-    private Command auto;
+    private AutonWrapper auto;
     private static Alliance alliance;
     private static RobotMode mode;
     private static EnergyUtil energyUtil;
     private FMSUtil fmsUtil;
     private GcStatsCollector gcStatsCollector;
     public static boolean fmsAttached;
+    private BooleanSubscriber loggingAutonPath;
 
     private static int periodicCounter = 0;
 
@@ -94,6 +104,7 @@ public class Robot extends TimedRobot {
         energyUtil = new EnergyUtil();
         fmsUtil = new FMSUtil(true);
         gcStatsCollector = new GcStatsCollector();
+        loggingAutonPath = DogLog.tunable("Auton/logging Auton path?", true);
 
         DataLogManager.start();
         // SignalLogger.start();
@@ -194,7 +205,17 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         if (periodicCounter % Settings.LOGGING_FREQUENCY == 0) {
-            auto = robot.getAutonomousCommand();
+            if (auto != robot.getAutonomousCommand() && auto != null) {
+                auto.clearFieldObjects();
+
+                auto = robot.getAutonomousCommand();
+
+                auto.logPaths();
+            }
+
+            else {
+                auto = robot.getAutonomousCommand();
+            }
 
             if (DriverStation.getAlliance().isPresent()) {
                 alliance = DriverStation.getAlliance().get();
@@ -230,6 +251,7 @@ public class Robot extends TimedRobot {
 
         if (auto != null) {
             CommandScheduler.getInstance().schedule(auto);
+            auto.clearFieldObjects();
         }
 
     }
@@ -266,6 +288,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new SpindexerStop().alongWith(new HandoffStop()));
 
         if (auto != null) {
+            auto.clearFieldObjects();
             auto.cancel();
         }
     }

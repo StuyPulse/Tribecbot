@@ -14,6 +14,7 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.AutonWrapper;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -21,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class LeftFollow extends SequentialCommandGroup {
+public class LeftFollow extends AutonWrapper {
     
     public LeftFollow(PathPlannerPath... paths) {
-
+        super(paths);
         addCommands(
             
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),

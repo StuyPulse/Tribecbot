@@ -2,9 +2,12 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.util.List;
 import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
@@ -17,14 +20,17 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-
+import com.stuypulse.robot.util.AutonWrapper;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-public class FastFollow extends SequentialCommandGroup {
+public class FastFollow extends AutonWrapper {
+     
     public FastFollow(PathPlannerPath... paths) {
+        super(paths);
+        
         addCommands( 
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 

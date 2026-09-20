@@ -5,6 +5,8 @@
 /***************************************************************/
 package com.stuypulse.robot.commands.auton;
 
+import com.stuypulse.robot.util.AutonWrapper;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /*-
@@ -12,9 +14,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  *
  * @author Sam Belliveau
  */
-public class DoNothingAuton extends SequentialCommandGroup {
+public class DoNothingAuton extends AutonWrapper {
 
     public DoNothingAuton() {
+        super();
         addCommands(
                 /** Do a whole lot of nothing */
                 );

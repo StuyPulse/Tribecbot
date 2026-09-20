@@ -74,6 +74,7 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
+import com.stuypulse.robot.util.AutonWrapper;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
@@ -128,7 +129,7 @@ public class RobotContainer {
     private final LEDController leds = LEDController.getInstance();
 
     // Autons
-    private static SendableChooser<Command> autonChooser = new SendableChooser<>();
+    private static SendableChooser<AutonWrapper> autonChooser = new SendableChooser<>();
     private static SmartNumber waitTimeOne = new SmartNumber("Robot/Auton/Wait Time 1", 0.0);
     private static SmartNumber waitTimeTwo = new SmartNumber("Robot/Auton/Wait Time 2", 0.0);
     private static double prevWaitTimeOne = 0.0;
@@ -646,8 +647,8 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Handoff Quasi Backwards", handoffSysId.quasistatic(Direction.kReverse));
     }
 
-    public Command getAutonomousCommand() {
-        Command autonCommand = autonChooser.getSelected();
+    public AutonWrapper getAutonomousCommand() {
+        AutonWrapper autonCommand = autonChooser.getSelected();
 
         if (autonCommand == null) {
             autonCommand = new DoNothingAuton();

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import com.pathplanner.lib.path.PathPlannerPath;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -28,12 +29,12 @@ public class PathUtil {
     public static class AutonConfig {
     
         private final String name;
-        private final Function<PathPlannerPath[], Command> auton;
+        private final Function<PathPlannerPath[], AutonWrapper> auton;
         private final String[] paths;
         private final Optional<Double> waitTimeOne;
         private final Optional<Double> waitTimeTwo;
 
-        public AutonConfig(String name, Function<PathPlannerPath[], Command> auton, double waitTimeOne, double waitTimeTwo, String... paths) {
+        public AutonConfig(String name, Function<PathPlannerPath[], AutonWrapper> auton, double waitTimeOne, double waitTimeTwo, String... paths) {
             this.name = name;
             this.auton = auton;
             this.paths = paths;
@@ -49,24 +50,24 @@ public class PathUtil {
             }
         }
 
-        public AutonConfig(String name, Function<PathPlannerPath[], Command> auton, String... paths) {
+        public AutonConfig(String name, Function<PathPlannerPath[], AutonWrapper> auton, String... paths) {
             this(name, auton, 0.0, 0.0, paths);
         }
 
-        private Command buildCommand() {
-            Command autonCommand = auton.apply(loadPaths(paths));
+        private AutonWrapper buildCommand() {
+            AutonWrapper autonCommand = auton.apply(loadPaths(paths));
             // if (waitTimeOne.isPresent() && waitTimeOne.get() > 0.0) {
             //     return Commands.sequence(new WaitCommand(waitTimeOne.get()), autonCommand);
             // }
             return autonCommand;
         }
         
-        public AutonConfig register(SendableChooser<Command> chooser) {
+        public AutonConfig register(SendableChooser<AutonWrapper> chooser) {
             chooser.addOption(name, buildCommand());
             return this;
         }
                 
-        public AutonConfig registerDefault(SendableChooser<Command> chooser) {
+        public AutonConfig registerDefault(SendableChooser<AutonWrapper> chooser) {
             chooser.setDefaultOption(name, auton.apply(loadPaths(paths)));
             return this;
         }
