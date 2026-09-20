@@ -207,15 +207,11 @@ public class Robot extends TimedRobot {
         if (periodicCounter % Settings.LOGGING_FREQUENCY == 0) {
             if (auto != robot.getAutonomousCommand() && auto != null) {
                 auto.clearFieldObjects();
-
-                auto = robot.getAutonomousCommand();
-
-                auto.logPaths();
             }
 
-            else {
-                auto = robot.getAutonomousCommand();
-            }
+            auto = robot.getAutonomousCommand();
+            auto.logPaths();
+            
 
             if (DriverStation.getAlliance().isPresent()) {
                 alliance = DriverStation.getAlliance().get();

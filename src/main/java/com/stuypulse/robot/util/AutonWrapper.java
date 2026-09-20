@@ -36,7 +36,7 @@ public class AutonWrapper extends SequentialCommandGroup {
     public void clearFieldObjects() {
         for (int i = 0; i < subPaths.size(); i++) {
             Field.FIELD2D.getObject("path: " + subPaths.get(i).name).setPoses(new ArrayList<>());
-            Field.FIELD2D.getObject("path: " + subPaths.get(i).name).close();
+            // Field.FIELD2D.getObject("path: " + subPaths.get(i).name).close();
         } 
     }
 }
