@@ -1,0 +1,79 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.704,
+        "y": 4.52
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.704,
+        "y": 5.52
+      },
+      "isLocked": false,
+      "linkedName": "Cut Bump Start"
+    },
+    {
+      "anchor": {
+        "x": 6.454,
+        "y": 5.52
+      },
+      "prevControl": {
+        "x": 6.704,
+        "y": 5.52
+      },
+      "nextControl": {
+        "x": 5.793646294944731,
+        "y": 5.52
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.75,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 3.0,
+        "y": 5.5
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Chezy Bump End"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.05,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 0.9183098591549176,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 4.19,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Chezy",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
