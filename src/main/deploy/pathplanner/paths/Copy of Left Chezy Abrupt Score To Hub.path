@@ -39,41 +39,9 @@
         "x": 8.026388888888889,
         "y": 5.868311111111111
       },
-      "nextControl": {
-        "x": 8.026388888888889,
-        "y": 4.293311111111111
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.155,
-        "y": 4.0
-      },
-      "prevControl": {
-        "x": 8.155000000000001,
-        "y": 4.0
-      },
-      "nextControl": {
-        "x": 6.905,
-        "y": 4.0
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 6.0,
-        "y": 4.0
-      },
-      "prevControl": {
-        "x": 6.25,
-        "y": 4.0
-      },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Hub To Transition"
+      "linkedName": "Cut Chezy Follow Pass 1 End"
     }
   ],
   "rotationTargets": [
@@ -84,25 +52,13 @@
     {
       "waypointRelativePos": 1.3783111018742447,
       "rotationDegrees": -45.0
-    },
-    {
-      "waypointRelativePos": 2.0845070422535334,
-      "rotationDegrees": -90.0
-    },
-    {
-      "waypointRelativePos": 2.095774647887321,
-      "rotationDegrees": -90.0
-    },
-    {
-      "waypointRelativePos": 2.95,
-      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.2665012406947904,
-      "maxWaypointRelativePos": 4.0,
+      "minWaypointRelativePos": 0.7296559257236563,
+      "maxWaypointRelativePos": 2.75,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 10.0,
@@ -125,7 +81,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "Chezy",
