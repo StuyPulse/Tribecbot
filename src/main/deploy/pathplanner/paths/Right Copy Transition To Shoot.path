@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.35,
+        "x": 2.5,
         "y": 2.5
       },
       "isLocked": false,
@@ -20,12 +20,12 @@
         "y": 2.3
       },
       "prevControl": {
-        "x": 1.676776695296637,
-        "y": 2.476776695296637
+        "x": 1.75,
+        "y": 2.3
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Transition To Shoot"
     }
   ],
   "rotationTargets": [],
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -135.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Chezy",

@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Chezy Abrupt Score To Hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Chezy Hub To Transition"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Copy Chezy NZ To Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Transition To Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Score End To NZ"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Chezy",
+  "choreoAuto": false
+}

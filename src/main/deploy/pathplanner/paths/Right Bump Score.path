@@ -12,7 +12,7 @@
         "y": 2.0758777777777775
       },
       "isLocked": false,
-      "linkedName": "Transition To Shoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 0.7960111111111112,
-        "y": 1.3357888888888885
+        "y": 1.3357888888888882
       },
       "nextControl": {
         "x": 1.6811201117476902,
@@ -45,10 +45,6 @@
     }
   ],
   "rotationTargets": [
-    {
-      "waypointRelativePos": 0.14084507042253544,
-      "rotationDegrees": -135.0
-    },
     {
       "waypointRelativePos": 0.8788732394366193,
       "rotationDegrees": -45.0
@@ -87,7 +83,7 @@
   "folder": "Chezy",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -135.0
   },
   "useDefaultConstraints": false
 }
