@@ -63,7 +63,7 @@ public class DepotChezyBump extends SequentialCommandGroup {
 
             // Depot paths + auto digestion
             new ParallelCommandGroup(
-                new RepeatCommand(new IntakeAutoDigest()),
+                // new RepeatCommand(new IntakeAutoDigest()), removed for F1
                 new SequentialCommandGroup(
                     // Pass 1
                     CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
