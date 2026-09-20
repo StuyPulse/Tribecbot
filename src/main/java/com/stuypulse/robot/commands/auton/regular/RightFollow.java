@@ -17,6 +17,7 @@ import com.stuypulse.robot.constants.Gains.Spindexer;
 import com.stuypulse.robot.subsystems.handoff.Handoff;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.AutonWrapper;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -24,9 +25,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class RightFollow extends SequentialCommandGroup {
+public class RightFollow extends AutonWrapper {
     
     public RightFollow(PathPlannerPath... paths) {
+        super(paths);
 
         addCommands(
             

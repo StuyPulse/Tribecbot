@@ -12,6 +12,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Autonomous": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Handoff Reverse": "Command",
@@ -106,13 +107,10 @@
     },
     "transitory": {
       "Robot": {
-        "Handoff": {
+        "Auton": {
           "open": true
         },
-        "Spindexer": {
-          "open": true
-        },
-        "Superstructure": {
+        "Swerve": {
           "open": true
         },
         "Vision": {
@@ -149,6 +147,12 @@
           },
           "open": true
         }
+      },
+      "Tunable": {
+        "Auton": {
+          "open": true
+        },
+        "open": true
       }
     }
   },

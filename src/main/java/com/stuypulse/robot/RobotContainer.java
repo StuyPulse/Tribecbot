@@ -9,7 +9,7 @@ import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.deprecated.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyBump;
-import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
+//import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
 import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
 import com.stuypulse.robot.commands.auton.regular.FastFollowLeft;
 import com.stuypulse.robot.commands.auton.regular.FastFollowRight;
@@ -76,6 +76,7 @@ import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
 import com.stuypulse.robot.subsystems.vision.LimelightVision.MegaTagMode;
+import com.stuypulse.robot.util.AutonWrapper;
 import com.stuypulse.robot.util.PathUtil.AutonConfig;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
@@ -130,7 +131,7 @@ public class RobotContainer {
     private final LEDController leds = LEDController.getInstance();
 
     // Autons
-    private static SendableChooser<Command> autonChooser = new SendableChooser<>();
+    private static SendableChooser<AutonWrapper> autonChooser = new SendableChooser<>();
     private static SmartNumber waitTimeOne = new SmartNumber("Robot/Auton/Wait Time 1", 0.0);
     private static SmartNumber waitTimeTwo = new SmartNumber("Robot/Auton/Wait Time 2", 0.0);
     private static double prevWaitTimeOne = 0.0;
@@ -511,9 +512,9 @@ public class RobotContainer {
         "FF Left Score To Hub", "FF Left NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
         Fast_Follow_Left.register(autonChooser);
 
-        AutonConfig Fast_Follow_Right = new AutonConfig("Fast Follow Right", FastFollowRight::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "FF Right Score To Hub", "FF Right NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
-        Fast_Follow_Right.register(autonChooser);
+        // AutonConfig Fast_Follow_Right = new AutonConfig("Fast Follow Right", FastFollowRight::new, prevWaitTimeOne, prevWaitTimeTwo,
+        // "FF Right Score To Hub", "FF Right NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
+        // Fast_Follow_Right.register(autonChooser);
 
         AutonConfig Depot_Chezy_Bump_Abrupt = new AutonConfig("Depot Chezy Bump Abrupt", DepotChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         "Left Chezy Abrupt Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
@@ -660,8 +661,8 @@ public class RobotContainer {
         // autonChooser.addOption("SysID Handoff Quasi Backwards", handoffSysId.quasistatic(Direction.kReverse));
     }
 
-    public Command getAutonomousCommand() {
-        Command autonCommand = autonChooser.getSelected();
+    public AutonWrapper getAutonomousCommand() {
+        AutonWrapper autonCommand = autonChooser.getSelected();
 
         if (autonCommand == null) {
             autonCommand = new DoNothingAuton();
