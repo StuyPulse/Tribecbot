@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FF Right Score To Hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FF Right NZ To Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Transition To Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Bump Score End To NZ"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Chezy",
+  "choreoAuto": false
+}
