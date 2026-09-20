@@ -36,6 +36,7 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
@@ -74,6 +75,8 @@ public class IntakeImpl extends Intake {
     StatusSignal<Voltage> pivotMotorVoltage;
     StatusSignal<Voltage> rollerLeaderVoltage;
     StatusSignal<Voltage> rollerFollowerVoltage;
+    StatusSignal<AngularVelocity> rollerLeaderVelocity;
+    StatusSignal<AngularVelocity> rollerFollowerVelocity;
 
     public IntakeImpl() {
         pivotConfig = new Motors.TalonFXConfig()
@@ -135,11 +138,14 @@ public class IntakeImpl extends Intake {
         pivotTemperature = pivot.getDeviceTemp();
         pivotMotorVoltage = pivot.getMotorVoltage();
         rollerLeaderVoltage = rollerLeader.getMotorVoltage();
+        rollerLeaderVelocity = rollerLeader.getVelocity();
+        rollerFollowerVelocity = rollerFollower.getVelocity();       
         rollerFollowerVoltage = rollerFollower.getMotorVoltage();
         PhoenixUtil.registerToRio(pivotSupplyCurrent, pivotStatorCurrent, pivotMotorPosition, rollerLeaderSupplyCurrent,
                 rollerLeaderStatorCurrent, rollerFollowerSupplyCurrent, rollerFollowerStatorCurrent,
                 rollerLeaderTemperature, rollerFollowerTemperature, pivotTemperature, pivotMotorVoltage,
                 rollerLeaderVoltage, rollerFollowerVoltage, pivotTorqueCurrent);
+
 
         pivotStalling = BStream.create(
                 () -> Math.abs(pivotSupplyCurrent.getValueAsDouble()) > Settings.Intake.PIVOT_STALL_CURRENT)
@@ -284,6 +290,10 @@ public class IntakeImpl extends Intake {
                         rollerFollowerSupplyCurrent.getValueAsDouble(), "Amps");
                 DogLog.log("Intake/Roller Follower Stator Current",
                         rollerFollowerStatorCurrent.getValueAsDouble(), "Amps");
+                DogLog.log("Intkae/Roller Leader RPM", 
+                    rollerLeaderVelocity.getValueAsDouble());
+                DogLog.log("Intkae/Roller Follower RPM", 
+                    rollerFollowerVelocity.getValueAsDouble());
                 
                 // Pivot
                 DogLog.log("Intake/Pivot Voltage", pivotMotorVoltage.getValueAsDouble(), "Volts");
@@ -301,7 +311,6 @@ public class IntakeImpl extends Intake {
                             + String.valueOf(Ports.Intake.ROLLER_LEADER) + ")", rollerLeader.isConnected());
                     DogLog.log("Robot/CAN/Main/Intake Roller Follower Motor Connected? (ID "
                             + String.valueOf(Ports.Intake.ROLLER_FOLLOWER) + ")", rollerFollower.isConnected());
-
                 }
                 Robot.getEnergyUtil().logEnergyUsage(getName(), getCurrentDraw());
             }

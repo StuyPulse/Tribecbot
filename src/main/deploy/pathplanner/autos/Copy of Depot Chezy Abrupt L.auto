@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Left Chezy Abrupt Score To Hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Left Chezy NZ To Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Transition To Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Depot Pass 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Depot Pass 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Chezy Depot Pass 3"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Chezy",
+  "choreoAuto": false
+}

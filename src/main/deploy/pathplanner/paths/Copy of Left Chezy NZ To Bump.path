@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.026388888888889,
+        "y": 5.243311111111111
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.240766666666667,
+        "y": 3.5965
+      },
+      "isLocked": false,
+      "linkedName": "Cut Chezy Follow Pass 1 End"
+    },
+    {
+      "anchor": {
+        "x": 7.155,
+        "y": 4.0
+      },
+      "prevControl": {
+        "x": 7.57870629902049,
+        "y": 3.962994962672027
+      },
+      "nextControl": {
+        "x": 6.642677777777777,
+        "y": 4.0447444444444445
+      },
+      "isLocked": false,
+      "linkedName": "Cutoff Abrupt"
+    },
+    {
+      "anchor": {
+        "x": 6.9,
+        "y": 5.52
+      },
+      "prevControl": {
+        "x": 7.15,
+        "y": 5.52
+      },
+      "nextControl": {
+        "x": 6.239646294944731,
+        "y": 5.52
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.75,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 3.0,
+        "y": 5.5
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Chezy Bump End"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.729460580912868,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 1.3319502074688732,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2.163485477178396,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 900.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 4.19,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Chezy",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}
