@@ -2,9 +2,12 @@ package com.stuypulse.robot.commands.auton.regular;
 
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.util.List;
 import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
@@ -17,14 +20,14 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-public class FastFollow extends SequentialCommandGroup {
-    public FastFollow(PathPlannerPath... paths) {
+public class FastFollowRight extends SequentialCommandGroup {
+     
+    public FastFollowRight(PathPlannerPath... paths) {
         addCommands( 
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
@@ -62,20 +65,17 @@ public class FastFollow extends SequentialCommandGroup {
             new SpindexerRun(),
 
             // Depot paths + auto digestion
-            new ParallelCommandGroup(
-                new RepeatCommand(new IntakeAutoDigest()),
-                new SequentialCommandGroup(
-                    // Pass 1
-                    CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
+            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]).deadlineFor(
+                new RepeatCommand(new IntakeAutoDigest())
+            ),
 
-                    // Back and forth (passes 2 & 3)
-                    new RepeatCommand(
-                        new SequentialCommandGroup(
-                            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
-                            CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5])
-                        )
-                    )
-                )
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
+
+            // NZ Trip 2
+            new ParallelCommandGroup(
+                CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]),
+                new HandoffStop(),
+                new SpindexerStop()
             )
         );
     }
