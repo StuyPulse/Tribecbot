@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST LT to NZ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST Backsweep"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST Shoot Curve"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST Cleanup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST Shoot Curve"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ST Squeaky Clean"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
