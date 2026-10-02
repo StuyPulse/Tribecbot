@@ -290,9 +290,9 @@ public class RobotContainer {
 
         // Manual Left Corner Scoring
         driver.getLeftButton()
+            .onTrue(new IntakeRunRollers())
             .onTrue(
                 new ParallelCommandGroup(
-                    new IntakeRunRollers(),
                     new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                         .andThen(new HandoffRun())
                         .andThen(new SpindexerRun())
