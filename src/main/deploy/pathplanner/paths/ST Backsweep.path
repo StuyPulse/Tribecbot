@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 8.247626808449075,
-        "y": 3.118880135995371
+        "y": 3.119
       },
       "prevControl": null,
       "nextControl": {
         "x": 8.236144965277777,
-        "y": 4.667485532407408
+        "y": 4.667605396412037
       },
       "isLocked": false,
       "linkedName": "ST 1"
@@ -104,7 +104,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Shallow",
+  "folder": "Simple",
   "idealStartingState": {
     "velocity": 2.0,
     "rotation": 90.0
