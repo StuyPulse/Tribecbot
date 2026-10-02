@@ -11,6 +11,7 @@ import com.stuypulse.robot.commands.auton.deprecated.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyBump;
 import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
 import com.stuypulse.robot.commands.auton.regular.FastFollow;
+import com.stuypulse.robot.commands.auton.regular.LeftSimpleTwo;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
@@ -576,6 +577,11 @@ public class RobotContainer {
         // AutonConfig PATH_FIND_TEST = new AutonConfig("Path Find Test", PathfindTest::new, prevWaitTimeOne, prevWaitTimeTwo,
         //  "Straight One", "Straight Two");
         // PATH_FIND_TEST.register(autonChooser);
+
+        //ROBO REPLAY
+        AutonConfig SIMPLE_TWO = new AutonConfig("Simple Two", LeftSimpleTwo::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "ST LT to NZ", "ST Backsweep", "ST Shoot Curve", "ST Cleanup", "ST Shoot Curve", "ST Squeaky Clean");
+        SIMPLE_TWO.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }
