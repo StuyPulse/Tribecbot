@@ -295,12 +295,13 @@ public class RobotContainer {
                     new IntakeRunRollers(),
                     new SuperstructureLeftCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                         .andThen(new HandoffRun())
-                        .andThen(new SpindexerRun()),
+                        .andThen(new SpindexerRun())
+                        .andThen(new RepeatCommand(new IntakeTeleopDigest())),
                     // new SwerveResetPoseLeftCorner(),
                     new SwerveXMode()
                 )
                     )
-            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
 
         // Manual Right Corner Scoring
         driver.getRightButton()
@@ -310,8 +311,9 @@ public class RobotContainer {
             // .onTrue(new SwerveResetPoseRightCorner())
             .whileTrue(new SuperstructureRightCorner().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
-                .andThen(new SpindexerRun())))
-            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+                .andThen(new SpindexerRun())
+                .andThen(new RepeatCommand(new IntakeTeleopDigest()))))
+            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop().alongWith(new IntakeDeploy())));
 
         // Manual KB Distance Scoring
         driver.getBottomButton()
@@ -321,8 +323,9 @@ public class RobotContainer {
             .onTrue(new SwerveResetPoseKBShot())
             .whileTrue(new SuperstructureKB().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
                 .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
-                .andThen(new SpindexerRun())))
-            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()));
+                .andThen(new SpindexerRun())
+                .andThen(new RepeatCommand(new IntakeTeleopDigest()))))
+            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
 
     }
 
