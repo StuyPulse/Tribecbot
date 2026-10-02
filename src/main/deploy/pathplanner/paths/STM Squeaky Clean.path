@@ -12,16 +12,16 @@
         "y": 0.674625361689815
       },
       "isLocked": false,
-      "linkedName": "ST 3"
+      "linkedName": "STM 3"
     },
     {
       "anchor": {
         "x": 6.305137429494177,
-        "y": 3.7956939706149937
+        "y": 3.4
       },
       "prevControl": {
         "x": 6.305137429494177,
-        "y": 0.15469397061499368
+        "y": 0.19999999999999973
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,11 +30,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.23771587171052636,
+      "waypointRelativePos": 0.29874246162280677,
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 0.591908237390351,
+      "waypointRelativePos": 0.6906524122807017,
       "rotationDegrees": 90.0
     }
   ],

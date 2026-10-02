@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 8.247626808449075,
-        "y": 3.118880135995371
+        "y": 2.7
       },
       "prevControl": {
         "x": 8.247626808449075,
-        "y": 0.6188801359953708
+        "y": 0.20000000000000018
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ST 1"
+      "linkedName": "STM 1"
     }
   ],
   "rotationTargets": [],
