@@ -31,6 +31,8 @@ import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -85,15 +87,19 @@ public class SwerveDriveSOTM extends Command {
         return new Vector2D(driver.getLeftStick().y, -driver.getLeftStick().x);
     }
 
+    public void setisidleint(boolean value) {
+        isIdleInit = value;
+    }
+
     @Override
     public void execute() {
         DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
 
         if (isIdle.get()) {
             if (!isIdleInit) {
-                CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
+                CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get() /* && superstructure.getState() == SuperstructureState.SOTM */  ).andThen(new IntakeDeploy()).finallyDo(() -> setisidleint(false)));
                 swerve.setControl(new SwerveRequest.SwerveDriveBrake());
-                isIdleInit = true;
+                setisidleint(true);
             }
         } else {
             Vector2D velocity = speed.get();
