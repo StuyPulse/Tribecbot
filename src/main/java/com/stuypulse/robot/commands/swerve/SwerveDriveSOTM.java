@@ -45,6 +45,7 @@ public class SwerveDriveSOTM extends Command {
     private final VStream speed;
     private final IStream turn;
 
+    private boolean isIdleInit;
     private final BStream isIdle;
 
     public SwerveDriveSOTM(Gamepad driver) {
@@ -72,9 +73,11 @@ public class SwerveDriveSOTM extends Command {
         isIdle = BStream.create(
             () -> getDriverInputAsVelocity().magnitude() <= Drive.DEADBAND && Math.abs(driver.getRightX()) <= Turn.DEADBAND)
                 .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
+        isIdleInit = false;
 
         this.driver = driver;
 
+        
        addRequirements(swerve);
     }
 
@@ -87,16 +90,18 @@ public class SwerveDriveSOTM extends Command {
         DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
 
         if (isIdle.get()) {
-            // if (!isIdleInit) {
-            //     CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
+            if (!isIdleInit) {
+                CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
                 swerve.setControl(new SwerveRequest.SwerveDriveBrake());
-            // }
+                isIdleInit = true;
+            }
         } else {
             Vector2D velocity = speed.get();
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
                 .withRotationalRate(-turn.get()));
+            isIdleInit = false;
         }
 
     }
