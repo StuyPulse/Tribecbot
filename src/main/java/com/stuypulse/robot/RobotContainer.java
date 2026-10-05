@@ -583,6 +583,10 @@ public class RobotContainer {
         "ST LT to NZ", "ST Backsweep", "ST Shoot Curve", "ST Cleanup", "ST Shoot Curve", "ST Squeaky Clean");
         SIMPLE_TWO.register(autonChooser);
 
+        AutonConfig SIMPLE_TWO_MINI = new AutonConfig("Simple Two", LeftSimpleTwo::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "STM LT to NZ", "STM Backsweep", "STM Shoot Curve", "STM Cleanup", "STM Shoot Curve", "STM Squeaky Clean");
+        SIMPLE_TWO_MINI.register(autonChooser);
+
         SmartDashboard.putData("Autonomous", autonChooser);
     }
 
