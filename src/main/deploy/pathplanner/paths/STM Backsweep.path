@@ -100,11 +100,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Simple",
+  "folder": null,
   "idealStartingState": {
     "velocity": 2.0,
     "rotation": 90.0
