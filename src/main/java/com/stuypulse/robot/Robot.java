@@ -210,7 +210,9 @@ public class Robot extends TimedRobot {
 
                 auto = robot.getAutonomousCommand();
 
-                auto.logPaths();
+                if (auto != null) {
+                    auto.logPaths();
+                }
             } else {
                 auto = robot.getAutonomousCommand();
             }
