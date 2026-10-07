@@ -110,6 +110,7 @@ public class SwerveDriveSOTM extends Command {
         } else {
             Vector2D velocity = speed.get();
             digestCommand.cancel();
+            CommandScheduler.getInstance().schedule(new IntakeDeploy());
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
@@ -132,6 +133,7 @@ public class SwerveDriveSOTM extends Command {
     @Override
     public void end(boolean inturrupted) {
         digestCommand.cancel();
+        CommandScheduler.getInstance().schedule(new IntakeDeploy());
         isIdleInit = false;
     }
 }
