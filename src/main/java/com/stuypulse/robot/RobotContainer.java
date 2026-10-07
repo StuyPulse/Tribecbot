@@ -9,7 +9,7 @@ import com.stuypulse.robot.commands.BuzzController;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.deprecated.LeftFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyBump;
-import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
+// import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
 import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
 import com.stuypulse.robot.commands.auton.regular.FastFollowLeft;
 import com.stuypulse.robot.commands.auton.regular.FastFollowRight;
