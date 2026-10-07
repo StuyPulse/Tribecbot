@@ -16,26 +16,31 @@
     },
     {
       "anchor": {
-        "x": 8.247626808449075,
-        "y": 2.7
+        "x": 8.240766666666667,
+        "y": 2.505
       },
       "prevControl": {
-        "x": 8.247626808449075,
-        "y": 0.20000000000000018
+        "x": 8.240766666666667,
+        "y": 0.004999999999999893
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "STM 1"
+      "linkedName": "New"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 90.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6957277823920267,
+      "minWaypointRelativePos": 0.6143226919758464,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.2,
+        "maxVelocity": 0.9,
         "maxAcceleration": 10.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
