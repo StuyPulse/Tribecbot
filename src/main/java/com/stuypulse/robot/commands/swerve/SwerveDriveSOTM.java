@@ -50,6 +50,8 @@ public class SwerveDriveSOTM extends Command {
     private boolean isIdleInit;
     private final BStream isIdle;
 
+    private final Command digestCommand;
+
     public SwerveDriveSOTM(Gamepad driver) {
         swerve = CommandSwerveDrivetrain.getInstance();
         superstructure = Superstructure.getInstance();
@@ -77,6 +79,8 @@ public class SwerveDriveSOTM extends Command {
                 .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
         isIdleInit = false;
 
+
+        digestCommand = new IntakeAutoDigest().onlyIf(() -> isIdle.and(() -> superstructure.getState() == SuperstructureState.SOTM).get()).andThen(new IntakeDeploy());
         this.driver = driver;
 
         
@@ -96,13 +100,16 @@ public class SwerveDriveSOTM extends Command {
         DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
 
         if (isIdle.get()) {
-            if (!isIdleInit) {
-                CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get() /* && superstructure.getState() == SuperstructureState.SOTM */  ).andThen(new IntakeDeploy()).finallyDo(() -> setisidleint(false)));
-                swerve.setControl(new SwerveRequest.SwerveDriveBrake());
+            if (!isIdleInit && superstructure.getState() == SuperstructureState.SOTM && !digestCommand.isScheduled()) {
+                // CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get() /* && superstructure.getState() == SuperstructureState.SOTM */  ).andThen(new IntakeDeploy()).finallyDo(() -> setisidleint(false)));
+                CommandScheduler.getInstance().schedule(digestCommand);
                 setisidleint(true);
             }
+            swerve.setControl(new SwerveRequest.SwerveDriveBrake());
+
         } else {
             Vector2D velocity = speed.get();
+            digestCommand.cancel();
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
@@ -120,5 +127,11 @@ public class SwerveDriveSOTM extends Command {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void end(boolean inturrupted) {
+        digestCommand.cancel();
+        isIdleInit = false;
     }
 }
