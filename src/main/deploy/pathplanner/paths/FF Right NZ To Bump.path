@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.704,
-        "y": 4.52
+        "x": 6.7,
+        "y": 3.48
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.704,
-        "y": 5.52
-      },
-      "isLocked": false,
-      "linkedName": "Cut Bump Start"
-    },
-    {
-      "anchor": {
-        "x": 6.454,
-        "y": 5.52
-      },
-      "prevControl": {
-        "x": 6.704,
-        "y": 5.52
-      },
-      "nextControl": {
-        "x": 5.793646294944731,
-        "y": 5.52
+        "x": 6.7,
+        "y": 2.56
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.75,
-        "y": 5.5
+        "x": 6.0,
+        "y": 2.3
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 5.5
+        "x": 6.9,
+        "y": 2.3
+      },
+      "nextControl": {
+        "x": 5.339646294944731,
+        "y": 2.3
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.4,
+        "y": 2.3
+      },
+      "prevControl": {
+        "x": 3.65,
+        "y": 2.3
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Chezy Bump End"
+      "linkedName": "Bump To Transition"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.05,
-      "rotationDegrees": 90.0
+      "rotationDegrees": -90.0
     },
     {
       "waypointRelativePos": 0.9183098591549176,
@@ -73,7 +73,7 @@
   "folder": "Chezy",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

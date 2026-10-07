@@ -3,28 +3,44 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.704,
-        "y": 4.52
+        "x": 8.026388888888889,
+        "y": 5.243311111111111
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.704,
-        "y": 5.52
+        "x": 8.240766666666667,
+        "y": 3.5965
       },
       "isLocked": false,
-      "linkedName": "Cut Bump Start"
+      "linkedName": "Cut Chezy Follow Pass 1 End"
     },
     {
       "anchor": {
-        "x": 6.454,
+        "x": 7.155,
+        "y": 4.0
+      },
+      "prevControl": {
+        "x": 7.57870629902049,
+        "y": 3.962994962672027
+      },
+      "nextControl": {
+        "x": 6.642677777777777,
+        "y": 4.0447444444444445
+      },
+      "isLocked": false,
+      "linkedName": "Cutoff Abrupt"
+    },
+    {
+      "anchor": {
+        "x": 6.9,
         "y": 5.52
       },
       "prevControl": {
-        "x": 6.704,
+        "x": 7.15,
         "y": 5.52
       },
       "nextControl": {
-        "x": 5.793646294944731,
+        "x": 6.239646294944731,
         "y": 5.52
       },
       "isLocked": false,
@@ -46,11 +62,15 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.05,
+      "waypointRelativePos": 0.729460580912868,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 1.3319502074688732,
       "rotationDegrees": 90.0
     },
     {
-      "waypointRelativePos": 0.9183098591549176,
+      "waypointRelativePos": 2.163485477178396,
       "rotationDegrees": 180.0
     }
   ],
@@ -73,7 +93,7 @@
   "folder": "Chezy",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

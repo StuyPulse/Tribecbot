@@ -11,16 +11,16 @@ import com.stuypulse.robot.constants.Field;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class AutonWrapper extends SequentialCommandGroup {
+public class Auton extends SequentialCommandGroup {
     public List<PathPlannerPath> subPaths = new ArrayList<PathPlannerPath>();
 
-    public AutonWrapper(PathPlannerPath... paths) {
+    public Auton(PathPlannerPath... paths) {
         for (PathPlannerPath path : paths) {
             subPaths.add(path);
         }
     }
 
-    public AutonWrapper() {}
+    public Auton() {}
 
     public void logPaths() {
         for (int i = 0; i < subPaths.size(); i++) {

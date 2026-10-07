@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.Seconds;
 import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
 import com.stuypulse.robot.commands.intake.IntakeAutoDigest;
@@ -18,16 +17,17 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.robot.util.AutonWrapper;
+import com.stuypulse.robot.util.Auton;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-public class ChezyBump extends AutonWrapper {
+public class ChezyBump extends Auton {
     public ChezyBump(PathPlannerPath... paths) {
         super(paths);
         addCommands( 
+            
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
 
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
@@ -56,20 +56,16 @@ public class ChezyBump extends AutonWrapper {
             //alt = reset to the paths[3].getHolonomicStartingPose().get(). Assumes bump will always go perfect and only pose drift occurs, less accurate, but faster than waiting
 
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[3]),
-            new WaitCommand(Seconds.of(0.5)), //let robot stabilize
+            new WaitCommand(Seconds.of(1.3)), //let robot stabilize
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
-
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[4]).alongWith(
                 new HandoffRun(),
-                new SpindexerRun()
-            ).deadlineFor(
-                new RepeatCommand(new IntakeAutoDigest())
+                new SpindexerRun(),
+                new IntakeAutoDigest()
+                //all get turned off during teleop init - and this also means that after the path finishes, we will keep shooting in auton
             ),
-
-            new IntakeDeploy(),
-            
             CommandSwerveDrivetrain.getInstance().followPathCommand(paths[5])
         );
 

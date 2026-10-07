@@ -23,17 +23,17 @@ import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.intake.Intake.PivotState;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.Auton;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class TwoCornerShallow extends SequentialCommandGroup {
+public class TwoCornerShallow extends Auton {
     //champs sequence but uses different timings with shallow
     public TwoCornerShallow(PathPlannerPath... paths) {
-
+        super(paths);
         addCommands(
 
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),

@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.5,
-        "y": 7.5
+        "y": 0.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 4.4,
-        "y": 7.5
+        "y": 0.5
       },
       "isLocked": false,
       "linkedName": null
@@ -17,31 +17,31 @@
     {
       "anchor": {
         "x": 5.532,
-        "y": 7.5
+        "y": 0.5
       },
       "prevControl": {
         "x": 4.5322696487911855,
-        "y": 7.476778784013384
+        "y": 0.47677878401338436
       },
       "nextControl": {
         "x": 6.431757316087935,
-        "y": 7.520899094387954
+        "y": 0.5208990943879543
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.026388888888889,
-        "y": 5.243311111111111
+        "x": 8.02,
+        "y": 2.76
       },
       "prevControl": {
-        "x": 8.026388888888889,
-        "y": 5.868311111111111
+        "x": 8.02,
+        "y": 2.135
       },
       "nextControl": {
-        "x": 8.026388888888889,
-        "y": 4.493311111111111
+        "x": 8.02,
+        "y": 3.51
       },
       "isLocked": false,
       "linkedName": null
@@ -64,16 +64,16 @@
     },
     {
       "anchor": {
-        "x": 6.704,
-        "y": 4.52
+        "x": 6.7,
+        "y": 3.48
       },
       "prevControl": {
-        "x": 6.704,
-        "y": 4.27
+        "x": 6.7,
+        "y": 3.73
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Cut Bump Start"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
@@ -83,15 +83,15 @@
     },
     {
       "waypointRelativePos": 1.3783111018742447,
-      "rotationDegrees": -45.0
+      "rotationDegrees": 45.0
     },
     {
       "waypointRelativePos": 2.0845070422535334,
-      "rotationDegrees": -90.0
+      "rotationDegrees": 90.0
     },
     {
       "waypointRelativePos": 2.095774647887321,
-      "rotationDegrees": -90.0
+      "rotationDegrees": 90.0
     },
     {
       "waypointRelativePos": 2.95,
@@ -125,7 +125,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "Chezy",

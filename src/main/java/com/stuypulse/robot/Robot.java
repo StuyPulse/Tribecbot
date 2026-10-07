@@ -33,7 +33,7 @@ import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure.SuperstructureState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.subsystems.vision.LimelightVision;
-import com.stuypulse.robot.util.AutonWrapper;
+import com.stuypulse.robot.util.Auton;
 import com.stuypulse.robot.util.EnergyUtil;
 import com.stuypulse.robot.util.FMSUtil;
 import com.stuypulse.robot.util.PhoenixUtil;
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     }
 
     private RobotContainer robot;
-    private AutonWrapper auto;
+    private Auton auto;
     private static Alliance alliance;
     private static RobotMode mode;
     private static EnergyUtil energyUtil;

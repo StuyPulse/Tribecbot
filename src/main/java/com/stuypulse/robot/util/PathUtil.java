@@ -29,12 +29,12 @@ public class PathUtil {
     public static class AutonConfig {
     
         private final String name;
-        private final Function<PathPlannerPath[], AutonWrapper> auton;
+        private final Function<PathPlannerPath[], Auton> auton;
         private final String[] paths;
         private final Optional<Double> waitTimeOne;
         private final Optional<Double> waitTimeTwo;
 
-        public AutonConfig(String name, Function<PathPlannerPath[], AutonWrapper> auton, double waitTimeOne, double waitTimeTwo, String... paths) {
+        public AutonConfig(String name, Function<PathPlannerPath[], Auton> auton, double waitTimeOne, double waitTimeTwo, String... paths) {
             this.name = name;
             this.auton = auton;
             this.paths = paths;
@@ -50,24 +50,24 @@ public class PathUtil {
             }
         }
 
-        public AutonConfig(String name, Function<PathPlannerPath[], AutonWrapper> auton, String... paths) {
+        public AutonConfig(String name, Function<PathPlannerPath[], Auton> auton, String... paths) {
             this(name, auton, 0.0, 0.0, paths);
         }
 
-        private AutonWrapper buildCommand() {
-            AutonWrapper autonCommand = auton.apply(loadPaths(paths));
+        private Auton buildCommand() {
+            Auton autonCommand = auton.apply(loadPaths(paths));
             // if (waitTimeOne.isPresent() && waitTimeOne.get() > 0.0) {
             //     return Commands.sequence(new WaitCommand(waitTimeOne.get()), autonCommand);
             // }
             return autonCommand;
         }
         
-        public AutonConfig register(SendableChooser<AutonWrapper> chooser) {
+        public AutonConfig register(SendableChooser<Auton> chooser) {
             chooser.addOption(name, buildCommand());
             return this;
         }
                 
-        public AutonConfig registerDefault(SendableChooser<AutonWrapper> chooser) {
+        public AutonConfig registerDefault(SendableChooser<Auton> chooser) {
             chooser.setDefaultOption(name, auton.apply(loadPaths(paths)));
             return this;
         }

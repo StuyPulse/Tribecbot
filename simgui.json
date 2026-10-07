@@ -107,10 +107,13 @@
     },
     "transitory": {
       "Robot": {
-        "Auton": {
+        "Handoff": {
           "open": true
         },
-        "Swerve": {
+        "Spindexer": {
+          "open": true
+        },
+        "Superstructure": {
           "open": true
         },
         "Vision": {
@@ -147,16 +150,13 @@
           },
           "open": true
         }
-      },
-      "Tunable": {
-        "Auton": {
-          "open": true
-        },
-        "open": true
       }
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "open": true
+    },
     "visible": true
   }
 }
