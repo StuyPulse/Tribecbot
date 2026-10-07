@@ -13,6 +13,12 @@
         {
           "type": "path",
           "data": {
+            "pathName": "STM Connection"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Copy of STM Backsweep"
           }
         },
@@ -26,6 +32,18 @@
           "type": "path",
           "data": {
             "pathName": "STM Cleanup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Connection 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Over Bump"
           }
         },
         {

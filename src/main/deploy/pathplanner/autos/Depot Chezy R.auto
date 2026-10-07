@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Chezy Score To Hub"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Chezy Hub To Transition"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Chezy NZ To Bump"
+            "pathName": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Transition To Shoot"
+            "pathName": null
           }
         },
         {
