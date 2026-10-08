@@ -33,8 +33,8 @@ public class LeftSimpleTwo extends AutonWrapper {
             Commands.defer(() -> new WaitCommand(RobotContainer.getWaitTimeOne()), Set.of()),
 
             swerve.followPathCommand(paths[0]).alongWith(new WaitCommand(0.2).andThen(new IntakeDeploy())),
-            swerve.followPathCommand(paths[1]).alongWith(new SuperstructureAutoInterpolation()),
-            swerve.followPathCommand(paths[2]).alongWith(new SuperstructureSOTM()),
+            swerve.followPathCommand(paths[1]),
+            swerve.followPathCommand(paths[2]).alongWith(new SuperstructureAutoInterpolation()),
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
@@ -49,11 +49,12 @@ public class LeftSimpleTwo extends AutonWrapper {
 
             new ParallelCommandGroup(
                 swerve.followPathCommand(paths[4]),
-                swerve.followPathCommand(paths[5]),
-                swerve.followPathCommand(paths[6]),
                 new HandoffStop(),
                 new SpindexerStop()
-            ),  
+            ),
+            
+            swerve.followPathCommand(paths[5]),
+            swerve.followPathCommand(paths[6]),
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),

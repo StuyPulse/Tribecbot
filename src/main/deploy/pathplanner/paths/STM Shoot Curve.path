@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55882772698326,
-        "y": 2.505
+        "x": 3.603806688955604,
+        "y": 2.6399041916848613
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4687743415665935,
-        "y": 2.4984013310185187
+        "x": 2.316819959970888,
+        "y": 2.619209879912663
       },
       "isLocked": false,
       "linkedName": "STM 2"
     },
     {
       "anchor": {
-        "x": 3.4208567708333337,
-        "y": 0.674625361689815
+        "x": 3.44239105713246,
+        "y": 0.5417503070414842
       },
       "prevControl": {
-        "x": 2.3067243200231484,
-        "y": 0.6689828559027787
+        "x": 2.3282586063222745,
+        "y": 0.5361078012544479
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.539514802631579,
+      "waypointRelativePos": 0.4844178316885965,
       "rotationDegrees": -90.0
     }
   ],
@@ -40,7 +40,7 @@
       "minWaypointRelativePos": 0.08184956395348837,
       "maxWaypointRelativePos": 0.8917151162790704,
       "constraints": {
-        "maxVelocity": 0.6,
+        "maxVelocity": 0.5,
         "maxAcceleration": 10.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -66,7 +66,7 @@
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

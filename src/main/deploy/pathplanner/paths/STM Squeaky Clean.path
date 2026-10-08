@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4208567708333337,
-        "y": 0.674625361689815
+        "x": 3.44239105713246,
+        "y": 0.5417503070414842
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.420856770833334,
-        "y": 0.674625361689815
+        "x": 6.643818276928675,
+        "y": 0.5105017762286708
       },
       "isLocked": false,
       "linkedName": "STM 3"
     },
     {
       "anchor": {
-        "x": 6.305137429494177,
-        "y": 3.4
+        "x": 8.000674752092431,
+        "y": 2.3452471115356617
       },
       "prevControl": {
-        "x": 6.305137429494177,
-        "y": 0.19999999999999973
+        "x": 7.124931370542212,
+        "y": 0.7515856418304214
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,6 @@
     {
       "waypointRelativePos": 0.29874246162280677,
       "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.6906524122807017,
-      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [],
@@ -51,12 +47,12 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 63.40744978409838
   },
   "reversed": false,
-  "folder": "Simple",
+  "folder": null,
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

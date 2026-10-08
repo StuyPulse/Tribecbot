@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4208567708333337,
-        "y": 0.674625361689815
+        "x": 3.44239105713246,
+        "y": 0.5417503070414842
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.056066684861718,
-        "y": 0.6339521925036389
+        "x": 7.0776009711608445,
+        "y": 0.501077137855308
       },
       "isLocked": false,
       "linkedName": "STM 3"
@@ -38,7 +38,21 @@
       "rotationDegrees": 38.46406068795081
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7413378647214854,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 0.95,
+        "maxAcceleration": 10.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 900.0,
+        "nominalVoltage": 12.7,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -50,7 +64,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0.95,
     "rotation": 90.0
   },
   "reversed": false,
