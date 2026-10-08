@@ -91,26 +91,23 @@ public class SwerveDriveSOTM extends Command {
         return new Vector2D(driver.getLeftStick().y, -driver.getLeftStick().x);
     }
 
-    public void setisidleint(boolean value) {
-        isIdleInit = value;
-    }
-
     @Override
     public void execute() {
         DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
 
         if (isIdle.get()) {
             if (!isIdleInit && superstructure.getState() == SuperstructureState.SOTM && !digestCommand.isScheduled()) {
-                // CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get() /* && superstructure.getState() == SuperstructureState.SOTM */  ).andThen(new IntakeDeploy()).finallyDo(() -> setisidleint(false)));
                 CommandScheduler.getInstance().schedule(digestCommand);
-                setisidleint(true);
+                isIdleInit = true;
             }
             swerve.setControl(new SwerveRequest.SwerveDriveBrake());
 
         } else {
             Vector2D velocity = speed.get();
-            digestCommand.cancel();
-            CommandScheduler.getInstance().schedule(new IntakeDeploy());
+            if (digestCommand.isScheduled()) {
+                digestCommand.cancel();
+                CommandScheduler.getInstance().schedule(new IntakeDeploy());
+            }
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
@@ -132,8 +129,10 @@ public class SwerveDriveSOTM extends Command {
 
     @Override
     public void end(boolean inturrupted) {
-        digestCommand.cancel();
-        CommandScheduler.getInstance().schedule(new IntakeDeploy());
+        if (digestCommand.isScheduled()) {
+            digestCommand.cancel();
+            CommandScheduler.getInstance().schedule(new IntakeDeploy());
+        }
         isIdleInit = false;
     }
 }
