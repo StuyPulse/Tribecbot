@@ -34,11 +34,12 @@ public class LeftSimpleTwo extends AutonWrapper {
 
             swerve.followPathCommand(paths[0]).alongWith(new WaitCommand(0.2).andThen(new IntakeDeploy())),
             swerve.followPathCommand(paths[1]).alongWith(new SuperstructureAutoInterpolation()),
+            swerve.followPathCommand(paths[2]).alongWith(new SuperstructureSOTM()),
 
             new SuperstructureSOTM(),
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
             new ParallelCommandGroup(
-                swerve.followPathCommand(paths[2]),
+                swerve.followPathCommand(paths[3]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 new WaitCommand(0.5)
@@ -47,7 +48,9 @@ public class LeftSimpleTwo extends AutonWrapper {
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             new ParallelCommandGroup(
-                swerve.followPathCommand(paths[3]),
+                swerve.followPathCommand(paths[4]),
+                swerve.followPathCommand(paths[5]),
+                swerve.followPathCommand(paths[6]),
                 new HandoffStop(),
                 new SpindexerStop()
             ),  
@@ -56,7 +59,7 @@ public class LeftSimpleTwo extends AutonWrapper {
             new WaitUntilCommand(() -> Superstructure.getInstance().atTolerance()),
                 //.deadlineFor(swerve.run(() -> swerve.setControl(new SwerveRequest.Idle()))),
             new ParallelCommandGroup(
-                swerve.followPathCommand(paths[4]),
+                swerve.followPathCommand(paths[7]),
                 new HandoffRun(),
                 new SpindexerRun(),
                 
@@ -66,7 +69,7 @@ public class LeftSimpleTwo extends AutonWrapper {
             new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
 
             new ParallelCommandGroup(
-                swerve.followPathCommand(paths[5]),
+                swerve.followPathCommand(paths[8]),
                 new HandoffStop(),
                 new SpindexerStop()
             )
