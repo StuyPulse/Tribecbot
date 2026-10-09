@@ -599,7 +599,7 @@ public class RobotContainer {
         // SIMPLE_TWO.register(autonChooser);
 
         AutonConfig SIMPLE_TWO_MINI = new AutonConfig("Simple Two Mini", LeftSimpleTwo::new, prevWaitTimeOne, prevWaitTimeTwo,
-        "STM LT to NZ", "STM Connection","Copy of STM Backsweep","STM Shoot Curve", "STM Cleanup", "STM Connection 2", "STM Over Bump", "STM Shoot Curve", "STM Squeaky Clean");
+        "STM LT to NZ", "STM Connection","Copy of STM Backsweep","STM Shoot Curve 1", "STM Cleanup", "STM Connection 2", "STM Over Bump", "STM Shoot Curve 2", "STM Squeaky Clean");
         SIMPLE_TWO_MINI.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);

@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.*;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-public class LeftSimpleTwo extends AutonWrapper {
-    public LeftSimpleTwo(PathPlannerPath... paths) {
+public class RightSimpleTwo extends AutonWrapper {
+    public RightSimpleTwo(PathPlannerPath... paths) {
         
         super(paths);
 
