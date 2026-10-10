@@ -3,44 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3,
-        "y": 2.622
+        "x": 3.4270111111111112,
+        "y": 7.531
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0130132710152835,
-        "y": 2.6013056882278014
+        "x": 7.0622210513337595,
+        "y": 7.571670827977223
       },
       "isLocked": false,
-      "linkedName": "STM 2"
+      "linkedName": "STMD 4"
     },
     {
       "anchor": {
-        "x": 3.4270111111111112,
-        "y": 0.4685333333333336
+        "x": 8.27,
+        "y": 6.198
       },
       "prevControl": {
-        "x": 2.257677777777778,
-        "y": 0.2054333333333329
+        "x": 8.293157824454715,
+        "y": 7.544918666103955
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "STM 3"
+      "linkedName": "STMD 5"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4844178316885965,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 0.21426809210526315,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.46,
+      "rotationDegrees": -18.995
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.08184956395348837,
-      "maxWaypointRelativePos": 0.8917151162790704,
+      "minWaypointRelativePos": 0.7633539244186043,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 0.4,
+        "maxVelocity": 1.5,
         "maxAcceleration": 10.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -60,14 +64,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0.4,
-    "rotation": 180.0
+    "velocity": 2.0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

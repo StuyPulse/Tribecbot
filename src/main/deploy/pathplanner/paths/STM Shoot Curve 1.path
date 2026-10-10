@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.3,
-        "y": 2.6399041916848613
+        "y": 2.622
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.0130132710152835,
-        "y": 2.619209879912663
+        "y": 2.6013056882278014
       },
       "isLocked": false,
       "linkedName": "STM 2"
