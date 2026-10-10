@@ -3,52 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.75,
-        "y": 5.5
+        "x": 7.156695892467249,
+        "y": 2.6399041916848613
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.75,
-        "y": 5.5
+        "x": 6.0445988844684315,
+        "y": 2.6399041916848613
       },
       "isLocked": false,
-      "linkedName": "Chezy Bump End"
+      "linkedName": "New2"
     },
     {
       "anchor": {
-        "x": 1.4,
-        "y": 5.52
+        "x": 3.3,
+        "y": 2.6399041916848613
       },
       "prevControl": {
-        "x": 2.4000000000000004,
-        "y": 5.52
+        "x": 4.169961893888,
+        "y": 2.6399041916848613
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bump To Depot"
+      "linkedName": "STM 2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3000000000000027,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.8,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.19,
+    "maxAcceleration": 10.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 12.7,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Chezy",
+  "folder": null,
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 1.5,
     "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

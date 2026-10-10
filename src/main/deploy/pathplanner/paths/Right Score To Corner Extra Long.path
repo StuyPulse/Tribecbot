@@ -12,7 +12,7 @@
         "y": 2.3691911418624385
       },
       "isLocked": false,
-      "linkedName": "Transition To Shoot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -40,7 +40,7 @@
         "y": 2.1263112086081977
       },
       "nextControl": {
-        "x": 0.7773647954557136,
+        "x": 0.7773647954557134,
         "y": 2.5084265496701628
       },
       "isLocked": false,
@@ -65,7 +65,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.25,
+    "maxVelocity": 0.2,
     "maxAcceleration": 4.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,

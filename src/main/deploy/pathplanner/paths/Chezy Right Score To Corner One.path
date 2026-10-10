@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.75,
-        "y": 5.5
+        "x": 2.0,
+        "y": 2.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.75,
-        "y": 5.5
+        "x": 1.587971130397284,
+        "y": 2.347835997896055
       },
       "isLocked": false,
-      "linkedName": "Chezy Bump End"
+      "linkedName": "Right Bump Post Chezy"
     },
     {
       "anchor": {
-        "x": 1.4,
-        "y": 5.52
+        "x": 1.67,
+        "y": 2.3
       },
       "prevControl": {
-        "x": 2.4000000000000004,
-        "y": 5.52
+        "x": 1.9044317899184904,
+        "y": 2.213156831727459
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bump To Depot"
+      "linkedName": "First Score End Chezy"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.8,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 0.1,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 900.0,
     "nominalVoltage": 12.0,

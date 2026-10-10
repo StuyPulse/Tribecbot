@@ -3,32 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0,
-        "y": 6.0
+        "x": 3.4208567708333337,
+        "y": 0.674625361689815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1905767438016288,
-        "y": 6.161803908240711
+        "x": 6.420856770833334,
+        "y": 0.674625361689815
       },
       "isLocked": false,
-      "linkedName": "Depot Chezy End"
+      "linkedName": "ST 3"
     },
     {
       "anchor": {
-        "x": 1.3,
-        "y": 6.3
+        "x": 6.305137429494177,
+        "y": 3.7956939706149937
       },
       "prevControl": {
-        "x": 1.1094232561983703,
-        "y": 6.13819609175929
+        "x": 6.305137429494177,
+        "y": 0.15469397061499368
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.23771587171052636,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.591908237390351,
+      "rotationDegrees": 90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +51,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Chezy",
+  "folder": "Simple",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

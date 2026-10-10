@@ -19,6 +19,7 @@ import com.stuypulse.robot.commands.swerve.SwerveResetHeading;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import com.stuypulse.robot.util.AutonWrapper;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -31,9 +32,11 @@ import java.util.Set;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 
-public class TwoCorner extends SequentialCommandGroup {
+public class TwoCorner extends AutonWrapper {
     //Champs sequence
+
     public TwoCorner(PathPlannerPath... paths) {
+        super(paths);
 
         addCommands(
 

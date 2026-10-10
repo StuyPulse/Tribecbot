@@ -1,0 +1,67 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM LT to NZ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Connection"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of STM Backsweep"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Shoot Curve 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Cleanup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Connection 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Over Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Shoot Curve 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STM Squeaky Clean"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
