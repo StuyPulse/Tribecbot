@@ -4,34 +4,34 @@
     {
       "anchor": {
         "x": 3.3,
-        "y": 2.622
+        "y": 5.36
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0130132710152835,
-        "y": 2.6013056882278014
+        "x": 2.0130131925080743,
+        "y": 5.380689428804247
       },
       "isLocked": false,
-      "linkedName": "STM 2"
+      "linkedName": "STMD 3"
     },
     {
       "anchor": {
         "x": 3.4270111111111112,
-        "y": 0.4685333333333336
+        "y": 7.531
       },
       "prevControl": {
-        "x": 2.257677777777778,
-        "y": 0.2054333333333329
+        "x": 2.257676016824389,
+        "y": 7.794092173418191
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "STM 3"
+      "linkedName": "STMD 4"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.4844178316885965,
-      "rotationDegrees": -90.0
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [
@@ -40,7 +40,7 @@
       "minWaypointRelativePos": 0.08184956395348837,
       "maxWaypointRelativePos": 0.8917151162790704,
       "constraints": {
-        "maxVelocity": 0.4,
+        "maxVelocity": 0.5,
         "maxAcceleration": 10.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,

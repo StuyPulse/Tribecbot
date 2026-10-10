@@ -16,6 +16,7 @@ import com.stuypulse.robot.commands.auton.regular.FastFollowRight;
 //import com.stuypulse.robot.commands.auton.regular.FastFollow;
 import com.stuypulse.robot.commands.auton.regular.LeftSimpleTwo;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
+import com.stuypulse.robot.commands.auton.regular.RightSimpleTwo;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -601,6 +602,10 @@ public class RobotContainer {
         AutonConfig SIMPLE_TWO_MINI = new AutonConfig("Simple Two Mini", LeftSimpleTwo::new, prevWaitTimeOne, prevWaitTimeTwo,
         "STM LT to NZ", "STM Connection","Copy of STM Backsweep","STM Shoot Curve 1", "STM Cleanup", "STM Connection 2", "STM Over Bump", "STM Shoot Curve 2", "STM Squeaky Clean");
         SIMPLE_TWO_MINI.register(autonChooser);
+
+        AutonConfig SIMPLE_TWO_MINI_DEPOT = new AutonConfig("Simple Two Mini Depot", RightSimpleTwo::new, prevWaitTimeOne, prevWaitTimeTwo,
+            "STMD RT to NZ", "STM Connection", "STMD Backsweep", "STMD Shoot Curve 1", "STMD Cleanup", "STMD Connection 2", "STMD Over Bump", "STMD Depot");
+        SIMPLE_TWO_MINI_DEPOT.register(autonChooser);
 
         SmartDashboard.putData("Autonomous", autonChooser);
     }

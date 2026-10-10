@@ -66,13 +66,7 @@ public class RightSimpleTwo extends AutonWrapper {
                 new HandoffRun(),
                 new SpindexerRun()
             ),
-            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy()),
-
-            new ParallelCommandGroup(
-                swerve.followPathCommand(paths[8]),
-                new HandoffStop(),
-                new SpindexerStop()
-            )
+            new SuperstructureAutoInterpolation().alongWith(new IntakeDeploy())
         );
     }
 }

@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD RT to NZ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Connection"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Backsweep"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Shoot Curve 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Cleanup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Connection 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Over Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "STMD Depot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
