@@ -524,9 +524,9 @@ public class RobotContainer {
         "Left Chezy Abrupt Score To Hub", "Left Chezy Hub To Transition", "Left Chezy NZ To Bump", "Left Transition To Depot", "Left Chezy Depot Pass 1", "Left Chezy Depot Pass 2", "Left Chezy Depot Pass 3");
         Depot_Chezy_Bump_Abrupt.register(autonChooser);
 
-        // AutonConfig Non_Depot_Chezy_Bump = new AutonConfig("Non Depot Chezy Bump", ChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
-        // Non_Depot_Chezy_Bump.register(autonChooser);
+        AutonConfig Non_Depot_Chezy_Bump = new AutonConfig("Non Depot Chezy Bump", ChezyBump::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Chezy Score To Hub", "Right Chezy Hub To Transition", "Right Chezy NZ To Bump", "Right Transition To Shoot", "Right Bump Score", "Right Bump Score End To NZ");
+        Non_Depot_Chezy_Bump.register(autonChooser);
 
         // AutonConfig Right_Chezy_Bump = new AutonConfig("Right Chezy Bump", ChezyRightBump::new, prevWaitTimeOne, prevWaitTimeTwo,
         // "Right Score To Bump", "Right Bump To AZ", "Right Score To Corner Extra Long");

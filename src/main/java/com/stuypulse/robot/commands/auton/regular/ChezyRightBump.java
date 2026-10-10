@@ -16,14 +16,15 @@ import com.stuypulse.robot.commands.superstructure.SuperstructureSOTM;
 import com.stuypulse.robot.commands.swerve.SwerveResetPose;
 import com.stuypulse.robot.subsystems.superstructure.Superstructure;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-
+import com.stuypulse.robot.util.AutonWrapper;
 import com.stuypulse.robot.commands.handoff.HandoffStop;
 import com.stuypulse.robot.commands.spindexer.SpindexerStop;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-public class ChezyRightBump extends SequentialCommandGroup {
+public class ChezyRightBump extends AutonWrapper {
     public ChezyRightBump(PathPlannerPath... paths) {
+        super(paths);
         addCommands( 
             
             new SwerveResetPose(paths[0].getStartingHolonomicPose().get()),
