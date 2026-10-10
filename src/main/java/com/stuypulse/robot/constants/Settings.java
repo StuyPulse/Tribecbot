@@ -73,12 +73,12 @@ public interface Settings {
 
         Rotation2d THRESHOLD_TO_START_ROLLERS = Rotation2d.fromDegrees(10.0);
 
-        Rotation2d ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE = Rotation2d.fromDegrees(15.0);
+        Rotation2d ANGLE_THRESHOLD_FOR_HOLDING_VOLTAGE = Rotation2d.fromDegrees(20.0);
         double HOMING_VOLTAGE = 3.0;
         
         double PUSHDOWN_VOLTAGE = -3.0;
         double PUSHDOWN_CURRENT_TELEOP = -55.0;//new SmartNumber("Intake/Pushdown Current", -65.0); //TODO: GET ACTUAL TYTY
-        double PUSHDOWN_CURRENT_AUTON = -80.0;
+        double PUSHDOWN_CURRENT_AUTON = -100.0;
 
         double GEAR_RATIO = 32.0/20.0 * 64.0/18.0 * 60.0/8.0;
         
