@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Left Chezy Hub To Transition"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Left Chezy NZ To Bump"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Left Transition To Depot"
           }
         },
         {
