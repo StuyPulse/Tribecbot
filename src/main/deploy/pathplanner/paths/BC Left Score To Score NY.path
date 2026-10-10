@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.308,
+        "x": 3.63796005706134,
         "y": 7.440906488549619
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.486898777611385,
+        "x": 6.8168588346727255,
         "y": 7.524587798893349
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Trench Score"
     },
     {
       "anchor": {
@@ -108,7 +108,7 @@
       "minWaypointRelativePos": 0.4,
       "maxWaypointRelativePos": 0.7,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -121,7 +121,7 @@
       "minWaypointRelativePos": 1.0,
       "maxWaypointRelativePos": 1.2,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -134,7 +134,7 @@
       "minWaypointRelativePos": 1.67,
       "maxWaypointRelativePos": 1.92,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.282,
+        "x": 3.612,
         "y": 0.559
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.46089863956213,
+        "x": 6.79089863956213,
         "y": 0.4753134455838692
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Trench Score"
     },
     {
       "anchor": {
@@ -73,7 +73,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Trench Score"
     }
   ],
   "rotationTargets": [
@@ -108,7 +108,7 @@
       "minWaypointRelativePos": 1.67,
       "maxWaypointRelativePos": 1.92,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -121,7 +121,7 @@
       "minWaypointRelativePos": 0.4,
       "maxWaypointRelativePos": 0.7,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
@@ -134,7 +134,7 @@
       "minWaypointRelativePos": 1.0,
       "maxWaypointRelativePos": 1.25,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 7.0,
         "maxAngularVelocity": 300.0,
         "maxAngularAcceleration": 900.0,
