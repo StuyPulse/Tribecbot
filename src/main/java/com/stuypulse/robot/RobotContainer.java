@@ -15,6 +15,7 @@ import com.stuypulse.robot.commands.auton.regular.DepotChezyBump;
 import com.stuypulse.robot.commands.auton.regular.FastFollowLeft;
 import com.stuypulse.robot.commands.auton.regular.FastFollowRight;
 //import com.stuypulse.robot.commands.auton.regular.FastFollow;
+import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.auton.regular.LeftSimpleTwo;
 import com.stuypulse.robot.commands.auton.regular.RightFollow;
 import com.stuypulse.robot.commands.auton.regular.ChezyRightBump;
@@ -462,13 +463,13 @@ public class RobotContainer {
         // R_CNL_D.register(autonChooser);
 
         //RAN AT BATTLE CRY
-        // AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
-        // R_CN_NFS.register(autonChooser);
+        AutonConfig R_CN_NFS = new AutonConfig("Right Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Right Corner Bite Anti Collision", "Right NZ To Score Anti Collision", "BC Right Score To Score NY", "Right Score To Corner", "Right Score To NZ (F)");
+        R_CN_NFS.register(autonChooser);
 
-        // AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
-        // "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
-        // L_CN_NFS.register(autonChooser);
+        AutonConfig L_CN_NFS = new AutonConfig("Left Corner-Near Near-Far-Short", TwoCornerShallow::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "Left Corner Bite Anti Collision", "Left NZ To Score Anti Collision", "BC Left Score To Score NY", "Left Score To Corner", "Left Score To NZ (F)");
+        L_CN_NFS.register(autonChooser);
 
         //might be a duplicate of Right Far Near Shallow Far Near - if no changes to that were made
         AutonConfig Right_Champs = new AutonConfig("Right Chezy Champs", TwoCorner::new, prevWaitTimeOne, prevWaitTimeTwo,
