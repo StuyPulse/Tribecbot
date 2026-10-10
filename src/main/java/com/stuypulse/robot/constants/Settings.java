@@ -164,21 +164,21 @@ public interface Settings {
         public interface FerryRPMInterpolation {
             double[][] ferryDistanceRPMInterpolation = {
                 //Lab
-                {1, 2000},
-                {5.16, 3000.0},
-                {6.94, 3300.0},
-                {7.87, 3500.0},
-                {9.77, 4000.0},          //TODO: ADD DATA BACK IN COMP
-                {10.694, 4400.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
-                {11.516, 4600.0}
-                // comp
                 // {1, 2000},
-                // {5.16, 3300.0},
-                // {6.94, 3600.0},
-                // {7.87, 3800.0},
-                // {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
-                // {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
-                // {11.516, 4900.0}
+                // {5.16, 3000.0},
+                // {6.94, 3300.0},
+                // {7.87, 3500.0},
+                // {9.77, 4000.0},          //TODO: ADD DATA BACK IN COMP
+                // {10.694, 4400.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                // {11.516, 4600.0}
+                // comp
+                {1, 2000},
+                {5.16, 3300.0},
+                {6.94, 3600.0},
+                {7.87, 3800.0},
+                {9.77, 4300.0},          //TODO: ADD DATA BACK IN COMP
+                {10.694, 4700.0},        //STARTING FROM HERE THE DATA IS EXTRAPOLATED!!!
+                {11.516, 4900.0}
             };
         }
 
