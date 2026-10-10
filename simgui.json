@@ -107,10 +107,10 @@
     },
     "transitory": {
       "Robot": {
-        "Auton": {
+        "Handoff": {
           "open": true
         },
-        "Swerve": {
+        "Intake": {
           "open": true
         },
         "Vision": {
@@ -147,12 +147,6 @@
           },
           "open": true
         }
-      },
-      "Tunable": {
-        "Auton": {
-          "open": true
-        },
-        "open": true
       }
     }
   },

@@ -31,6 +31,8 @@ import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -45,7 +47,10 @@ public class SwerveDriveSOTM extends Command {
     private final VStream speed;
     private final IStream turn;
 
+    private boolean isIdleInit;
     private final BStream isIdle;
+
+    private final Command digestCommand;
 
     public SwerveDriveSOTM(Gamepad driver) {
         swerve = CommandSwerveDrivetrain.getInstance();
@@ -72,9 +77,13 @@ public class SwerveDriveSOTM extends Command {
         isIdle = BStream.create(
             () -> getDriverInputAsVelocity().magnitude() <= Drive.DEADBAND && Math.abs(driver.getRightX()) <= Turn.DEADBAND)
                 .filtered(new BDebounce.Rising(0.5), new BDebounce.Falling(0.1));
+        isIdleInit = false;
 
+
+        digestCommand = new IntakeAutoDigest().onlyIf(() -> isIdle.and(() -> superstructure.getState() == SuperstructureState.SOTM).get()).andThen(new IntakeDeploy());
         this.driver = driver;
 
+        
        addRequirements(swerve);
     }
 
@@ -87,16 +96,23 @@ public class SwerveDriveSOTM extends Command {
         DogLog.log("Swerve/SOTM/Idle?", isIdle.get());
 
         if (isIdle.get()) {
-            // if (!isIdleInit) {
-            //     CommandScheduler.getInstance().schedule(new IntakeAutoDigest().repeatedly().onlyWhile(() -> isIdle.get()).andThen(new IntakeDeploy()));
-                swerve.setControl(new SwerveRequest.SwerveDriveBrake());
-            // }
+            if (!isIdleInit && superstructure.getState() == SuperstructureState.SOTM && !digestCommand.isScheduled()) {
+                CommandScheduler.getInstance().schedule(digestCommand);
+                isIdleInit = true;
+            }
+            swerve.setControl(new SwerveRequest.SwerveDriveBrake());
+
         } else {
             Vector2D velocity = speed.get();
+            if (digestCommand.isScheduled()) {
+                digestCommand.cancel();
+                CommandScheduler.getInstance().schedule(new IntakeDeploy());
+            }
             swerve.setControl(swerve.getFieldCentricSwerveRequest()
                 .withVelocityX(velocity.x)
                 .withVelocityY(velocity.y)
                 .withRotationalRate(-turn.get()));
+            isIdleInit = false;
         }
 
     }
@@ -109,5 +125,14 @@ public class SwerveDriveSOTM extends Command {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void end(boolean inturrupted) {
+        if (digestCommand.isScheduled()) {
+            digestCommand.cancel();
+            CommandScheduler.getInstance().schedule(new IntakeDeploy());
+        }
+        isIdleInit = false;
     }
 }
