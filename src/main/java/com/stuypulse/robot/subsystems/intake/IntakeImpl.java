@@ -158,17 +158,35 @@ public class IntakeImpl extends Intake {
     @Override
     public void teleopInit() {
         TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+
         pivot.getConfigurator().refresh(newConfiguration);
         newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(10));
         pivot.getConfigurator().apply(newConfiguration);
+
+        rollerLeader.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(37));
+        rollerLeader.getConfigurator().apply(newConfiguration);
+
+        rollerFollower.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(37));
+        rollerFollower.getConfigurator().apply(newConfiguration);
     }
 
     @Override
     public void autonInit() {
         TalonFXConfiguration newConfiguration = new TalonFXConfiguration();
+        
         pivot.getConfigurator().refresh(newConfiguration);
         newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(20));
         pivot.getConfigurator().apply(newConfiguration);
+        
+        rollerLeader.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(50));
+        rollerLeader.getConfigurator().apply(newConfiguration);
+
+        rollerFollower.getConfigurator().refresh(newConfiguration);
+        newConfiguration.withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(50));
+        rollerFollower.getConfigurator().apply(newConfiguration);
     }
 
     @Override
