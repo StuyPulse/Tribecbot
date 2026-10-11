@@ -113,6 +113,9 @@
         "Intake": {
           "open": true
         },
+        "LED": {
+          "open": true
+        },
         "Vision": {
           "limelight-back": {
             "Pose2d##v_/Robot/Vision/limelight-back/Pose MT2": {

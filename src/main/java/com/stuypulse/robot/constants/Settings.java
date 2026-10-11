@@ -425,6 +425,7 @@ public interface Settings {
 
         RGBWColor INTAKE_STOW = rgbwConverter(Color.kBrown);        //broken
         RGBWColor INTAKE_DEPLOYED = rgbwConverter(Color.kPurple);   //broken
+        RGBWColor INTAKE_DIGEST = rgbwConverter(Color.kHotPink);
 
         RGBWColor DISABLED_ALIGNED = rgbwConverter(Color.kGreen);
         RGBWColor DISABLED = rgbwConverter(Color.kRed);

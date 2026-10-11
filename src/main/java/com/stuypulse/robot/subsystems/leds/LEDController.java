@@ -93,6 +93,7 @@ public class LEDController extends SubsystemBase {
         X_WHEELS(Settings.LED.X_WHEELS),
         INTAKE_STOW(Settings.LED.INTAKE_STOW),
         INTAKE_DEPLOYED(Settings.LED.INTAKE_DEPLOYED),
+        INTAKE_DIGEST(Settings.LED.INTAKE_DIGEST),
         DISABLED_ALIGNED(Settings.LED.DISABLED_ALIGNED),
         DISABLED(Settings.LED.DISABLED),
         AUTON_COLOR_ONE(Settings.LED.AUTON_ONE),

@@ -102,6 +102,10 @@ public class LEDDefaultCommand extends InstantCommand{
             else if (intake.getPivotState() == PivotState.DEPLOY) {
                 leds.changeState(LedState.INTAKE_DEPLOYED);
             }
+            //manually done in intake auto digest()!
+            // else if (intake.getPivotState() == PivotState.DIGEST) {
+                // leds.changeState(LedState.INTAKE_DIGEST);
+            // }
         }
 
         // DogLog.log("Leds/State", state);

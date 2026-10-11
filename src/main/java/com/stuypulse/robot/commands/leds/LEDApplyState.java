@@ -35,5 +35,4 @@ public class LEDApplyState extends Command {
     public void execute() {
         leds.changeState(state.get());
     }
-
 }
