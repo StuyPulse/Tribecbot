@@ -738,7 +738,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public boolean canShootIntoHub() {
         Superstructure superstructure = Superstructure.getInstance();
         SuperstructureState state = superstructure.getState();
-        return !isOutsideAllianceZone() || (state == SuperstructureState.KB || state == SuperstructureState.LEFT_CORNER || state == SuperstructureState.RIGHT_CORNER);
+        return (state == SuperstructureState.KB || state == SuperstructureState.LEFT_CORNER || state == SuperstructureState.RIGHT_CORNER);
     }
 
     public void periodicAfterScheduler() {

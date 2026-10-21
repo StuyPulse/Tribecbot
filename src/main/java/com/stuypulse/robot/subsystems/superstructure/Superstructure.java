@@ -21,8 +21,6 @@ import com.stuypulse.robot.subsystems.superstructure.shooter.Shooter.ShooterStat
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret;
 import com.stuypulse.robot.subsystems.superstructure.turret.Turret.TurretState;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
-import com.stuypulse.stuylib.streams.booleans.BStream;
-import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -185,9 +183,7 @@ public class Superstructure extends SubsystemBase {
         boolean isTurretWrapping = isTurretWrapping();
         boolean isBehindHubWhileFerrying = getState() == SuperstructureState.FOTM
                 && swerve.isBehindHub();
-        boolean isOutsideAllianceZone = 
-            CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && 
-            getState() != SuperstructureState.FOTM;
+        boolean isOutsideAllianceZone = false;
         boolean isUnderTrench = CommandSwerveDrivetrain.getInstance().isUnderTrench() 
             && getState() != SuperstructureState.FOTM;
         boolean inManualState =       
@@ -251,12 +247,12 @@ public class Superstructure extends SubsystemBase {
             fotmStoppedTimer.stop();
         }
 
-        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
-            Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
-            setState(SuperstructureState.STOW);
-            Spindexer.getInstance().setState(SpindexerState.STOP);
-            Handoff.getInstance().setState(HandoffState.STOP);
-        }
+        // if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && state == SuperstructureState.SOTM &&
+        //     Robot.getMode() != RobotMode.AUTON) { // allows us to start SOTM earlier in auto, but currently not desired in teleop
+        //     setState(SuperstructureState.STOW);
+        //     Spindexer.getInstance().setState(SpindexerState.STOP);
+        //     Handoff.getInstance().setState(HandoffState.STOP);
+        // }
 
         DogLog.log("Superstructure/State", state.name());
 

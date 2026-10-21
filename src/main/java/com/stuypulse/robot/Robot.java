@@ -299,13 +299,13 @@ public class Robot extends TimedRobot {
         DogLog.log("FMSUtil/is active shift", fmsUtil.isActiveShift());
         DogLog.log("FMSUtil/won auto?", fmsUtil.didWinAuto());
 
-        if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM) {
-            CommandScheduler.getInstance().schedule(
-                    new SuperstructureFOTM(),
-                    new SpindexerStop(),
-                    new HandoffStop()
-            );
-        }
+        // if (CommandSwerveDrivetrain.getInstance().isOutsideAllianceZone() && Superstructure.getInstance().getState() == SuperstructureState.SOTM) {
+        //     CommandScheduler.getInstance().schedule(
+        //             new SuperstructureFOTM(),
+        //             new SpindexerStop(),
+        //             new HandoffStop()
+        //     );
+        // }
     }
 
     @Override
