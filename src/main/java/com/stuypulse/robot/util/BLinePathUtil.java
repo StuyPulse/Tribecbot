@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 public class BLinePathUtil {
 
-    public static final java.io.File PATHS_DIR = Paths.get("").toAbsolutePath().resolve("src/main/deploy/bline/autos").toFile();
+    // public static final java.io.File PATHS_DIR = Paths.get("").toAbsolutePath().resolve("src/main/deploy/bline/autos").toFile();
 
     public static class BLineAutonConfig {
 
@@ -42,7 +42,7 @@ public class BLinePathUtil {
 
     for (String path : paths) {
         try {
-            new Path(PATHS_DIR, path);
+            new Path(path);
         } catch (Exception e) {
             DriverStation.reportError(
                 "BLine path \"" + path + "\" not found. Did you mean \""
@@ -83,7 +83,7 @@ public class BLinePathUtil {
 
 public static Path load(String name) {
     try {
-        return new Path(PATHS_DIR, name);
+        return new Path(name);
     } catch (Exception e) {
         DriverStation.reportError("BLine path \"" + name + "\" not found.", false);
         return null;

@@ -37,7 +37,7 @@ public class DepotBLine extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 swerve.getPathBuilder()
                     .withPoseReset(swerve::resetPose)
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[0])),
+                    .build(new Path(pathNames[0])),
                 new WaitCommand(4.5).andThen(new HandoffStop().alongWith(new SpindexerStop())),
                 new WaitCommand(0.5).andThen(new IntakeDeploy())
             ),

@@ -62,7 +62,7 @@ public class RightBumpBLine extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 swerve.getPathBuilder()
                     .withPoseReset(pose -> {})
-                    .build(new Path(BLinePathUtil.PATHS_DIR, pathNames[2])),
+                    .build(new Path(pathNames[2])),
                 new WaitCommand(6.0).andThen(
                     new HandoffStop().alongWith(new SpindexerStop())
                 )
@@ -83,7 +83,7 @@ public class RightBumpBLine extends SequentialCommandGroup {
     private static Command followUntil(CommandSwerveDrivetrain swerve, String pathName, double thresholdMeters, Consumer<Pose2d> poseReset) {
         FollowPath path = (FollowPath) swerve.getPathBuilder()
             .withPoseReset(poseReset)
-            .build(new Path(BLinePathUtil.PATHS_DIR, pathName));
+            .build(new Path(pathName));
 
         return path.raceWith(
             new WaitUntilCommand(() -> path.getRemainingPathDistanceMeters() < thresholdMeters)

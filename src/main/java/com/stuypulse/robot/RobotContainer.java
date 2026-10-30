@@ -16,6 +16,7 @@ import com.stuypulse.robot.commands.auton.bline.RightBumpBLine;
 import com.stuypulse.robot.commands.auton.bline.RightFollowBLine;
 import com.stuypulse.robot.commands.auton.bline.RightTwoCornerBLine;
 import com.stuypulse.robot.commands.auton.bline.RightTwoCycleBLine;
+import com.stuypulse.robot.commands.auton.bline.TwoMeterBLine;
 import com.stuypulse.robot.commands.auton.regular.TwoCorner;
 import com.stuypulse.robot.commands.auton.regular.TwoCornerShallow;
 import com.stuypulse.robot.commands.handoff.HandoffRun;
@@ -440,6 +441,9 @@ public class RobotContainer {
         BLineAutonConfig RIGHT_TWO_CYCLE_BLINE = new BLineAutonConfig("Right Two Cycle BLine", RightTwoCycleBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
             "right-trench-to-nz", "right-nz-to-score", "right-score-to-score", "right-score-shake", "right-score-to-nz-f");
             RIGHT_TWO_CYCLE_BLINE.register(autonChooser);
+        BLineAutonConfig TWO_METER = new BLineAutonConfig("Two Meter Bline", TwoMeterBLine::new, prevWaitTimeOne, prevWaitTimeTwo,
+        "two-meter");
+        TWO_METER.register(autonChooser);
 
         // DEPOT
         // AutonConfig DEPOT_ONLY = new AutonConfig("Depot Only", Depot::new, prevWaitTimeOne, prevWaitTimeTwo,
