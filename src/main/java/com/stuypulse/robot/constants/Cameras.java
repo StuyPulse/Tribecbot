@@ -75,11 +75,13 @@ public interface Cameras {
             NO_SUN,
             LOW_SUN,
             MED_SUN,
-            HIGH_SUN
+            HIGH_SUN,
+            OBJ_DET
         }
         
         private int getCurrentPipelineID() {
             return switch(this.currentPipeline) {
+                case OBJ_DET -> 4;
                 case NO_SUN -> 3;
                 case LOW_SUN -> 2;
                 case MED_SUN -> 1;

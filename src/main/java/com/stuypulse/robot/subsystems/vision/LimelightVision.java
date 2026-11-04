@@ -116,6 +116,7 @@ public class LimelightVision extends SubsystemBase {
                 .filtered(new BDebounce.Both(Settings.Vision.BUZZ_DEBOUNCE));
 
         setPipeline(Pipeline.NO_SUN);
+        Cameras.LimelightCameras[1].setPipeline(Camera.Pipeline.OBJ_DET);
     }
 
     public void setAllLTagWhitelist(int... ids) {
@@ -227,15 +228,16 @@ public class LimelightVision extends SubsystemBase {
         this.maxTagCount = 0;
 
             for (int i = 0; i < names.length; i++) {
-                if (Cameras.LimelightCameras[i].isEnabled()) {
+                Camera currentCam = Cameras.LimelightCameras[i];
+                if (currentCam.isEnabled()) {
                     String limelightName = names[i];
 
-                    Cameras.LimelightCameras[i].incrementLoopCounter();
-                    Cameras.LimelightCameras[i].updateLEDs();
+                    currentCam.incrementLoopCounter();
+                    currentCam.updateLEDs();
                     
                     //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
-                    Cameras.LimelightCameras[i].updateHeartBeat();
-                    Cameras.LimelightCameras[i].updateLatency();
+                    currentCam.updateHeartBeat();
+                    currentCam.updateLatency();
 
                     // Seed robot heading (used by MT2)
                     LimelightHelpers.SetRobotOrientation(
@@ -273,13 +275,13 @@ public class LimelightVision extends SubsystemBase {
                         if (poseEstimate.pose.getTranslation().getDistance(Settings.Vision.INVALID_POSITION) < Settings.Vision.INVALID_POSITION_TOLERANCE_M){
                             withinInvalidPositionTolerance = true;
                         } else {
-                            Cameras.LimelightCameras[i].incrementRejection(RejectionValue.INVALID_POSITION);
+                            currentCam.incrementRejection(RejectionValue.INVALID_POSITION);
                         }
 
                         if (CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond < Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
                             withinAngularVelocityTolerance = true;
                         } else {
-                            Cameras.LimelightCameras[i].incrementRejection(RejectionValue.ANGULAR_VELOCITY);
+                            currentCam.incrementRejection(RejectionValue.ANGULAR_VELOCITY);
                         }
 
 
@@ -309,12 +311,12 @@ public class LimelightVision extends SubsystemBase {
                         
                     } else {
                         DogLog.log("Vision/" + names[i] + " Has Data", false);
-                        Cameras.LimelightCameras[i].incrementRejection(RejectionValue.NOT_NULL);
+                        currentCam.incrementRejection(RejectionValue.NOT_NULL);
                     }
 
                     DogLog.log("Vision/MegaTag Mode", megaTagMode.toString());
                     
-                    Cameras.LimelightCameras[i].log();
+                    currentCam.log();
                 }
             }
 
