@@ -5,7 +5,13 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Cameras;
@@ -17,6 +23,8 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightTarget_Barcode;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightTarget_Detector;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -25,8 +33,13 @@ import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightVision extends SubsystemBase {
@@ -116,7 +129,7 @@ public class LimelightVision extends SubsystemBase {
                 .filtered(new BDebounce.Both(Settings.Vision.BUZZ_DEBOUNCE));
 
         setPipeline(Pipeline.NO_SUN);
-        Cameras.LimelightCameras[1].setPipeline(Camera.Pipeline.OBJ_DET);
+        Cameras.LimelightCameras[2].setPipeline(Camera.Pipeline.OBJ_DET);
     }
 
     public void setAllLTagWhitelist(int... ids) {
@@ -221,11 +234,45 @@ public class LimelightVision extends SubsystemBase {
         return debouncedHasData.get();
     }
 
+    private Optional<Pose3d> getFuelFieldPose(
+            Pose3d currentRobotPose, Transform3d robotToCamera, double yawRad, double pitchRad, double targetID) {
+
+        yawRad = Units.degreesToRadians(yawRad);
+        pitchRad = Units.degreesToRadians(pitchRad);
+
+        SmartDashboard.putNumber("Vision/Fuel Yaw", Units.radiansToDegrees(yawRad));
+        SmartDashboard.putNumber("Vision/Fuel Pitch", Units.radiansToDegrees(pitchRad));
+
+        final double cameraPitchRad = -robotToCamera.getRotation().getY(); // negative
+
+        final double distance = PhotonUtils.calculateDistanceToTargetMeters(
+                robotToCamera.getZ(),
+                Settings.Vision.FUEL_RADIUS_M,
+                cameraPitchRad,
+                pitchRad);
+
+        SmartDashboard.putNumber("Vision/target_" + targetID + "distance_m", distance);
+        if (distance <= 0 || Double.isNaN(distance)) {
+            return Optional.empty();
+        }
+
+        final Translation3d camToPiece = new Translation3d(
+                PhotonUtils.estimateCameraToTargetTranslation(distance, new Rotation2d(yawRad)));
+
+        final Pose3d fieldToCamera = currentRobotPose.transformBy(robotToCamera);
+        final Pose3d fieldToPiece = fieldToCamera.transformBy(
+                new Transform3d(camToPiece, new Rotation3d()));
+
+        return Optional.of(fieldToPiece);
+    }
+
+    private volatile List<Pose3d> fuelPoses = new ArrayList<>();
+
     public void periodicAfterScheduler() {
         if (enabled.get()) {
             hasData = false;
 
-        this.maxTagCount = 0;
+            this.maxTagCount = 0;
 
             for (int i = 0; i < names.length; i++) {
                 Camera currentCam = Cameras.LimelightCameras[i];
@@ -234,88 +281,121 @@ public class LimelightVision extends SubsystemBase {
 
                     currentCam.incrementLoopCounter();
                     currentCam.updateLEDs();
-                    
-                    //Ensure this is below updateLEDs(), otherwise the cameras will never appear as dead 
+
+                    // Ensure this is below updateLEDs(), otherwise the cameras will never appear as
+                    // dead
                     currentCam.updateHeartBeat();
                     currentCam.updateLatency();
 
+                    Pose2d robotPose2d = CommandSwerveDrivetrain.getInstance().getPose();
+
                     // Seed robot heading (used by MT2)
                     LimelightHelpers.SetRobotOrientation(
-                                limelightName,
-                                (CommandSwerveDrivetrain.getInstance().getPose().getRotation().getDegrees() + (Robot.isBlue() ? 0 : 180)) % 360,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                    );
+                            limelightName,
+                            (robotPose2d.getRotation().getDegrees()
+                                    + (Robot.isBlue() ? 0 : 180)) % 360,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0);
 
-                    PoseEstimate poseEstimate;
+                    Boolean detectedNewFuel = false;
+                    Optional<LimelightTarget_Detector[]> cachedDetections = currentCam.getLatestObjectDetections();
+                    if (currentCam.isObjectDetector() && cachedDetections.isPresent()) {
+                        DogLog.log("OBJDET/len", cachedDetections.get().length);
+                        for(int j=0; j<cachedDetections.get().length; j++) {
+                            LimelightTarget_Detector obj = cachedDetections.get()[j];
+                            DogLog.log("OBJDET/"+j+"/yaw", obj.tx_nocrosshair);
+                            DogLog.log("OBJDET/"+j+"/pitch", obj.ty_nocrosshair);
+                            Transform3d currentCamLocation = new Transform3d(currentCam.getLocation().getTranslation(), currentCam.getLocation().getRotation());
+                            
+                            Optional<Pose3d> fieldToObj = 
+                                getFuelFieldPose(new Pose3d(robotPose2d), currentCamLocation, 
+                                obj.tx_nocrosshair, 
+                                obj.ty_nocrosshair, 
+                                obj.classID);
 
-                    // MegaTag switching
-                    if (megaTagMode == MegaTagMode.MEGATAG1) {
-                         poseEstimate = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
+                            if(fieldToObj.isPresent()) {
+                                if(!detectedNewFuel) {
+                                    detectedNewFuel = true;
+                                    fuelPoses.clear();
+                                }
+                                fuelPoses.add(fieldToObj.get());
+                            }
+                        }
                     } else {
-                        poseEstimate = Robot.isBlue()
-                                ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
-                                : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
-                    }
+                        PoseEstimate poseEstimate;
 
-                    // Adding to pose estimator
-                    boolean notNull = false;
-                    boolean withinAngularVelocityTolerance = false;
-                    boolean withinInvalidPositionTolerance = false;
-                    // boolean withinTargetAreaTolerance = false;
-
-                    if (poseEstimate != null && poseEstimate.tagCount > 0)  {
-                        notNull = true;
-
-                        if (poseEstimate.pose.getTranslation().getDistance(Settings.Vision.INVALID_POSITION) < Settings.Vision.INVALID_POSITION_TOLERANCE_M){
-                            withinInvalidPositionTolerance = true;
+                        // MegaTag switching
+                        if (megaTagMode == MegaTagMode.MEGATAG1) {
+                            poseEstimate = Robot.isBlue()
+                                    ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName)
+                                    : LimelightHelpers.getBotPoseEstimate_wpiRed(limelightName);
                         } else {
-                            currentCam.incrementRejection(RejectionValue.INVALID_POSITION);
+                            poseEstimate = Robot.isBlue()
+                                    ? LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName)
+                                    : LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(limelightName);
                         }
 
-                        if (CommandSwerveDrivetrain.getInstance().getChassisSpeeds().omegaRadiansPerSecond < Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
-                            withinAngularVelocityTolerance = true;
+                        // Adding to pose estimator
+                        boolean notNull = false;
+                        boolean withinAngularVelocityTolerance = false;
+                        boolean withinInvalidPositionTolerance = false;
+                        // boolean withinTargetAreaTolerance = false;
+
+                        if (poseEstimate != null && poseEstimate.tagCount > 0) {
+                            notNull = true;
+
+                            if (poseEstimate.pose.getTranslation().getDistance(
+                                    Settings.Vision.INVALID_POSITION) < Settings.Vision.INVALID_POSITION_TOLERANCE_M) {
+                                withinInvalidPositionTolerance = true;
+                            } else {
+                                currentCam.incrementRejection(RejectionValue.INVALID_POSITION);
+                            }
+
+                            if (CommandSwerveDrivetrain.getInstance()
+                                    .getChassisSpeeds().omegaRadiansPerSecond < Settings.Vision.MAX_ANGULAR_VELOCITY_RAD_SEC) {
+                                withinAngularVelocityTolerance = true;
+                            } else {
+                                currentCam.incrementRejection(RejectionValue.ANGULAR_VELOCITY);
+                            }
+
+                            Pose2d robotPose = poseEstimate.pose;
+                            double timestamp = poseEstimate.timestampSeconds;
+
+                            boolean isAcceptablePose = notNull && withinAngularVelocityTolerance
+                                    && !withinInvalidPositionTolerance;// && withinTargetAreaTolerance;
+
+                            if (megaTagMode == MegaTagMode.MEGATAG1 && isAcceptablePose) {
+                                CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp,
+                                        Settings.Vision.MT1_STDEVS);
+                                hasData = true;
+                            } else if (megaTagMode == MegaTagMode.MEGATAG2 && isAcceptablePose) {
+                                CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp,
+                                        Settings.Vision.MT2_STDEVS);
+                                hasData = true;
+                            }
+
+                            DogLog.log("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
+                            DogLog.log("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
+                            DogLog.log("Vision/Not Null", notNull);
+
+                            DogLog.log("Vision/Pose", robotPose);
+                            DogLog.log("Vision/Pose X Component", robotPose.getX(), "Meters");
+                            DogLog.log("Vision/Pose Y Component", robotPose.getY(), "Meters");
+                            DogLog.log("Vision/Pose Theta", robotPose.getRotation().getDegrees(), "Degrees");
+
+                            DogLog.log("Vision/" + names[i] + " Has Data", true);
+
                         } else {
-                            currentCam.incrementRejection(RejectionValue.ANGULAR_VELOCITY);
+                            DogLog.log("Vision/" + names[i] + " Has Data", false);
+                            currentCam.incrementRejection(RejectionValue.NOT_NULL);
                         }
 
+                        DogLog.log("Vision/MegaTag Mode", megaTagMode.toString());
 
-                        Pose2d robotPose = poseEstimate.pose;
-                        double timestamp = poseEstimate.timestampSeconds;
-
-                        boolean isAcceptablePose = notNull && withinAngularVelocityTolerance && !withinInvalidPositionTolerance;// && withinTargetAreaTolerance;
-
-                        if (megaTagMode == MegaTagMode.MEGATAG1 && isAcceptablePose) {
-                            CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp, Settings.Vision.MT1_STDEVS);
-                            hasData = true;
-                        } else if (megaTagMode == MegaTagMode.MEGATAG2 && isAcceptablePose) {
-                            CommandSwerveDrivetrain.getInstance().addVisionMeasurement(robotPose, timestamp, Settings.Vision.MT2_STDEVS);
-                            hasData = true;
-                        }
-
-                        DogLog.log("Vision/Within Invalid Position Tolerance", withinInvalidPositionTolerance);
-                        DogLog.log("Vision/Within Angular Velocity Tolerance", withinAngularVelocityTolerance);
-                        DogLog.log("Vision/Not Null", notNull);
-
-                        DogLog.log("Vision/Pose", robotPose);
-                        DogLog.log("Vision/Pose X Component", robotPose.getX(), "Meters");
-                        DogLog.log("Vision/Pose Y Component", robotPose.getY(), "Meters");
-                        DogLog.log("Vision/Pose Theta", robotPose.getRotation().getDegrees(), "Degrees");
-
-                        DogLog.log("Vision/" + names[i] + " Has Data", true);
-                        
-                    } else {
-                        DogLog.log("Vision/" + names[i] + " Has Data", false);
-                        currentCam.incrementRejection(RejectionValue.NOT_NULL);
                     }
-
-                    DogLog.log("Vision/MegaTag Mode", megaTagMode.toString());
-                    
                     currentCam.log();
                 }
             }
@@ -323,16 +403,16 @@ public class LimelightVision extends SubsystemBase {
             // Alternating pipelines for hdr
             if (lastHdrEnabledVal != Settings.Vision.HDR_ENABLED.get()) {
                 setPipeline(Pipeline.NO_SUN);
-                if(!lastHdrEnabledVal) {
+                if (!lastHdrEnabledVal) {
                     Cameras.LimelightCameras[2].setPipeline(Pipeline.HIGH_SUN);
                 }
             }
 
             lastHdrEnabledVal = Settings.Vision.HDR_ENABLED.get();
 
-            if(Settings.Vision.HDR_ENABLED.get()) {
-                if(hdrTimer.hasElapsed(Settings.Vision.HDR_TIMEOUT_SEC)) {
-                    for(Camera camera: Cameras.LimelightCameras) {
+            if (Settings.Vision.HDR_ENABLED.get()) {
+                if (hdrTimer.hasElapsed(Settings.Vision.HDR_TIMEOUT_SEC)) {
+                    for (Camera camera : Cameras.LimelightCameras) {
                         camera.performHDR();
                     }
                     hdrTimer.reset();
@@ -340,6 +420,7 @@ public class LimelightVision extends SubsystemBase {
             }
 
             DogLog.log("Vision/Has Data", hasData);
+            DogLog.log("Vision/FUEL", fuelPoses.toArray(Pose3d[]::new));
         }
     }
 }

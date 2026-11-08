@@ -461,5 +461,7 @@ public interface Settings {
         double HDR_TIMEOUT_SEC = 0.25;
 
         public final double BUZZ_DEBOUNCE = 0.25;
+
+        double FUEL_RADIUS_M = Units.inchesToMeters(2.955);
     }
 }

@@ -5,11 +5,14 @@
 /***************************************************************/
 package com.stuypulse.robot.constants;
 
+import java.util.Optional;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.subsystems.leds.LEDController;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightResults;
+import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightTarget_Detector;
 import com.stuypulse.robot.util.vision.LimelightHelpers.RawFiducial;
 import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.streams.booleans.BStream;
@@ -78,7 +81,23 @@ public interface Cameras {
             HIGH_SUN,
             OBJ_DET
         }
+
+        public boolean isObjectDetector() {
+            return this.currentPipeline.equals(Pipeline.OBJ_DET);
+        }
         
+        public Optional<LimelightTarget_Detector[]> getLatestObjectDetections() {
+            Optional<LimelightTarget_Detector[]> detections = Optional.empty();
+
+            if(LimelightHelpers.getTV(this.getName())) {
+                LimelightResults results = LimelightHelpers.getLatestResults(this.getName());
+                DogLog.log("OBJDET/error", results.error);
+                detections = Optional.of(results.targets_Detector);
+            }
+
+            return detections;
+        }
+
         private int getCurrentPipelineID() {
             return switch(this.currentPipeline) {
                 case OBJ_DET -> 4;
