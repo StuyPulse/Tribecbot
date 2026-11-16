@@ -71,7 +71,7 @@ public interface Cameras {
             this.isEnabled = isEnabled;
             this.keyName = "Vision/" + name + "/";
             this.result = LimelightHelpers.getLatestResults(name);
-            this.isdead = BStream.create(() -> !isAlive()).filtered( new BDebounce.Rising(1), new BDebounce.Falling(0.2));
+            this.isdead = BStream.create(() -> !isAlive()).filtered(new BDebounce.Rising(1), new BDebounce.Falling(0.2));
         }
 
         public enum Pipeline {

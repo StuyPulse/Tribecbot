@@ -251,7 +251,33 @@ public class LimelightVision extends SubsystemBase {
                 cameraPitchRad,
                 pitchRad);
 
-        SmartDashboard.putNumber("Vision/target_" + targetID + "distance_m", distance);
+        SmartDashboard.putNumber("Vision/target_" + targetID + "_distance_m", distance);
+        if (distance <= 0 || Double.isNaN(distance)) {
+            return Optional.empty();
+        }
+
+        final Translation3d camToPiece = new Translation3d(
+                PhotonUtils.estimateCameraToTargetTranslation(distance, new Rotation2d(yawRad)));
+
+        final Pose3d fieldToCamera = currentRobotPose.transformBy(robotToCamera);
+        final Pose3d fieldToPiece = fieldToCamera.transformBy(
+                new Transform3d(camToPiece, new Rotation3d()));
+
+        return Optional.of(fieldToPiece);
+    }
+
+    private Optional<Pose3d> getFuelFieldPose(
+            Pose3d currentRobotPose, Transform3d robotToCamera, double yawRad, double pitchRad, double targetArea, double targetID) {
+
+        yawRad = Units.degreesToRadians(yawRad);
+        pitchRad = Units.degreesToRadians(pitchRad);
+
+        SmartDashboard.putNumber("Vision/Fuel Yaw", Units.radiansToDegrees(yawRad));
+        SmartDashboard.putNumber("Vision/Fuel Pitch", Units.radiansToDegrees(pitchRad));
+
+        final double distance = Settings.Vision.TARGETAREA_SCALAR/Math.sqrt(targetArea);
+
+        SmartDashboard.putNumber("Vision/target_" + targetID + "_distance_m", distance);
         if (distance <= 0 || Double.isNaN(distance)) {
             return Optional.empty();
         }
@@ -314,6 +340,7 @@ public class LimelightVision extends SubsystemBase {
                                 getFuelFieldPose(new Pose3d(robotPose2d), currentCamLocation, 
                                 obj.tx_nocrosshair, 
                                 obj.ty_nocrosshair, 
+                                obj.ta,
                                 obj.classID);
 
                             if(fieldToObj.isPresent()) {
