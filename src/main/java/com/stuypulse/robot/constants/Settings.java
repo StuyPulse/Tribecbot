@@ -463,6 +463,6 @@ public interface Settings {
         public final double BUZZ_DEBOUNCE = 0.25;
 
         double FUEL_RADIUS_M = Units.inchesToMeters(2.955);
-        double TARGETAREA_SCALAR = 108.99644;
+        double TARGETAREA_SCALAR = 1.0899644;
     }
 }

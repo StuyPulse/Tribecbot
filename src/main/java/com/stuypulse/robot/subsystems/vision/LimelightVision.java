@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonUtils;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Cameras;
@@ -23,7 +22,6 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import com.stuypulse.robot.util.vision.LimelightHelpers;
 import com.stuypulse.robot.util.vision.LimelightHelpers.IMUData;
-import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightTarget_Barcode;
 import com.stuypulse.robot.util.vision.LimelightHelpers.LimelightTarget_Detector;
 import com.stuypulse.robot.util.vision.LimelightHelpers.PoseEstimate;
 import com.stuypulse.stuylib.network.SmartBoolean;
@@ -236,10 +234,6 @@ public class LimelightVision extends SubsystemBase {
 
     private Optional<Pose3d> getFuelFieldPose(
             Pose3d currentRobotPose, Transform3d robotToCamera, double yawRad, double pitchRad, double targetID) {
-
-        yawRad = Units.degreesToRadians(yawRad);
-        pitchRad = Units.degreesToRadians(pitchRad);
-
         SmartDashboard.putNumber("Vision/Fuel Yaw", Units.radiansToDegrees(yawRad));
         SmartDashboard.putNumber("Vision/Fuel Pitch", Units.radiansToDegrees(pitchRad));
 
@@ -267,15 +261,11 @@ public class LimelightVision extends SubsystemBase {
     }
 
     private Optional<Pose3d> getFuelFieldPose(
-            Pose3d currentRobotPose, Transform3d robotToCamera, double yawRad, double pitchRad, double targetArea, double targetID) {
-
-        yawRad = Units.degreesToRadians(yawRad);
-        pitchRad = Units.degreesToRadians(pitchRad);
-
+            Pose3d currentRobotPose, Transform3d robotToCamera, double yawRad, double pitchRad, double targetAreaPercent, double targetID) {
         SmartDashboard.putNumber("Vision/Fuel Yaw", Units.radiansToDegrees(yawRad));
         SmartDashboard.putNumber("Vision/Fuel Pitch", Units.radiansToDegrees(pitchRad));
 
-        final double distance = Settings.Vision.TARGETAREA_SCALAR/Math.sqrt(targetArea);
+        final double distance = Settings.Vision.TARGETAREA_SCALAR/Math.sqrt(targetAreaPercent) + Settings.Vision.FUEL_RADIUS_M;
 
         SmartDashboard.putNumber("Vision/target_" + targetID + "_distance_m", distance);
         if (distance <= 0 || Double.isNaN(distance)) {
@@ -288,6 +278,8 @@ public class LimelightVision extends SubsystemBase {
         final Pose3d fieldToCamera = currentRobotPose.transformBy(robotToCamera);
         final Pose3d fieldToPiece = fieldToCamera.transformBy(
                 new Transform3d(camToPiece, new Rotation3d()));
+
+        fieldToPiece.plus(new Transform3d(0, 0, 2*fieldToPiece.getZ(), new Rotation3d()));
 
         return Optional.of(fieldToPiece);
     }
@@ -332,15 +324,16 @@ public class LimelightVision extends SubsystemBase {
                         DogLog.log("OBJDET/len", cachedDetections.get().length);
                         for(int j=0; j<cachedDetections.get().length; j++) {
                             LimelightTarget_Detector obj = cachedDetections.get()[j];
-                            DogLog.log("OBJDET/"+j+"/yaw", obj.tx_nocrosshair);
-                            DogLog.log("OBJDET/"+j+"/pitch", obj.ty_nocrosshair);
+                            DogLog.log("OBJDET/"+j+"/yaw", obj.tx);
+                            DogLog.log("OBJDET/"+j+"/pitch", obj.ty);
+                            DogLog.log("OBJDET/"+j+"/ta", obj.ta);
                             Transform3d currentCamLocation = new Transform3d(currentCam.getLocation().getTranslation(), currentCam.getLocation().getRotation());
                             
                             Optional<Pose3d> fieldToObj = 
                                 getFuelFieldPose(new Pose3d(robotPose2d), currentCamLocation, 
-                                obj.tx_nocrosshair, 
-                                obj.ty_nocrosshair, 
-                                obj.ta,
+                                Units.degreesToRadians(obj.tx), 
+                                Units.degreesToRadians(obj.ty), 
+                                obj.ta * 100.0,
                                 obj.classID);
 
                             if(fieldToObj.isPresent()) {
