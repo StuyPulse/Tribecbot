@@ -284,6 +284,10 @@ public class LimelightVision extends SubsystemBase {
         return Optional.of(fieldToPiece);
     }
 
+    public Pose2d getBestFuelPose() {
+        return this.fuelPoses.get(0).toPose2d();
+    }
+
     private volatile List<Pose3d> fuelPoses = new ArrayList<>();
 
     public void periodicAfterScheduler() {
