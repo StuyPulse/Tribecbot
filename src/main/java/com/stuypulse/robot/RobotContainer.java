@@ -57,6 +57,7 @@ import com.stuypulse.robot.commands.swerve.SwerveResetPoseKBShot;
 import com.stuypulse.robot.commands.swerve.SwerveResetPoseLeftCorner;
 import com.stuypulse.robot.commands.swerve.SwerveResetPoseRightCorner;
 import com.stuypulse.robot.commands.swerve.SwerveXMode;
+import com.stuypulse.robot.commands.swerve.pidToPose.SwerveDrivePIDToPose;
 import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
@@ -326,17 +327,19 @@ public class RobotContainer {
             .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop().alongWith(new IntakeDeploy())));
 
         // Manual KB Distance Scoring
-        driver.getBottomButton()
-            // .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
-            .whileTrue(new SwerveXMode())
-            .onTrue(new IntakeRunRollers())
-            .onTrue(new SwerveResetPoseKBShot())
-            .whileTrue(new SuperstructureKB().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
-                .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
-                .andThen(new SpindexerRun())
-                .andThen(new RepeatCommand(new IntakeTeleopDigest()))))
-            .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
+        // driver.getBottomButton()
+        //     // .whileTrue(new LEDApplyPattern(Settings.LED.KB_DISTANCE))
+        //     .whileTrue(new SwerveXMode())
+        //     .onTrue(new IntakeRunRollers())
+        //     .onTrue(new SwerveResetPoseKBShot())
+        //     .whileTrue(new SuperstructureKB().alongWith(new WaitUntilCommand(() -> superstructure.atTolerance()))
+        //         .andThen(new HandoffRun()).alongWith(new WaitUntilCommand(() -> handoff.getState() == HandoffState.FORWARD)
+        //         .andThen(new SpindexerRun())
+        //         .andThen(new RepeatCommand(new IntakeTeleopDigest()))))
+        //     .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
 
+        driver.getBottomButton()
+            .onTrue(new SwerveDrivePIDToPose(vision.getBestFuelPose().orElseGet(swerve::getPose)));
     }
 
     /***************/
