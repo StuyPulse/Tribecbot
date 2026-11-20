@@ -276,10 +276,10 @@ public class LimelightVision extends SubsystemBase {
                 PhotonUtils.estimateCameraToTargetTranslation(distance, new Rotation2d(yawRad)));
 
         final Pose3d fieldToCamera = currentRobotPose.transformBy(robotToCamera);
-        final Pose3d fieldToPiece = fieldToCamera.transformBy(
+        Pose3d fieldToPiece = fieldToCamera.transformBy(
                 new Transform3d(camToPiece, new Rotation3d()));
 
-        fieldToPiece.plus(new Transform3d(0, 0, 2*fieldToPiece.getZ(), new Rotation3d()));
+        fieldToPiece = new Pose3d(fieldToPiece.getX(), fieldToPiece.getY() - robotToCamera.getY(), fieldToPiece.getZ(), fieldToPiece.getRotation());
 
         return Optional.of(fieldToPiece);
     }
