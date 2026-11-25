@@ -60,6 +60,8 @@ import com.stuypulse.robot.commands.swerve.SwerveXMode;
 import com.stuypulse.robot.commands.swerve.pidToPose.SwerveDrivePIDToPose;
 import com.stuypulse.robot.commands.turret.SeedTurret;
 import com.stuypulse.robot.commands.turret.ZeroTurret;
+import com.stuypulse.robot.commands.vision.CaptureObjectPose;
+import com.stuypulse.robot.commands.vision.ReleaseObjectPose;
 import com.stuypulse.robot.commands.vision.ResetLimelightIMU;
 import com.stuypulse.robot.commands.vision.SetIMUMode;
 import com.stuypulse.robot.commands.vision.SetMegaTagMode;
@@ -93,6 +95,7 @@ import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -339,7 +342,9 @@ public class RobotContainer {
         //     .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
 
         driver.getBottomButton()
-            .onTrue(new SwerveDrivePIDToPose(vision.getBestFuelPose().orElseGet(swerve::getPose)));
+            .onTrue(new SwerveDrivePIDToPose(() -> vision.getBestFuelPose().orElseGet(swerve::getPose)))
+            .onTrue(new CaptureObjectPose())
+            .onFalse(new ReleaseObjectPose());
     }
 
     /***************/

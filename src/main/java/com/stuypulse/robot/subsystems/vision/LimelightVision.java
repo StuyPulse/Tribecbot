@@ -5,6 +5,7 @@
 /** ************************************************************ */
 package com.stuypulse.robot.subsystems.vision;
 
+import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -284,11 +285,21 @@ public class LimelightVision extends SubsystemBase {
         return Optional.of(fieldToPiece);
     }
 
-    public Pose2d getBestFuelPose() {
-        return this.fuelPoses.get(0).toPose2d();
+    public Optional<Pose2d> getBestFuelPose() {
+        return lastGoodFuelPose;
     }
 
-    private volatile List<Pose3d> fuelPoses = new ArrayList<>();
+    public void setPoseInUse() {
+        this.poseInUse = true;
+    }
+
+    public void releasePose() {
+        this.poseInUse = false;
+    }
+    
+    private List<Pose3d> fuelPoses = new ArrayList<>();
+    private Optional<Pose2d> lastGoodFuelPose = Optional.empty();
+    private boolean poseInUse = false;
 
     public void periodicAfterScheduler() {
         if (enabled.get()) {
@@ -346,6 +357,11 @@ public class LimelightVision extends SubsystemBase {
                                     fuelPoses.clear();
                                 }
                                 fuelPoses.add(fieldToObj.get());
+                            }
+
+                            if(fuelPoses!=null && !fuelPoses.isEmpty() && !poseInUse) {
+                                lastGoodFuelPose = Optional.of(fuelPoses.get(0).toPose2d());        
+                                DogLog.log("Vision/Get Best Pose", lastGoodFuelPose.get());
                             }
                         }
                     } else {
