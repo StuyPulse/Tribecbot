@@ -279,9 +279,7 @@ public class LimelightVision extends SubsystemBase {
         final Pose3d fieldToCamera = currentRobotPose.transformBy(robotToCamera);
         Pose3d fieldToPiece = fieldToCamera.transformBy(
                 new Transform3d(camToPiece, new Rotation3d()));
-
-        fieldToPiece = new Pose3d(fieldToPiece.getX(), fieldToPiece.getY() - robotToCamera.getY(), fieldToPiece.getZ(), fieldToPiece.getRotation());
-
+        
         return Optional.of(fieldToPiece);
     }
 
@@ -289,7 +287,10 @@ public class LimelightVision extends SubsystemBase {
         return lastGoodFuelPose;
     }
 
-    public void setPoseInUse() {
+    public void setPoseInUse(Rotation2d rotation) {
+        if(lastGoodFuelPose.isPresent()) {
+            lastGoodFuelPose = Optional.of(new Pose2d(lastGoodFuelPose.get().getTranslation(), rotation));
+        }
         this.poseInUse = true;
     }
 
@@ -339,14 +340,14 @@ public class LimelightVision extends SubsystemBase {
                         DogLog.log("OBJDET/len", cachedDetections.get().length);
                         for(int j=0; j<cachedDetections.get().length; j++) {
                             LimelightTarget_Detector obj = cachedDetections.get()[j];
-                            DogLog.log("OBJDET/"+j+"/yaw", obj.tx);
+                            DogLog.log("OBJDET/"+j+"/yaw", -obj.tx);
                             DogLog.log("OBJDET/"+j+"/pitch", obj.ty);
                             DogLog.log("OBJDET/"+j+"/ta", obj.ta);
                             Transform3d currentCamLocation = new Transform3d(currentCam.getLocation().getTranslation(), currentCam.getLocation().getRotation());
                             
                             Optional<Pose3d> fieldToObj = 
                                 getFuelFieldPose(new Pose3d(robotPose2d), currentCamLocation, 
-                                Units.degreesToRadians(obj.tx), 
+                                Units.degreesToRadians(-obj.tx), 
                                 Units.degreesToRadians(obj.ty), 
                                 obj.ta * 100.0,
                                 obj.classID);

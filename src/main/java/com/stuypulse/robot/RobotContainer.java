@@ -342,8 +342,8 @@ public class RobotContainer {
         //     .onFalse(new SuperstructureStow().alongWith(new SpindexerStop()).alongWith(new HandoffStop()).alongWith(new IntakeDeploy()));
 
         driver.getBottomButton()
-            .onTrue(new SwerveDrivePIDToPose(() -> vision.getBestFuelPose().orElseGet(swerve::getPose)))
             .onTrue(new CaptureObjectPose())
+            .onTrue(new SwerveDrivePIDToPose(() -> vision.getBestFuelPose().orElseGet(swerve::getPose)).withCanEnd(() -> true))
             .onFalse(new ReleaseObjectPose());
     }
 
